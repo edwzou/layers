@@ -1,1 +1,32 @@
-CREATE SCHEMA schema_name;
+CREATE SCHEMA backend_schema;
+CREATE TABLE backend_schema.user (
+    uid INT(255) NOT NULL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL,
+    profile_picture VARBINARY(max)
+);
+CREATE TABLE backend_schema.outfit (
+    oid INT(255) NOT NULL PRIMARY KEY,
+    image VARBINARY(max) NOT NULL,
+    uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid),
+    ciid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.clothing_item(ciid)
+);
+CREATE TABLE backend_schema.clothing_item (
+    ciid INT(255) NOT NULL PRIMARY KEY,
+    image VARBINARY(max) NOT NULL,
+    color VARCHAR(6) NOT NULL,
+    category CHAR(255) NOT NULL,
+    private BOOL NOT NULL,
+    uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid)
+);
+CREATE TABLE backend_schema.events (
+    eid INT(255) NOT NULL PRIMARY KEY,
+    event_name CHAR(255) NOT NULL UNIQUE,
+    start_time TIMESTAMP(3) NOT NULL,
+    end_time TIMESTAMP(3) NOT NULL,
+    invitees INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid),
+    uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid)
+);
