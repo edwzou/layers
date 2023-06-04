@@ -1,3 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE SCHEMA backend_schema;
 CREATE TABLE backend_schema.user (
     uid INT(255) NOT NULL PRIMARY KEY,
@@ -30,3 +31,33 @@ CREATE TABLE backend_schema.events (
     invitees INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid),
     uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid)
 );
+CREATE TABLE backend_schema.post (
+    pid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    uid UUID UNIQUE NOT NULL,
+    caption VARCHAR(50),
+    likes INTEGER NOT NULL,
+    post_time TIMESTAMP NOT NULL,
+    commentes UUID[],
+    oid UUID UNIQUE,
+    ciid UUID UNIQUE,
+    CONSTRAINT at_least_one_not_null CHECK (oid is not NULL or ciid is not NULL)
+);
+CREATE TABLE backend_schema.comment (
+    cid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    comment TEXT NOT NULL,
+    uid UUID UNIQUE NOT NULL
+);
+CREATE TABLE backend_schema.notification (
+    nid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    uid UUID UNIQUE NOT NULL,
+    viewed BOOLEAN NOT NULL,
+    description TEXT NOT NULL,
+    recipients UUID[] NOT NULL,
+    event_time TIMESTAMP,
+    category VARCHAR(20) NOT NULL
+);
+CREATE TABLE backend_schema.e_notif (
+    enid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    nid UUID UNIQUE
+);
+COMMENT ON COLUMN backend_schema.notification.uid IS 'SENDER';
