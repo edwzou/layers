@@ -56,6 +56,15 @@ CREATE TABLE backend_schema.notification (
     event_time TIMESTAMP,
     category VARCHAR(20) NOT NULL
 );
+CREATE TABLE backend_schema.sent_notification (
+    snid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    uid UUID UNIQUE NOT NULL,
+    description TEXT NOT NULL,
+    recipients UUID[] NOT NULL,
+    event_time TIMESTAMP,
+    category VARCHAR(20) NOT NULL,
+    passed BOOL NOT NULL
+);
 CREATE TABLE backend_schema.e_notif (
     enid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     nid UUID UNIQUE
