@@ -42,9 +42,9 @@ CREATE TABLE backend_schema.post (
     ciid UUID UNIQUE,
     CONSTRAINT at_least_one_not_null CHECK (oid is not NULL or ciid is not NULL)
 );
-CREATE TABLE backend_schema.comment (
+CREATE TABLE backend_schema.commente (
     cid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    comment TEXT NOT NULL,
+    commente TEXT NOT NULL,
     uid UUID UNIQUE NOT NULL
 );
 CREATE TABLE backend_schema.notification (
