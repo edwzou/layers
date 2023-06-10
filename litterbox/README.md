@@ -71,7 +71,6 @@ POST /api/users/:id/follow: Follow a user.
 POST /api/users/:id/unfollow: Unfollow a user.
 
 GET /api/search/users: Search for users by username or name.
-
 GET /api/posts/feed: Get a feed of posts from followed users.
 
 I forgot are we implementing a chat function if we are:
