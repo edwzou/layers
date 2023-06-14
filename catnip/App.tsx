@@ -1,10 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import GlobalStyles from './constants/GlobalStyles';
 
 export default function App() {
 	return (
 		<View style={styles.container}>
-			<Text>Open up App.tsx to start working on your app!</Text>
+			<Text style={[GlobalStyles.typography.header, GlobalStyles.utils.font]}>
+				Catwalk
+			</Text>
 			<StatusBar style="auto" />
 		</View>
 	);
@@ -13,8 +16,8 @@ export default function App() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff',
+		backgroundColor: GlobalStyles.colorPalette.background,
 		alignItems: 'center',
-		justifyContent: 'center'
-	}
+		justifyContent: 'center',
+	},
 });
