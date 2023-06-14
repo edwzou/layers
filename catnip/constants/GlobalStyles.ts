@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const colorPalette = {
+const colorPalette = {
 	background: '#F2F2F2',
 	primary: {
 		100: '#F3F3F3',
@@ -59,13 +59,13 @@ export const colorPalette = {
 	}
 };
 
-export const layout = StyleSheet.create({
+const layout = StyleSheet.create({
 	xMargin: {
 		marginHorizontal: 16
 	}
 });
 
-export const typography = StyleSheet.create({
+const typography = StyleSheet.create({
 	header: {
 		fontSize: 40,
 		fontWeight: 'bold'
@@ -92,10 +92,15 @@ export const typography = StyleSheet.create({
 	}
 });
 
-export const utils = StyleSheet.create({
+const utils = StyleSheet.create({
+	font: {
+		fontFamily: 'Helvetica'
+	},
 	shadow: {
 		shadowColor: colorPalette.primary[300],
 		shadowOffset: { width: -4, height: 5 },
 		shadowRadius: 10
 	}
 });
+
+export default { colorPalette, layout, typography, utils };
