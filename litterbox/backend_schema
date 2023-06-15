@@ -23,16 +23,7 @@ CREATE TABLE backend_schema.clothing_item (
     private BOOL NOT NULL,
     uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid)
 );
-CREATE TABLE backend_schema.events (
-    eid INT(255) NOT NULL PRIMARY KEY,
-    event_name CHAR(255) NOT NULL UNIQUE,
-    start_time TIMESTAMP(3) NOT NULL,
-    end_time TIMESTAMP(3) NOT NULL,
-    invitees INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid),
-    location GEOMETRY(Point, 4326),
-    uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid)
-);
-CREATE TABLE backend_schema.post (
+CREATE TABLE backend_schema.posts (
     pid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     uid UUID UNIQUE NOT NULL,
     caption VARCHAR(50),
@@ -48,21 +39,21 @@ CREATE TABLE backend_schema.commente (
     commente TEXT NOT NULL,
     uid UUID UNIQUE NOT NULL
 );
-CREATE TABLE backend_schema.notification (
+CREATE TABLE backend_schema.notifications (
     nid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     uid UUID UNIQUE NOT NULL,
     viewed BOOLEAN NOT NULL,
     description TEXT NOT NULL,
     recipients UUID[] NOT NULL,
-    event_time TIMESTAMP,
+    time_stamp TIMESTAMP,
     category VARCHAR(20) NOT NULL
 );
-CREATE TABLE backend_schema.sent_notification (
+CREATE TABLE backend_schema.sent_notifications (
     snid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     uid UUID UNIQUE NOT NULL,
     description TEXT NOT NULL,
     recipients UUID[] NOT NULL,
-    event_time TIMESTAMP,
+    time_stamp TIMESTAMP,
     category VARCHAR(20) NOT NULL,
     passed BOOL NOT NULL
 );
@@ -70,5 +61,4 @@ CREATE TABLE backend_schema.e_notif (
     enid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     nid UUID UNIQUE
 );
-COMMENT ON COLUMN backend_schema.notification.uid IS 'SENDER';
-COMMENT ON COLUMN backend_schema.events.location IS 'The "GEOMETRY" type is parameterized with "Point" to indicate that we want to store point data. The "4326" value is the spatial reference system identifier (SRID) and represents the coordinate system used (in this case, the common WGS 84 latitude/longitude system).'
+COMMENT ON COLUMN backend_schema.notifications.uid IS 'SENDER';
