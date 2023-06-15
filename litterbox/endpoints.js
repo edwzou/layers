@@ -107,7 +107,7 @@ router.post('/comments', async (req, res) => {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
-})
+});
 
 // Endpoint for deleting a specific comment
 router.delete('/comments/:commentId', async (req, res) => {
@@ -182,6 +182,101 @@ router.get('/comments/:userId', async (req, res) => {
             res.json(post);
         } else {
             res.status(404).json({ error: 'Comment not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for creating a new outfit
+router.post('/outfits', async (req, res) => {
+    try {
+        const { oid, uid, image, clothing_item } = req.body;
+        const query = `INSERT INTO outfits (oid, uid, image, clothing_item)
+                       VALUES ('${oid}', '${uid}', '${image}', '${JSON.stringify(clothing_item)}')`;
+        await conn.query(query);
+        res.json({ message: 'Outfit created' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for deleting a specific outfit
+router.delete('/outfits/:outfitId', async (req, res) => {
+    try {
+        const { outfitId } = req.params;
+        const query = `DELETE FROM outfits WHERE oid = '${outfitId}'`;
+        const result = await conn.query(query);
+        const deleteRowCount = result.affectedRows;
+
+        if (deleteRowCount > 0) {
+            res.json({ message: 'Outfit deleted' });
+        } else {
+            res.status(404).json({ error: 'Outfit not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for updating a specific outfit
+router.put('/outfits/:outfitId', async (req, res) => {
+    try {
+        const { outfitId } = req.params;
+        const { uid, image, clothing_item } = req.body;
+        const query = `UPDATE comments
+                       SET uid = '${uid}',
+                           image = '${image}',
+                           clothing_item = '${JSON.stringify(clothing_item)}'
+                       WHERE oid = '${outfitId}'`;
+        const result = await conn.query(query);
+        const updatedRowCount = result.affectedRows;
+
+        if (updatedRowCount > 0) {
+            res.json({ message: 'Outfit updated' });
+        } else {
+            res.status(404).json({ error: 'Outfit not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for retrieving a specific outfit
+router.get('/outfits/:outfitId', async (req, res) => {
+    try {
+        const { outfitId } = req.params;
+        const query = `SELECT * FROM outfits WHERE oid = '${outfitId}'`;
+        const result = await conn.query(query);
+        const post = result[0];
+
+        if (post) {
+            res.json(post);
+        } else {
+            res.status(404).json({ error: 'Outfit not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for retrieving all outfits
+router.get('/outfits/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const query = `SELECT * FROM outfits WHERE uid = '${userId}'`;
+        const result = await conn.query(query);
+        const post = result[0];
+
+        if (post) {
+            res.json(post);
+        } else {
+            res.status(404).json({ error: 'Outfit not found' });
         }
     } catch (err) {
         console.error(err);
