@@ -31,7 +31,7 @@ router.post('/users', async (req, res) => {
 router.delete('/users/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
-        const query = `DELETE FROM user WHERE uid = '${userId}'`;
+        const query = `DELETE FROM users WHERE uid = '${userId}'`;
         const result = await conn.query(query);
         const deleteRowCount = result.affectedRows;
 
@@ -93,6 +93,100 @@ router.get('/users/:userId', async (req, res) => {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
+});
+
+// Endpoint for creating a new comment
+router.post('/comments', async (req, res) => {
+    try {
+        const { cid, uid, comment } = req.body;
+        const query = `INSERT INTO comments (cid, uid, comment)
+                       VALUES ('${cid}', '${uid}', '${comment}')`;
+        await conn.query(query);
+        res.json({ message: 'Comment created' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 })
+
+// Endpoint for deleting a specific comment
+router.delete('/comments/:commentId', async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const query = `DELETE FROM comments WHERE cid = '${commentId}'`;
+        const result = await conn.query(query);
+        const deleteRowCount = result.affectedRows;
+
+        if (deleteRowCount > 0) {
+            res.json({ message: 'Comment deleted' });
+        } else {
+            res.status(404).json({ error: 'Comment not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for updating a specific comment
+router.put('/comments/:commentId', async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const { uid, comment } = req.body;
+        const query = `UPDATE comments
+                       SET uid = '${uid}',
+                           comment = '${comment}'
+                       WHERE cid = '${commentId}'`;
+        const result = await conn.query(query);
+        const updatedRowCount = result.affectedRows;
+
+        if (updatedRowCount > 0) {
+            res.json({ message: 'Comment updated' });
+        } else {
+            res.status(404).json({ error: 'Comment not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for retrieving a specific comment
+router.get('/comments/:commentId', async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const query = `SELECT * FROM comments WHERE cid = '${commentId}'`;
+        const result = await conn.query(query);
+        const post = result[0];
+
+        if (post) {
+            res.json(post);
+        } else {
+            res.status(404).json({ error: 'Comment not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for retrieving all comments
+router.get('/comments/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const query = `SELECT * FROM comments WHERE uid = '${userId}'`;
+        const result = await conn.query(query);
+        const post = result[0];
+
+        if (post) {
+            res.json(post);
+        } else {
+            res.status(404).json({ error: 'Comment not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 module.exports = router;
