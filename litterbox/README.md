@@ -11,8 +11,7 @@ Users:
 Create a new User
 Delete a user
 Update a User
-Fetch a user by userID or username	
-Fetch all users (by invitees list of UID)
+Fetch a user by userID
 
 Notifications:
 Create Notification
@@ -35,13 +34,6 @@ Update a comment
 Delete a comment
 Retrieve a comment (by CID)
 Retrieve all comments (by PID, UID — maybe)
-
-Event:
-Create an event
-Delete an event
-Update an event
-Retrieve an event (by EID)
-Retrieve all events (by UID, timestamp)
 
 Outfit:
 Create an outfit
