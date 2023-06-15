@@ -284,4 +284,101 @@ router.get('/outfits/:userId', async (req, res) => {
     }
 });
 
+// Endpoint for creating a new clothing item
+router.post('/clothingItems', async (req, res) => {
+    try {
+        const { ciid, uid, image, color, category, personal } = req.body;
+        const query = `INSERT INTO outfits (ciid, uid, image, color, category, personal)
+                       VALUES ('${ciid}', '${uid}', '${image}', '${color}', '${category}', '${personal}')`;
+        await conn.query(query);
+        res.json({ message: 'Clothing item created' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for deleting a specific clothing item
+router.delete('/clothingItems/:clothingItemId', async (req, res) => {
+    try {
+        const { clothingItemId } = req.params;
+        const query = `DELETE FROM clothingItems WHERE ciid = '${clothingItemId}'`;
+        const result = await conn.query(query);
+        const deleteRowCount = result.affectedRows;
+
+        if (deleteRowCount > 0) {
+            res.json({ message: 'Clothing item deleted' });
+        } else {
+            res.status(404).json({ error: 'Clothing item not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for updating a specific clothing item
+router.put('/clothingItems/:clothingItemId', async (req, res) => {
+    try {
+        const { clothingItemId } = req.params;
+        const { uid, image, color, category, personal } = req.body;
+        const query = `UPDATE clothingItems
+                       SET uid = '${uid}',
+                           image = '${image}',
+                           color = '${color}',
+                           category = '${category}',
+                           personal = '${personal}'
+                       WHERE ciid = '${clothingItemId}'`;
+        const result = await conn.query(query);
+        const updatedRowCount = result.affectedRows;
+
+        if (updatedRowCount > 0) {
+            res.json({ message: 'Clothing item updated' });
+        } else {
+            res.status(404).json({ error: 'Clothing item not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for retrieving a specific clothing item
+router.get('/clothingItems/:clothingItemId', async (req, res) => {
+    try {
+        const { clothingItemId } = req.params;
+        const query = `SELECT * FROM clothingItems WHERE oid = '${clothingItemId}'`;
+        const result = await conn.query(query);
+        const post = result[0];
+
+        if (post) {
+            res.json(post);
+        } else {
+            res.status(404).json({ error: 'Clothing item not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint for retrieving all clothing items
+router.get('/clothingItems/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const query = `SELECT * FROM clothingItems WHERE uid = '${userId}'`;
+        const result = await conn.query(query);
+        const post = result[0];
+
+        if (post) {
+            res.json(post);
+        } else {
+            res.status(404).json({ error: 'Clothing item not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 module.exports = router;
