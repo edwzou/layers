@@ -11,8 +11,7 @@ Users:
 Create a new User
 Delete a user
 Update a User
-Fetch a user by userID or username	
-Fetch all users (by invitees list of UID)
+Fetch a user by userID
 
 Notifications:
 Create Notification
@@ -35,13 +34,6 @@ Update a comment
 Delete a comment
 Retrieve a comment (by CID)
 Retrieve all comments (by PID, UID — maybe)
-
-Event:
-Create an event
-Delete an event
-Update an event
-Retrieve an event (by EID)
-Retrieve all events (by UID, timestamp)
 
 Outfit:
 Create an outfit
@@ -71,7 +63,6 @@ POST /api/users/:id/follow: Follow a user.
 POST /api/users/:id/unfollow: Unfollow a user.
 
 GET /api/search/users: Search for users by username or name.
-
 GET /api/posts/feed: Get a feed of posts from followed users.
 
 I forgot are we implementing a chat function if we are:
