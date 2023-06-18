@@ -49,14 +49,6 @@ Update a clothing item
 Retrieve a clothing item (by CIID)
 Retrieve all clothing items (by UID, OID)
 
-Updating an item includes updating like count
-
-Might need a new system for likes so they aren’t updated 24/7
-
-New Table for Notification failures (Keeps track of all delivered/processed notifications)
-
-Might be better to use a different database than a relational databases, just by the volume of notifications
-
 POST /api/auth/login: Authenticate and log in a user.
 POST /api/auth/logout: Log out the currently authenticated user.
 POST /api/users/:id/follow: Follow a user.
@@ -72,3 +64,11 @@ POST /api/conversations/:id/messages: Send a message to a specific conversation.
          
 This is more for the future:
 GET /api/explore: Get recommended posts or users for the user.
+
+Updating an item includes updating like count
+
+Might need a new system for likes so they aren’t updated 24/7
+
+New Table for Notification failures (Keeps track of all delivered/processed notifications)
+
+Might be better to use a different database than a relational databases, just by the volume of notifications

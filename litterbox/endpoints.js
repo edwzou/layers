@@ -95,6 +95,25 @@ router.get('/users/:userId', async (req, res) => {
     }
 });
 
+// Endpoint for retrieving a specific user
+router.get('/users/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const query = `SELECT * FROM users WHERE uid = '${userId}'`;
+        const result = await conn.query(query);
+        const post = result[0];
+
+        if (post) {
+            res.json(post);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 // Endpoint for creating a new comment
 router.post('/comments', async (req, res) => {
     try {
@@ -446,32 +465,6 @@ router.put('/notifications/:notificationId', async (req, res) => {
   }
 });
 
-// Endpoint for triggering notifications
-router.post('/notifications/trigger', async (req, res) => {
-  try {
-    // Logic to trigger notifications
-    // ...
-
-    res.json({ message: 'Notifications triggered' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Endpoint for retrying all failed notifications
-router.post('/notifications/retry', async (req, res) => {
-  try {
-    // Logic to retry failed notifications
-    // ...
-
-    res.json({ message: 'Retrying all failed notifications' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
 // Endpoint for retrieving all notifications by recipient (UID)
 router.get('/notifications/recipient/:userId', async (req, res) => {
   try {
@@ -580,6 +573,112 @@ router.get('/posts/:userId', async (req, res) => {
     const result = await conn.query(query);
 
     res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint for triggering notifications
+router.post('/notifications/trigger', async (req, res) => {
+  try {
+    // Logic to trigger notifications
+    // ...
+
+    res.json({ message: 'Notifications triggered' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint for retrying all failed notifications
+router.post('/notifications/retry', async (req, res) => {
+  try {
+    // Logic to retry failed notifications
+    // ...
+
+    res.json({ message: 'Retrying all failed notifications' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint for authenticating and logging in a user
+router.post('/auth/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    // Perform authentication logic
+
+    res.json({ message: 'User authenticated and logged in' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint for logging out the currently authenticated user
+router.post('/auth/logout', async (req, res) => {
+  try {
+    // Perform logout logic
+
+    res.json({ message: 'User logged out' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint for following a user
+router.post('/users/:id/follow', async (req, res) => {
+  try {
+    const { uid } = req.params;
+    // Perform follow user logic
+
+    res.json({ message: 'User followed' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint for unfollowing a user
+router.post('/users/:id/unfollow', async (req, res) => {
+  try {
+    const { uid } = req.params;
+    // Perform unfollow user logic
+
+    res.json({ message: 'User unfollowed' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint for searching users by username or name
+router.get('/search/users', async (req, res) => {
+  try {
+    const { query } = req.query;
+    // Perform user search logic
+
+    res.json({ message: 'User search results' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint for getting a feed of posts from followed users
+router.get('/posts/feed', async (req, res) => {
+  try {
+    const { userIds } = req.params;
+    const followedUserIds = userIds.split(',');
+
+    // Perform feed retrieval logic using the followedUserIds
+    const feed = []; // Replace this with your logic to retrieve the feed of posts 
+
+    res.json({ message: 'Feed retrieved' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
