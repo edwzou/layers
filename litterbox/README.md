@@ -13,28 +13,6 @@ Delete a user
 Update a User
 Fetch a user by userID
 
-Notifications:
-Create Notification
-Delete Notification(Cancel a message, or delete an image)
-Update Notification(Can’t see why, but maybe)
-Trigger notifications
-Retry All Failed Notifications
-Retrieve all notifications (by recipients — UID)
-
-Posts:
-Create a post
-Delete a post
-Update a post
-Retrieve a post (by PID)
-Retrieve all posts(by UID, EID, OID/CIID — maybe)
-
-Comment:
-Create a comment
-Update a comment
-Delete a comment
-Retrieve a comment (by CID)
-Retrieve all comments (by PID, UID — maybe)
-
 Outfit:
 Create an outfit
 Delete an outfit
@@ -56,6 +34,28 @@ POST /api/users/:id/unfollow: Unfollow a user.
 
 GET /api/search/users: Search for users by username or name.
 GET /api/posts/feed: Get a feed of posts from followed users.
+
+<!-- Notifications:
+Create Notification
+Delete Notification(Cancel a message, or delete an image)
+Update Notification(Can’t see why, but maybe)
+Trigger notifications
+Retry All Failed Notifications
+Retrieve all notifications (by recipients — UID) -->
+
+<!-- Posts:
+Create a post
+Delete a post
+Update a post
+Retrieve a post (by PID)
+Retrieve all posts(by UID, EID, OID/CIID — maybe) -->
+
+<!-- Comment:
+Create a comment
+Update a comment
+Delete a comment
+Retrieve a comment (by CID)
+Retrieve all comments (by PID, UID — maybe) -->
 
 I forgot are we implementing a chat function if we are:
 GET /api/conversations: Get a list of conversations for the authenticated user.
