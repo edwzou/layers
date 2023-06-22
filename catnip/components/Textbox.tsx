@@ -1,12 +1,4 @@
-import {
-	View,
-	TextInput,
-	StyleSheet,
-	Text,
-	TextInputTextInputEventData,
-	TextInputChangeEventData,
-	NativeSyntheticEvent,
-} from 'react-native';
+import { View, TextInput, StyleSheet, Text } from 'react-native';
 import React, { useState } from 'react';
 import GlobalStyles from '../constants/GlobalStyles';
 
