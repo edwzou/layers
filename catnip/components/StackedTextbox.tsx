@@ -2,12 +2,15 @@ import { View, TextInput, StyleSheet, Text } from 'react-native';
 import React, { useState } from 'react';
 import GlobalStyles from '../constants/GlobalStyles';
 
-type TextboxPropsType = {
+type StackedTextboxPropsType = {
 	label: string;
 	onFieldChange: (text: string) => void;
 };
 
-export default function Textbox({ label, onFieldChange }: TextboxPropsType) {
+export default function StackedTextbox({
+	label,
+	onFieldChange,
+}: StackedTextboxPropsType) {
 	const [fieldText, setFieldText] = useState('');
 	return (
 		<View style={{ width: '100%' }}>
