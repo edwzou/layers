@@ -1,0 +1,19 @@
+{
+  "name": "litterbox",
+  "version": "1.0.0",
+  "description": "Endpoints:",
+  "main": "endpoints.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cityofzion/neon-js": "^5.4.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "postgres": "^3.3.5"
+  }
+}
