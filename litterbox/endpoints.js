@@ -95,100 +95,6 @@ router.get('/users/:userId', async (req, res) => {
     }
 });
 
-// Endpoint for creating a new comment
-router.post('/comments', async (req, res) => {
-    try {
-        const { cid, uid, comment } = req.body;
-        const query = `INSERT INTO comments (cid, uid, comment)
-                       VALUES ('${cid}', '${uid}', '${comment}')`;
-        await conn.query(query);
-        res.json({ message: 'Comment created' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Endpoint for deleting a specific comment
-router.delete('/comments/:commentId', async (req, res) => {
-    try {
-        const { commentId } = req.params;
-        const query = `DELETE FROM comments WHERE cid = '${commentId}'`;
-        const result = await conn.query(query);
-        const deleteRowCount = result.affectedRows;
-
-        if (deleteRowCount > 0) {
-            res.json({ message: 'Comment deleted' });
-        } else {
-            res.status(404).json({ error: 'Comment not found' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Endpoint for updating a specific comment
-router.put('/comments/:commentId', async (req, res) => {
-    try {
-        const { commentId } = req.params;
-        const { uid, comment } = req.body;
-        const query = `UPDATE comments
-                       SET uid = '${uid}',
-                           comment = '${comment}'
-                       WHERE cid = '${commentId}'`;
-        const result = await conn.query(query);
-        const updatedRowCount = result.affectedRows;
-
-        if (updatedRowCount > 0) {
-            res.json({ message: 'Comment updated' });
-        } else {
-            res.status(404).json({ error: 'Comment not found' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Endpoint for retrieving a specific comment
-router.get('/comments/:commentId', async (req, res) => {
-    try {
-        const { commentId } = req.params;
-        const query = `SELECT * FROM comments WHERE cid = '${commentId}'`;
-        const result = await conn.query(query);
-        const post = result[0];
-
-        if (post) {
-            res.json(post);
-        } else {
-            res.status(404).json({ error: 'Comment not found' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Endpoint for retrieving all comments
-router.get('/comments/:userId', async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const query = `SELECT * FROM comments WHERE uid = '${userId}'`;
-        const result = await conn.query(query);
-        const post = result[0];
-
-        if (post) {
-            res.json(post);
-        } else {
-            res.status(404).json({ error: 'Comment not found' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
 // Endpoint for creating a new outfit
 router.post('/outfits', async (req, res) => {
     try {
@@ -381,209 +287,67 @@ router.get('/clothingItems/:userId', async (req, res) => {
     }
 });
 
-// Endpoint for creating a new notification
-router.post('/notifications', async (req, res) => {
+// Endpoint for authenticating and logging in a user
+router.post('/auth/login', async (req, res) => {
   try {
-    const { uid, viewed, description, recipients, event_time, category } = req.body;
-    
-    const query = `INSERT INTO notifications (uid, viewed, description, recipients, event_time, category)
-                   VALUES ('${uid}', ${viewed}, '${description}', '${JSON.stringify(recipients)}', '${event_time}', '${category}')`;
+    const { username, password } = req.body;
+    // Perform authentication logic
 
-    await conn.query(query);
-
-    res.json({ message: 'Notification created' });
+    res.json({ message: 'User authenticated and logged in' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Endpoint for deleting a specific notification
-router.delete('/notifications/:notificationId', async (req, res) => {
+// Endpoint for logging out the currently authenticated user
+router.post('/auth/logout', async (req, res) => {
   try {
-    const { notificationId } = req.params;
-    const query = `DELETE FROM notifications WHERE nid = '${notificationId}'`;
+    // Perform logout logic
 
-    const result = await conn.query(query);
-    const deletedRowCount = result.affectedRows;
-
-    if (deletedRowCount > 0) {
-      res.json({ message: 'Notification deleted' });
-    } else {
-      res.status(404).json({ error: 'Notification not found' });
-    }
+    res.json({ message: 'User logged out' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Endpoint for updating a specific notification
-router.put('/notifications/:notificationId', async (req, res) => {
+// Endpoint for following a user
+router.post('/users/:id/follow', async (req, res) => {
   try {
-    const { notificationId } = req.params;
-    const { viewed, description, recipients, event_time, category } = req.body;
-    
-    const query = `UPDATE notifications 
-                   SET viewed = ${viewed},
-                       description = '${description}',
-                       recipients = '${JSON.stringify(recipients)}',
-                       event_time = '${event_time}',
-                       category = '${category}'
-                   WHERE nid = '${notificationId}'`;
+    const { uid } = req.params;
+    // Perform follow user logic
 
-    const result = await conn.query(query);
-    const updatedRowCount = result.affectedRows;
-
-    if (updatedRowCount > 0) {
-      res.json({ message: 'Notification updated' });
-    } else {
-      res.status(404).json({ error: 'Notification not found' });
-    }
+    res.json({ message: 'User followed' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Endpoint for triggering notifications
-router.post('/notifications/trigger', async (req, res) => {
+// Endpoint for unfollowing a user
+router.post('/users/:id/unfollow', async (req, res) => {
   try {
-    // Logic to trigger notifications
-    // ...
+    const { uid } = req.params;
+    // Perform unfollow user logic
 
-    res.json({ message: 'Notifications triggered' });
+    res.json({ message: 'User unfollowed' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Endpoint for retrying all failed notifications
-router.post('/notifications/retry', async (req, res) => {
+// Endpoint for searching users by username or name
+router.get('/search/users', async (req, res) => {
   try {
-    // Logic to retry failed notifications
-    // ...
+    const { query } = req.query;
+    // Perform user search logic
 
-    res.json({ message: 'Retrying all failed notifications' });
+    res.json({ message: 'User search results' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-// Endpoint for retrieving all notifications by recipient (UID)
-router.get('/notifications/recipient/:userId', async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const query = `SELECT * FROM notifications WHERE uid = '${userId}'::uuid`;
-
-    const result = await conn.query(query);
-    const notifications = result;
-
-    res.json(notifications);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Endpoint for creating a new user post
-router.post('/posts', async (req, res) => {
-  try {
-    const { uid, caption, likes, post_time, commentes, oid, ciid } = req.body;
-    const query = `INSERT INTO posts (uid, caption, likes, post_time, commentes, oid, ciid)
-                   VALUES ('${uid}', '${caption}', ${likes}, '${post_time}', '${JSON.stringify(commentes)}', '${oid}', '${ciid}')`;
-
-    await conn.query(query);
-
-    res.json({ message: 'Post created' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Endpoint for deleting a specific user post
-router.delete('/posts/:postId', async (req, res) => {
-  try {
-    const { postId } = req.params;
-    const query = `DELETE FROM posts WHERE pid = '${postId}'`;
-
-    const result = await conn.query(query);
-    const deletedRowCount = result.affectedRows;
-
-    if (deletedRowCount > 0) {
-      res.json({ message: 'Post deleted' });
-    } else {
-      res.status(404).json({ error: 'Post not found' });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Endpoint for updating a specific user post
-router.put('/posts/:postId', async (req, res) => {
-  try {
-    const { postId } = req.params;
-    const { caption, likes, post_time, commentes, oid, ciid } = req.body;
-    const query = `UPDATE posts 
-                   SET caption = '${caption}', 
-                       likes = ${likes}, 
-                       post_time = '${post_time}', 
-                       commentes = '${JSON.stringify(commentes)}', 
-                       oid = '${oid}', 
-                       ciid = '${ciid}' 
-                   WHERE pid = '${postId}'`;
-
-    const result = await conn.query(query);
-    const updatedRowCount = result.affectedRows;
-
-    if (updatedRowCount > 0) {
-      res.json({ message: 'Post updated' });
-    } else {
-      res.status(404).json({ error: 'Post not found' });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Endpoint for retrieving a specific user post
-router.get('/posts/:postId', async (req, res) => {
-  try {
-    const { postId } = req.params;
-    const query = `SELECT * FROM posts WHERE pid = '${postId}'`;
-
-    const result = await conn.query(query);
-    const post = result[0];
-
-    if (post) {
-      res.json(post);
-    } else {
-      res.status(404).json({ error: 'Post not found' });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Endpoint for retrieving all user(one user, like userA) posts
-router.get('/posts/:userId', async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const query = `SELECT * FROM posts WHERE uid = '${userId}'`;
-    const result = await conn.query(query);
-
-    res.json(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
 module.exports = router;

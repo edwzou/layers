@@ -7,59 +7,21 @@ CREATE TABLE backend_schema.user (
     email VARCHAR(100) NOT NULL UNIQUE,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(50) NOT NULL,
-
+    private BOOL NOT NULL,
+    followers uid[],
+    following uid[],
     profile_picture VARBINARY(max)
 );
 CREATE TABLE backend_schema.outfit (
     oid INT(255) NOT NULL PRIMARY KEY,
-    image VARBINARY(max) NOT NULL,
+    title CHAR(255) NOt NULL, 
+    clothing_items ciid[] NOT NULL
     uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid),
-    ciid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.clothing_item(ciid)
 );
 CREATE TABLE backend_schema.clothing_item (
     ciid INT(255) NOT NULL PRIMARY KEY,
     image VARBINARY(max) NOT NULL,
-    color VARCHAR(6) NOT NULL,
     category CHAR(255) NOT NULL,
-    private BOOL NOT NULL,
+    title CHAR(255) NOt NULL, 
     uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid)
 );
-CREATE TABLE backend_schema.posts (
-    pid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    uid UUID UNIQUE NOT NULL,
-    caption VARCHAR(50),
-    likes INTEGER NOT NULL,
-    post_time TIMESTAMP NOT NULL,
-    commentes UUID[],
-    oid UUID UNIQUE,
-    ciid UUID UNIQUE,
-    CONSTRAINT at_least_one_not_null CHECK (oid is not NULL or ciid is not NULL)
-);
-CREATE TABLE backend_schema.commente (
-    cid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    commente TEXT NOT NULL,
-    uid UUID UNIQUE NOT NULL
-);
-CREATE TABLE backend_schema.notifications (
-    nid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    uid UUID UNIQUE NOT NULL,
-    viewed BOOLEAN NOT NULL,
-    description TEXT NOT NULL,
-    recipients UUID[] NOT NULL,
-    time_stamp TIMESTAMP,
-    category VARCHAR(20) NOT NULL
-);
-CREATE TABLE backend_schema.sent_notifications (
-    snid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    uid UUID UNIQUE NOT NULL,
-    description TEXT NOT NULL,
-    recipients UUID[] NOT NULL,
-    time_stamp TIMESTAMP,
-    category VARCHAR(20) NOT NULL,
-    passed BOOL NOT NULL
-);
-CREATE TABLE backend_schema.e_notif (
-    enid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    nid UUID UNIQUE
-);
-COMMENT ON COLUMN backend_schema.notifications.uid IS 'SENDER';
