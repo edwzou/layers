@@ -101,6 +101,14 @@ const utils = StyleSheet.create({
 		shadowOffset: { width: -4, height: 5 },
 		shadowRadius: 10,
 	},
+	roundedRadius: {
+		borderRadius: 10,
+	},
 });
 
-export default { colorPalette, layout, typography, utils };
+const icons = {
+	userOutline: 'ri-user-line',
+	password: 'ri-key-2-line',
+};
+
+export default { colorPalette, layout, typography, utils, icons };
