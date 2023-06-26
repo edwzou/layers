@@ -5,11 +5,13 @@ import Icon from 'react-native-remix-icon';
 
 type InlineTextboxType = {
 	icon: string;
+	placeholder: string;
 	onFieldChange: (text: string) => void;
 };
 
 export default function InlineTextbox({
 	icon,
+	placeholder,
 	onFieldChange,
 }: InlineTextboxType) {
 	const [fieldText, setFieldText] = useState('');
@@ -28,6 +30,7 @@ export default function InlineTextbox({
 					setFieldText(text);
 					onFieldChange(text); // Returns text value to parent component
 				}}
+				placeholder={placeholder}
 			/>
 		</View>
 	);
