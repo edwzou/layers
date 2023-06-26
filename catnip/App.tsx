@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import GlobalStyles from './constants/GlobalStyles';
-import Textbox from './components/Textbox';
+import Textbox from './components/StackedTextbox';
 import { useState } from 'react';
 
 export default function App() {
