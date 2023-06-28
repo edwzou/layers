@@ -2,13 +2,19 @@ import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet } from 'react-native';
 import LoginPage from './pages/LoginPage';
 import GlobalStyles from './constants/GlobalStyles';
+import { NavigationContainer } from '@react-navigation/native';
+import { Stack } from './utils/StackNavigation';
 
 export default function App() {
 	return (
-		<View style={styles.container}>
-			<LoginPage />
-			<StatusBar style="auto" />
-		</View>
+		<NavigationContainer>
+			<View style={styles.container}>
+				<Stack.Navigator screenOptions={{ headerShown: false }}>
+					<Stack.Screen name="Login" component={LoginPage} />
+				</Stack.Navigator>
+				<StatusBar style="auto" />
+			</View>
+		</NavigationContainer>
 	);
 }
 
