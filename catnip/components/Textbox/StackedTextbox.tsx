@@ -1,6 +1,6 @@
 import { View, TextInput, StyleSheet, Text } from 'react-native';
 import React, { useState } from 'react';
-import GlobalStyles from '../constants/GlobalStyles';
+import GlobalStyles from '../../constants/GlobalStyles';
 
 type StackedTextboxPropsType = {
 	label: string;
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		paddingTop: 10,
 		paddingHorizontal: 10,
-		borderTopStartRadius: 10,
-		borderTopEndRadius: 10,
+		borderTopStartRadius: GlobalStyles.utils.roundedRadius.borderRadius,
+		borderTopEndRadius: GlobalStyles.utils.roundedRadius.borderRadius,
 		paddingBottom: 5,
 	},
 	input: {
@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
 		width: '100%',
 		paddingBottom: 10,
 		paddingHorizontal: 10,
-		borderBottomStartRadius: 10,
-		borderBottomEndRadius: 10,
+		borderBottomStartRadius: GlobalStyles.utils.roundedRadius.borderRadius,
+		borderBottomEndRadius: GlobalStyles.utils.roundedRadius.borderRadius,
 		color: GlobalStyles.colorPalette.primary[500],
 	},
 });
