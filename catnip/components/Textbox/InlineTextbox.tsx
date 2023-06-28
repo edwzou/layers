@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		padding: 10,
-		borderRadius: GlobalStyles.utils.roundedRadius.borderRadius,
+		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		display: 'flex',
 		gap: 10,
 		flexDirection: 'row',

@@ -17,7 +17,7 @@ export default function LoginPage() {
 	};
 
 	return (
-		<View style={[styles.container, GlobalStyles.layout.xMargin]}>
+		<View style={styles.container}>
 			<Text style={[GlobalStyles.typography.header, GlobalStyles.utils.font]}>
 				Catwalk
 			</Text>
@@ -28,7 +28,7 @@ export default function LoginPage() {
 					onFieldChange={onInputChange}
 				/>
 				<InlineTextbox
-					icon={GlobalStyles.icons.password}
+					icon={GlobalStyles.icons.passwordOutline}
 					placeholder="Password"
 					secure={true}
 					onFieldChange={onInputChange}
@@ -37,7 +37,7 @@ export default function LoginPage() {
 			<Pressable
 				style={[
 					styles.button,
-					GlobalStyles.utils.roundedRadius,
+					GlobalStyles.utils.smallRadius,
 					GlobalStyles.utils.shadow,
 				]}
 				onPress={() => {
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		paddingHorizontal: 16,
 		gap: 65,
+		marginHorizontal: GlobalStyles.layout.xGap,
 	},
 	button: {
 		backgroundColor: GlobalStyles.colorPalette.primary[500],

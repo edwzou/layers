@@ -64,11 +64,9 @@ const colorPalette = {
 	},
 };
 
-const layout = StyleSheet.create({
-	xMargin: {
-		marginHorizontal: 16,
-	},
-});
+const layout = {
+	xGap: 16,
+};
 
 const typography = StyleSheet.create({
 	header: {
@@ -106,14 +104,24 @@ const utils = StyleSheet.create({
 		shadowOffset: { width: -4, height: 5 },
 		shadowRadius: 10,
 	},
-	roundedRadius: {
+	smallRadius: {
 		borderRadius: 10,
 	},
 });
 
-const icons = {
-	userOutline: 'ri-user-line',
-	password: 'ri-key-2-line',
+const sizing = {
+	icon: 20,
 };
 
-export default { colorPalette, layout, typography, utils, icons };
+const icons = {
+	userOutline: 'ri-user-line',
+	passwordOutline: 'ri-key-2-line',
+	sendOutline: 'ri-send-plane-2-line',
+	backOutline: 'ri-arrow-left-s-line',
+	searchOutline: 'ri-search-2-line',
+	shirtOutline: 'ri-t-shirt-2-line',
+	addOutline: 'ri-add-circle-line',
+	bookmarkOutline: 'ri-bookmark-line',
+};
+
+export default { colorPalette, layout, typography, utils, icons, sizing };

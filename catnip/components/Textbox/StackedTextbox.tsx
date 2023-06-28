@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		paddingTop: 10,
 		paddingHorizontal: 10,
-		borderTopStartRadius: GlobalStyles.utils.roundedRadius.borderRadius,
-		borderTopEndRadius: GlobalStyles.utils.roundedRadius.borderRadius,
+		borderTopStartRadius: GlobalStyles.utils.smallRadius.borderRadius,
+		borderTopEndRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		paddingBottom: 5,
 	},
 	input: {
@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
 		width: '100%',
 		paddingBottom: 10,
 		paddingHorizontal: 10,
-		borderBottomStartRadius: GlobalStyles.utils.roundedRadius.borderRadius,
-		borderBottomEndRadius: GlobalStyles.utils.roundedRadius.borderRadius,
+		borderBottomStartRadius: GlobalStyles.utils.smallRadius.borderRadius,
+		borderBottomEndRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		color: GlobalStyles.colorPalette.primary[500],
 	},
 });
