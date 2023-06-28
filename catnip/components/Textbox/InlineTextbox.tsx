@@ -5,12 +5,14 @@ import Icon from 'react-native-remix-icon';
 
 type InlineTextboxType = {
 	icon: string;
+	secure?: boolean;
 	placeholder: string;
 	onFieldChange: (text: string) => void;
 };
 
 export default function InlineTextbox({
 	icon,
+	secure,
 	placeholder,
 	onFieldChange,
 }: InlineTextboxType) {
@@ -26,6 +28,7 @@ export default function InlineTextbox({
 			<TextInput
 				style={[styles.input, GlobalStyles.typography.body]}
 				value={fieldText}
+				secureTextEntry={secure || false}
 				onChangeText={(text) => {
 					setFieldText(text);
 					onFieldChange(text); // Returns text value to parent component
