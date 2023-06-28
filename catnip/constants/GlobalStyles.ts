@@ -2,6 +2,11 @@ import { StyleSheet } from 'react-native';
 
 const colorPalette = {
 	background: '#F2F2F2',
+	card: {
+		100: '#EDEDEE',
+		200: '#EBEBEC',
+		300: '#E6E6E7',
+	},
 	primary: {
 		100: '#F3F3F3',
 		200: '#E7E7E7',
