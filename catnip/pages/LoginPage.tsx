@@ -1,9 +1,16 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React, { useState } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
+
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigation, StackTypes } from '../utils/StackNavigation';
+
 import GlobalStyles from '../constants/GlobalStyles';
 import InlineTextbox from '../components/Textbox/InlineTextbox';
 
 export default function LoginPage() {
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
 	const [text, setText] = useState('');
 	const onInputChange = (text: string) => {
 		setText(text);
@@ -23,6 +30,7 @@ export default function LoginPage() {
 				<InlineTextbox
 					icon={GlobalStyles.icons.password}
 					placeholder="Password"
+					secure={true}
 					onFieldChange={onInputChange}
 				/>
 			</View>
@@ -40,6 +48,17 @@ export default function LoginPage() {
 					Sign in
 				</Text>
 			</Pressable>
+			<Text>
+				Don't have an account?{' '}
+				<Text
+					onPress={() => {
+						navigation.navigate(StackNavigation.SignUp);
+					}}
+					style={{ color: GlobalStyles.colorPalette.info[500] }}
+				>
+					Sign up
+				</Text>
+			</Text>
 		</View>
 	);
 }
