@@ -1,27 +1,35 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE SCHEMA backend_schema;
 CREATE TABLE backend_schema.user (
-    uid INT(255) NOT NULL PRIMARY KEY,
+    uid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(50) NOT NULL,
     private BOOL NOT NULL,
-    followers uid[],
-    following uid[],
-    profile_picture VARBINARY(max)
+    followers UUID[],
+    following UUID[],
+    profile_picture BYTEA
 );
 CREATE TABLE backend_schema.outfit (
-    oid INT(255) NOT NULL PRIMARY KEY,
-    title CHAR(255) NOt NULL, 
-    clothing_items ciid[] NOT NULL
-    uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid),
+    oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    title VARCHAR(50) NOt NULL, 
+    clothing_items UUID[],
+    uid UUID NOT NULL,
+    CONSTRAINT fit
+      FOREIGN KEY (uid) 
+      REFERENCES backend_schema.user(uid)
+      ON DELETE CASCADE
 );
 CREATE TABLE backend_schema.clothing_item (
-    ciid INT(255) NOT NULL PRIMARY KEY,
-    image VARBINARY(max) NOT NULL,
-    category CHAR(255) NOT NULL,
-    title CHAR(255) NOt NULL, 
-    uid INT(255) NOT NULL FOREIGN KEY REFERENCES backend_schema.user(uid)
+    ciid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    image BYTEA NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    title VARCHAR(50) NOt NULL, 
+    uid UUID NOT NULL,
+    CONSTRAINT item
+      FOREIGN KEY (uid) 
+      REFERENCES backend_schema.user(uid)
+      ON DELETE CASCADE
 );

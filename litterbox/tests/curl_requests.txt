@@ -1,0 +1,12 @@
+ curl -X POST -H "Content-Type: application/json" -d '{
+  "uid": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "first_name": "John",
+  "last_name": "Doe",
+  "username": "johndoe",
+  "email": "johndoe@example.com",
+  "password": "password",
+  "private" : true,
+  "profile_picture": "profile-picture-url",
+  "followings": [],
+  "followers": []
+}' http://localhost:1234/users
