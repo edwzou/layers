@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingHorizontal: 16,
+		paddingHorizontal: GlobalStyles.layout.xGap,
 		gap: 65,
 		marginHorizontal: GlobalStyles.layout.xGap,
 	},

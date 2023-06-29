@@ -66,6 +66,7 @@ const colorPalette = {
 
 const layout = {
 	xGap: 16,
+	topHeaderGap: 75,
 };
 
 const typography = StyleSheet.create({
