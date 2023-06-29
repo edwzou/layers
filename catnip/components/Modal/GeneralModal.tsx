@@ -1,5 +1,10 @@
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
+import React, {
+	forwardRef,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+} from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { ModalPropTypes, stepOverHandler } from '.';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -39,6 +44,11 @@ const GeneralModal = forwardRef(
 			scrollTo,
 			isActive,
 		]);
+
+		// !!! Remove when endpoints are setup (will be a click to toggle)
+		useEffect(() => {
+			scrollTo(maxTranslateY);
+		}, []);
 
 		const gesture = Gesture.Pan()
 			.onStart(() => {
