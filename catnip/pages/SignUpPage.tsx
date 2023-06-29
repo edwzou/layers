@@ -15,12 +15,9 @@ const SignUpPage = () => {
 					onPress={() => {
 						navigation.goBack();
 					}}
-					style={{ position: 'absolute', left: 0 }}
+					style={{ position: 'absolute', left: 0, paddingRight: 20 }}
 				>
-					<Icon
-						name={GlobalStyles.icons.backOutline}
-						size={GlobalStyles.sizing.icon}
-					>
+					<Icon name={GlobalStyles.icons.backOutline} size={25}>
 						Back
 					</Icon>
 				</Pressable>
