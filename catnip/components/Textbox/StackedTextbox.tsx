@@ -4,14 +4,16 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 type StackedTextboxPropsType = {
 	label: string;
+	value?: string;
 	onFieldChange: (text: string) => void;
 };
 
 export default function StackedTextbox({
 	label,
+	value,
 	onFieldChange,
 }: StackedTextboxPropsType) {
-	const [fieldText, setFieldText] = useState('');
+	const [fieldText, setFieldText] = useState(value || '');
 	return (
 		<View style={{ width: '100%' }}>
 			<View style={styles.view}>
@@ -26,6 +28,7 @@ export default function StackedTextbox({
 					setFieldText(text);
 					onFieldChange(text); // Returns text value to parent component
 				}}
+				clearButtonMode="while-editing"
 			/>
 		</View>
 	);

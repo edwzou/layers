@@ -5,14 +5,14 @@ export type StackTypes = {
 	Login: any;
 	SignUp: any;
 	Profile: any;
-	Modal: any;
+	OutfitPreview: any;
 };
 
 export const StackNavigation = {
 	Login: 'Login',
 	SignUp: 'SignUp',
 	Profile: 'Profile',
-	Modal: 'My Modal',
+	OutfitPreview: 'OutfitPreview',
 } as const;
 
 export const Stack = createNativeStackNavigator<StackTypes>();

@@ -7,6 +7,7 @@ type InlineTextboxType = {
 	icon: string;
 	secure?: boolean;
 	placeholder: string;
+	value?: string;
 	onFieldChange: (text: string) => void;
 };
 
@@ -14,9 +15,10 @@ export default function InlineTextbox({
 	icon,
 	secure,
 	placeholder,
+	value,
 	onFieldChange,
 }: InlineTextboxType) {
-	const [fieldText, setFieldText] = useState('');
+	const [fieldText, setFieldText] = useState(value || '');
 
 	return (
 		<View style={styles.container}>
@@ -34,6 +36,7 @@ export default function InlineTextbox({
 					onFieldChange(text); // Returns text value to parent component
 				}}
 				placeholder={placeholder}
+				clearButtonMode="while-editing"
 			/>
 		</View>
 	);

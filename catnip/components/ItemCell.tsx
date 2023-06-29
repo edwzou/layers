@@ -1,20 +1,28 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { Image, Pressable } from 'react-native';
 import GlobalStyles from '../constants/GlobalStyles';
 
-export default function ItemCell() {
-    return (
-        <View style={[styles.itemCard]}/>
-    );
-}
+type ItemCellPropsType = {
+	image: HTMLImageElement;
+	size?: number;
+};
 
-const styles = StyleSheet.create({
-    itemCard: {
-        borderRadius: 20,
-        width: '100%',
-        aspectRatio: 1,
-        backgroundColor: GlobalStyles.colorPalette.card[200],
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
+export default function ItemCell({ image, size }: ItemCellPropsType) {
+	return (
+		<Pressable
+			style={{
+				alignItems: 'center',
+				justifyContent: 'center',
+				borderRadius: 20,
+				height: size || '100%',
+				width: size || '100%',
+				backgroundColor: GlobalStyles.colorPalette.primary[200],
+			}}
+			onPress={() => {
+				console.log('Do something');
+			}}
+		>
+			<Image source={image} />
+		</Pressable>
+	);
+}
