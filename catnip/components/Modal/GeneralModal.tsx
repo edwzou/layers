@@ -71,6 +71,7 @@ const GeneralModal = forwardRef(
 				transform: [{ translateY: translateY.value }],
 			};
 		});
+
 		return (
 			<GestureDetector gesture={gesture}>
 				<Animated.View style={[styles.container, modalGestureStyle]}>
