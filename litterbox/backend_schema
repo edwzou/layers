@@ -14,9 +14,11 @@ CREATE TABLE backend_schema.user (
 );
 CREATE TABLE backend_schema.outfit (
     oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    title VARCHAR(50) NOt NULL, 
+    title VARCHAR(50) NOT NULL, 
+    // Need to limit clothing_items to only refer to ciid UUIDs
     clothing_items UUID[],
     uid UUID NOT NULL,
+    CONSTRAINT unique_outfit_per_user UNIQUE (title, clothing_items, uid),
     CONSTRAINT fit
       FOREIGN KEY (uid) 
       REFERENCES backend_schema.user(uid)
@@ -26,8 +28,9 @@ CREATE TABLE backend_schema.clothing_item (
     ciid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     image BYTEA NOT NULL,
     category VARCHAR(255) NOT NULL,
-    title VARCHAR(50) NOt NULL, 
+    title VARCHAR(50) NOT NULL, 
     uid UUID NOT NULL,
+    CONSTRAINT unique_ci_per_user UNIQUE (title, category, uid),
     CONSTRAINT item
       FOREIGN KEY (uid) 
       REFERENCES backend_schema.user(uid)

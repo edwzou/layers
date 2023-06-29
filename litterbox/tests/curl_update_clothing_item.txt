@@ -1,0 +1,5 @@
+curl -X PUT -H "Content-Type: application/json" -d '{
+    "category": "Shirts", 
+    "title": "Not Striped Shirt", 
+    "image": ""
+}' http://localhost:1234/clothing_items/{ ciid }

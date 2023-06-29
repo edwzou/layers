@@ -9,3 +9,15 @@ $  curl -X POST -H "Content-Type: application/json" -d '{
   "following": [],
   "followers": []
 }' http://localhost:1234/users
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "first_name": "John",
+  "last_name": "Doe",
+  "username": "joebu",
+  "email": "joebu@example.com",
+  "password": "password",
+  "private" : true,
+  "profile_picture": "profile-picture-url",
+  "following": [],
+  "followers": []
+}' http://localhost:1234/users

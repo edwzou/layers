@@ -3,8 +3,8 @@ const router = express.Router();
 
 const { v4: uuidv4 } = require("uuid");
 
-// Generate a new UUID
-const uid = uuidv4();
+// // Generate a new UUID
+// const uid = uuidv4();
 
 const postgres = require("postgres");
 require("dotenv").config();
@@ -39,28 +39,6 @@ router.post("/users", async (req, res) => {
       followers,
       private,
     } = req.body;
-    console.log(`INSERT INTO backend_schema.user (
-                first_name,
-                last_name,
-                email,
-                username,
-                password,
-                private,
-                followers,
-                following,
-                profile_picture
-            ) VALUES (
-                ${first_name},
-                ${last_name},
-                ${email},
-                ${username},
-                ${password},
-                ${private},
-                ${followers},
-                ${following},
-                ${profile_picture}
-            )
-        `);
     await sql`
             INSERT INTO backend_schema.user (
                 first_name,
@@ -84,7 +62,7 @@ router.post("/users", async (req, res) => {
                 ${profile_picture}
             )
         `;
-    res.json({ message: "User created" });
+    res.status(200).json({ message: "User created"});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error FU" });
@@ -95,15 +73,9 @@ router.post("/users", async (req, res) => {
 router.delete("/users/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const query = `DELETE FROM users WHERE uid = '${userId}'`;
-    const result = await conn.query(query);
-    const deleteRowCount = result.affectedRows;
+    await sql`DELETE FROM backend_schema.user WHERE uid = ${userId}`;
 
-    if (deleteRowCount > 0) {
-      res.json({ message: "User deleted" });
-    } else {
-      res.status(404).json({ error: "User not found" });
-    }
+    res.status(200).json({ message: 'User deleted successfully', userId });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -115,35 +87,26 @@ router.put("/users/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const {
-      uid,
+      username,
       first_name,
       last_name,
-      user_name,
       email,
       password,
       profile_picture,
-      followings,
+      following,
       followers,
-    } = req.body;
-    const query = `UPDATE users
-                       SET uid = '${uid}',
-                           first_name = '${first_name}',
-                           last_name = '${last_name}',
-                           user_name = '${user_name}',
-                           email = '${email}',
-                           password = '${password}',
-                           profile_picture = '${profile_picture}',
-                           followings = '${JSON.stringify(followings)}',
-                           followers = '${JSON.stringify(followers)}'
-                       WHERE uid = '${userId}'`;
-    const result = await conn.query(query);
-    const updatedRowCount = result.affectedRows;
-
-    if (updatedRowCount > 0) {
-      res.json({ message: "User updated" });
-    } else {
-      res.status(404).json({ error: "User not found" });
-    }
+    } = req.body; 
+    await sql`UPDATE backend_schema.user
+                       SET first_name = ${first_name},
+                           last_name = ${last_name},
+                           username = ${username},
+                           email = ${email},
+                           password = ${password},
+                           followers = ${followers},
+                           following = ${following},
+                           profile_picture = ${profile_picture}
+                       WHERE uid = ${userId}`;
+    res.status(200).json({ message: 'User updated successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -154,15 +117,17 @@ router.put("/users/:userId", async (req, res) => {
 router.get("/users/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const query = `SELECT * FROM users WHERE uid = '${userId}'`;
-    const result = await conn.query(query);
-    const post = result[0];
+    const user = await sql`
+      SELECT * FROM backend_schema.user
+      WHERE uid = ${userId}
+        AND EXISTS (
+          SELECT 1 FROM backend_schema.user WHERE uid = ${userId}
+        )
+    `;
+    // Select 1 ensures that the backend_schema.user has at least 1 column
 
-    if (post) {
-      res.json(post);
-    } else {
-      res.status(404).json({ error: "User not found" });
-    }
+    // Return the user information
+    res.status(200).json(user[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -172,13 +137,12 @@ router.get("/users/:userId", async (req, res) => {
 // Endpoint for creating a new outfit
 router.post("/outfits", async (req, res) => {
   try {
-    const { oid, uid, image, clothing_item } = req.body;
-    const query = `INSERT INTO outfits (oid, uid, image, clothing_item)
-                       VALUES ('${oid}', '${uid}', '${image}', '${JSON.stringify(
-      clothing_item
-    )}')`;
-    await conn.query(query);
-    res.json({ message: "Outfit created" });
+    const { title, clothing_items, uid } = req.body;
+    await sql`INSERT INTO backend_schema.outfit (title, clothing_items, uid)
+      VALUES (${title}, ${clothing_items}, ${uid})
+      `;
+    // Return the created outfit
+    res.status(200).json({ message: 'Outfit created successfully'});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -189,15 +153,9 @@ router.post("/outfits", async (req, res) => {
 router.delete("/outfits/:outfitId", async (req, res) => {
   try {
     const { outfitId } = req.params;
-    const query = `DELETE FROM outfits WHERE oid = '${outfitId}'`;
-    const result = await conn.query(query);
-    const deleteRowCount = result.affectedRows;
+    await sql`DELETE FROM backend_schema.outfit WHERE oid = ${outfitId}`;
 
-    if (deleteRowCount > 0) {
-      res.json({ message: "Outfit deleted" });
-    } else {
-      res.status(404).json({ error: "Outfit not found" });
-    }
+    res.status(200).json({ message: 'Outfit deleted successfully', outfitId });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -205,26 +163,24 @@ router.delete("/outfits/:outfitId", async (req, res) => {
 });
 
 // Endpoint for updating a specific outfit
-router.put("/outfits/:outfitId", async (req, res) => {
+router.put('/outfits/:oid', async (req, res) => {
   try {
-    const { outfitId } = req.params;
-    const { uid, image, clothing_item } = req.body;
-    const query = `UPDATE comments
-                       SET uid = '${uid}',
-                           image = '${image}',
-                           clothing_item = '${JSON.stringify(clothing_item)}'
-                       WHERE oid = '${outfitId}'`;
-    const result = await conn.query(query);
-    const updatedRowCount = result.affectedRows;
+    // Extract outfit data from the request body
+    const { title, clothing_items } = req.body;
+    const { oid } = req.params;
 
-    if (updatedRowCount > 0) {
-      res.json({ message: "Outfit updated" });
-    } else {
-      res.status(404).json({ error: "Outfit not found" });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+    // Update the outfit in the database
+    await sql`
+      UPDATE backend_schema.outfit
+      SET title = ${title}, clothing_items = ${clothing_items}
+      WHERE oid = ${oid}
+    `;
+
+    // Return the updated outfit
+    res.status(200).json({ message: 'Outfit updated successfully', oid });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while updating the outfit.' });
   }
 });
 
@@ -232,15 +188,15 @@ router.put("/outfits/:outfitId", async (req, res) => {
 router.get("/outfits/:outfitId", async (req, res) => {
   try {
     const { outfitId } = req.params;
-    const query = `SELECT * FROM outfits WHERE oid = '${outfitId}'`;
-    const result = await conn.query(query);
-    const post = result[0];
-
-    if (post) {
-      res.json(post);
-    } else {
-      res.status(404).json({ error: "Outfit not found" });
-    }
+    const outfit = await sql`
+        SELECT * FROM backend_schema.outfit
+        WHERE oid = ${outfitId}
+          AND EXISTS (
+            SELECT 1 FROM backend_schema.user WHERE oid = ${outfitId}
+        )
+    `;
+   // Return the user information
+    res.status(200).json(outfit[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -248,18 +204,15 @@ router.get("/outfits/:outfitId", async (req, res) => {
 });
 
 // Endpoint for retrieving all outfits
-router.get("/outfits/:userId", async (req, res) => {
+router.get("/outfits/u/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const query = `SELECT * FROM outfits WHERE uid = '${userId}'`;
-    const result = await conn.query(query);
-    const post = result[0];
-
-    if (post) {
-      res.json(post);
-    } else {
-      res.status(404).json({ error: "Outfit not found" });
-    }
+     // Query outfits for the specified user
+    const outfits = await sql`
+      SELECT * FROM backend_schema.outfit
+      WHERE uid = ${userId}
+    `;
+    res.status(200).json(outfits); 
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -267,13 +220,17 @@ router.get("/outfits/:userId", async (req, res) => {
 });
 
 // Endpoint for creating a new clothing item
-router.post("/clothingItems", async (req, res) => {
+router.post("/clothing_items", async (req, res) => {
   try {
-    const { ciid, uid, image, color, category, personal } = req.body;
-    const query = `INSERT INTO outfits (ciid, uid, image, color, category, personal)
-                       VALUES ('${ciid}', '${uid}', '${image}', '${color}', '${category}', '${personal}')`;
-    await conn.query(query);
-    res.json({ message: "Clothing item created" });
+    // Extract clothing item details from the request body
+    const { image, category, title, uid } = req.body;
+    // Insert the clothing item into the database
+    await sql`
+      INSERT INTO backend_schema.clothing_item (image, category, title, uid)
+      VALUES ( ${image}, ${category}, ${title}, ${uid})
+    `;
+
+    res.status(200).json({ message: 'Clothing item created successfully'});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -281,18 +238,13 @@ router.post("/clothingItems", async (req, res) => {
 });
 
 // Endpoint for deleting a specific clothing item
-router.delete("/clothingItems/:clothingItemId", async (req, res) => {
+router.delete("/clothing_items/:itemId", async (req, res) => {
   try {
-    const { clothingItemId } = req.params;
-    const query = `DELETE FROM clothingItems WHERE ciid = '${clothingItemId}'`;
-    const result = await conn.query(query);
-    const deleteRowCount = result.affectedRows;
+    const { itemId } = req.params;
+    await sql`DELETE FROM backend_schema.clothing_item WHERE ciid = ${itemId}`;
 
-    if (deleteRowCount > 0) {
-      res.json({ message: "Clothing item deleted" });
-    } else {
-      res.status(404).json({ error: "Clothing item not found" });
-    }
+    res.status(200).json({ message: 'Clothing item deleted successfully', itemId });
+ 
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -300,44 +252,38 @@ router.delete("/clothingItems/:clothingItemId", async (req, res) => {
 });
 
 // Endpoint for updating a specific clothing item
-router.put("/clothingItems/:clothingItemId", async (req, res) => {
+router.get('/clothing_items/:itemId', async (req, res) => {
   try {
-    const { clothingItemId } = req.params;
-    const { uid, image, color, category, personal } = req.body;
-    const query = `UPDATE clothingItems
-                       SET uid = '${uid}',
-                           image = '${image}',
-                           color = '${color}',
-                           category = '${category}',
-                           personal = '${personal}'
-                       WHERE ciid = '${clothingItemId}'`;
-    const result = await conn.query(query);
-    const updatedRowCount = result.affectedRows;
-
-    if (updatedRowCount > 0) {
-      res.json({ message: "Clothing item updated" });
-    } else {
-      res.status(404).json({ error: "Clothing item not found" });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+    const { itemId } = req.params;
+    
+    // Query the database to retrieve the clothing item
+    const item = await sql`
+      SELECT * FROM backend_schema.clothing_item
+      WHERE ciid = ${itemId}   
+        AND EXISTS (
+            SELECT 1 FROM backend_schema.user WHERE ciid = ${itemId}
+    )
+    `;
+    
+    // Return the item
+    res.status(200).json(item[0]);
+  } catch (error) {
+    console.error('Error retrieving clothing item:', error);
+    res.status(500).json({ error: 'An error occurred while retrieving the clothing item' });
   }
 });
 
 // Endpoint for retrieving a specific clothing item
-router.get("/clothingItems/:clothingItemId", async (req, res) => {
+router.get("/clothing_items/u/:user_id", async (req, res) => {
   try {
-    const { clothingItemId } = req.params;
-    const query = `SELECT * FROM clothingItems WHERE oid = '${clothingItemId}'`;
-    const result = await conn.query(query);
-    const post = result[0];
-
-    if (post) {
-      res.json(post);
-    } else {
-      res.status(404).json({ error: "Clothing item not found" });
-    }
+    const { user_id } = req.params;
+    const items = await sql`
+      SELECT * FROM backend_schema.clothing_item
+      WHERE uid = ${user_id}
+    `;
+    
+    // Return the items
+    res.status(200).json(items);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
