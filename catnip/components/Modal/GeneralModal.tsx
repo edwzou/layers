@@ -73,16 +73,26 @@ const GeneralModal = forwardRef(
 		});
 
 		return (
-			<GestureDetector gesture={gesture}>
-				<Animated.View style={[styles.container, modalGestureStyle]}>
-					<View style={styles.line}></View>
-					<View style={styles.header}>
-						<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
-						{stepOver ? stepOverHandler(stepOver) : null}
-					</View>
-					{content}
-				</Animated.View>
-			</GestureDetector>
+			<View
+				style={[
+					{
+						width: '100%',
+						height: '100%',
+						backgroundColor: GlobalStyles.colorPalette.primary[400],
+					},
+				]}
+			>
+				<GestureDetector gesture={gesture}>
+					<Animated.View style={[styles.container, modalGestureStyle]}>
+						<View style={styles.line}></View>
+						<View style={styles.header}>
+							<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
+							{stepOver ? stepOverHandler(stepOver) : null}
+						</View>
+						{content}
+					</Animated.View>
+				</GestureDetector>
+			</View>
 		);
 	}
 );
