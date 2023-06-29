@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
 		gap: 10,
 		flexDirection: 'row',
 		alignContent: 'center',
+		width: '100%',
 	},
 	input: {
 		color: GlobalStyles.colorPalette.primary[500],
