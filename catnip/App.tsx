@@ -1,16 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import LoginPage from './pages/LoginPage';
 import GlobalStyles from './constants/GlobalStyles';
-import LikeIcon from './components/icons/LikeIcon';
+import { NavigationContainer } from '@react-navigation/native';
+import { Stack } from './utils/StackNavigation';
 
 export default function App() {
 	return (
-		<View style={styles.container}>
-			<Text style={[GlobalStyles.typography.header, GlobalStyles.utils.font]}>
-				Catwalk
-			</Text>
-			<StatusBar style="auto" />
-		</View>
+		<NavigationContainer>
+			<View style={styles.container}>
+				<Stack.Navigator screenOptions={{ headerShown: false }}>
+					<Stack.Screen name="Login" component={LoginPage} />
+				</Stack.Navigator>
+				<StatusBar style="auto" />
+			</View>
+		</NavigationContainer>
 	);
 }
 
@@ -18,7 +22,5 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: GlobalStyles.colorPalette.background,
-		alignItems: 'center',
-		justifyContent: 'center',
 	},
 });
