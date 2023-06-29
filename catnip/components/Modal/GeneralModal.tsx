@@ -1,10 +1,5 @@
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import React, {
-	forwardRef,
-	useCallback,
-	useEffect,
-	useImperativeHandle,
-} from 'react';
+import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { ModalPropTypes, stepOverHandler } from '.';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -17,6 +12,7 @@ import Animated, {
 const { height: screenHeight } = Dimensions.get('window');
 
 export type refPropType = {
+	scrollTo: (destination: number) => void;
 	isActive: () => boolean;
 };
 
@@ -32,7 +28,17 @@ const GeneralModal = forwardRef(
 			return active.value;
 		}, []);
 
-		useImperativeHandle(ref, () => ({ isActive }), [isActive]);
+		const scrollTo = useCallback((destination: number) => {
+			'worklet';
+
+			active.value = destination !== 0;
+			translateY.value = withSpring(destination, { damping: 50 });
+		}, []);
+
+		useImperativeHandle(ref, () => ({ scrollTo, isActive }), [
+			scrollTo,
+			isActive,
+		]);
 
 		const gesture = Gesture.Pan()
 			.onStart(() => {
@@ -43,18 +49,12 @@ const GeneralModal = forwardRef(
 				translateY.value = Math.max(translateY.value, maxTranslateY);
 			})
 			.onEnd(() => {
-				if (translateY.value > -screenHeight / 2) {
-					translateY.value = withSpring(0, { damping: 50 });
-					active.value = true;
-				} else if (translateY.value <= -screenHeight / 2) {
-					translateY.value = withSpring(maxTranslateY, { damping: 50 });
-					active.value = false;
+				if (translateY.value > -screenHeight / 1.25) {
+					scrollTo(0);
+				} else if (translateY.value <= -screenHeight / 1.25) {
+					scrollTo(maxTranslateY);
 				}
 			});
-
-		useEffect(() => {
-			translateY.value = withSpring(maxTranslateY, { damping: 50 });
-		}, []);
 
 		const modalGestureStyle = useAnimatedStyle(() => {
 			return {
@@ -62,28 +62,16 @@ const GeneralModal = forwardRef(
 			};
 		});
 		return (
-			<View>
-				<GestureDetector gesture={gesture}>
-					<Animated.View style={[styles.container, modalGestureStyle]}>
-						<View style={styles.line}></View>
-						<View style={styles.header}>
-							<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
-							{stepOver ? stepOverHandler(stepOver) : null}
-						</View>
-						{content}
-					</Animated.View>
-				</GestureDetector>
-
-				{!active.value ? (
-					<View
-						style={{
-							width: '100%',
-							height: '100%',
-							backgroundColor: '#00000090',
-						}}
-					></View>
-				) : null}
-			</View>
+			<GestureDetector gesture={gesture}>
+				<Animated.View style={[styles.container, modalGestureStyle]}>
+					<View style={styles.line}></View>
+					<View style={styles.header}>
+						<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
+						{stepOver ? stepOverHandler(stepOver) : null}
+					</View>
+					{content}
+				</Animated.View>
+			</GestureDetector>
 		);
 	}
 );
