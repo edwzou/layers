@@ -13,6 +13,7 @@ const Button = ({ text, url, disabled = false }: ButtonPropsType) => {
 		<Pressable
 			style={[
 				styles.button,
+				GlobalStyles.utils.shadow,
 				GlobalStyles.utils.smallRadius,
 				GlobalStyles.utils.shadow,
 				,
