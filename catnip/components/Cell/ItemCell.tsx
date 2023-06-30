@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable } from 'react-native';
-import GlobalStyles from '../constants/GlobalStyles';
+import GlobalStyles from '../../constants/GlobalStyles';
 
 type ItemCellPropsType = {
 	image: HTMLImageElement;
