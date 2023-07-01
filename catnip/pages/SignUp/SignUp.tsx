@@ -33,93 +33,94 @@ const SignUp = () => {
 	];
 
 	return (
-		// <View style={{}}>
-		<View style={{ width: '100%', gap: 16 }}>
-			<View
-				style={{
-					flexDirection: 'row',
-					gap: 16,
-					width: itemSize,
-				}}
-			>
+		<View style={{ gap: 40 }}>
+			<View style={{ gap: 16 }}>
+				<View
+					style={{
+						flexDirection: 'row',
+						gap: 16,
+						width: itemSize,
+					}}
+				>
+					<Controller
+						control={control}
+						rules={{
+							required: true,
+						}}
+						render={({ field: { onChange, value } }) => (
+							<StackedTextBox
+								label="First Name"
+								onFieldChange={onChange}
+								value={value}
+							/>
+						)}
+						name="firstName"
+					/>
+					<Controller
+						control={control}
+						rules={{
+							required: true,
+						}}
+						render={({ field: { onChange, value } }) => (
+							<StackedTextBox
+								label="Last Name"
+								onFieldChange={onChange}
+								value={value}
+							/>
+						)}
+						name="lastName"
+					/>
+				</View>
 				<Controller
 					control={control}
 					rules={{
 						required: true,
+						maxLength: 20, // Just a random number
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
-							label="First Name"
+							label="Username"
 							onFieldChange={onChange}
 							value={value}
 						/>
 					)}
-					name="firstName"
+					name="username"
 				/>
 				<Controller
 					control={control}
 					rules={{
 						required: true,
+						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
-							label="Last Name"
+							label="Email"
 							onFieldChange={onChange}
 							value={value}
 						/>
 					)}
-					name="lastName"
+					name="email"
 				/>
+				{errors.email && <Text>Please enter a valid email.</Text>}
+				<Controller
+					control={control}
+					rules={{
+						required: true,
+						minLength: 5,
+					}}
+					render={({ field: { onChange, value } }) => (
+						<StackedTextBox
+							label="Password"
+							onFieldChange={onChange}
+							value={value}
+							secure
+						/>
+					)}
+					name="password"
+				/>
+				{errors.password && <Text>Password must be 5 characters or more.</Text>}
+				<RadioButton data={privacyOptions} onSelect={setValue} />
 			</View>
-			<Controller
-				control={control}
-				rules={{
-					required: true,
-					maxLength: 20, // Just a random number
-				}}
-				render={({ field: { onChange, value } }) => (
-					<StackedTextBox
-						label="Username"
-						onFieldChange={onChange}
-						value={value}
-					/>
-				)}
-				name="username"
-			/>
-			<Controller
-				control={control}
-				rules={{
-					required: true,
-					pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-				}}
-				render={({ field: { onChange, value } }) => (
-					<StackedTextBox
-						label="Email"
-						onFieldChange={onChange}
-						value={value}
-					/>
-				)}
-				name="email"
-			/>
-			{errors.email && <Text>Please enter a valid email.</Text>}
-			<Controller
-				control={control}
-				rules={{
-					required: true,
-					minLength: 5,
-				}}
-				render={({ field: { onChange, value } }) => (
-					<StackedTextBox
-						label="Password"
-						onFieldChange={onChange}
-						value={value}
-						secure
-					/>
-				)}
-				name="password"
-			/>
-			{errors.password && <Text>Password must be 5 characters or more.</Text>}
-			<RadioButton data={privacyOptions} onSelect={setValue} />
 			<View style={{ alignSelf: 'center' }}>
 				<Button
 					text="Sign up"
