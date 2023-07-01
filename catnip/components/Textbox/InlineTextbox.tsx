@@ -47,10 +47,10 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		padding: 10,
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
-		display: 'flex',
 		gap: 10,
 		flexDirection: 'row',
 		alignContent: 'center',
+		width: '100%',
 	},
 	input: {
 		color: GlobalStyles.colorPalette.primary[500],
