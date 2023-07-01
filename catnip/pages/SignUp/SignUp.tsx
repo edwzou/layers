@@ -1,10 +1,11 @@
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
 import { itemSize } from '../../utils/GapCalc';
 import RadioButton from '../../components/RadioButton/RadioButton';
+import GlobalStyles from '../../constants/GlobalStyles';
 
 const SignUp = () => {
 	const {
@@ -101,7 +102,6 @@ const SignUp = () => {
 					)}
 					name="email"
 				/>
-				{errors.email && <Text>Please enter a valid email.</Text>}
 				<Controller
 					control={control}
 					rules={{
@@ -118,8 +118,17 @@ const SignUp = () => {
 					)}
 					name="password"
 				/>
-				{errors.password && <Text>Password must be 5 characters or more.</Text>}
 				<RadioButton data={privacyOptions} onSelect={setValue} />
+			</View>
+			<View style={{ alignItems: 'center' }}>
+				{errors.email && (
+					<Text style={styles.error}>Please enter a valid email.</Text>
+				)}
+				{errors.password && (
+					<Text style={styles.error}>
+						Password must be 5 characters or more.
+					</Text>
+				)}
 			</View>
 			<View style={{ alignSelf: 'center' }}>
 				<Button
@@ -131,5 +140,11 @@ const SignUp = () => {
 		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	error: {
+		color: GlobalStyles.colorPalette.danger[500],
+	},
+});
 
 export default SignUp;
