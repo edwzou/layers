@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,7 @@ import { StackNavigation, StackTypes } from '../utils/StackNavigation';
 
 import GlobalStyles from '../constants/GlobalStyles';
 import InlineTextbox from '../components/Textbox/InlineTextbox';
+import Button from '../components/Button/Button';
 
 export default function LoginPage() {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -34,20 +35,7 @@ export default function LoginPage() {
 					onFieldChange={onInputChange}
 				/>
 			</View>
-			<Pressable
-				style={[
-					styles.button,
-					GlobalStyles.utils.smallRadius,
-					GlobalStyles.utils.shadow,
-				]}
-				onPress={() => {
-					console.log('!!! Add Logic');
-				}}
-			>
-				<Text style={{ color: GlobalStyles.colorPalette.background }}>
-					Sign in
-				</Text>
-			</Pressable>
+			<Button text="Sign in" url="/signin" />
 			<Text>
 				Don't have an account?{' '}
 				<Text
@@ -71,10 +59,5 @@ const styles = StyleSheet.create({
 		paddingHorizontal: GlobalStyles.layout.xGap,
 		gap: 65,
 		marginHorizontal: GlobalStyles.layout.xGap,
-	},
-	button: {
-		backgroundColor: GlobalStyles.colorPalette.primary[500],
-		paddingHorizontal: 16,
-		paddingVertical: 5,
 	},
 });

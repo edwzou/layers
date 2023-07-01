@@ -5,53 +5,45 @@ import GlobalStyles from '../../constants/GlobalStyles';
 type StackedTextboxPropsType = {
 	label: string;
 	value?: string;
+	secure?: boolean;
 	onFieldChange: (text: string) => void;
 };
 
-export default function StackedTextbox({
+const StackedTextBox = ({
 	label,
 	value,
+	secure,
 	onFieldChange,
-}: StackedTextboxPropsType) {
+}: StackedTextboxPropsType) => {
 	const [fieldText, setFieldText] = useState(value || '');
+
 	return (
-		<View style={{ width: '100%' }}>
-			<View style={styles.view}>
-				<Text style={[styles.label, GlobalStyles.typography.body2]}>
-					{label}
-				</Text>
-			</View>
+		<View style={styles.container}>
+			<Text style={{ color: GlobalStyles.colorPalette.primary[400] }}>
+				{label}
+			</Text>
 			<TextInput
-				style={[styles.input, GlobalStyles.typography.body]}
 				value={fieldText}
 				onChangeText={(text) => {
 					setFieldText(text);
-					onFieldChange(text); // Returns text value to parent component
+					onFieldChange(text);
 				}}
+				secureTextEntry={secure || false}
 				clearButtonMode="while-editing"
 			/>
 		</View>
 	);
-}
+};
+
 const styles = StyleSheet.create({
-	label: {
-		color: GlobalStyles.colorPalette.primary[400],
-	},
-	view: {
-		backgroundColor: GlobalStyles.colorPalette.primary[200],
-		paddingTop: 10,
-		paddingHorizontal: 10,
-		borderTopStartRadius: GlobalStyles.utils.smallRadius.borderRadius,
-		borderTopEndRadius: GlobalStyles.utils.smallRadius.borderRadius,
-		paddingBottom: 5,
-	},
-	input: {
-		backgroundColor: GlobalStyles.colorPalette.primary[200],
+	container: {
 		width: '100%',
-		paddingBottom: 10,
-		paddingHorizontal: 10,
-		borderBottomStartRadius: GlobalStyles.utils.smallRadius.borderRadius,
-		borderBottomEndRadius: GlobalStyles.utils.smallRadius.borderRadius,
+		backgroundColor: GlobalStyles.colorPalette.primary[200],
+		padding: 10,
+		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		color: GlobalStyles.colorPalette.primary[500],
+		gap: 5,
 	},
 });
+
+export default StackedTextBox;

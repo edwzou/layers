@@ -7,7 +7,7 @@ import { Stack, StackNavigation } from './utils/StackNavigation';
 import GlobalStyles from './constants/GlobalStyles';
 
 import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
+import SignUpPage from './pages/SignUp/SignUpPage';
 import OutfitPreviewPage from './pages/OutfitPreview/OutfitPreviewPage';
 
 export default function App() {

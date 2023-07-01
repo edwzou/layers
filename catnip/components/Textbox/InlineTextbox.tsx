@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		padding: 10,
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
-		display: 'flex',
 		gap: 10,
 		flexDirection: 'row',
 		alignContent: 'center',

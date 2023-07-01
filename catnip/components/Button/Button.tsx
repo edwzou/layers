@@ -4,11 +4,11 @@ import React from 'react';
 
 type ButtonPropsType = {
 	text: string;
-	url: string;
+	onPress: (data: any) => void;
 	disabled: boolean;
 };
 
-const Button = ({ text, url, disabled = false }: ButtonPropsType) => {
+const Button = ({ text, onPress, disabled = false }: ButtonPropsType) => {
 	return (
 		<Pressable
 			style={[
@@ -23,9 +23,7 @@ const Button = ({ text, url, disabled = false }: ButtonPropsType) => {
 						: GlobalStyles.colorPalette.primary[500],
 				},
 			]}
-			onPress={() => {
-				console.log(`!!! Add Logic at ${url}`);
-			}}
+			onPress={onPress}
 			disabled={disabled}
 		>
 			<Text
@@ -47,5 +45,7 @@ const styles = StyleSheet.create({
 	button: {
 		paddingHorizontal: 16,
 		paddingVertical: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 });
