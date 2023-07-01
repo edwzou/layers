@@ -4,7 +4,7 @@ import GlobalStyles from '../constants/GlobalStyles';
 
 export default function ItemCell() {
     return (
-        <View style={[styles.itemCard]}/>
+        <View style={[styles.itemCard]} />
     );
 }
 
