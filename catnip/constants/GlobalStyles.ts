@@ -66,6 +66,7 @@ const colorPalette = {
 
 const layout = {
 	xGap: 16,
+	topHeaderGap: 75,
 };
 
 const typography = StyleSheet.create({
@@ -115,6 +116,7 @@ const sizing = {
 
 const icons = {
 	userOutline: 'ri-user-line',
+	userOutline2: 'ri-user-4-line',
 	passwordOutline: 'ri-key-2-line',
 	sendOutline: 'ri-send-plane-2-line',
 	backOutline: 'ri-arrow-left-s-line',

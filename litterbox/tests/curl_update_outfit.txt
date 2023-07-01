@@ -1,0 +1,4 @@
+curl -X PUT -H "Content-Type: application/json" -d '{
+  "title": "New Title",
+  "clothing_items": [] 
+}' http://localhost:1234/outfits/{ oid }

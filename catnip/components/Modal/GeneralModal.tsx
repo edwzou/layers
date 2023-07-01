@@ -1,5 +1,10 @@
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
+import React, {
+	forwardRef,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+} from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { ModalPropTypes, stepOverHandler } from '.';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -40,6 +45,11 @@ const GeneralModal = forwardRef(
 			isActive,
 		]);
 
+		// !!! Remove when endpoints are setup (will be a click to toggle)
+		useEffect(() => {
+			scrollTo(maxTranslateY);
+		}, []);
+
 		const gesture = Gesture.Pan()
 			.onStart(() => {
 				context.value = { y: translateY.value };
@@ -61,17 +71,28 @@ const GeneralModal = forwardRef(
 				transform: [{ translateY: translateY.value }],
 			};
 		});
+
 		return (
-			<GestureDetector gesture={gesture}>
-				<Animated.View style={[styles.container, modalGestureStyle]}>
-					<View style={styles.line}></View>
-					<View style={styles.header}>
-						<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
-						{stepOver ? stepOverHandler(stepOver) : null}
-					</View>
-					{content}
-				</Animated.View>
-			</GestureDetector>
+			<View
+				style={[
+					{
+						width: '100%',
+						height: '100%',
+						backgroundColor: GlobalStyles.colorPalette.primary[400],
+					},
+				]}
+			>
+				<GestureDetector gesture={gesture}>
+					<Animated.View style={[styles.container, modalGestureStyle]}>
+						<View style={styles.line}></View>
+						<View style={styles.header}>
+							<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
+							{stepOver ? stepOverHandler(stepOver) : null}
+						</View>
+						{content}
+					</Animated.View>
+				</GestureDetector>
+			</View>
 		);
 	}
 );
@@ -102,6 +123,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		width: '100%',
 		justifyContent: 'center',
+		alignItems: 'center',
 	},
 });
 
