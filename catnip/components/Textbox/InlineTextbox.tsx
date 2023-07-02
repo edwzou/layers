@@ -33,7 +33,7 @@ export default function InlineTextbox({
 				secureTextEntry={secure || false}
 				onChangeText={(text) => {
 					setFieldText(text);
-					onFieldChange(text); // Returns text value to parent component
+					onFieldChange(text);
 				}}
 				placeholder={placeholder}
 				clearButtonMode="while-editing"
@@ -50,10 +50,9 @@ const styles = StyleSheet.create({
 		gap: 10,
 		flexDirection: 'row',
 		alignContent: 'center',
-		width: '100%',
 	},
 	input: {
 		color: GlobalStyles.colorPalette.primary[500],
-		width: '100%',
+		flex: 1,
 	},
 });
