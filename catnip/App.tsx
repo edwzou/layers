@@ -6,7 +6,7 @@ import { Stack, StackNavigation } from './utils/StackNavigation';
 
 import GlobalStyles from './constants/GlobalStyles';
 
-import LoginPage from './pages/LoginPage';
+import SignInPage from './pages/SignIn/SignInPage';
 import SignUpPage from './pages/SignUp/SignUpPage';
 import OutfitPreviewPage from './pages/OutfitPreview/OutfitPreviewPage';
 
@@ -16,7 +16,7 @@ export default function App() {
 			<GestureHandlerRootView style={{ flex: 1 }}>
 				<View style={styles.container}>
 					<Stack.Navigator screenOptions={{ headerShown: false }}>
-						<Stack.Screen name={StackNavigation.Login} component={LoginPage} />
+						<Stack.Screen name={StackNavigation.Login} component={SignInPage} />
 						<Stack.Screen
 							name={StackNavigation.OutfitPreview}
 							component={OutfitPreviewPage}

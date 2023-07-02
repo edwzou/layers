@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React, { useRef } from 'react';
-import GlobalStyles from '../../constants/GlobalStyles';
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
 import { stepOverTypes } from '../../utils/Stepover';
 import OutfitPreview from './OutfitPreview';
