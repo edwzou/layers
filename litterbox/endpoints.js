@@ -9,11 +9,11 @@ const { v4: uuidv4 } = require("uuid");
 const postgres = require("postgres");
 require("dotenv").config();
 // const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
-PGHOST = "ep-delicate-salad-519724.us-west-2.aws.neon.tech";
-PGDATABASE = "neondb";
-PGUSER = "JoeDaBu";
-PGPASSWORD = "vyh1QoCtL5jT";
-ENDPOINT_ID = "ep-delicate-salad-519724";
+PGHOST='ep-empty-pond-300198-pooler.us-west-2.aws.neon.tech'
+PGDATABASE='neondb'
+PGUSER='catwalkcommunal'
+PGPASSWORD='RP85mWGNZJVe'
+ENDPOINT_ID='ep-empty-pond-300198-pooler'
 const URL = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?options=project%3D${ENDPOINT_ID}`;
 
 const sql = postgres(URL, { ssl: "require" });
