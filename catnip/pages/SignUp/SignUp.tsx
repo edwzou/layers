@@ -1,11 +1,12 @@
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
 import { itemSize } from '../../utils/GapCalc';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import GlobalStyles from '../../constants/GlobalStyles';
+import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 const SignUp = () => {
 	const {
@@ -36,6 +37,14 @@ const SignUp = () => {
 	return (
 		<View style={{ gap: 40 }}>
 			<View style={{ gap: 16 }}>
+				<Pressable
+					style={{ alignItems: 'center' }}
+					onPress={() => {
+						console.log('PFP Click');
+					}}
+				>
+					<ProfilePicture />
+				</Pressable>
 				<View
 					style={{
 						flexDirection: 'row',
