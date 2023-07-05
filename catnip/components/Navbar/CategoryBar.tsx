@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import GlobalStyles from '../constants/GlobalStyles';
+import GlobalStyles from '../../constants/GlobalStyles';
 
 export default function CategoryBar() {
     const [selectedTitle, setSelectedTitle] = useState('Outfits');
@@ -40,7 +40,6 @@ export default function CategoryBar() {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: GlobalStyles.colorPalette.background,
     },

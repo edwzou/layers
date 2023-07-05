@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 type OutfitCardPropsType = {
@@ -12,21 +12,24 @@ export default function OutfitCard({
     itemCount
 }: OutfitCardPropsType) {
     return (
-        <View style={styles.container}>
+        <Pressable style={styles.container}
+            onPress={() => {
+                console.log('OutfitCard tapped');
+            }}>
             <Text style={styles.title}>{title}</Text>
             <View style={styles.labelContainer}>
                 <View style={styles.label}>
                     <Text style={styles.labelText}>{itemCount} items</Text>
                 </View>
             </View>
-        </View>
+        </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: Dimensions.get('window').width * 0.8,
-        height: (Dimensions.get('window').width * 0.8) / 1.8,
+        width: '100%',
+        aspectRatio: 1.8,
         borderRadius: 10,
         backgroundColor: GlobalStyles.colorPalette.card[100],
         flexDirection: 'row',
@@ -58,6 +61,6 @@ const styles = StyleSheet.create({
     },
     labelText: {
         color: 'white',
-        ...GlobalStyles.typography.body2
+        ...GlobalStyles.typography.body
     },
 });

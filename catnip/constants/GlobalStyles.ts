@@ -124,6 +124,7 @@ const icons = {
 	shirtOutline: 'ri-t-shirt-2-line',
 	addOutline: 'ri-add-circle-line',
 	bookmarkOutline: 'ri-bookmark-line',
+	feedbackOutline: 'ri-feedback-line',
 };
 
 export default { colorPalette, layout, typography, utils, icons, sizing };
