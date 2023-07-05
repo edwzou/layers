@@ -1,13 +1,33 @@
+import axios from 'axios';
+
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet } from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
 import { itemSize } from '../../utils/GapCalc';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import GlobalStyles from '../../constants/GlobalStyles';
+import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
+
+import * as ImagePicker from 'expo-image-picker';
+import { base64Prefix } from '../../utils/Base64Prefix';
+import { baseUrl } from '../../utils/apiUtils';
+
+type FormValues = {
+	first_name: string;
+	last_name: string;
+	username: string;
+	email: string;
+	password: string;
+	private: boolean;
+	profile_picture: string;
+};
 
 const SignUp = () => {
+	const [image, setImage] = useState('');
+	const [loading, setLoading] = useState(false);
+
 	const {
 		control,
 		handleSubmit,
@@ -15,19 +35,62 @@ const SignUp = () => {
 		formState: { dirtyFields, errors },
 	} = useForm({
 		defaultValues: {
-			firstName: '',
-			lastName: '',
+			first_name: '',
+			last_name: '',
 			username: '',
 			email: '',
 			password: '',
-			privacy: false,
+			private: false,
+			profile_picture: image,
 		},
 	});
 
-	const onSubmit = (data: any) => {
-		// Some request here
-		console.log(data);
+	const pickImage = async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			base64: true,
+			aspect: [1, 1],
+			quality: 0,
+		});
+
+		if (!result.canceled) {
+			if (!result.assets) return;
+
+			setImage(`${base64Prefix}${result.assets[0].base64}`);
+		}
 	};
+
+	useEffect(() => {
+		setValue('profile_picture', image);
+	}, [image]);
+
+	const onSubmit = async (data: FormValues | any) => {
+		try {
+			const response = await axios.post(`${baseUrl}/users`, {
+				first_name: data.first_name,
+				last_name: data.last_name,
+				username: data.username,
+				email: data.email,
+				password: data.password,
+				profile_picture: data.profile_picture,
+				following: [],
+				followers: [],
+				private: data.private,
+			});
+
+			if (response.status === 200) {
+				alert(`You have created: ${JSON.stringify(response.data)}`);
+				setLoading(false);
+			} else {
+				throw new Error('An error has occurred');
+			}
+		} catch (error) {
+			alert(error);
+			setLoading(false);
+		}
+	};
+
 	const privacyOptions = [
 		{ value: 'Public', boolean: false },
 		{ value: 'Private', boolean: true },
@@ -36,6 +99,14 @@ const SignUp = () => {
 	return (
 		<View style={{ gap: 40 }}>
 			<View style={{ gap: 16 }}>
+				<Pressable
+					style={{ alignItems: 'center' }}
+					onPress={() => {
+						pickImage();
+					}}
+				>
+					<ProfilePicture image={image} />
+				</Pressable>
 				<View
 					style={{
 						flexDirection: 'row',
@@ -52,10 +123,10 @@ const SignUp = () => {
 							<StackedTextBox
 								label="First Name"
 								onFieldChange={onChange}
-								value={value}
+								value={value.trim()}
 							/>
 						)}
-						name="firstName"
+						name="first_name"
 					/>
 					<Controller
 						control={control}
@@ -66,10 +137,10 @@ const SignUp = () => {
 							<StackedTextBox
 								label="Last Name"
 								onFieldChange={onChange}
-								value={value}
+								value={value.trim()}
 							/>
 						)}
-						name="lastName"
+						name="last_name"
 					/>
 				</View>
 				<Controller
@@ -82,7 +153,7 @@ const SignUp = () => {
 						<StackedTextBox
 							label="Username"
 							onFieldChange={onChange}
-							value={value}
+							value={value.trim()}
 						/>
 					)}
 					name="username"
@@ -97,7 +168,7 @@ const SignUp = () => {
 						<StackedTextBox
 							label="Email"
 							onFieldChange={onChange}
-							value={value}
+							value={value.trim()}
 						/>
 					)}
 					name="email"
