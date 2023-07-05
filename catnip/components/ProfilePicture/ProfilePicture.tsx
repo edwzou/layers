@@ -4,7 +4,7 @@ import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 type ProfilePicturePropType = {
-	image?: HTMLImageElement;
+	image?: any;
 };
 
 const circleWidth = 90;
@@ -13,8 +13,11 @@ const ProfilePicture = ({ image }: ProfilePicturePropType) => {
 	return (
 		<View>
 			<Text>
-				{image ? (
-					<Image style={styles.profilePicture} source={image} />
+				{image || image !== '' ? (
+					<Image
+						style={styles.profilePicture}
+						source={{ uri: image !== '' || !image ? image : null }}
+					/>
 				) : (
 					<View style={styles.profilePicture}>
 						<Icon

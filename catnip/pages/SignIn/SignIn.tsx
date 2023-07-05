@@ -2,12 +2,14 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { Controller, useForm } from 'react-hook-form';
+import axios from 'axios';
 
 import InlineTextbox from '../../components/Textbox/InlineTextbox';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
+import { baseUrl } from '../../utils/apiUtils';
 
-const Login = () => {
+const SignIn = () => {
 	const {
 		control,
 		handleSubmit,
@@ -21,8 +23,22 @@ const Login = () => {
 		},
 	});
 
-	const onSubmit = (data: any) => {
-		// Some request here
+	const onSubmit = async (data: any) => {
+		try {
+			const response = await axios.post(`${baseUrl}/auth/login`, {
+				username: data.username,
+				email: data.email !== '' ? data.email : null,
+				password: data.password,
+			});
+
+			if (response.status === 201) {
+				alert(`You have created: ${JSON.stringify(response.data)}`);
+			} else {
+				throw new Error('An error has occurred');
+			}
+		} catch (error) {
+			alert(error);
+		}
 		console.log(data);
 	};
 
@@ -76,4 +92,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default SignIn;
