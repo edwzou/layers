@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { itemSize } from '../../utils/GapCalc';
+import { ITEM_SIZE } from '../../utils/GapCalc';
 
 type RadioButtonPropsType = {
 	data: any;
@@ -41,7 +41,7 @@ export default RadioButton;
 const styles = StyleSheet.create({
 	radioButton: {
 		padding: 20,
-		width: itemSize,
+		width: ITEM_SIZE,
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		justifyContent: 'center',
 		alignItems: 'center',

@@ -3,27 +3,21 @@ import { ReactElement } from 'react';
 import { Text, Pressable } from 'react-native';
 import React from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { stepOverTypes } from '../../utils/Stepover';
+import { StepOverTypes } from '../../constants/Enums';
 import Icon from 'react-native-remix-icon';
 
 export type ModalPropTypes = {
 	title: string;
-	stepOver?: {
-		type: string;
-		url: string;
-	};
+	stepOver?: { type: string, handlePress: () => void };
 	content: ReactElement;
 };
 
-export const stepOverHandler = (prop: ModalPropTypes['stepOver']) => {
-	switch (prop?.type) {
-		case stepOverTypes.send: {
+export const stepOverHandler = (props: ModalPropTypes['stepOver']) => {
+	switch (props?.type) {
+		case StepOverTypes.send: {
 			return (
 				<Pressable
-					onPress={() => {
-						// !!! send some request with prop.url
-						console.log('Header Press');
-					}}
+					onPress={props.handlePress}
 					style={{ position: 'absolute', right: 0 }}
 				>
 					<Icon
@@ -34,13 +28,10 @@ export const stepOverHandler = (prop: ModalPropTypes['stepOver']) => {
 				</Pressable>
 			);
 		}
-		case stepOverTypes.edit: {
+		case StepOverTypes.edit: {
 			return (
 				<Pressable
-					onPress={() => {
-						// !!! send some request with prop.url
-						console.log('Header Press');
-					}}
+					onPress={props.handlePress}
 					style={{ position: 'absolute', right: 0 }}
 				>
 					<Text
@@ -54,13 +45,10 @@ export const stepOverHandler = (prop: ModalPropTypes['stepOver']) => {
 				</Pressable>
 			);
 		}
-		case stepOverTypes.done: {
+		case StepOverTypes.done: {
 			return (
 				<Pressable
-					onPress={() => {
-						// !!! send some request with prop.url
-						console.log('Header Press');
-					}}
+					onPress={props.handlePress}
 					style={{ position: 'absolute', right: 0 }}
 				>
 					<Text

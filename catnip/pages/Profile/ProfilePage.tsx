@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Profile from './Profile';

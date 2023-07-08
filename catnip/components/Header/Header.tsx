@@ -5,24 +5,28 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackTypes } from 'utils/StackNavigation';
 import Icon from 'react-native-remix-icon';
+import { stepOverHandler } from '.';
 
 type HeaderPropType = {
 	text: string;
+	back?: boolean;
+	stepOver?: { type: string, handlePress: () => void };
 };
 
-const Header = ({ text }: HeaderPropType) => {
+const Header = ({ text, back = true, stepOver }: HeaderPropType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	return (
 		<View style={styles.header}>
-			<Pressable
+			{back ? <Pressable
 				onPress={() => {
 					navigation.goBack();
 				}}
 				style={{ position: 'absolute', left: 0, paddingRight: 20 }}
 			>
 				<Icon name={GlobalStyles.icons.backOutline} size={25} />
-			</Pressable>
+			</Pressable> : null}
 			<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
+			{stepOver ? stepOverHandler(stepOver) : null}
 		</View>
 	);
 };

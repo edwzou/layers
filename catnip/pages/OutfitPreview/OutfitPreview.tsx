@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import StackedTextbox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
-import { itemSize } from '../../utils/GapCalc';
+import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import img1 from '../../assets/testImg.png';
@@ -71,7 +71,7 @@ const OutfitPreview = () => {
 			/>
 			<FlatList
 				data={testData}
-				renderItem={({ item }) => <ItemCell image={item.img} size={itemSize} />}
+				renderItem={({ item }) => <ItemCell image={item.img} size={ITEM_SIZE} />}
 				numColumns={2}
 				contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
 				columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}

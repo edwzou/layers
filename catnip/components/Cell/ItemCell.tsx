@@ -3,11 +3,12 @@ import { Image, Pressable } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 type ItemCellPropsType = {
-	image: HTMLImageElement;
+	image: any;
 	size?: number;
+	handlePress?: () => void;
 };
 
-export default function ItemCell({ image, size }: ItemCellPropsType) {
+export default function ItemCell({ image, size, handlePress }: ItemCellPropsType) {
 	return (
 		<Pressable
 			style={{
@@ -16,13 +17,12 @@ export default function ItemCell({ image, size }: ItemCellPropsType) {
 				borderRadius: 20,
 				height: size || '100%',
 				width: size || '100%',
+				aspectRatio: 1 / 1,
 				backgroundColor: GlobalStyles.colorPalette.primary[200],
 			}}
-			onPress={() => {
-				console.log('Do something');
-			}}
+			onPress={handlePress}
 		>
-			<Image source={image} />
+			<Image source={image} resizeMode='contain' />
 		</Pressable>
 	);
 }

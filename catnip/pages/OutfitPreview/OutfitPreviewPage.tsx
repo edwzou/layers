@@ -1,17 +1,21 @@
 import { View, StyleSheet } from 'react-native';
 import React, { useRef } from 'react';
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
-import { stepOverTypes } from '../../utils/Stepover';
+import { StepOverTypes } from '../../constants/Enums';
 import OutfitPreview from './OutfitPreview';
 
 const OutfitPreviewPage = () => {
 	const modalRef = useRef<refPropType>(null);
 
+	const handlePress = () => {
+		console.log("Connect to Endpoint")
+	}
+
 	return (
 		<View style={styles.container}>
 			<GeneralModal
 				title="Preview"
-				stepOver={{ type: stepOverTypes.done, url: '/testUrl' }}
+				stepOver={{ type: StepOverTypes.done, handlePress }}
 				content={<OutfitPreview />}
 				ref={modalRef}
 			/>

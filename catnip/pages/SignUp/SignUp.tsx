@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
-import { itemSize } from '../../utils/GapCalc';
+import { ITEM_SIZE } from '../../utils/GapCalc';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
@@ -111,7 +111,7 @@ const SignUp = () => {
 					style={{
 						flexDirection: 'row',
 						gap: 16,
-						width: itemSize,
+						width: ITEM_SIZE,
 					}}
 				>
 					<Controller
