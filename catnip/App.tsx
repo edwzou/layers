@@ -1,8 +1,9 @@
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { View, StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { Stack, StackNavigation } from './utils/StackNavigation';
+import { Stack } from './utils/StackNavigation';
+import { StackNavigation } from './constants/Enums';
 
 import GlobalStyles from './constants/GlobalStyles';
 
@@ -17,7 +18,7 @@ export default function App() {
 			<GestureHandlerRootView style={{ flex: 1 }}>
 				<SafeAreaView style={styles.container}>
 					<Stack.Navigator screenOptions={{ headerShown: false }}>
-						{/* <Stack.Screen name={StackNavigation.Login} component={SignInPage} />
+						<Stack.Screen name={StackNavigation.Login} component={SignInPage} />
 						<Stack.Screen
 							name={StackNavigation.OutfitPreview}
 							component={OutfitPreviewPage}
@@ -25,7 +26,7 @@ export default function App() {
 						<Stack.Screen
 							name={StackNavigation.SignUp}
 							component={SignUpPage}
-						/> */}
+						/>
 						<Stack.Screen name={StackNavigation.Match} component={Match} />
 					</Stack.Navigator>
 					<ExpoStatusBar style="auto" />

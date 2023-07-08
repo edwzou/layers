@@ -10,10 +10,7 @@ import { stepOverHandler } from '.';
 type HeaderPropType = {
 	text: string;
 	back?: boolean;
-	stepOver?: {
-		type: string;
-		url: string;
-	};
+	stepOver?: { type: string, handlePress: () => void };
 };
 
 const Header = ({ text, back = true, stepOver }: HeaderPropType) => {
