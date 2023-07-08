@@ -1,9 +1,9 @@
 import React from 'react';
-import { Image, Pressable } from 'react-native';
+import { Image, Pressable, Dimensions } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 type ItemCellPropsType = {
-	image: HTMLImageElement;
+	image: any;
 	size?: number;
 };
 
@@ -16,13 +16,14 @@ export default function ItemCell({ image, size }: ItemCellPropsType) {
 				borderRadius: 20,
 				height: size || '100%',
 				width: size || '100%',
+				aspectRatio: 1 / 1,
 				backgroundColor: GlobalStyles.colorPalette.primary[200],
 			}}
 			onPress={() => {
 				console.log('Do something');
 			}}
 		>
-			<Image source={image} />
+			<Image source={image} resizeMode='contain' />
 		</Pressable>
 	);
 }

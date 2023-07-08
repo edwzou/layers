@@ -8,4 +8,4 @@ const numColumns = 2;
 
 const availableSpace =
 	screenWidth - (numColumns - 1) * GlobalStyles.layout.xGap;
-export const itemSize = availableSpace / numColumns;
+export const ITEM_SIZE = availableSpace / numColumns;

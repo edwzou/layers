@@ -6,6 +6,7 @@ export type StackTypes = {
 	SignUp: any;
 	Profile: any;
 	OutfitPreview: any;
+	Match: any;
 };
 
 export const StackNavigation = {
@@ -13,6 +14,7 @@ export const StackNavigation = {
 	SignUp: 'SignUp',
 	Profile: 'Profile',
 	OutfitPreview: 'OutfitPreview',
+	Match: 'Match',
 } as const;
 
 export const Stack = createNativeStackNavigator<StackTypes>();
