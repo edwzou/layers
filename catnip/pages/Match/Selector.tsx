@@ -54,7 +54,7 @@ const Selector = ({ outerwear, tops, bottoms, shoes }: SelectorPropsType) => {
     const handleOnViewableItemsChanged = useCallback(
         ({ viewableItems }: any) => {
             const itemsInView = viewableItems.filter(
-                ({ item }: any) => item.uri && item.title,
+                ({ item }: any) => item.image && item.category,
             );
 
             if (itemsInView.length === 0) {
@@ -64,6 +64,7 @@ const Selector = ({ outerwear, tops, bottoms, shoes }: SelectorPropsType) => {
             currentIndex.current = itemsInView[0].index;
 
             const rawItemIndex = currentIndex.current - 1 // Use this for to pick the element
+            console.log(rawItemIndex)
         },
         [outerwear, tops, bottoms, shoes],
     );
