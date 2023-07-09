@@ -1,15 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Pressable, FlatList } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
+import ItemCell from '../Cell/ItemCell'
+
+const itemCellSize = (Dimensions.get('window').width - 60) / 4;
 
 type OutfitCardPropsType = {
     title: string;
     itemCount: number,
+    items: any[],
 };
 
 export default function OutfitCard({
     title,
-    itemCount
+    itemCount,
+    items,
 }: OutfitCardPropsType) {
     return (
         <Pressable style={styles.container}
@@ -21,6 +26,18 @@ export default function OutfitCard({
                 <View style={styles.label}>
                     <Text style={styles.labelText}>{itemCount} items</Text>
                 </View>
+            </View>
+            <View style={styles.itemGrid}>
+                <FlatList
+                    data={items.slice(0, 4)}
+                    renderItem={({ item }) => (
+                        <View style={styles.itemContainer}>
+                            <ItemCell image={item.img} size={itemCellSize} disablePress={true} />
+                        </View>
+                    )}
+                    numColumns={2}
+                />
+
             </View>
         </Pressable>
     );
@@ -37,12 +54,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 20,
         paddingVertical: 15,
+        marginVertical: 10,
     },
     title: {
         ...GlobalStyles.typography.body,
         position: 'absolute',
         top: 27,
         left: 20,
+        width: Dimensions.get('window').width - ((itemCellSize * 2) + (10 * 9))
     },
     labelContainer: {
         position: 'absolute',
@@ -62,5 +81,16 @@ const styles = StyleSheet.create({
     labelText: {
         color: 'white',
         ...GlobalStyles.typography.body
+    },
+    itemGrid: {
+        position: 'absolute',
+        top: 'auto',
+        right: 10,
+        bottom: 'auto',
+    },
+    itemContainer: {
+        flex: 1,
+        paddingHorizontal: 5,
+        paddingVertical: 5,
     },
 });
