@@ -11,6 +11,7 @@ import SignInPage from './pages/SignIn/SignInPage';
 import SignUpPage from './pages/SignUp/SignUpPage';
 import OutfitPreviewPage from './pages/OutfitPreview/OutfitPreviewPage';
 import Match from './pages/Match/Match';
+import ProfilePage from './pages/Profile/ProfilePage';
 
 export default function App() {
 	return (
@@ -28,6 +29,7 @@ export default function App() {
 							component={SignUpPage}
 						/>
 						<Stack.Screen name={StackNavigation.Match} component={Match} />
+						<Stack.Screen name={StackNavigation.Profile} component={ProfilePage} />
 					</Stack.Navigator>
 					<ExpoStatusBar style="auto" />
 				</SafeAreaView>

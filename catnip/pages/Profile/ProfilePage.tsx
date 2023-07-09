@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         marginHorizontal: GlobalStyles.layout.xGap,
-        marginTop: GlobalStyles.layout.topHeaderGap,
     },
 });
 
