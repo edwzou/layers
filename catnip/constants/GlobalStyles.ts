@@ -111,7 +111,7 @@ const utils = StyleSheet.create({
 });
 
 const sizing = {
-	icon: 20,
+	icon: 27.5,
 };
 
 const icons = {
@@ -120,6 +120,7 @@ const icons = {
 	passwordOutline: 'ri-key-2-line',
 	sendOutline: 'ri-send-plane-2-line',
 	backOutline: 'ri-arrow-left-s-line',
+	nextOutline: 'ri-arrow-right-s-line',
 	searchOutline: 'ri-search-2-line',
 	shirtOutline: 'ri-t-shirt-2-line',
 	addOutline: 'ri-add-circle-line',

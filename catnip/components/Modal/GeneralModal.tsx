@@ -9,9 +9,11 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { ModalPropTypes, stepOverHandler } from '.';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
+	useAnimatedProps,
 	useAnimatedStyle,
 	useSharedValue,
 	withSpring,
+	withTiming,
 } from 'react-native-reanimated';
 
 const { height: screenHeight } = Dimensions.get('window');
@@ -72,16 +74,33 @@ const GeneralModal = forwardRef(
 			};
 		});
 
+		const backdropStyle = useAnimatedStyle(() => {
+			return {
+				opacity: withTiming(active.value ? 1 : 0),
+			};
+		}, []);
+
+		const backdropProps = useAnimatedProps(() => {
+			return {
+				pointerEvents: active.value ? 'auto' : 'none',
+			} as any;
+		}, []);
+
 		return (
-			<View
-				style={[
-					{
-						width: '100%',
-						height: '100%',
-						backgroundColor: GlobalStyles.colorPalette.primary[400],
-					},
-				]}
-			>
+			<>
+				<Animated.View
+					animatedProps={backdropProps}
+					onTouchStart={() => {
+						scrollTo(0);
+					}}
+					style={[
+						{
+							...StyleSheet.absoluteFillObject,
+							backgroundColor: GlobalStyles.colorPalette.primary[400],
+						},
+						backdropStyle,
+					]}
+				/>
 				<GestureDetector gesture={gesture}>
 					<Animated.View style={[styles.container, modalGestureStyle]}>
 						<View style={styles.line}></View>
@@ -92,7 +111,7 @@ const GeneralModal = forwardRef(
 						{content}
 					</Animated.View>
 				</GestureDetector>
-			</View>
+			</>
 		);
 	}
 );

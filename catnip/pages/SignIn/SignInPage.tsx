@@ -1,41 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigation, StackTypes } from '../utils/StackNavigation';
+import { StackTypes } from '../../utils/StackNavigation';
+import { StackNavigation } from '../../constants/Enums';
 
-import GlobalStyles from '../constants/GlobalStyles';
-import InlineTextbox from '../components/Textbox/InlineTextbox';
-import Button from '../components/Button/Button';
+import GlobalStyles from '../../constants/GlobalStyles';
+import SignIn from './SignIn';
 
 export default function LoginPage() {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
-	const [text, setText] = useState('');
-	const onInputChange = (text: string) => {
-		setText(text);
-	};
 
 	return (
 		<View style={styles.container}>
 			<Text style={[GlobalStyles.typography.header, GlobalStyles.utils.font]}>
 				Catwalk
 			</Text>
-			<View style={{ gap: 20 }}>
-				<InlineTextbox
-					icon={GlobalStyles.icons.userOutline}
-					placeholder="Username"
-					onFieldChange={onInputChange}
-				/>
-				<InlineTextbox
-					icon={GlobalStyles.icons.passwordOutline}
-					placeholder="Password"
-					secure={true}
-					onFieldChange={onInputChange}
-				/>
-			</View>
-			<Button text="Sign in" url="/signin" />
+			<SignIn />
 			<Text>
 				Don't have an account?{' '}
 				<Text

@@ -1,14 +1,15 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import React from 'react';
 
 type ButtonPropsType = {
 	text: string;
 	onPress: (data: any) => void;
-	disabled: boolean;
+	disabled?: boolean;
+	style?: ViewStyle
 };
 
-const Button = ({ text, onPress, disabled = false }: ButtonPropsType) => {
+const Button = ({ text, onPress, style, disabled = false }: ButtonPropsType) => {
 	return (
 		<Pressable
 			style={[
@@ -16,6 +17,7 @@ const Button = ({ text, onPress, disabled = false }: ButtonPropsType) => {
 				GlobalStyles.utils.shadow,
 				GlobalStyles.utils.smallRadius,
 				GlobalStyles.utils.shadow,
+				style ? style : null
 				,
 				{
 					backgroundColor: disabled
