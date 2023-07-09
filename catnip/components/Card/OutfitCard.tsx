@@ -32,7 +32,7 @@ export default function OutfitCard({
                     data={items.slice(0, 4)}
                     renderItem={({ item }) => (
                         <View style={styles.itemContainer}>
-                            <ItemCell image={item.img} size={itemCellSize} disablePress={true} />
+                            <ItemCell image={item.img} size={itemCellSize} disablePress={true} imageStyle={{ width: '85%', height: '85%' }} />
                         </View>
                     )}
                     numColumns={2}
