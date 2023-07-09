@@ -12,29 +12,39 @@ import SignUpPage from './pages/SignUp/SignUpPage';
 import OutfitPreviewPage from './pages/OutfitPreview/OutfitPreviewPage';
 import Match from './pages/Match/Match';
 import ProfilePage from './pages/Profile/ProfilePage';
+import { useState } from 'react';
 
 export default function App() {
+	const [userToken, setUserToken] = useState(null);
 	return (
 		<NavigationContainer>
 			<GestureHandlerRootView style={{ flex: 1 }}>
 				<SafeAreaView style={styles.container}>
 					<Stack.Navigator screenOptions={{ headerShown: false }}>
-						<Stack.Screen name={StackNavigation.Login} component={SignInPage} />
-						<Stack.Screen
-							name={StackNavigation.OutfitPreview}
-							component={OutfitPreviewPage}
-						/>
-						<Stack.Screen
-							name={StackNavigation.SignUp}
-							component={SignUpPage}
-						/>
-						<Stack.Screen name={StackNavigation.Match} component={Match} />
-						<Stack.Screen name={StackNavigation.Profile} component={ProfilePage} />
+						{userToken === null ? (
+							<>
+								<Stack.Screen name={StackNavigation.Login} component={SignInPage} />
+								<Stack.Screen
+									name={StackNavigation.SignUp}
+									component={SignUpPage}
+								/>
+							</>
+						) : (
+							<>
+								<Stack.Screen name={StackNavigation.Profile} component={ProfilePage} />
+								<Stack.Screen
+									name={StackNavigation.OutfitPreview}
+									component={OutfitPreviewPage}
+								/>
+								<Stack.Screen name={StackNavigation.Match} component={Match} />
+							</>
+						)}
+
 					</Stack.Navigator>
 					<ExpoStatusBar style="auto" />
 				</SafeAreaView>
 			</GestureHandlerRootView>
-		</NavigationContainer>
+		</NavigationContainer >
 	);
 }
 
