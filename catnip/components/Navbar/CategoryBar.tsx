@@ -2,33 +2,32 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-export default function CategoryBar() {
+export default function CategoryBar({ handleTitlePress }: any) {
     const [selectedTitle, setSelectedTitle] = useState('Outfits');
 
-    const handleTitlePress = (title: string) => {
-        if (selectedTitle !== title) {
-            setSelectedTitle(title);
-        }
-    };
+    const handleTitlePressAndSetSelectedTitle = (title: string) => {
+        handleTitlePress(title)
+        setSelectedTitle(title)
+    }
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => handleTitlePress('Outfits')}>
+            <TouchableOpacity onPress={() => handleTitlePressAndSetSelectedTitle('Outfits')}>
                 <View style={[styles.titleContainer, selectedTitle === 'Outfits' && styles.currentTitle]}>
                     <Text style={[styles.title, selectedTitle === 'Outfits' && styles.currentTitleText]}>Outfits</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleTitlePress('Tops')}>
+            <TouchableOpacity onPress={() => handleTitlePressAndSetSelectedTitle('Tops')}>
                 <View style={[styles.titleContainer, selectedTitle === 'Tops' && styles.currentTitle]}>
                     <Text style={[styles.title, selectedTitle === 'Tops' && styles.currentTitleText]}>Tops</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleTitlePress('Bottoms')}>
+            <TouchableOpacity onPress={() => handleTitlePressAndSetSelectedTitle('Bottoms')}>
                 <View style={[styles.titleContainer, selectedTitle === 'Bottoms' && styles.currentTitle]}>
                     <Text style={[styles.title, selectedTitle === 'Bottoms' && styles.currentTitleText]}>Bottoms</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleTitlePress('Footwear')}>
+            <TouchableOpacity onPress={() => handleTitlePressAndSetSelectedTitle('Footwear')}>
                 <View style={[styles.titleContainer, selectedTitle === 'Footwear' && styles.currentTitle]}>
                     <Text style={[styles.title, selectedTitle === 'Footwear' && styles.currentTitleText]}>Footwear</Text>
                 </View>
