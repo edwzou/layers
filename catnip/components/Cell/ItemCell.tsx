@@ -18,7 +18,7 @@ export default function ItemCell({ image, size, disablePress, handlePress }: Ite
 				{ height: size || '100%', width: size || '100%' }
 			]}
 			onPress={() => {
-				console.log('Do something');
+				console.log('ItemCell tapped');
 			}}
 		>
 			<Image source={image} style={styles.image} resizeMode="contain" />

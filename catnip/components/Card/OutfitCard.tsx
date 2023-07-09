@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 20,
         paddingVertical: 15,
-        marginVertical: 10,
+        marginBottom: 13,
     },
     title: {
         ...GlobalStyles.typography.body,
