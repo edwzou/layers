@@ -71,7 +71,7 @@ const OutfitPreview = () => {
 			/>
 			<FlatList
 				data={testData}
-				renderItem={({ item }) => <ItemCell image={item.img} size={ITEM_SIZE} />}
+				renderItem={({ item }) => <ItemCell image={item.img} size={ITEM_SIZE} disablePress={false} />}
 				numColumns={2}
 				contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
 				columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}

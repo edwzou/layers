@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: GlobalStyles.colorPalette.background,
+        width: '100%',
     },
     titleContainer: {
         paddingHorizontal: 15,
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderRadius: 100,
         paddingHorizontal: 10,
+        marginHorizontal: 5,
         paddingVertical: 4,
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 4 },
