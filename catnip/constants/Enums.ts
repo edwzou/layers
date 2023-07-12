@@ -16,6 +16,7 @@ export const StackNavigation = {
 	Login: 'Login',
 	SignUp: 'Sign Up',
 	Profile: 'Profile',
+	Preview: 'Preview',
 	OutfitPreview: 'Outfit Preview',
 	Match: 'Match',
 } as const;
