@@ -16,12 +16,13 @@ export default function OutfitCard({
     itemCount,
     items,
 }: OutfitCardPropsType) {
+    const truncatedTitle = title.length > 70 ? title.slice(0, 70) + "..." : title;
     return (
         <Pressable style={styles.container}
             onPress={() => {
                 console.log('OutfitCard tapped');
             }}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{truncatedTitle}</Text>
             <View style={styles.labelContainer}>
                 <View style={styles.label}>
                     <Text style={styles.labelText}>{itemCount} items</Text>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         aspectRatio: 1.8,
-        borderRadius: 10,
+        borderRadius: 20,
         backgroundColor: GlobalStyles.colorPalette.card[100],
         flexDirection: 'row',
         justifyContent: 'flex-start',
