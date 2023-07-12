@@ -9,7 +9,7 @@ import { StackNavigation } from './constants/Enums';
 
 import SignInPage from './pages/SignIn/SignInPage';
 import SignUpPage from './pages/SignUp/SignUpPage';
-import Match from './pages/Match/Match';
+import MatchPage from './pages/Match/MatchPage';
 import ProfilePage from './pages/Profile/ProfilePage';
 
 import GlobalStyles from './constants/GlobalStyles';
@@ -33,7 +33,7 @@ export default function App() {
 						) : (
 							<>
 								<Stack.Screen name={StackNavigation.Profile} component={ProfilePage} />
-								<Stack.Screen name={StackNavigation.Match} component={Match} options={{ animation: 'slide_from_bottom', gestureDirection: 'vertical', gestureEnabled: true }} />
+								<Stack.Screen name={StackNavigation.Match} component={MatchPage} options={{ animation: 'slide_from_bottom', gestureDirection: 'vertical', gestureEnabled: true }} />
 							</>
 						)}
 
