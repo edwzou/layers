@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
@@ -27,6 +27,7 @@ type FormValues = {
 const SignUp = () => {
 	const [image, setImage] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [modalVisible, setModalVisible] = useState(false);
 
 	const {
 		control,
@@ -58,6 +59,7 @@ const SignUp = () => {
 			if (!result.assets) return;
 
 			setImage(`${base64Prefix}${result.assets[0].base64}`);
+			setModalVisible(!modalVisible);
 		}
 	};
 
@@ -102,7 +104,7 @@ const SignUp = () => {
 				<Pressable
 					style={{ alignItems: 'center' }}
 					onPress={() => {
-						pickImage();
+						setModalVisible(!modalVisible);
 					}}
 				>
 					<ProfilePicture image={image} />
@@ -208,6 +210,24 @@ const SignUp = () => {
 					disabled={Object.keys(dirtyFields).length < 5 ? true : false}
 				/>
 			</View>
+			<Modal visible={modalVisible}
+				animationType="slide"
+				transparent={true}
+				onRequestClose={() => {
+					setModalVisible(!modalVisible);
+				}}>
+				<View style={styles.modalView}>
+					<View style={styles.modalGroup}>
+						<Pressable style={styles.modalSelection} onPress={pickImage}><Text>Library</Text></Pressable>
+						<View style={{ backgroundColor: GlobalStyles.colorPalette.primary[500] + '20', width: '100%', height: 1 }} />
+						<Pressable style={styles.modalSelection} onPress={() => {
+							console.log("Implement Camera")
+							// !!! Implement Camera
+						}}><Text>Camera</Text></Pressable>
+					</View>
+					<Pressable style={styles.modalButtons} onPress={() => { setModalVisible(!modalVisible) }}><Text>Cancel</Text></Pressable>
+				</View>
+			</Modal>
 		</View>
 	);
 };
@@ -215,6 +235,44 @@ const SignUp = () => {
 const styles = StyleSheet.create({
 	error: {
 		color: GlobalStyles.colorPalette.danger[500],
+	},
+	camera: {
+		flex: 1,
+	},
+	modalView: {
+		flex: 1,
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		gap: 5,
+		// backgroundColor: GlobalStyles.colorPalette.primary[400] + '40',
+		paddingBottom: 25,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
+	},
+	modalGroup: {
+		backgroundColor: GlobalStyles.colorPalette.primary[100],
+		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
+		gap: 5,
+		width: '95%'
+	},
+	modalSelection: {
+		width: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 15
+	},
+	modalButtons: {
+		width: '95%',
+		alignItems: 'center',
+		backgroundColor: GlobalStyles.colorPalette.primary[100],
+		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
+		padding: 15
 	},
 });
 
