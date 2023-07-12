@@ -22,9 +22,9 @@ const Header = ({ text, back = true, stepOver }: HeaderPropType) => {
 					onPress={() => {
 						navigation.goBack();
 					}}
-					style={{ position: 'absolute', left: 0, paddingRight: 20 }}
+					style={{ position: 'absolute', left: 10, paddingRight: 20 }}
 				>
-					<Icon name={GlobalStyles.icons.backOutline} size={25} />
+					<Icon name={GlobalStyles.icons.backOutline} size={GlobalStyles.sizing.icon} />
 				</Pressable> : null}
 				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
 				{stepOver ? stepOverHandler(stepOver) : null}
