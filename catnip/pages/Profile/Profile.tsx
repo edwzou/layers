@@ -10,8 +10,6 @@ import TopsCategory from '../../components/Category/TopsCategory'
 import BottomsCategory from '../../components/Category/BottomsCategory'
 import FootwearCategory from '../../components/Category/FootwearCategory'
 
-const screenHeight = Dimensions.get('window').height;
-
 export default function Profile() {
     const [selectedCategory, setSelectedCategory] = useState('Outfits');
 

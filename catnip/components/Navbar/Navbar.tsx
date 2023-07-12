@@ -1,14 +1,23 @@
-import { View, StyleSheet, Dimensions, Pressable } from 'react-native';
 import React from 'react';
+import { View, StyleSheet, Pressable, SafeAreaView } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackTypes } from '../../utils/StackNavigation';
+import { StackNavigation } from '../../constants/Enums';
+
+import { screenWidth } from '../../utils/modalMaxShow';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 export default function Navbar() {
+    const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.leftIcons}>
                 <Pressable onPress={() => {
-                    console.log('Shirt icon tapped');
+                    navigation.navigate(StackNavigation.Match);
                 }}>
                     <Icon
                         name={GlobalStyles.icons.shirtOutline}
@@ -22,7 +31,7 @@ export default function Navbar() {
                     <Icon
                         name={GlobalStyles.icons.feedbackOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
-                        size={30}
+                        size={GlobalStyles.sizing.icon}
                     />
                 </Pressable>
             </View>
@@ -33,7 +42,7 @@ export default function Navbar() {
                     <Icon
                         name={GlobalStyles.icons.searchOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
-                        size={30}
+                        size={GlobalStyles.sizing.icon}
                     />
                 </Pressable>
                 <Pressable onPress={() => {
@@ -42,11 +51,11 @@ export default function Navbar() {
                     <Icon
                         name={GlobalStyles.icons.addOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
-                        size={30}
+                        size={GlobalStyles.sizing.icon}
                     />
                 </Pressable>
             </View>
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -54,7 +63,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        gap: Dimensions.get('window').width - ((30 * 4) + (28 * 2) + 42),
+        gap: screenWidth - ((30 * 4) + (28 * 2) + 42),
     },
     leftIcons: {
         flexDirection: 'row',
