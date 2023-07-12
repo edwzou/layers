@@ -108,10 +108,13 @@ const utils = StyleSheet.create({
 	smallRadius: {
 		borderRadius: 10,
 	},
+	mediumRadius: {
+		borderRadius: 20,
+	},
 });
 
 const sizing = {
-	icon: 27.5,
+	icon: 30,
 };
 
 const icons = {
@@ -128,4 +131,11 @@ const icons = {
 	feedbackOutline: 'ri-feedback-line',
 };
 
-export default { colorPalette, layout, typography, utils, icons, sizing };
+export default {
+	colorPalette,
+	layout,
+	typography,
+	utils,
+	icons,
+	sizing,
+};
