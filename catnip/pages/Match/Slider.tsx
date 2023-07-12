@@ -8,10 +8,10 @@ import { UserClothing } from '.';
 
 const { width } = Dimensions.get('window');
 
-const SNAP_ITEM_SIZE = ITEM_SIZE * 1.15;
-const SPACING = 10;
+const SNAP_ITEM_SIZE = ITEM_SIZE * 1.30; // Cell size
+const SPACING = 0;
 const EMPTY_ITEM_SIZE = (width - ITEM_SIZE) / 2;
-const CURRENT_ITEM_SCALE = 20;
+const CURRENT_ITEM_SCALE = 5; // Height of the Slider
 
 type SliderPropsType = {
     data: UserClothing[],
@@ -77,7 +77,7 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
                                     { transform: [{ scale: scale }] },
                                     styles.itemContent
                                 ]}>
-                                <ItemCell image={item.image} size={ITEM_SIZE} />
+                                <ItemCell image={item.image} size={ITEM_SIZE} disablePress />
                             </Animated.View>
                         </View>
                     );
