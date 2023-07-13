@@ -37,7 +37,6 @@ export default function App() {
 								<Stack.Screen name={StackNavigation.Match} component={MatchPage} options={{ animation: 'slide_from_bottom', gestureDirection: 'vertical', gestureEnabled: true }} />
 							</>
 						)}
-
 					</Stack.Navigator>
 					<ExpoStatusBar style="auto" />
 				</View>
@@ -50,6 +49,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: GlobalStyles.colorPalette.background,
-		paddingTop: Device.osName === "android" ? StatusBar.currentHeight : 0
+		paddingTop: Device.osName === "Android" ? StatusBar.currentHeight : 0
 	},
 });
