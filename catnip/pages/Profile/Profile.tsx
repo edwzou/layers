@@ -9,6 +9,7 @@ import OutfitCategory from '../../components/Category/OutfitCategory';
 import TopsCategory from '../../components/Category/TopsCategory'
 import BottomsCategory from '../../components/Category/BottomsCategory'
 import FootwearCategory from '../../components/Category/FootwearCategory'
+import OuterwearCategory from '../../components/Category/OuterwearCategory';
 
 export default function Profile() {
     const [selectedCategory, setSelectedCategory] = useState('Outfits');
@@ -38,6 +39,7 @@ export default function Profile() {
             <View style={{ gap: 13, alignItems: 'center', flex: 1, }}>
                 <CategoryBar handleTitlePress={handleTitlePress} />
                 {selectedCategory === 'Outfits' && <OutfitCategory />}
+                {selectedCategory === 'Outerwear' && <OuterwearCategory />}
                 {selectedCategory === 'Tops' && <TopsCategory />}
                 {selectedCategory === 'Bottoms' && <BottomsCategory />}
                 {selectedCategory === 'Footwear' && <FootwearCategory />}
