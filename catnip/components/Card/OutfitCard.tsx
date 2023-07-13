@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Pressable, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ItemCell from '../Cell/ItemCell'
 import { screenWidth } from '../../utils/modalMaxShow';

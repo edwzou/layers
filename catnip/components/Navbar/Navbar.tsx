@@ -6,7 +6,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 
-import { screenWidth } from '../../utils/modalMaxShow';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
@@ -15,7 +14,7 @@ export default function Navbar() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.leftIcons}>
+            <View style={styles.icons}>
                 <Pressable onPress={() => {
                     navigation.navigate(StackNavigation.Match);
                 }}>
@@ -35,21 +34,21 @@ export default function Navbar() {
                     />
                 </Pressable>
             </View>
-            <View style={styles.rightIcons}>
-                <Pressable onPress={() => {
-                    console.log('Search icon tapped');
-                }}>
-                    <Icon
-                        name={GlobalStyles.icons.searchOutline}
-                        color={GlobalStyles.colorPalette.primary[900]}
-                        size={GlobalStyles.sizing.icon}
-                    />
-                </Pressable>
+            <View style={styles.icons}>
                 <Pressable onPress={() => {
                     console.log('Add icon tapped');
                 }}>
                     <Icon
                         name={GlobalStyles.icons.addOutline}
+                        color={GlobalStyles.colorPalette.primary[900]}
+                        size={GlobalStyles.sizing.icon}
+                    />
+                </Pressable>
+                <Pressable onPress={() => {
+                    console.log('Search icon tapped');
+                }}>
+                    <Icon
+                        name={GlobalStyles.icons.searchOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
                         size={GlobalStyles.sizing.icon}
                     />
@@ -63,16 +62,10 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        gap: screenWidth - ((30 * 4) + (28 * 2) + 42),
+        marginHorizontal: GlobalStyles.layout.xGap
     },
-    leftIcons: {
+    icons: {
         flexDirection: 'row',
         gap: 28,
-        justifyContent: 'flex-start',
-    },
-    rightIcons: {
-        flexDirection: 'row-reverse',
-        gap: 28,
-        justifyContent: 'flex-end',
-    },
+    }
 });

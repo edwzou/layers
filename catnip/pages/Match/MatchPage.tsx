@@ -7,14 +7,14 @@ import Header from '../../components/Header/Header'
 import Selector from './Selector'
 import Button from '../../components/Button/Button'
 
-import { StepOverTypes, ClothingTypes, StackNavigation } from '../../constants/Enums'
+import { StepOverTypes, ClothingTypes, StackNavigation, NavigationBack } from '../../constants/Enums'
 import { baseUrl } from '../../utils/apiUtils';
 import { maxTranslateY } from '../../utils/modalMaxShow';
 import axios from 'axios';
 
 import { UserClothing, UserClothingList, UserClothingListSingle, UserSelectedClothingList } from '.';
 
-import top1 from "../../assets/testImg.png"
+import top1 from "../../assets/img1.png"
 import pant1 from "../../assets/testPants1.png"
 import shoe1 from "../../assets/testShoe1.png"
 
@@ -141,9 +141,9 @@ const MatchPage = () => {
     };
 
     return (
-        <View>
+        <>
             <View style={{ gap: 15 }}>
-                <Header text={StackNavigation.Match} back={true} />
+                <Header text={StackNavigation.Match} back={NavigationBack.close} />
                 <Selector outerwear={data.outerwear} tops={data.tops} bottoms={data.bottoms} shoes={data.shoes} selectedIndex={selectedIndex} />
             </View>
             <Button text='Preview' onPress={handlePress} style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }} />
@@ -153,7 +153,7 @@ const MatchPage = () => {
                 content={<OutfitPreview outerwear={previewData.outerwear} tops={previewData.tops} bottoms={previewData.bottoms} shoes={previewData.shoes} matchName={setMatchName} />}
                 ref={modalRef}
             />
-        </View>
+        </>
     )
 }
 

@@ -1,21 +1,16 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
-import GlobalStyles from '../../constants/GlobalStyles';
+
 import Profile from './Profile';
+import Navbar from '../../components/Navbar/Navbar';
 
 const ProfilePage = () => {
     return (
-        <View style={styles.container}>
+        <View>
+            <Navbar />
             <Profile />
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        marginHorizontal: GlobalStyles.layout.xGap,
-    },
-});
 
 export default ProfilePage;

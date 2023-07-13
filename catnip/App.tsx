@@ -16,7 +16,7 @@ import GlobalStyles from './constants/GlobalStyles';
 
 
 export default function App() {
-	const [userToken, setUserToken] = useState("");
+	const [userToken, setUserToken] = useState('');
 	return (
 		<NavigationContainer>
 			<GestureHandlerRootView style={{ flex: 1 }}>
