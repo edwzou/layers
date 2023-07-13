@@ -8,7 +8,7 @@ import ItemCell from '../Cell/ItemCell'
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import { bottomsData, outerwearData, outfitData, shoesData, topData } from './testData';
-import OutfitCard from '../../components/Card/OutfitCard';
+import OutfitCard from '../Card/OutfitCard';
 import { screenHeight } from '../../utils/modalMaxShow';
 
 type ClothingCategoryPropType = {

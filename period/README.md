@@ -1,4 +1,4 @@
-# Backend for Catwalk
+# Backend for Dot
 Endpoints:
 
 Here are various endpoints that should be made.
