@@ -6,9 +6,11 @@ import SignUp from './SignUp';
 
 const SignUpPage = () => {
 	return (
-		<View style={styles.container}>
+		<View style={{ gap: 40 }}>
 			<Header text="Sign up" />
-			<SignUp />
+			<View style={styles.container}>
+				<SignUp />
+			</View>
 		</View>
 	);
 };

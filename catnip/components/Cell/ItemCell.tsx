@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 20,
+		borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 	},
 	image: {

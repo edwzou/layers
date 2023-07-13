@@ -1,66 +1,39 @@
-import { View, StyleSheet, FlatList, Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList } from 'react-native-gesture-handler';
 
-import StackedTextbox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
-import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
+import StackedTextbox from '../../components/Textbox/StackedTextbox';
 
-import img1 from '../../assets/testImg.png';
-import img2 from '../../assets/img2.png';
-import img3 from '../../assets/img3.png';
+import { ITEM_SIZE } from '../../utils/GapCalc';
+import { screenHeight } from '../../utils/modalMaxShow';
+import { UserClothing } from '../Match';
 
-const screenHeight = Dimensions.get('window').height;
+type OutfitPreviewPropsType = {
+	outerwear: UserClothing,
+	tops: UserClothing,
+	bottoms: UserClothing,
+	shoes: UserClothing,
+	matchName: (text: string) => void;
+}
 
-// !!! Substitute this for actual data
-const testData = [
-	{
-		id: 'img1',
-		img: img1,
-		title: 'burberry',
-	},
-	{
-		id: 'img2',
-		img: img2,
-		title: 'shoe',
-	},
-	{
-		id: 'img3',
-		img: img3,
-		title: 'pant',
-	},
-	{
-		id: 'img4',
-		img: img3,
-		title: 'pant',
-	},
-	{
-		id: 'img5',
-		img: img3,
-		title: 'pant',
-	},
-	{
-		id: 'img6',
-		img: img3,
-		title: 'pant',
-	},
-	{
-		id: 'img7',
-		img: img3,
-		title: 'pant',
-	},
-	{
-		id: 'img38',
-		img: img3,
-		title: 'pant',
-	},
-];
-
-const OutfitPreview = () => {
-	const [text, setText] = useState('TEST OUTFIT');
+const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPreviewPropsType) => {
+	const [text, setText] = useState('');
+	const [rawData, setRawData] = useState<UserClothing[]>([]);
+	const [data, setData] = useState<UserClothing[]>([]);
 	const onInputChange = (text: string) => {
 		setText(text);
+		matchName(text);
 	};
+
+	useEffect(() => {
+		setRawData([outerwear, tops, bottoms, shoes])
+	}, [outerwear, tops, bottoms, shoes])
+
+	useEffect(() => {
+		setData(rawData.filter(Boolean))
+	}, [rawData])
 
 	return (
 		<View style={styles.container}>
@@ -70,8 +43,8 @@ const OutfitPreview = () => {
 				value={text}
 			/>
 			<FlatList
-				data={testData}
-				renderItem={({ item }) => <ItemCell image={item.img} size={ITEM_SIZE} disablePress={false} />}
+				data={data}
+				renderItem={({ item }) => <ItemCell image={item.image} size={ITEM_SIZE} disablePress={false} />}
 				numColumns={2}
 				contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
 				columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
