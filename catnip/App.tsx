@@ -1,5 +1,6 @@
-import { StyleSheet, Platform, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
+import * as Device from 'expo-device';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useState } from 'react';
 
@@ -49,6 +50,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: GlobalStyles.colorPalette.background,
-		paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+		paddingTop: Device.osName === "android" ? StatusBar.currentHeight : 0
 	},
 });
