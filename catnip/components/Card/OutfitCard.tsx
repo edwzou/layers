@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Pressable, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ItemCell from '../Cell/ItemCell'
+import { screenWidth } from '../../utils/modalMaxShow';
 
-const itemCellSize = (Dimensions.get('window').width - 60) / 4;
+const itemCellSize = (screenWidth - 60) / 4;
 
 type OutfitCardPropsType = {
     title: string;
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 27,
         left: 20,
-        width: Dimensions.get('window').width - ((itemCellSize * 2) + (10 * 9))
+        width: screenWidth - ((itemCellSize * 2) + (10 * 9))
     },
     labelContainer: {
         position: 'absolute',

@@ -13,7 +13,7 @@ const ProfilePicture = ({ image }: ProfilePicturePropType) => {
 	return (
 		<View>
 			<Text>
-				{image || image !== '' ? (
+				{image ? (
 					<Image
 						style={styles.profilePicture}
 						source={{ uri: image !== '' || !image ? image : null }}

@@ -108,10 +108,13 @@ const utils = StyleSheet.create({
 	smallRadius: {
 		borderRadius: 10,
 	},
+	mediumRadius: {
+		borderRadius: 20,
+	},
 });
 
 const sizing = {
-	icon: 27.5,
+	icon: 30,
 };
 
 const icons = {
@@ -120,6 +123,7 @@ const icons = {
 	passwordOutline: 'ri-key-2-line',
 	sendOutline: 'ri-send-plane-2-line',
 	backOutline: 'ri-arrow-left-s-line',
+	closeOutline: 'ri-close-line',
 	nextOutline: 'ri-arrow-right-s-line',
 	searchOutline: 'ri-search-2-line',
 	shirtOutline: 'ri-t-shirt-2-line',
@@ -128,4 +132,11 @@ const icons = {
 	feedbackOutline: 'ri-feedback-line',
 };
 
-export default { colorPalette, layout, typography, utils, icons, sizing };
+export default {
+	colorPalette,
+	layout,
+	typography,
+	utils,
+	icons,
+	sizing,
+};

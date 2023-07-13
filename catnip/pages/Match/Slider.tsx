@@ -1,20 +1,21 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, StyleSheet, View } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
+
 import { FlatList } from 'react-native-gesture-handler';
-import { ITEM_SIZE } from '../../utils/GapCalc';
-import GlobalStyles from '../../constants/GlobalStyles';
-import ItemCell from '../../components/Cell/ItemCell';
 import { UserClothing } from '.';
 
-const { width } = Dimensions.get('window');
+import ItemCell from '../../components/Cell/ItemCell';
+import { screenWidth } from '../../utils/modalMaxShow';
+import { ITEM_SIZE } from '../../utils/GapCalc';
+import GlobalStyles from '../../constants/GlobalStyles';
 
-const SNAP_ITEM_SIZE = ITEM_SIZE * 1.15;
-const SPACING = 10;
-const EMPTY_ITEM_SIZE = (width - ITEM_SIZE) / 2;
-const CURRENT_ITEM_SCALE = 20;
+const SNAP_ITEM_SIZE = ITEM_SIZE * 1.25; // Cell gap
+const SPACING = 0;
+const EMPTY_ITEM_SIZE = (screenWidth - ITEM_SIZE) / 2;
+const CURRENT_ITEM_SCALE = 5; // Height of the Slider
 
 type SliderPropsType = {
-    data: UserClothing[],
+    data: (UserClothing | Record<string, number>)[] | null,
     selectedIndex: (category: string, index: number) => void,
 }
 
@@ -66,7 +67,7 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
 
                     const scale = scrollX.interpolate({
                         inputRange,
-                        outputRange: [1, 1.25, 1],
+                        outputRange: [0.85, 1.15, 0.85], // Scaling of slider
                         extrapolate: 'clamp',
                     });
 
@@ -77,7 +78,7 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
                                     { transform: [{ scale: scale }] },
                                     styles.itemContent
                                 ]}>
-                                <ItemCell image={item.image} size={ITEM_SIZE} />
+                                <ItemCell image={item.image} size={ITEM_SIZE} disablePress />
                             </Animated.View>
                         </View>
                     );
@@ -124,6 +125,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: ITEM_SIZE,
         aspectRatio: 1 / 1,
-        borderRadius: 20,
+        borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
     },
 });

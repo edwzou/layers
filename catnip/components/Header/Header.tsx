@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, SafeAreaView } from 'react-native';
 import React from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
@@ -6,28 +6,31 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackTypes } from 'utils/StackNavigation';
 import Icon from 'react-native-remix-icon';
 import { stepOverHandler } from '.';
+import { NavigationBack } from '../../constants/Enums';
 
 type HeaderPropType = {
 	text: string;
-	back?: boolean;
+	back?: string;
 	stepOver?: { type: string, handlePress: () => void };
 };
 
-const Header = ({ text, back = true, stepOver }: HeaderPropType) => {
+const Header = ({ text, back, stepOver }: HeaderPropType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	return (
-		<View style={styles.header}>
-			{back ? <Pressable
-				onPress={() => {
-					navigation.goBack();
-				}}
-				style={{ position: 'absolute', left: 0, paddingRight: 20 }}
-			>
-				<Icon name={GlobalStyles.icons.backOutline} size={25} />
-			</Pressable> : null}
-			<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
-			{stepOver ? stepOverHandler(stepOver) : null}
-		</View>
+		<SafeAreaView>
+			<View style={styles.header}>
+				{back ? <Pressable
+					onPress={() => {
+						navigation.goBack();
+					}}
+					style={{ position: 'absolute', left: 10, paddingRight: 20 }}
+				>
+					<Icon name={back === NavigationBack.back ? GlobalStyles.icons.backOutline : GlobalStyles.icons.closeOutline} size={GlobalStyles.sizing.icon} />
+				</Pressable> : null}
+				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
+				{stepOver ? stepOverHandler(stepOver) : null}
+			</View>
+		</SafeAreaView>
 	);
 };
 

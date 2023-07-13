@@ -5,12 +5,12 @@ import GlobalStyles from '../../constants/GlobalStyles';
 type ItemCellPropsType = {
 	image: any; // Replace 'any' with appropriate type for your image source
 	size?: number | undefined; // Update the prop type
-	disablePress: boolean;
+	disablePress?: boolean;
 	imageStyle?: ImageStyle;
 	handlePress?: () => void;
 };
 
-export default function ItemCell({ image, size, disablePress, imageStyle, handlePress }: ItemCellPropsType) {
+export default function ItemCell({ image, size, disablePress = false, imageStyle, handlePress }: ItemCellPropsType) {
 	return (
 		<Pressable
 			disabled={disablePress}
@@ -31,10 +31,11 @@ const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 20,
+		borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 	},
 	image: {
 		flex: 1,
+		width: '100%',
 	},
 });

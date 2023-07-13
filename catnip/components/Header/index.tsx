@@ -18,7 +18,7 @@ export const stepOverHandler = (props: ModalPropTypes['stepOver']) => {
 			return (
 				<Pressable
 					onPress={props.handlePress}
-					style={{ position: 'absolute', right: 0 }}
+					style={{ position: 'absolute', right: 10 }}
 				>
 					<Icon
 						name={GlobalStyles.icons.nextOutline}

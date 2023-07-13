@@ -1,22 +1,12 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import React, {
-	forwardRef,
-	useCallback,
-	useEffect,
-	useImperativeHandle,
-} from 'react';
-import GlobalStyles from '../../constants/GlobalStyles';
-import { ModalPropTypes, stepOverHandler } from '.';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-	useAnimatedProps,
-	useAnimatedStyle,
-	useSharedValue,
-	withSpring,
-	withTiming,
-} from 'react-native-reanimated';
+import { View, Text, StyleSheet } from 'react-native';
+import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
 
-const { height: screenHeight } = Dimensions.get('window');
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { useAnimatedProps, useAnimatedStyle, useSharedValue, withSpring, withTiming, } from 'react-native-reanimated';
+import { maxTranslateY, screenHeight } from '../../utils/modalMaxShow';
+
+import { ModalPropTypes, stepOverHandler } from '.';
+import GlobalStyles from '../../constants/GlobalStyles';
 
 export type refPropType = {
 	scrollTo: (destination: number) => void;
@@ -29,7 +19,6 @@ const GeneralModal = forwardRef(
 
 		const translateY = useSharedValue(0);
 		const context = useSharedValue({ y: 0 });
-		const maxTranslateY = -screenHeight + 100;
 
 		const isActive = useCallback(() => {
 			return active.value;
@@ -47,10 +36,6 @@ const GeneralModal = forwardRef(
 			isActive,
 		]);
 
-		// !!! Remove when endpoints are setup (will be a click to toggle)
-		useEffect(() => {
-			scrollTo(maxTranslateY);
-		}, []);
 
 		const gesture = Gesture.Pan()
 			.onStart(() => {
@@ -96,7 +81,7 @@ const GeneralModal = forwardRef(
 					style={[
 						{
 							...StyleSheet.absoluteFillObject,
-							backgroundColor: GlobalStyles.colorPalette.primary[400],
+							backgroundColor: GlobalStyles.colorPalette.primary[500] + '50',
 						},
 						backdropStyle,
 					]}

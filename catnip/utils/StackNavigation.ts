@@ -5,7 +5,7 @@ export type StackTypes = {
 	Login: any;
 	'Sign Up': any;
 	Profile: any;
-	'Outfit Preview': any;
+	Preview: any;
 	Match: any;
 };
 

@@ -5,7 +5,17 @@ export const StepOverTypes = {
 	next: 'Next',
 } as const;
 
-export const ClothingTypes = {
+export type ClothingCategoryTypes = {
+	// !!! Change these types
+	outfits: any;
+	outerwear: any;
+	tops: any;
+	bottoms: any;
+	shoes: any;
+};
+
+export const ClothingTypes: ClothingCategoryTypes = {
+	outfits: 'outfits',
 	outerwear: 'outerwear',
 	tops: 'tops',
 	bottoms: 'bottoms',
@@ -16,6 +26,11 @@ export const StackNavigation = {
 	Login: 'Login',
 	SignUp: 'Sign Up',
 	Profile: 'Profile',
-	OutfitPreview: 'Outfit Preview',
+	Preview: 'Preview',
 	Match: 'Match',
 } as const;
+
+export const NavigationBack = {
+	back: 'back',
+	close: 'close',
+};
