@@ -130,6 +130,8 @@ const icons = {
 	addOutline: 'ri-add-circle-line',
 	bookmarkOutline: 'ri-bookmark-line',
 	feedbackOutline: 'ri-feedback-line',
+	downFillArrow: 'ri-arrow-down-s-fill',
+	upFillArrow: 'ri-arrow-up-s-fill',
 };
 
 export default {

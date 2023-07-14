@@ -9,9 +9,9 @@ import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-const SNAP_ITEM_SIZE = ITEM_SIZE * 1.25; // Cell gap
+const SNAP_ITEM_SIZE = ITEM_SIZE() * 1.25; // Cell gap
 const SPACING = 0;
-const EMPTY_ITEM_SIZE = (screenWidth - ITEM_SIZE) / 2;
+const EMPTY_ITEM_SIZE = (screenWidth - ITEM_SIZE()) / 2;
 const CURRENT_ITEM_SCALE = 5; // Height of the Slider
 
 type SliderPropsType = {
@@ -78,7 +78,7 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
                                     { transform: [{ scale: scale }] },
                                     styles.itemContent
                                 ]}>
-                                <ItemCell image={item.image} size={ITEM_SIZE} disablePress />
+                                <ItemCell image={item.image} size={ITEM_SIZE()} disablePress />
                             </Animated.View>
                         </View>
                     );
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         width: '100%',
-        height: ITEM_SIZE,
+        height: ITEM_SIZE(),
         aspectRatio: 1 / 1,
         borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
     },

@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// @ts-expect-error
 import { useForm, Controller } from 'react-hook-form';
 import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
@@ -113,7 +114,7 @@ const SignUp = () => {
 					style={{
 						flexDirection: 'row',
 						gap: 16,
-						width: ITEM_SIZE,
+						width: ITEM_SIZE(),
 					}}
 				>
 					<Controller

@@ -88,7 +88,7 @@ const GeneralModal = forwardRef(
 				/>
 				<GestureDetector gesture={gesture}>
 					<Animated.View style={[styles.container, modalGestureStyle]}>
-						<View style={styles.line}></View>
+						<View style={styles.line} />
 						<View style={styles.header}>
 							<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
 							{stepOver ? stepOverHandler(stepOver) : null}

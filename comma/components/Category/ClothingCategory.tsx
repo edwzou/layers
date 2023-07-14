@@ -54,9 +54,9 @@ export default function ClothingCategory({ category }: ClothingCategoryPropType)
 
                 /> : <FlatList
                     data={data}
-                    renderItem={({ item }) => <ItemCell image={item.img} size={ITEM_SIZE} />}
+                    renderItem={({ item }) => <ItemCell image={item.img} size={ITEM_SIZE()} />}
                     numColumns={2}
-                    contentContainerStyle={{ gap: GlobalStyles.layout.xGap, paddingBottom: ITEM_SIZE }}
+                    contentContainerStyle={{ gap: GlobalStyles.layout.xGap, paddingBottom: ITEM_SIZE() }}
                     columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
                     showsVerticalScrollIndicator={false}
                 />}

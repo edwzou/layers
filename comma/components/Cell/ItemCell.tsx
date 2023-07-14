@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Image, ImageStyle, Pressable, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
@@ -10,7 +10,7 @@ type ItemCellPropsType = {
 	handlePress?: () => void;
 };
 
-export default function ItemCell({ image, size, disablePress = false, imageStyle, handlePress }: ItemCellPropsType) {
+const ItemCell = ({ image, size, disablePress = false, imageStyle, handlePress }: ItemCellPropsType) => {
 	return (
 		<Pressable
 			disabled={disablePress}
@@ -18,14 +18,14 @@ export default function ItemCell({ image, size, disablePress = false, imageStyle
 				styles.container,
 				{ height: size || '100%', width: size || '100%' }
 			]}
-			onPress={() => {
-				console.log('ItemCell tapped');
-			}}
+			onPress={handlePress}
 		>
 			<Image source={image} style={[styles.image, imageStyle]} resizeMode="contain" />
 		</Pressable>
 	);
 }
+
+export default memo(ItemCell);
 
 const styles = StyleSheet.create({
 	container: {
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
+		aspectRatio: 1 / 1
 	},
 	image: {
 		flex: 1,
