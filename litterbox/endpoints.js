@@ -1,14 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const { v4: uuidv4 } = require("uuid");
 
-// // Generate a new UUID
-// const uid = uuidv4();
 
 const postgres = require("postgres");
 require("dotenv").config();
-// const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
 PGHOST='ep-empty-pond-300198-pooler.us-west-2.aws.neon.tech'
 PGDATABASE='neondb'
 PGUSER='catwalkcommunal'
