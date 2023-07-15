@@ -7,8 +7,6 @@ type ProfilePicturePropType = {
 	image?: any;
 };
 
-const circleWidth = 90;
-
 const ProfilePicture = ({ image }: ProfilePicturePropType) => {
 	return (
 		<View>
@@ -36,9 +34,9 @@ export default ProfilePicture;
 
 const styles = StyleSheet.create({
 	profilePicture: {
-		width: circleWidth,
-		height: circleWidth,
-		borderRadius: circleWidth / 2,
+		width: GlobalStyles.sizing.pfp.regular,
+		height: GlobalStyles.sizing.pfp.regular,
+		borderRadius: GlobalStyles.sizing.pfp.regular / 2,
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		justifyContent: 'center',
 		alignItems: 'center',

@@ -7,6 +7,7 @@ export type StackTypes = {
 	Profile: any;
 	Preview: any;
 	Match: any;
+	Find: any;
 };
 
 export const Stack = createNativeStackNavigator<StackTypes>();

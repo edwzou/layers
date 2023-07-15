@@ -114,7 +114,14 @@ const utils = StyleSheet.create({
 });
 
 const sizing = {
-	icon: 30,
+	icon: {
+		regular: 30,
+		small: 20,
+	},
+	pfp: {
+		regular: 90,
+		small: 40,
+	}
 };
 
 const icons = {
@@ -129,6 +136,7 @@ const icons = {
 	shirtOutline: 'ri-t-shirt-2-line',
 	addOutline: 'ri-add-circle-line',
 	bookmarkOutline: 'ri-bookmark-line',
+	bookmarkFill: 'ri-bookmark-fill',
 	feedbackOutline: 'ri-feedback-line',
 };
 
