@@ -23,7 +23,7 @@ export const stepOverHandler = (props: ModalPropTypes['stepOver']) => {
 					<Icon
 						name={GlobalStyles.icons.nextOutline}
 						color={GlobalStyles.colorPalette.primary[500]}
-						size={GlobalStyles.sizing.icon}
+						size={GlobalStyles.sizing.icon.regular}
 					/>
 				</Pressable>
 			);

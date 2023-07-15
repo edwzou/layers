@@ -25,7 +25,7 @@ const Header = ({ text, back, stepOver }: HeaderPropType) => {
 					}}
 					style={{ position: 'absolute', left: 10, paddingRight: 20 }}
 				>
-					<Icon name={back === NavigationBack.back ? GlobalStyles.icons.backOutline : GlobalStyles.icons.closeOutline} size={GlobalStyles.sizing.icon} />
+					<Icon name={back === NavigationBack.back ? GlobalStyles.icons.backOutline : GlobalStyles.icons.closeOutline} size={GlobalStyles.sizing.icon.regular} />
 				</Pressable> : null}
 				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
 				{stepOver ? stepOverHandler(stepOver) : null}
