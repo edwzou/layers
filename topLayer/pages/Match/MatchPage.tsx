@@ -16,7 +16,6 @@ import { userClothing } from '../../constants/testData'
 import { UserClothing, UserClothingList, UserClothingListSingle, UserSelectedClothingList } from '.';
 
 const MatchPage = () => {
-
     const modalRef = useRef<refPropType>(null);
 
     const [selectedIndexes, setSelectedIndexes] = useState<UserSelectedClothingList>({} as UserSelectedClothingList);

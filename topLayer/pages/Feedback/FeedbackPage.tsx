@@ -10,23 +10,21 @@ const FeedbackPage = () => {
     };
 
     return (
-        <>
-            <View style={[styles.container, { gap: 15 }]}>
-                <SquareTextbox
-                    label="Tell us what you think."
-                />
-                <View style={styles.label}>
-                    <Text style={styles.text}>
-                        We're happy to help at
+        <View style={[styles.container, { gap: 15 }]}>
+            <SquareTextbox
+                label="Tell us what you think."
+            />
+            <View style={styles.label}>
+                <Text style={styles.text}>
+                    We're happy to help at
+                </Text>
+                <Pressable onPress={handleLinkPress}>
+                    <Text style={styles.link}>
+                        team@layers.com
                     </Text>
-                    <Pressable onPress={handleLinkPress}>
-                        <Text style={styles.link}>
-                            team@layers.com
-                        </Text>
-                    </Pressable>
-                </View>
+                </Pressable>
             </View>
-        </>
+        </View>
     )
 };
 

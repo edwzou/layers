@@ -54,7 +54,7 @@ const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPre
 				columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
 				style={{ height: screenHeight - 350 }}
 			/>
-		</View >
+		</View>
 	);
 };
 
