@@ -29,11 +29,11 @@ const Button = ({ text, onPress, style, disabled = false }: ButtonPropsType) => 
 			disabled={disabled}
 		>
 			<Text
-				style={{
+				style={[styles.text, {
 					color: disabled
 						? GlobalStyles.colorPalette.primary[400]
 						: GlobalStyles.colorPalette.background,
-				}}
+				}]}
 			>
 				{text}
 			</Text>
@@ -50,4 +50,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
+	text: {
+		...GlobalStyles.typography.body
+	}
 });
