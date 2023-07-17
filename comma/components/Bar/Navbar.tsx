@@ -9,7 +9,11 @@ import { StackNavigation } from '../../constants/Enums';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-export default function Navbar() {
+type NavbarPropsType = {
+    toggleFeedbackModal: () => void;
+};
+
+const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
     return (
@@ -24,9 +28,7 @@ export default function Navbar() {
                         size={30}
                     />
                 </Pressable>
-                <Pressable onPress={() => {
-                    console.log('Feedback icon tapped');
-                }}>
+                <Pressable onPress={() => toggleFeedbackModal()}>
                     <Icon
                         name={GlobalStyles.icons.feedbackOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
@@ -69,3 +71,5 @@ const styles = StyleSheet.create({
         gap: 28,
     }
 });
+
+export default Navbar;

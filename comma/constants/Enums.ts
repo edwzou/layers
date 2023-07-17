@@ -28,6 +28,7 @@ export const StackNavigation = {
 	Profile: 'Profile',
 	Preview: 'Preview',
 	Match: 'Match',
+	Feedback: 'Feedback',
 	Find: 'Find',
 } as const;
 

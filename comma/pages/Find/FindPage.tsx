@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import React, { useRef } from 'react'
+import { View, Pressable } from 'react-native'
 import FindBar from '../../components/Bar/SearchBar'
 import Header from '../../components/Header/Header'
 import Marked from './Marked'
@@ -10,7 +10,7 @@ import { StyleSheet } from 'react-native'
 import { StackNavigation, NavigationBack } from '../../constants/Enums'
 import GlobalStyles from '../../constants/GlobalStyles'
 
-import { bottomsData, usersData } from '../../constants/testData'
+import { usersData } from '../../constants/testData'
 
 const ProfilePage = () => {
 
@@ -25,9 +25,9 @@ const ProfilePage = () => {
             <View style={styles.container}>
                 <Header text={StackNavigation.Find} back={NavigationBack.close} />
                 <FindBar placeholder='Search profiles' />
-                <TouchableOpacity onPress={handlePress}>
+                <Pressable onPress={handlePress}>
                     <Marked number={usersData.length} topPfp={usersData[0].profile_picture} middlePfp={usersData[1].profile_picture} bottomPfp={usersData[2].profile_picture} />
-                </TouchableOpacity>
+                </Pressable>
             </View>
             <GeneralModal
                 title={`${usersData.length} Marked`}
