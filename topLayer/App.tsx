@@ -18,7 +18,7 @@ import FindPage from './pages/Find/FindPage'
 import GlobalStyles from './constants/GlobalStyles';
 
 export default function App() {
-	const [userToken, setUserToken] = useState('null');
+	const [userToken, setUserToken] = useState("null");
 	return (
 		<NavigationContainer>
 			<GestureHandlerRootView style={{ flex: 1 }}>

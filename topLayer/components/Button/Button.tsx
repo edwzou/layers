@@ -14,9 +14,8 @@ const Button = ({ text, onPress, style, disabled = false }: ButtonPropsType) => 
 		<Pressable
 			style={[
 				styles.button,
-				GlobalStyles.utils.shadow,
 				GlobalStyles.utils.smallRadius,
-				GlobalStyles.utils.shadow,
+				GlobalStyles.utils.tagShadow,
 				style ? style : null
 				,
 				{

@@ -89,7 +89,7 @@ const MatchPage = () => {
                 <Header text={StackNavigation.Match} back={NavigationBack.close} />
                 <Selector outerwear={data.outerwear} tops={data.tops} bottoms={data.bottoms} shoes={data.shoes} selectedIndex={selectedIndex} />
             </View>
-            <Button text='Preview' onPress={handlePress} style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }} />
+            <Button text='Preview' onPress={handlePress} style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }} />
             <GeneralModal
                 title={StackNavigation.Preview}
                 stepOver={{ type: StepOverTypes.done, handlePress: handleSubmitOutfit }}
