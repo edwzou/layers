@@ -11,68 +11,11 @@ import { StepOverTypes, ClothingTypes, StackNavigation, NavigationBack } from '.
 import { baseUrl } from '../../utils/apiUtils';
 import { maxTranslateY } from '../../utils/modalMaxShow';
 import axios from 'axios';
+import { userClothing } from '../../constants/testData'
 
 import { UserClothing, UserClothingList, UserClothingListSingle, UserSelectedClothingList } from '.';
 
-import top1 from "../../assets/img1.png"
-import pant1 from "../../assets/testPants1.png"
-import shoe1 from "../../assets/testShoe1.png"
-
-import top2 from "../../assets/testTop2.png"
-import pant2 from "../../assets/img3.png"
-import shoe2 from "../../assets/img2.png"
-
-import top3 from "../../assets/testTop3.png"
-import pant3 from "../../assets/testPants3.png"
-import shoe3 from "../../assets/testShoe3.png"
-
 const MatchPage = () => {
-    const userClothing = [
-        {
-            id: 0,
-            image: top1,
-            category: ClothingTypes.tops,
-        },
-        {
-            id: 1,
-            image: top2,
-            category: ClothingTypes.tops,
-        },
-        {
-            id: 2,
-            image: top3,
-            category: ClothingTypes.tops,
-        }, {
-            id: 0,
-            image: pant1,
-            category: ClothingTypes.bottoms,
-        },
-        {
-            id: 1,
-            image: pant2,
-            category: ClothingTypes.bottoms,
-        },
-        {
-            id: 2,
-            image: pant3,
-            category: ClothingTypes.bottoms,
-        },
-        {
-            id: 0,
-            image: shoe1,
-            category: ClothingTypes.shoes,
-        },
-        {
-            id: 1,
-            image: shoe2,
-            category: ClothingTypes.shoes,
-        },
-        {
-            id: 2,
-            image: shoe3,
-            category: ClothingTypes.shoes,
-        },
-    ];
 
     const modalRef = useRef<refPropType>(null);
 
@@ -148,7 +91,7 @@ const MatchPage = () => {
             </View>
             <Button text='Preview' onPress={handlePress} style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }} />
             <GeneralModal
-                title="Preview"
+                title={StackNavigation.Preview}
                 stepOver={{ type: StepOverTypes.done, handlePress: handleSubmitOutfit }}
                 content={<OutfitPreview outerwear={previewData.outerwear} tops={previewData.tops} bottoms={previewData.bottoms} shoes={previewData.shoes} matchName={setMatchName} />}
                 ref={modalRef}
