@@ -1,3 +1,5 @@
+import { TagActionType, TagCategoryType } from 'components/Tag';
+
 export const StepOverTypes = {
 	edit: 'Edit',
 	done: 'Done',
@@ -34,4 +36,14 @@ export const StackNavigation = {
 export const NavigationBack = {
 	back: 'back',
 	close: 'close',
+};
+
+export const TagAction: TagActionType = {
+	add: 'add',
+	remove: 'remove',
+};
+
+export const TagCategory: TagCategoryType = {
+	color: 'Color',
+	brand: 'Brand',
 };

@@ -18,7 +18,7 @@ export default function Profile() {
     };
 
     return (
-        <View style={{ gap: 25 }}>
+        <View style={{ gap: 25, flex: 1 }}>
             <View style={{ alignItems: 'center', gap: 7 }}>
                 <Pressable
                     onPress={() => {
@@ -32,9 +32,11 @@ export default function Profile() {
                     <Username username={"_charlie_wu"} />
                 </View>
             </View>
-            <View style={{ gap: 15 }}>
-                <CategoryBar handleTitlePress={handleTitlePress} />
-                <View style={{ marginHorizontal: GlobalStyles.layout.xGap }}>
+            <View style={{ gap: 15, flex: 1 }}>
+                <View>
+                    <CategoryBar handleTitlePress={handleTitlePress} />
+                </View>
+                <View style={{ flex: 1, marginHorizontal: GlobalStyles.layout.xGap, marginBottom: GlobalStyles.layout.xGap * 2 }}>
                     {selectedCategory === ClothingTypes.outfits && <ClothingCategory category={ClothingTypes.outfits} key={ClothingTypes.outfits} />}
                     {selectedCategory === ClothingTypes.outerwear && <ClothingCategory category={ClothingTypes.outerwear} key={ClothingTypes.outerwear} />}
                     {selectedCategory === ClothingTypes.tops && <ClothingCategory category={ClothingTypes.tops} key={ClothingTypes.tops} />}

@@ -1,115 +1,54 @@
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useRef, useState } from 'react'
-import Icon from 'react-native-remix-icon';
-import { FlatList } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import DropDownPicker from 'react-native-dropdown-picker';
 import GlobalStyles from '../../constants/GlobalStyles';
+import Icon from 'react-native-remix-icon';
 
-type DropdownPropsType = {
-    label: string;
-    data: { label: string; value: string }[];
-    onSelect: any
-    // onSelect: (item: { label: string; value: string }) => void;
+type DropdownType = {
+    // !!! Fix Types
+    label: string,
+    open: boolean,
+    setOpen: (open: boolean) => void,
+    value: string,
+    setValue: (value: string | null) => void,
+    items: { label: string, value: any }[],
+    setItems: any,
 }
 
-const Dropdown = ({ label, data, onSelect }: DropdownPropsType) => {
-    const DropdownButton = useRef(null);
-    const [visible, setVisible] = useState(false);
-    const [selected, setSelected] = useState(undefined);
-    const [dropdownTop, setDropdownTop] = useState(0);
-
-    const toggleDropdown = (): void => {
-        visible ? setVisible(false) : openDropdown();
-    };
-
-    const openDropdown = (): void => {
-        if (!DropdownButton.current) return;
-
-        DropdownButton.current.measure((_fx: number, _fy: number, _w: number, h: number, _px: number, py: number) => {
-            setDropdownTop(py + h);
-        });
-        setVisible(true);
-    };
-
-    const onItemPress = (item: any): void => {
-        setSelected(item);
-        onSelect(item);
-        setVisible(false);
-    };
-
-    const renderItem = ({ item }: any) => (
-        <Pressable style={styles.item} onPress={() => onItemPress(item)}>
-            <Text>{item.label}</Text>
-        </Pressable>
-    );
-
-    const renderDropdown = () => {
-        return (
-            <Modal visible={visible} transparent animationType="none">
-                <Pressable
-                    style={styles.overlay}
-                    onPress={() => setVisible(false)}
-                >
-                    <View style={[styles.dropdown, { top: dropdownTop }]}>
-                        <FlatList
-                            data={data}
-                            renderItem={renderItem}
-                            keyExtractor={(item, index) => index.toString()}
-                        />
-                    </View>
-                </Pressable>
-            </Modal>
-        );
-    };
-
+const Dropdown = ({ label, open, setOpen, value, setValue, items, setItems }: DropdownType) => {
     return (
-        <Pressable
-            ref={DropdownButton}
-            style={styles.button}
-            onPress={toggleDropdown}
-        >
-            {renderDropdown()}
-            <Text style={styles.buttonText}>
-                {(!!selected && selected.label) || label}
-            </Text>
-            {visible ? <Icon name={GlobalStyles.icons.upFillArrow} /> : <Icon name={GlobalStyles.icons.downFillArrow} />}
-
-        </Pressable>
-    )
+        <View style={styles.container}>
+            <Text style={[{ paddingHorizontal: 10, paddingTop: 10, color: GlobalStyles.colorPalette.primary[400] }, GlobalStyles.typography.body2]}>{label}</Text>
+            <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                selectedItemContainerStyle={{ backgroundColor: GlobalStyles.colorPalette.primary[300] + '50' }}
+                showTickIcon={false}
+                ArrowDownIconComponent={() => <Icon name={GlobalStyles.icons.downFillArrow} color={GlobalStyles.colorPalette.primary[300]} />}
+                ArrowUpIconComponent={() => <Icon name={GlobalStyles.icons.upFillArrow} color={GlobalStyles.colorPalette.primary[300]} />}
+                dropDownContainerStyle={styles.dropdown}
+                style={styles.dropdown}
+                placeholder=''
+            />
+        </View>
+    );
 }
+
+
 
 export default Dropdown
 
 const styles = StyleSheet.create({
-    button: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#efefef',
-        height: 50,
-        zIndex: 1,
-    },
-    buttonText: {
-        flex: 1,
-        textAlign: 'center',
-    },
-    icon: {
-        marginRight: 10,
+    container: {
+        backgroundColor: GlobalStyles.colorPalette.primary[200],
+        borderRadius: GlobalStyles.utils.smallRadius.borderRadius
     },
     dropdown: {
-        position: 'absolute',
-        backgroundColor: '#fff',
-        width: '100%',
-        shadowColor: '#000000',
-        shadowRadius: 4,
-        shadowOffset: { height: 4, width: 0 },
-        shadowOpacity: 0.5,
+        borderWidth: 0,
+        backgroundColor: GlobalStyles.colorPalette.primary[200],
     },
-    overlay: {
-        width: '100%',
-        height: '100%',
-    },
-    item: {
-        paddingHorizontal: 10,
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-    },
-});
+})

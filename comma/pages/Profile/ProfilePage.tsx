@@ -6,7 +6,7 @@ import Navbar from '../../components/Navbar/Navbar';
 
 const ProfilePage = () => {
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <Navbar />
             <Profile />
         </View>

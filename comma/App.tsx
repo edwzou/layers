@@ -16,9 +16,8 @@ import EditClothingModal from './pages/Edit/EditClothingModal';
 
 import GlobalStyles from './constants/GlobalStyles';
 
-
 export default function App() {
-	const [userToken, setUserToken] = useState('');
+	const [userToken, setUserToken] = useState('null');
 	return (
 		<NavigationContainer>
 			<GestureHandlerRootView style={{ flex: 1 }}>
@@ -34,9 +33,10 @@ export default function App() {
 							</>
 						) : (
 							<>
-								<Stack.Screen name={StackNavigation.Edit} component={EditClothingModal} />
 								<Stack.Screen name={StackNavigation.Profile} component={ProfilePage} />
-								<Stack.Screen name={StackNavigation.Match} component={MatchPage} options={{ animation: 'slide_from_bottom', gestureDirection: 'vertical', gestureEnabled: true }} />
+								<Stack.Screen name={StackNavigation.Edit} component={EditClothingModal} />
+								{/* !!! Force iOS slide from left */}
+								<Stack.Screen name={StackNavigation.Match} component={MatchPage} options={{ animation: 'slide_from_left', gestureDirection: 'horizontal', gestureEnabled: true }} />
 							</>
 						)}
 					</Stack.Navigator>

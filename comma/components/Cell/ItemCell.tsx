@@ -3,20 +3,27 @@ import { Image, ImageStyle, Pressable, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 type ItemCellPropsType = {
-	image: any; // Replace 'any' with appropriate type for your image source
-	size?: number | undefined; // Update the prop type
+	image: any; // !!! Replace 'any' with 'string'
 	disablePress?: boolean;
 	imageStyle?: ImageStyle;
 	handlePress?: () => void;
 };
 
-const ItemCell = ({ image, size, disablePress = false, imageStyle, handlePress }: ItemCellPropsType) => {
+/**
+ * Cells for items
+ * * NOTE: wrap cells in a wrapper to adjust size; ItemCell fills the wrapper *
+ * @param {string} image - Item image 
+ * @param {boolean} disablePress - Disables Pressable functionality
+ * @param {ImageStyle} imageStyle - Custom image styling
+ * @function handlePress
+ * @returns {ReactElement}
+ */
+const ItemCell = ({ image, disablePress = false, imageStyle, handlePress }: ItemCellPropsType) => {
 	return (
 		<Pressable
 			disabled={disablePress}
 			style={[
 				styles.container,
-				{ height: size || '100%', width: size || '100%' }
 			]}
 			onPress={handlePress}
 		>
@@ -33,7 +40,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
-		aspectRatio: 1 / 1
+		aspectRatio: 1 / 1,
 	},
 	image: {
 		flex: 1,

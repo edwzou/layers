@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal'
 import { maxTranslateY } from '../../utils/modalMaxShow';
@@ -19,12 +19,10 @@ const EditClothingModal = ({ clothing }: EditClothingModalPropsType) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <Pressable style={{ backgroundColor: 'red', justifyContent: 'center', alignItems: 'center', marginTop: 100 }} onPress={() => { modalRef.current?.scrollTo(maxTranslateY) }}><Text>TOGGLE</Text></Pressable>
+            <Pressable style={{ backgroundColor: 'red', marginTop: 100 }} onPress={() => { modalRef.current?.scrollTo(maxTranslateY) }}><Text>TOGGLE</Text></Pressable>
             <GeneralModal title='Edit' content={<EditClothing />} ref={modalRef} stepOver={{ type: StepOverTypes.done, handlePress: () => { console.log("Done") } }} />
         </View>
     )
 }
 
 export default EditClothingModal
-
-const styles = StyleSheet.create({})

@@ -7,9 +7,7 @@ export default function FullName({ firstName, lastName }) {
     const fullName = `${firstName} ${lastName}`;
 
     return (
-        <View>
-            <Text style={styles.text}>{fullName}</Text>
-        </View>
+        <Text style={styles.text}>{fullName}</Text>
     );
 };
 

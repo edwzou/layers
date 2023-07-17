@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ItemCell from '../Cell/ItemCell'
 import { screenWidth } from '../../utils/modalMaxShow';
+import { ITEM_SIZE } from '../../utils/GapCalc';
 
 const itemCellSize = (screenWidth - 60) / 4;
 
@@ -23,76 +24,54 @@ export default function OutfitCard({
             onPress={() => {
                 console.log('OutfitCard tapped');
             }}>
-            <Text style={styles.title}>{truncatedTitle}</Text>
-            <View style={styles.labelContainer}>
-                <View style={styles.label}>
-                    <Text style={styles.labelText}>{itemCount} items</Text>
-                </View>
+            <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <Text style={styles.title}>{truncatedTitle}</Text>
+                <Text>
+                    <View style={[styles.label, GlobalStyles.utils.tagShadow]}>
+                        <Text style={styles.labelText}>{itemCount} items</Text>
+                    </View>
+                </Text>
             </View>
-            <View style={styles.itemGrid}>
-                <FlatList
-                    data={items.slice(0, 4)}
-                    renderItem={({ item }) => (
-                        <View style={styles.itemContainer}>
-                            <ItemCell image={item.img} size={itemCellSize} disablePress={true} imageStyle={{ width: '85%', height: '85%' }} />
-                        </View>
-                    )}
-                    numColumns={2}
-                />
-
-            </View>
+            <FlatList
+                data={items.slice(0, 4)}
+                renderItem={({ item }) => (
+                    <View style={styles.itemContainer}>
+                        <ItemCell image={item.img} disablePress={true} imageStyle={{ width: '85%', height: '85%' }} />
+                    </View>
+                )}
+                numColumns={2}
+            />
         </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
         aspectRatio: 1.8,
-        borderRadius: 20,
+        borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
         backgroundColor: GlobalStyles.colorPalette.card[100],
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingVertical: 15,
-        marginBottom: 13,
+        padding: 20,
     },
     title: {
         ...GlobalStyles.typography.body,
-        position: 'absolute',
-        top: 27,
-        left: 20,
-        width: screenWidth - ((itemCellSize * 2) + (10 * 9))
-    },
-    labelContainer: {
-        position: 'absolute',
-        bottom: 15,
-        left: 20,
+        width: screenWidth - ((itemCellSize * 2) + (10 * 9)),
     },
     label: {
-        backgroundColor: 'black',
+        backgroundColor: GlobalStyles.colorPalette.primary[500],
         borderRadius: 100,
         paddingVertical: 4,
         paddingHorizontal: 10,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        shadowColor: GlobalStyles.colorPalette.primary[500],
     },
     labelText: {
-        color: 'white',
+        color: GlobalStyles.colorPalette.background,
         ...GlobalStyles.typography.body
     },
-    itemGrid: {
-        position: 'absolute',
-        top: 'auto',
-        right: 10,
-        bottom: 'auto',
-    },
     itemContainer: {
-        flex: 1,
-        paddingHorizontal: 5,
-        paddingVertical: 5,
+        width: ITEM_SIZE(4.5),
+        margin: 5,
     },
 });

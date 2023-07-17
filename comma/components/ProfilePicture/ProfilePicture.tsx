@@ -11,24 +11,22 @@ const circleWidth = 90;
 
 const ProfilePicture = ({ image }: ProfilePicturePropType) => {
 	return (
-		<View>
-			<Text>
-				{image ? (
-					<Image
-						style={styles.profilePicture}
-						source={{ uri: image !== '' || !image ? image : null }}
+		<Text>
+			{image ? (
+				<Image
+					style={styles.profilePicture}
+					source={{ uri: image !== '' || !image ? image : null }}
+				/>
+			) : (
+				<View style={styles.profilePicture}>
+					<Icon
+						name={GlobalStyles.icons.userOutline2}
+						color={GlobalStyles.colorPalette.primary[300]}
+						size={35}
 					/>
-				) : (
-					<View style={styles.profilePicture}>
-						<Icon
-							name={GlobalStyles.icons.userOutline2}
-							color={GlobalStyles.colorPalette.primary[300]}
-							size={35}
-						/>
-					</View>
-				)}
-			</Text>
-		</View>
+				</View>
+			)}
+		</Text>
 	);
 };
 
