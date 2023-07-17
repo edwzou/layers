@@ -22,6 +22,8 @@ const Button = ({ text, onPress, style, disabled = false }: ButtonPropsType) => 
 					backgroundColor: disabled
 						? GlobalStyles.colorPalette.primary[200]
 						: GlobalStyles.colorPalette.primary[500],
+					shadowColor: disabled ? GlobalStyles.colorPalette.primary[200]
+						: GlobalStyles.colorPalette.primary[500],
 				},
 			]}
 			onPress={onPress}
