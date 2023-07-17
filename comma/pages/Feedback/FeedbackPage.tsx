@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Linking, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import GlobalStyles from '../../constants/GlobalStyles'
 import SquareTextbox from '../../components/Textbox/SquareTextbox'
 
@@ -33,7 +33,6 @@ const FeedbackPage = () => {
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: GlobalStyles.layout.xGap,
-        width: '100%',
         alignItems: 'center',
     },
     label: {

@@ -5,9 +5,10 @@ export type StackTypes = {
 	Login: any;
 	'Sign Up': any;
 	Profile: any;
-	// Preview: any;
+	Preview: any;
 	Match: any;
-	// Feedback: any;
+	Edit: any;
+	Feedback: any;
 	Find: any;
 };
 

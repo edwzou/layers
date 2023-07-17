@@ -12,13 +12,13 @@ import SignInPage from './pages/SignIn/SignInPage';
 import SignUpPage from './pages/SignUp/SignUpPage';
 import MatchPage from './pages/Match/MatchPage';
 import ProfilePage from './pages/Profile/ProfilePage';
+import EditClothingModal from './pages/Edit/EditClothingModal';
 import FindPage from './pages/Find/FindPage'
 
 import GlobalStyles from './constants/GlobalStyles';
 
-
 export default function App() {
-	const [userToken, setUserToken] = useState('');
+	const [userToken, setUserToken] = useState('null');
 	return (
 		<NavigationContainer>
 			<GestureHandlerRootView style={{ flex: 1 }}>
@@ -35,7 +35,9 @@ export default function App() {
 						) : (
 							<>
 								<Stack.Screen name={StackNavigation.Profile} component={ProfilePage} />
-								<Stack.Screen name={StackNavigation.Match} component={MatchPage} options={{ animation: 'slide_from_bottom', gestureDirection: 'vertical', gestureEnabled: true }} />
+								<Stack.Screen name={StackNavigation.Edit} component={EditClothingModal} />
+								{/* !!! Force iOS slide from left */}
+								<Stack.Screen name={StackNavigation.Match} component={MatchPage} options={{ animation: 'slide_from_left', gestureDirection: 'horizontal', gestureEnabled: true }} />
 								<Stack.Screen name={StackNavigation.Find} component={FindPage} options={{ animation: 'slide_from_bottom', gestureDirection: 'vertical', gestureEnabled: true }} />
 							</>
 						)}

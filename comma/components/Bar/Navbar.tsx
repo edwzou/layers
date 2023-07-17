@@ -41,7 +41,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
                     console.log('Add icon tapped');
                 }}>
                     <Icon
-                        name={GlobalStyles.icons.addOutline}
+                        name={GlobalStyles.icons.addCircleOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
                         size={GlobalStyles.sizing.icon.regular}
                     />

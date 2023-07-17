@@ -11,16 +11,21 @@
   "dependencies": {
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "@shopify/flash-list": "1.4.0",
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "expo": "~48.0.15",
+    "expo-camera": "~13.2.1",
+    "expo-dev-client": "~2.2.1",
+    "expo-device": "~5.2.1",
     "expo-image-picker": "~14.1.1",
     "expo-status-bar": "~1.4.4",
     "express": "^4.18.2",
     "react": "18.2.0",
     "react-hook-form": "^7.45.1",
     "react-native": "0.71.8",
+    "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-reanimated": "~2.14.4",
     "react-native-remix-icon": "^0.4.0",
@@ -28,10 +33,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "13.4.0",
     "ts-node": "^10.9.1",
-    "expo-dev-client": "~2.2.1",
-    "expo-camera": "~13.2.1",
-    "typescript": "^4.9.4",
-    "expo-device": "~5.2.1"
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

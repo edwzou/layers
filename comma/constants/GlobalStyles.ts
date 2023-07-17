@@ -104,6 +104,12 @@ const utils = StyleSheet.create({
 		shadowColor: colorPalette.primary[300],
 		shadowOffset: { width: -4, height: 5 },
 		shadowRadius: 10,
+		shadowOpacity: 0.2,
+	},
+	tagShadow: {
+		shadowOffset: { width: 0, height: 5 },
+		shadowRadius: 10,
+		shadowOpacity: 0.2,
 	},
 	smallRadius: {
 		borderRadius: 10,
@@ -134,10 +140,13 @@ const icons = {
 	nextOutline: 'ri-arrow-right-s-line',
 	searchOutline: 'ri-search-2-line',
 	shirtOutline: 'ri-t-shirt-2-line',
-	addOutline: 'ri-add-circle-line',
+	addOutline: 'ri-add-line',
+	addCircleOutline: 'ri-add-circle-line',
 	bookmarkOutline: 'ri-bookmark-line',
 	bookmarkFill: 'ri-bookmark-fill',
 	feedbackOutline: 'ri-feedback-line',
+	downFillArrow: 'ri-arrow-down-s-fill',
+	upFillArrow: 'ri-arrow-up-s-fill',
 };
 
 export default {

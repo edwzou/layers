@@ -3,7 +3,7 @@ import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
 
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedProps, useAnimatedStyle, useSharedValue, withSpring, withTiming, } from 'react-native-reanimated';
-import { maxTranslateY, screenHeight } from '../../utils/modalMaxShow';
+import { maxTranslateY, screenHeight, screenWidth } from '../../utils/modalMaxShow';
 
 import { ModalPropTypes, stepOverHandler } from '.';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -88,12 +88,13 @@ const GeneralModal = forwardRef(
 				/>
 				<GestureDetector gesture={gesture}>
 					<Animated.View style={[styles.container, modalGestureStyle]}>
-						<View style={styles.line}></View>
 						<View style={styles.header}>
 							<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
 							{stepOver ? stepOverHandler(stepOver) : null}
 						</View>
-						{content}
+						<View style={{ flex: 1 }}>
+							{content}
+						</View>
 					</Animated.View>
 				</GestureDetector>
 			</>
@@ -102,30 +103,23 @@ const GeneralModal = forwardRef(
 );
 
 const styles = StyleSheet.create({
-	line: {
-		width: 75,
-		height: 4,
-		backgroundColor: GlobalStyles.colorPalette.primary[300],
-		borderRadius: 100,
-		marginTop: 15,
-	},
 	container: {
 		height: screenHeight,
-		width: '100%',
+		paddingTop: 40,
+		width: screenWidth,
 		backgroundColor: GlobalStyles.colorPalette.background,
 		position: 'absolute',
-		alignItems: 'center',
 		top: screenHeight,
 		gap: 40,
 		borderTopRightRadius: 30,
 		borderTopLeftRadius: 30,
-		paddingHorizontal: GlobalStyles.layout.xGap,
 		zIndex: 10,
+		flex: 1
 	},
 	header: {
 		display: 'flex',
 		flexDirection: 'row',
-		width: '100%',
+		width: screenWidth,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},

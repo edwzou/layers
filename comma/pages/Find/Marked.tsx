@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
-import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
-import lincolnPfp from '../../assets/lincoln.jpg';
 
 type MarkedPropsType = {
     number: number,
@@ -11,14 +10,12 @@ type MarkedPropsType = {
 };
 
 const Marked = ({ number, topPfp, middlePfp, bottomPfp }: MarkedPropsType) => {
-
     return (
         <View style={styles.container}>
             <View style={styles.textArea}>
                 <Text style={GlobalStyles.typography.body}>{number} Marked</Text>
                 <Text style={styles.label}>View your marked profiles</Text>
             </View>
-
             <View style={styles.profilePicturesContainer}>
                 <Image source={topPfp} style={styles.profilePicture} />
                 <Image source={middlePfp} style={styles.profilePicture} />
@@ -30,16 +27,14 @@ const Marked = ({ number, topPfp, middlePfp, bottomPfp }: MarkedPropsType) => {
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
         padding: 20,
         backgroundColor: GlobalStyles.colorPalette.primary[200],
-        borderRadius: 20,
+        borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
         flexDirection: 'row',
         alignItems: 'center',
     },
     textArea: {
         flex: 1,
-        flexDirection: 'column',
         gap: 5,
     },
     title: {
@@ -52,8 +47,6 @@ const styles = StyleSheet.create({
     },
     profilePicturesContainer: {
         flexDirection: 'row',
-        position: 'absolute',
-        right: 20,
     },
     profilePicture: {
         width: GlobalStyles.sizing.pfp.small,

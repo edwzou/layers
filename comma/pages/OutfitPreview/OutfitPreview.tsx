@@ -44,19 +44,23 @@ const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPre
 			/>
 			<FlatList
 				data={data}
-				renderItem={({ item }) => <ItemCell image={item.image} size={ITEM_SIZE} disablePress={false} />}
+				renderItem={({ item }) =>
+					<View style={{ width: ITEM_SIZE(2) }}>
+						<ItemCell image={item.image} disablePress={false} key={item.id} />
+					</View>
+				}
 				numColumns={2}
 				contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
 				columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
 				style={{ height: screenHeight - 350 }}
 			/>
-		</View>
+		</View >
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		width: '100%',
+		marginHorizontal: GlobalStyles.layout.xGap,
 		gap: GlobalStyles.layout.xGap,
 	},
 });

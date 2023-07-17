@@ -16,7 +16,7 @@ const ProfilePage = () => {
     };
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <Navbar toggleFeedbackModal={toggleFeedbackModal} />
             <Profile />
             <GeneralModal

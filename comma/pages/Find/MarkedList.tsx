@@ -9,7 +9,6 @@ const MarkedList = () => {
     return (
         <View style={styles.container}>
             <FindBar placeholder='Search marked' />
-
             <FlatList
                 data={usersData}
                 renderItem={({ item }) => (
@@ -22,7 +21,7 @@ const MarkedList = () => {
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
+        marginHorizontal: GlobalStyles.layout.xGap,
         gap: GlobalStyles.layout.xGap,
     },
 });

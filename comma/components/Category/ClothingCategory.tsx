@@ -9,7 +9,6 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 import { bottomsData, outerwearData, outfitData, shoesData, topData } from '../../constants/testData';
 import OutfitCard from '../Card/OutfitCard';
-import { screenHeight } from '../../utils/modalMaxShow';
 
 type ClothingCategoryPropType = {
     category: string
@@ -44,22 +43,27 @@ export default function ClothingCategory({ category }: ClothingCategoryPropType)
     }, [category])
 
     return (
-        // !!! Better solution is needed for the height
-        <View style={{ height: screenHeight / 1.75 }}>
+        <>
             {category === ClothingTypes.outfits ?
                 <FlatList
                     data={data}
                     renderItem={({ item }) => <OutfitCard title={item.title} itemCount={item.items.length} items={item.items} />}
                     showsVerticalScrollIndicator={false}
-
-                /> : <FlatList
+                    contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
+                /> :
+                <FlatList
                     data={data}
-                    renderItem={({ item }) => <ItemCell image={item.img} size={ITEM_SIZE} />}
+                    renderItem={({ item }) =>
+                        <View style={{ width: ITEM_SIZE(2) }}>
+                            <ItemCell image={item.img} key={item.id} />
+                        </View>
+                    }
                     numColumns={2}
-                    contentContainerStyle={{ gap: GlobalStyles.layout.xGap, paddingBottom: ITEM_SIZE }}
+                    contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
                     columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
                     showsVerticalScrollIndicator={false}
-                />}
-        </View>
+                />
+            }
+        </>
     );
 }

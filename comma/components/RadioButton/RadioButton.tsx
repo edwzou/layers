@@ -41,7 +41,7 @@ export default RadioButton;
 const styles = StyleSheet.create({
 	radioButton: {
 		padding: 20,
-		width: ITEM_SIZE,
+		width: ITEM_SIZE(),
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		justifyContent: 'center',
 		alignItems: 'center',
