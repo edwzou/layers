@@ -15,7 +15,7 @@ export default function LoginPage() {
 	return (
 		<View style={styles.container}>
 			<Text style={[GlobalStyles.typography.header, GlobalStyles.utils.font]}>
-				Catwalk
+				Layers
 			</Text>
 			<SignIn />
 			<Text>
