@@ -4,7 +4,7 @@ import { View, Pressable } from 'react-native';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName'
 import Username from '../../components/Name/Username'
-import CategoryBar from '../../components/Navbar/CategoryBar';
+import CategoryBar from '../../components/Bar/CategoryBar';
 
 import ClothingCategory from '../../components/Category/ClothingCategory'
 import { ClothingTypes } from '../../constants/Enums';

@@ -120,7 +120,14 @@ const utils = StyleSheet.create({
 });
 
 const sizing = {
-	icon: 30,
+	icon: {
+		regular: 30,
+		small: 20,
+	},
+	pfp: {
+		regular: 90,
+		small: 40,
+	}
 };
 
 const icons = {
@@ -136,6 +143,7 @@ const icons = {
 	addOutline: 'ri-add-line',
 	addCircleOutline: 'ri-add-circle-line',
 	bookmarkOutline: 'ri-bookmark-line',
+	bookmarkFill: 'ri-bookmark-fill',
 	feedbackOutline: 'ri-feedback-line',
 	downFillArrow: 'ri-arrow-down-s-fill',
 	upFillArrow: 'ri-arrow-up-s-fill',

@@ -9,7 +9,11 @@ import { StackNavigation } from '../../constants/Enums';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-export default function Navbar() {
+type NavbarPropsType = {
+    toggleFeedbackModal: () => void;
+};
+
+const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
     return (
@@ -24,13 +28,11 @@ export default function Navbar() {
                         size={30}
                     />
                 </Pressable>
-                <Pressable onPress={() => {
-                    console.log('Feedback icon tapped');
-                }}>
+                <Pressable onPress={() => toggleFeedbackModal()}>
                     <Icon
                         name={GlobalStyles.icons.feedbackOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
-                        size={GlobalStyles.sizing.icon}
+                        size={GlobalStyles.sizing.icon.regular}
                     />
                 </Pressable>
             </View>
@@ -41,16 +43,16 @@ export default function Navbar() {
                     <Icon
                         name={GlobalStyles.icons.addCircleOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
-                        size={GlobalStyles.sizing.icon}
+                        size={GlobalStyles.sizing.icon.regular}
                     />
                 </Pressable>
                 <Pressable onPress={() => {
-                    console.log('Search icon tapped');
+                    navigation.navigate(StackNavigation.Find);
                 }}>
                     <Icon
                         name={GlobalStyles.icons.searchOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
-                        size={GlobalStyles.sizing.icon}
+                        size={GlobalStyles.sizing.icon.regular}
                     />
                 </Pressable>
             </View>
@@ -69,3 +71,5 @@ const styles = StyleSheet.create({
         gap: 28,
     }
 });
+
+export default Navbar;

@@ -8,6 +8,8 @@ export type StackTypes = {
 	Preview: any;
 	Match: any;
 	Edit: any;
+	Feedback: any;
+	Find: any;
 };
 
 export const Stack = createNativeStackNavigator<StackTypes>();

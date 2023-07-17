@@ -7,7 +7,7 @@ import { ClothingTypes } from '../../constants/Enums';
 import ItemCell from '../Cell/ItemCell'
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { bottomsData, outerwearData, outfitData, shoesData, topData } from './testData';
+import { bottomsData, outerwearData, outfitData, shoesData, topData } from '../../constants/testData';
 import OutfitCard from '../Card/OutfitCard';
 
 type ClothingCategoryPropType = {
