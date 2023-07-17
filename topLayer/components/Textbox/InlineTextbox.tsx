@@ -1,5 +1,5 @@
-import { View, TextInput, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import { View, TextInput, StyleSheet, Pressable } from 'react-native';
+import React, { useRef, useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Icon from 'react-native-remix-icon';
 
@@ -19,9 +19,15 @@ export default function InlineTextbox({
 	onFieldChange,
 }: InlineTextboxType) {
 	const [fieldText, setFieldText] = useState(value || '');
+	const textRef = useRef<TextInput>(null);
+
+	const handlePress = () => {
+		if (!textRef.current) return;
+		textRef.current.focus();
+	}
 
 	return (
-		<View style={styles.container}>
+		<Pressable style={styles.container} onPress={handlePress}>
 			<Icon
 				name={icon}
 				size={20}
@@ -37,8 +43,9 @@ export default function InlineTextbox({
 				}}
 				placeholder={placeholder}
 				clearButtonMode="while-editing"
+				ref={textRef}
 			/>
-		</View>
+		</Pressable>
 	);
 }
 
