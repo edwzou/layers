@@ -1,20 +1,41 @@
-import React from 'react'
-import FindBar from '../../components/Bar/SearchBar'
+import React, { useState } from 'react'
+import SearchBar from '../../components/Bar/SearchBar'
 import { StyleSheet, View, FlatList } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ProfileCell from '../../components/Cell/ProfileCell'
-import { usersData } from '../../constants/testData'
+import { Find } from '../../constants/GlobalStrings';
 
-const MarkedList = () => {
+type MarkedListPropsType = {
+    usersData: Array<any>; /// !!! fix any type
+};
+
+const MarkedList = ({ usersData }: MarkedListPropsType) => {
+
+    const [isComponentVisible, setComponentVisible] = useState(true);
+
+    const handleSearchBarFocus = () => {
+        setComponentVisible(!isComponentVisible)
+    };
+
+    const handleSearchBarBlur = () => {
+        setComponentVisible(!isComponentVisible)
+    };
+
     return (
         <View style={styles.container}>
-            <FindBar placeholder='Search marked' />
-            <FlatList
-                data={usersData}
-                renderItem={({ item }) => (
-                    <ProfileCell profilePicture={item.profile_picture} username={item.username} firstName={item.first_name} lastName={item.last_name} />
-                )}
-            />
+            <SearchBar
+                placeholder={Find.searchMarked}
+                usersData={usersData}
+                handleOnFocus={handleSearchBarFocus}
+                handleOnBlur={handleSearchBarBlur} />
+            {isComponentVisible &&
+                <FlatList
+                    data={usersData}
+                    renderItem={({ item }) => (
+                        <ProfileCell profilePicture={item.profile_picture} username={item.username} firstName={item.first_name} lastName={item.last_name} />
+                    )}
+                />
+            }
         </View>
     )
 };
