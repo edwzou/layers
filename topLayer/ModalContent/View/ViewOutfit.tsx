@@ -1,22 +1,18 @@
-import { SafeAreaView, SectionList, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import ItemCell from '../../components/Cell/ItemCell'
 
-import outerwear from "../../assets/img0.png"
-import top from "../../assets/img1.png"
-import pant from "../../assets/testPants1.png"
-import shoe from "../../assets/img2.png"
-import { ITEM_SIZE } from '../../utils/GapCalc'
 import GlobalStyles from '../../constants/GlobalStyles'
-import { FlatList, ScrollView } from 'react-native-gesture-handler'
-import { maxTranslateY, screenHeight } from '../../utils/modalMaxShow'
+import { FlatList } from 'react-native-gesture-handler'
 import ColorTag from '../../components/Tag/ColorTag'
 import { TagAction } from '../../constants/Enums'
-import { FlashList } from '@shopify/flash-list'
 import { outfitData } from '../../constants/testData'
 import BrandTag from '../../components/Tag/BrandTag'
 
 const ViewOutfit = () => {
+    // !!! Click edit functionality (edit -> done) 
+    // !!! Click item takes you to Match page with same index selected
+    // !!! Change tags to editable
     return (
         <FlatList data={outfitData[0].items} numColumns={2}
             renderItem={({ item, index }) => {
