@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { View } from 'react-native'
 
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal'
-import OutfitPreview from '../OutfitPreview/OutfitPreview'
+import OutfitPreview from '../../ModalContent/OutfitPreview/OutfitPreview'
 import Header from '../../components/Header/Header'
 import Selector from './Selector'
 import Button from '../../components/Button/Button'

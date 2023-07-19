@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import Navbar from '../../components/Bar/Navbar';
-import FeedbackPage from '../Feedback/FeedbackPage';
+import FeedbackPage from '../../ModalContent/Feedback/FeedbackPage';
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
 import Profile from './Profile'
 import { StepOverTypes, StackNavigation } from '../../constants/Enums';

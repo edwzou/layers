@@ -8,7 +8,7 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
-import { UserClothing } from '../Match';
+import { UserClothing } from '../../pages/Match';
 
 type OutfitPreviewPropsType = {
 	outerwear: UserClothing,

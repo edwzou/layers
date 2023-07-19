@@ -6,7 +6,7 @@ type ItemCellPropsType = {
 	image: any; // !!! Replace 'any' with 'string'
 	disablePress?: boolean;
 	imageStyle?: ImageStyle;
-	handlePress?: () => void;
+	onPress?: () => void;
 };
 
 /**
@@ -15,17 +15,17 @@ type ItemCellPropsType = {
  * @param {string} image - Item image 
  * @param {boolean} disablePress - Disables Pressable functionality
  * @param {ImageStyle} imageStyle - Custom image styling
- * @function handlePress
+ * @function onPress
  * @returns {ReactElement}
  */
-const ItemCell = ({ image, disablePress = false, imageStyle, handlePress }: ItemCellPropsType) => {
+const ItemCell = ({ image, disablePress = false, imageStyle, onPress }: ItemCellPropsType) => {
 	return (
 		<Pressable
 			disabled={disablePress}
 			style={[
 				styles.container,
 			]}
-			onPress={handlePress}
+			onPress={onPress}
 		>
 			<Image source={image} style={[styles.image, imageStyle]} resizeMode="contain" />
 		</Pressable>
