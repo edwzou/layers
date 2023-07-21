@@ -9,6 +9,7 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import { UserClothing } from '../../pages/Match';
+import { match } from '../../constants/GlobalStrings';
 
 type OutfitPreviewPropsType = {
 	outerwear: UserClothing,
@@ -38,7 +39,7 @@ const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPre
 	return (
 		<View style={styles.container}>
 			<StackedTextbox
-				label="Match name"
+				label={match.matchName}
 				onFieldChange={onInputChange}
 				value={text}
 			/>
@@ -50,8 +51,8 @@ const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPre
 					</View>
 				}
 				numColumns={2}
-				contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
-				columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
+				contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+				columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 				style={{ height: screenHeight - 350 }}
 			/>
 		</View>
@@ -61,7 +62,7 @@ const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPre
 const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: GlobalStyles.layout.xGap,
-		gap: GlobalStyles.layout.xGap,
+		gap: GlobalStyles.layout.gap,
 	},
 });
 

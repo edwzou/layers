@@ -3,7 +3,7 @@ import { View, StyleSheet, Pressable } from 'react-native';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StackNavigation, NavigationBack } from '../../constants/Enums'
-import { Find } from '../../constants/GlobalStrings';
+import { find } from '../../constants/GlobalStrings';
 import { usersData } from '../../constants/testData';
 
 import SearchBar from '../../components/Bar/SearchBar';
@@ -48,7 +48,7 @@ const FindPage = () => {
             <View style={styles.container}>
                 <Header text={StackNavigation.Find} back={NavigationBack.close} />
                 <SearchBar
-                    placeholder={Find.searchProfiles}
+                    placeholder={find.searchProfiles}
                     usersData={usersData}
                     handleEmptyString={handleEmptyString}
                     handleNonEmptyString={handleNonEmptyString} />

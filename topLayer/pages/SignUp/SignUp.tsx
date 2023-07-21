@@ -101,7 +101,7 @@ const SignUp = () => {
 
 	return (
 		<View style={{ gap: 40 }}>
-			<View style={{ gap: 16 }}>
+			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Pressable
 					style={{ alignItems: 'center' }}
 					onPress={() => {
@@ -113,7 +113,7 @@ const SignUp = () => {
 				<View
 					style={{
 						flexDirection: 'row',
-						gap: 16,
+						gap: GlobalStyles.layout.gap,
 						width: ITEM_SIZE(),
 					}}
 				>

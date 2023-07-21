@@ -46,7 +46,7 @@ export default Button;
 
 const styles = StyleSheet.create({
 	button: {
-		paddingHorizontal: 16,
+		paddingHorizontal: GlobalStyles.layout.xGap,
 		paddingVertical: 5,
 		justifyContent: 'center',
 		alignItems: 'center',

@@ -44,7 +44,7 @@ const SignIn = () => {
 
 	return (
 		<View style={{ gap: 40, width: '100%' }}>
-			<View style={{ gap: 16 }}>
+			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Controller
 					control={control}
 					rules={{

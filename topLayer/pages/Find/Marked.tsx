@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { Find } from '../../constants/GlobalStrings';
+import { find } from '../../constants/GlobalStrings';
 
 type MarkedPropsType = {
     number: number,
@@ -14,8 +14,8 @@ const Marked = ({ number, topPfp, middlePfp, bottomPfp }: MarkedPropsType) => {
     return (
         <View style={styles.container}>
             <View style={styles.textArea}>
-                <Text style={GlobalStyles.typography.body}>{number} {Find.marked}</Text>
-                <Text style={styles.label}>{Find.viewYourMarkedProfiles}</Text>
+                <Text style={GlobalStyles.typography.body}>{number} {find.marked}</Text>
+                <Text style={styles.label}>{find.viewYourMarkedProfiles}</Text>
             </View>
             <View style={styles.profilePicturesContainer}>
                 <Image source={topPfp} style={styles.profilePicture} />
