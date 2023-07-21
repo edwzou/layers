@@ -53,7 +53,7 @@ export default function Profile() {
                 </View>
             </View>
             <GeneralModal ref={previewRef} content={<ViewOutfit />} title='<SOME OUTFIT TITLE>' stepOver={{ type: StepOverTypes.edit, handlePress: () => { editModalRef.current?.scrollTo(maxTranslateY) } }} />
-            <GeneralModal ref={editModalRef} content={<OutfitEdit />} title='Edit <SOME OUTFIT TITLE>' stepOver={{ type: StepOverTypes.done, handlePress: () => { console.log('some request'); editModalRef.current?.scrollTo(0); previewRef.current?.scrollTo(0) } }} />
+            <GeneralModal ref={editModalRef} content={<OutfitEdit />} title='Edit <SOME OUTFIT TITLE>' back stepOver={{ type: StepOverTypes.done, handlePress: () => { console.log('some request'); editModalRef.current?.scrollTo(0); previewRef.current?.scrollTo(0) } }} />
         </>
     );
 }

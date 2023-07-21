@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
 
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -7,6 +7,7 @@ import { maxTranslateY, screenHeight, screenWidth } from '../../utils/modalMaxSh
 
 import { ModalPropTypes, stepOverHandler } from '.';
 import GlobalStyles from '../../constants/GlobalStyles';
+import Icon from 'react-native-remix-icon';
 
 export type refPropType = {
 	scrollTo: (destination: number) => void;
@@ -14,7 +15,7 @@ export type refPropType = {
 };
 
 const GeneralModal = forwardRef(
-	({ title, stepOver, content }: ModalPropTypes, ref) => {
+	({ title, stepOver, back = false, content }: ModalPropTypes, ref) => {
 		const active = useSharedValue(false);
 
 		const translateY = useSharedValue(0);
@@ -89,6 +90,10 @@ const GeneralModal = forwardRef(
 				<GestureDetector gesture={gesture}>
 					<Animated.View style={[styles.container, modalGestureStyle]}>
 						<View style={styles.header}>
+							{back ? <Pressable style={{ position: 'absolute', left: GlobalStyles.layout.xGap }} onPress={() => { scrollTo(0) }}>
+								<Icon name={GlobalStyles.icons.backOutline} size={GlobalStyles.sizing.icon.regular} />
+							</Pressable>
+								: null}
 							<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
 							{stepOver ? stepOverHandler(stepOver) : null}
 						</View>
