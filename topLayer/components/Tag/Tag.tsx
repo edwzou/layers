@@ -28,7 +28,7 @@ const Tag = ({ type, label, editable = false, bgColor, onPress }: TagPropsType) 
                         <Text style={{ color: GlobalStyles.colorPalette.primary[100] }}>{label}</Text>
                     </Text>
                     {editable ? <Pressable onPress={onPress}>
-                        <Icon name={GlobalStyles.icons.closeOutline} color={GlobalStyles.colorPalette.primary[100]} size={16} />
+                        <Icon name={GlobalStyles.icons.closeOutline} color={GlobalStyles.colorPalette.primary[100]} size={GlobalStyles.sizing.icon.xSmall} />
                     </Pressable> : null}
                 </View> :
                 <View style={[styles.container,
@@ -37,7 +37,7 @@ const Tag = ({ type, label, editable = false, bgColor, onPress }: TagPropsType) 
                     justifyContent: editable ? 'space-between' : 'center'
                 }]}>
                     {editable ? <Pressable onPress={onPress} style={{ marginRight: editable ? 2.5 : 0 }}>
-                        <Icon name={GlobalStyles.icons.addOutline} color={GlobalStyles.colorPalette.primary[300]} size={16} />
+                        <Icon name={GlobalStyles.icons.addOutline} color={GlobalStyles.colorPalette.primary[300]} size={GlobalStyles.sizing.icon.xSmall} />
                     </Pressable> : null}
                     <Text>
                         <Text style={{ color: GlobalStyles.colorPalette.primary[300] }}>{capitalizeFirstLetter(type.category)}</Text>

@@ -67,6 +67,7 @@ const colorPalette = {
 const layout = {
 	xGap: 16,
 	topHeaderGap: 75,
+	gap: 16,
 };
 
 const typography = StyleSheet.create({
@@ -123,11 +124,12 @@ const sizing = {
 	icon: {
 		regular: 30,
 		small: 20,
+		xSmall: 16,
 	},
 	pfp: {
 		regular: 90,
 		small: 40,
-	}
+	},
 };
 
 const icons = {

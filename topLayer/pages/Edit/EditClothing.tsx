@@ -40,7 +40,7 @@ const EditClothing = () => {
 
     return (
         <View style={{ flex: 1 }}>
-            <View style={{ marginHorizontal: GlobalStyles.layout.xGap, gap: 16 }}>
+            <View style={{ marginHorizontal: GlobalStyles.layout.xGap, gap: GlobalStyles.layout.gap }}>
                 <StackedTextBox label='Item name' onFieldChange={setItemName} />
                 <ItemCell image={pants} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -56,7 +56,7 @@ const EditClothing = () => {
             </View>
             <SafeAreaView style={{ flex: 1 }}>
                 {/* !!! ScrollView height may be inconsistent */}
-                <ScrollView contentContainerStyle={{ paddingBottom: GlobalStyles.layout.xGap * 6, paddingHorizontal: GlobalStyles.layout.xGap, marginTop: 16, gap: 16 }}>
+                <ScrollView contentContainerStyle={{ paddingBottom: GlobalStyles.layout.xGap * 6, paddingHorizontal: GlobalStyles.layout.xGap, marginTop: GlobalStyles.layout.gap, gap: GlobalStyles.layout.gap }}>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1, gap: 5 }}>
                         <ColorTag label='Olive' bgColor='#76956B' action={TagAction.add} onPress={() => { console.log("Color Click") }} />
                         <ColorTag label='Olive' bgColor='#76956B' action={TagAction.remove} onPress={() => { console.log("Color Click") }} />

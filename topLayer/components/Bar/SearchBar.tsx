@@ -8,7 +8,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 type SearchBarPropsType = {
     placeholder: string;
-    usersData: Array<any>; /// !!! fix any type
+    usersData: Array<any>; // !!! fix any type
     handleEmptyString?: () => void;
     handleNonEmptyString?: () => void;
 };
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         backgroundColor: GlobalStyles.colorPalette.primary[200],
         borderRadius: 10,
-        gap: 17,
+        gap: GlobalStyles.layout.gap,
     }
 });
 

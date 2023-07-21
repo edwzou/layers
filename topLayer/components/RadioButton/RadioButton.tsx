@@ -12,7 +12,7 @@ const RadioButton = ({ data, onSelect }: RadioButtonPropsType) => {
 	const [userOption, setUserOption] = useState('Public');
 
 	return (
-		<View style={{ flexDirection: 'row', gap: 16 }}>
+		<View style={{ flexDirection: 'row', gap: GlobalStyles.layout.gap }}>
 			{data.map((item: any) => {
 				return (
 					<Pressable

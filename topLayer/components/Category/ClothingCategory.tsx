@@ -50,7 +50,7 @@ export default function ClothingCategory({ category, onPress }: ClothingCategory
                     data={data}
                     renderItem={({ item }) => <OutfitCard title={item.title} itemCount={item.items.length} items={item.items} onPress={onPress} />}
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
+                    contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
                 /> :
                 <FlatList
                     data={data}
@@ -60,8 +60,8 @@ export default function ClothingCategory({ category, onPress }: ClothingCategory
                         </View>
                     }
                     numColumns={2}
-                    contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
-                    columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
+                    contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+                    columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
                     showsVerticalScrollIndicator={false}
                 />
             }

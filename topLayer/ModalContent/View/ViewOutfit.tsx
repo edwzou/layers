@@ -21,9 +21,9 @@ const ViewOutfit = () => {
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={<ItemCell image={outfitData[0].items[0].image} />}
             keyExtractor={(item) => item.id}
-            contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
-            columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
-            ListFooterComponent={<View style={{ gap: 16 }}>
+            contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+            columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
+            ListFooterComponent={<View style={{ gap: GlobalStyles.layout.gap }}>
                 <View style={styles.categoryContainer}>
                     <Text style={styles.subheader}>Colors</Text>
                     <View style={styles.tagsContainer}>
@@ -51,14 +51,14 @@ export default ViewOutfit
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: GlobalStyles.layout.xGap,
-        gap: GlobalStyles.layout.xGap,
+        gap: GlobalStyles.layout.gap,
         flex: 1,
     },
     items: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        gap: GlobalStyles.layout.xGap,
+        gap: GlobalStyles.layout.gap,
         flex: 1
     },
     subheader: {

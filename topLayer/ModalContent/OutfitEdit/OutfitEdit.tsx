@@ -51,8 +51,8 @@ const OutfitEdit = () => {
                     </View>
                 }}
                 numColumns={2}
-                contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
-                columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
+                contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+                columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
                 style={{ height: screenHeight - 350 }}
             />
         </View>
@@ -62,7 +62,7 @@ const OutfitEdit = () => {
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: GlobalStyles.layout.xGap,
-        gap: GlobalStyles.layout.xGap,
+        gap: GlobalStyles.layout.gap,
     },
 });
 
