@@ -1,7 +1,7 @@
 const express = require('express');
 const neon = require('@cityofzion/neon-js');
 const path = require("path");
-const fs = require('fs');
+const axios = require('axios');
 
 const app = express();
 app.use(express.json());
@@ -30,19 +30,17 @@ app.get('/', (req, res) => {
     res.send(html);
 });
 
-app.put('/save-cropped-image', (req, res) => {
-    const { image } = req.body;
-    const imageData = image.replace(/^data:image\/\w+;base64,/, '');
-    const buffer = Buffer.from(imageData, 'base64');
-    const filePath = path.join(__dirname, 'cropping', 'photos', 'cropped-image.png');
-    fs.writeFile(filePath, buffer, (err) => {
-        if (err) {
-            console.error('Failed to save the cropped image:', err);
-            res.sendStatus(500);
-        } else {
-            res.sendStatus(200);
-        }
-    });
+// Define a route handler to fetch and serve the image
+app.get('/get-image', async (req, res) => {
+    try {
+        const imageURL = 'https://www.saab-heritage.fr/saabHeritage_images/produits/img-8053.jpg';
+        const response = await axios.get(imageURL, { responseType: 'arraybuffer' });
+        const imageBuffer = Buffer.from(response.data, 'binary');
+        res.setHeader('Content-Type', 'image/jpeg');
+        res.send(imageBuffer);
+    } catch (error) {
+        res.status(500).send('Failed to fetch and serve the image.');
+    }
 });
 
 // Serve static files from the 'cropping' directory

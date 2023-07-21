@@ -4,8 +4,8 @@ async function backgroundCropping() {
     console.log('God damn finally got it.');
     // Request parameter
     const endpoint = 'https://sdk.photoroom.com/v1/segment'
-    const apiKey = '6d729068db857d822f0c667d708c51342a5de3f0'
-    const imageURL = '/js/photos/SAAB.jpg'
+    const apiKey = '2d95a0ff1ff9886a130f08dad268e867eba5456c' // zennteam1 account, 3 calls left
+    const imageURL = 'http://localhost:1234/get-image'
 
     // Creating data
     const formData = new FormData();
@@ -26,34 +26,15 @@ async function backgroundCropping() {
         }
     );
 
-    if (response.ok) {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            const result = await response.json();
-            console.log(result);
-            // Process the JSON data here
-        } else if (contentType && contentType.includes('image/png')) {
-            // Convert the image blob to a data URL
-            const reader = new FileReader();
-            reader.onloadend = async () => {
-                const dataURL = reader.result;
-                // Send the data URL to the server to save the image
-                const saveResponse = await fetch('/save-cropped-image', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ image: dataURL }),
-                });
-
-                if (saveResponse.ok) {
-                    console.log('Cropped image saved successfully!');
-                } else {
-                    console.error('Failed to save the cropped image:', saveResponse.status);
-                }
-            };
-        } else {
-            console.error('Unexpected response type:', contentType);
-        }
+    if (response.status === 200) {
+        // Display the processed image on the web page at localhost:1234
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        const img = new Image();
+        img.src = imageUrl;
+        document.body.appendChild(img);
+        console.log('Image uploaded and processed successfully!');
     } else {
-        console.error('API request failed with status:', response.status);
+        console.log('Image upload failed.');
     }
 }
