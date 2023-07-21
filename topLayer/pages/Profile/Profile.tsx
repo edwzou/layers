@@ -12,10 +12,12 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
 import { maxTranslateY } from '../../utils/modalMaxShow';
 import ViewOutfit from '../../ModalContent/View/ViewOutfit';
+import OutfitEdit from '../../ModalContent/OutfitEdit/OutfitEdit';
 
 export default function Profile() {
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
-    const previewRef = useRef<refPropType>(null)
+    const previewRef = useRef<refPropType>(null);
+    const editModalRef = useRef<refPropType>(null);
 
     const handleTitlePress = (title: string) => {
         setSelectedCategory(title);
@@ -50,7 +52,8 @@ export default function Profile() {
                     </View>
                 </View>
             </View>
-            <GeneralModal ref={previewRef} content={<ViewOutfit />} title='<SOME OUTFIT TITLE>' stepOver={{ type: StepOverTypes.edit, handlePress: () => { } }} />
+            <GeneralModal ref={previewRef} content={<ViewOutfit />} title='<SOME OUTFIT TITLE>' stepOver={{ type: StepOverTypes.edit, handlePress: () => { editModalRef.current?.scrollTo(maxTranslateY) } }} />
+            <GeneralModal ref={editModalRef} content={<OutfitEdit />} title='Edit <SOME OUTFIT TITLE>' stepOver={{ type: StepOverTypes.done, handlePress: () => { console.log('some request'); editModalRef.current?.scrollTo(0); previewRef.current?.scrollTo(0) } }} />
         </>
     );
 }

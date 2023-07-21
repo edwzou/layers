@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import ItemCell from '../../components/Cell/ItemCell'
 
 import GlobalStyles from '../../constants/GlobalStyles'
@@ -10,11 +10,8 @@ import { outfitData } from '../../constants/testData'
 import BrandTag from '../../components/Tag/BrandTag'
 
 const ViewOutfit = () => {
-    // !!! Click edit functionality (edit -> done) 
-    // !!! Click item takes you to Match page with same index selected
-    // !!! Change tags to editable
     return (
-        <FlatList data={outfitData[0].items} numColumns={2}
+        <FlatList data={outfitData[0].items.slice(1)} numColumns={2}
             renderItem={({ item, index }) => {
                 return <View style={{ flex: 1 / 2 }}>
                     <ItemCell image={item.image} disablePress />
