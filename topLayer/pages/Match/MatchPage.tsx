@@ -9,7 +9,7 @@ import Button from '../../components/Button/Button'
 
 import { StepOverTypes, ClothingTypes, StackNavigation, NavigationBack } from '../../constants/Enums'
 import { baseUrl } from '../../utils/apiUtils';
-import { maxTranslateY } from '../../utils/modalMaxShow';
+import { highTranslateY } from '../../utils/modalMaxShow';
 import axios from 'axios';
 import { userClothing } from '../../constants/testData'
 
@@ -59,7 +59,7 @@ const MatchPage = () => {
     }
 
     const handlePress = () => {
-        modalRef.current?.scrollTo(maxTranslateY);
+        modalRef.current?.scrollTo(highTranslateY);
     }
 
     const handleSubmitOutfit = async () => {

@@ -1,24 +1,28 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
+
 import Navbar from '../../components/Bar/Navbar';
-import FeedbackPage from '../../ModalContent/Feedback/FeedbackPage';
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
-import Profile from './Profile'
+
 import { StepOverTypes, StackNavigation } from '../../constants/Enums';
-import { maxTranslateY } from '../../utils/modalMaxShow';
+
+import { highTranslateY } from '../../utils/modalMaxShow';
+
+import Profile from './Profile'
+import FeedbackPage from '../../ModalContent/Feedback/FeedbackPage';
 
 const ProfilePage = () => {
 
     const modalRef = useRef<refPropType>(null);
 
     const toggleFeedbackModal = () => {
-        modalRef.current?.scrollTo(maxTranslateY);
+        modalRef.current?.scrollTo(highTranslateY);
     };
 
     return (
         <View style={{ flex: 1 }}>
             <Navbar toggleFeedbackModal={toggleFeedbackModal} />
-            <Profile />
+            <Profile isForeignProfile={false} />
             <GeneralModal
                 title={StackNavigation.Feedback}
                 stepOver={{ type: StepOverTypes.send, handlePress: () => { } }}
