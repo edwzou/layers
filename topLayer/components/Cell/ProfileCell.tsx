@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
-import { View, Text, Image, Pressable } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
-import { StyleSheet } from 'react-native';
+
 import GlobalStyles from '../../constants/GlobalStyles';
 
+import { ShowProfileContext } from '../../pages/Find/FindPage';
+
 type ProfileCellPropsType = {
-    profilePicture: any,
-    username: string,
-    firstName: string,
-    lastName: string,
+    user: any, ///!!! fix any type
 };
 
-const ProfileCell = ({ profilePicture, username, firstName, lastName }: ProfileCellPropsType) => {
+const ProfileCell = ({ user }: ProfileCellPropsType) => {
+
+    const showProfile = useContext(ShowProfileContext)
+
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkFill);
 
     const handleIconPress = () => {
@@ -22,12 +24,16 @@ const ProfileCell = ({ profilePicture, username, firstName, lastName }: ProfileC
         }
     };
 
+    const handleProfilePress = () => {
+        showProfile()
+    }
+
     return (
-        <Pressable style={styles.container} onPress={() => { console.log("ProfileCell tapped") }}>
-            <Image source={profilePicture} style={styles.profilePicture} />
+        <Pressable style={styles.container} onPress={handleProfilePress}>
+            <Image source={user.profile_picture} style={styles.profilePicture} />
             <View style={styles.textContainer}>
-                <Text style={styles.username}>{username}</Text>
-                <Text style={styles.fullName}>{firstName} {lastName}</Text>
+                <Text style={styles.username}>{user.username}</Text>
+                <Text style={styles.fullName}>{user.first_name} {user.last_name}</Text>
             </View>
             <Pressable onPress={handleIconPress}>
                 <Icon
@@ -44,7 +50,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 10,
+        paddingTop: 20,
     },
     profilePicture: {
         width: GlobalStyles.sizing.pfp.small,
