@@ -1,12 +1,17 @@
-export const Find = {
+export const find = {
 	searchProfiles: 'Search profiles',
 	searchMarked: 'Search marked',
-    marked: 'Marked',
-    viewYourMarkedProfiles: 'View your marked profiles',
-}
+	marked: 'Marked',
+	viewYourMarkedProfiles: 'View your marked profiles',
+} as const;
 
-export const Feedback = {
-    tellUsWhatYouThink: 'Tell us what you think.',
-    wereHappyToHelpAt: 'We\'re happy to help at',
-    teamAtLayersDotCom: 'team@layers.com',
-}
+export const feedback = {
+	tellUsWhatYouThink: 'Tell us what you think.',
+	wereHappyToHelpAt: "We're happy to help at",
+	teamAtLayersDotCom: 'team@layers.com',
+} as const;
+
+export const match = {
+	preview: 'Preview',
+	matchName: 'Match name',
+} as const;

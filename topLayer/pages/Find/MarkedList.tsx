@@ -5,7 +5,7 @@ import SearchBar from '../../components/Bar/SearchBar'
 import ProfileCell from '../../components/Cell/ProfileCell'
 
 import GlobalStyles from '../../constants/GlobalStyles';
-import { Find } from '../../constants/GlobalStrings';
+import { find } from '../../constants/GlobalStrings';
 
 type MarkedListPropsType = {
     usersData: Array<any>; /// !!! fix any type
@@ -28,7 +28,7 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
     return (
         <View style={styles.container}>
             <SearchBar
-                placeholder={Find.searchMarked}
+                placeholder={find.searchMarked}
                 usersData={usersData}
                 handleEmptyString={handleEmptyString}
                 handleNonEmptyString={handleNonEmptyString} />

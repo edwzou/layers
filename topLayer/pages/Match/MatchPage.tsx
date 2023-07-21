@@ -14,6 +14,8 @@ import axios from 'axios';
 import { userClothing } from '../../constants/testData'
 
 import { UserClothing, UserClothingList, UserClothingListSingle, UserSelectedClothingList } from '.';
+import { match } from '../../constants/GlobalStrings'
+import GlobalStyles from '../../constants/GlobalStyles'
 
 const MatchPage = () => {
     const modalRef = useRef<refPropType>(null);
@@ -88,7 +90,7 @@ const MatchPage = () => {
                 <Header text={StackNavigation.Match} back={NavigationBack.close} />
                 <Selector outerwear={data.outerwear} tops={data.tops} bottoms={data.bottoms} shoes={data.shoes} selectedIndex={selectedIndex} />
             </View>
-            <Button text='Preview' onPress={handlePress} style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }} />
+            <Button text={match.preview} onPress={handlePress} style={{ position: 'absolute', bottom: GlobalStyles.layout.gap * 2, alignSelf: 'center' }} />
             <GeneralModal
                 title={StackNavigation.Preview}
                 stepOver={{ type: StepOverTypes.done, handlePress: handleSubmitOutfit }}

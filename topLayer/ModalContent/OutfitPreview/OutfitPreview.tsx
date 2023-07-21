@@ -9,6 +9,7 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import { UserClothing } from '../../pages/Match';
+import { match } from '../../constants/GlobalStrings';
 
 type OutfitPreviewPropsType = {
 	outerwear: UserClothing,
@@ -38,7 +39,7 @@ const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPre
 	return (
 		<View style={styles.container}>
 			<StackedTextbox
-				label="Match name"
+				label={match.matchName}
 				onFieldChange={onInputChange}
 				value={text}
 			/>
