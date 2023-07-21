@@ -1,44 +1,57 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, createContext } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
+
 import GlobalStyles from '../../constants/GlobalStyles';
-import SearchBar from '../../components/Bar/SearchBar';
-import Header from '../../components/Header/Header';
-import Marked from './Marked';
-import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
-import { maxTranslateY } from '../../utils/modalMaxShow';
-import MarkedList from './MarkedList';
 import { StackNavigation, NavigationBack } from '../../constants/Enums'
 import { Find } from '../../constants/GlobalStrings';
-
 import { usersData } from '../../constants/testData';
+
+import SearchBar from '../../components/Bar/SearchBar';
+import Header from '../../components/Header/Header';
+import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
+
+import Marked from './Marked';
+import MarkedList from './MarkedList';
+
+import Profile from '../../pages/Profile/Profile'
+
+import { highTranslateY, fullTranslateY } from '../../utils/modalMaxShow';
+
+
+export const ShowProfileContext = createContext(() => { });
 
 const FindPage = () => {
 
+    const markedListModalRef = useRef<refPropType>(null);
+    const profileModalRef = useRef<refPropType>(null);
+
     const [isComponentVisible, setComponentVisible] = useState(true);
 
-    const modalRef = useRef<refPropType>(null);
-
     const handlePress = () => {
-        modalRef.current?.scrollTo(maxTranslateY);
+        markedListModalRef.current?.scrollTo(highTranslateY);
     };
 
-    const handleSearchBarFocus = () => {
-        setComponentVisible(!isComponentVisible)
+    const handleEmptyString = () => {
+        setComponentVisible(isComponentVisible => true)
     };
 
-    const handleSearchBarBlur = () => {
-        setComponentVisible(!isComponentVisible)
+    const handleNonEmptyString = () => {
+        setComponentVisible(isComponentVisible => false)
     };
+
+    const handleProfilePress = () => {
+        profileModalRef.current?.scrollTo(fullTranslateY);
+    }
 
     return (
-        <>
+        <ShowProfileContext.Provider value={handleProfilePress}>
             <View style={styles.container}>
                 <Header text={StackNavigation.Find} back={NavigationBack.close} />
                 <SearchBar
                     placeholder={Find.searchProfiles}
                     usersData={usersData}
-                    handleOnFocus={handleSearchBarFocus}
-                    handleOnBlur={handleSearchBarBlur} />
+                    handleEmptyString={handleEmptyString}
+                    handleNonEmptyString={handleNonEmptyString} />
                 {isComponentVisible &&
                     <Pressable onPress={handlePress}>
                         <Marked
@@ -53,9 +66,14 @@ const FindPage = () => {
             <GeneralModal
                 title={`${usersData.length} Marked`}
                 content={<MarkedList usersData={usersData} />}
-                ref={modalRef}
+                ref={markedListModalRef}
             />
-        </>
+            <GeneralModal
+                title={''}
+                content={<Profile isForeignProfile={true} />}
+                ref={profileModalRef}
+            />
+        </ShowProfileContext.Provider>
     );
 };
 

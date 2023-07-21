@@ -1,34 +1,35 @@
 import React, { useState, useRef } from 'react';
 import { View, TextInput, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
-import GlobalStyles from '../../constants/GlobalStyles';
+
 import ProfileCell from '../../components/Cell/ProfileCell';
+
+import GlobalStyles from '../../constants/GlobalStyles';
 
 type SearchBarPropsType = {
     placeholder: string;
     usersData: Array<any>; /// !!! fix any type
-    handleOnFocus?: () => void;
-    handleOnBlur?: () => void;
+    handleEmptyString?: () => void;
+    handleNonEmptyString?: () => void;
 };
 
-const SearchBar = ({ placeholder, usersData, handleOnFocus, handleOnBlur }: SearchBarPropsType) => {
+const SearchBar = ({ placeholder, usersData, handleEmptyString, handleNonEmptyString }: SearchBarPropsType) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState<Array<any>>([]);
     const textInputRef = useRef<TextInput>(null);
 
-    const handleFocus = () => {
-        if (handleOnFocus) {
-            handleOnFocus();
-        }
-    };
-
-    const handleBlur = () => {
-        if (handleOnBlur) {
-            handleOnBlur();
-        }
-    };
-
     const handleSearch = (text: string) => {
+
+        if (text === '') {
+            if (handleEmptyString) {
+                handleEmptyString()
+            }
+        } else {
+            if (handleNonEmptyString) {
+                handleNonEmptyString()
+            }
+        }
+
         setSearchQuery(text);
 
         /// !!! search doesn't account for full name
@@ -43,7 +44,7 @@ const SearchBar = ({ placeholder, usersData, handleOnFocus, handleOnBlur }: Sear
     };
 
     return (
-        <View style={{ gap: 10 }}>
+        <View style={{ gap: 0 }}>
             <View style={styles.searchBar} >
                 <Icon
                     name={GlobalStyles.icons.searchOutline}
@@ -57,8 +58,6 @@ const SearchBar = ({ placeholder, usersData, handleOnFocus, handleOnBlur }: Sear
                     placeholderTextColor={GlobalStyles.colorPalette.primary[400]}
                     value={searchQuery}
                     onChangeText={handleSearch}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
                 />
             </View>
 
@@ -66,10 +65,7 @@ const SearchBar = ({ placeholder, usersData, handleOnFocus, handleOnBlur }: Sear
                 data={searchResults}
                 renderItem={({ item }) => (
                     <ProfileCell
-                        profilePicture={item.profile_picture}
-                        username={item.username}
-                        firstName={item.first_name}
-                        lastName={item.last_name}
+                        user={item}
                     />
                 )}
                 keyExtractor={(item) => item.uid}

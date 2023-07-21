@@ -1,20 +1,35 @@
 import React, { useState } from 'react';
-import { View, Pressable } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
+import Icon from 'react-native-remix-icon';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName'
 import Username from '../../components/Name/Username'
 import CategoryBar from '../../components/Bar/CategoryBar';
-
 import ClothingCategory from '../../components/Category/ClothingCategory'
+
 import { ClothingTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-export default function Profile() {
+type ProfilePropsType = {
+    isForeignProfile: boolean,
+};
+
+const Profile = ({ isForeignProfile }: ProfilePropsType) => {
+
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
+    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //!!! Use state from backend
 
     const handleTitlePress = (title: string) => {
         setSelectedCategory(title);
+    };
+
+    const handleIconPress = () => {
+        if (iconName === GlobalStyles.icons.bookmarkFill) {
+            setIconName(GlobalStyles.icons.bookmarkOutline);
+        } else {
+            setIconName(GlobalStyles.icons.bookmarkFill);
+        }
     };
 
     return (
@@ -31,6 +46,7 @@ export default function Profile() {
                     <FullName firstName={"Charlie"} lastName={"Wu"} />
                     <Username username={"_charlie_wu"} />
                 </View>
+
             </View>
             <View style={{ gap: 15, flex: 1 }}>
                 <View>
@@ -44,6 +60,23 @@ export default function Profile() {
                     {selectedCategory === ClothingTypes.shoes && <ClothingCategory category={ClothingTypes.shoes} key={ClothingTypes.shoes} />}
                 </View>
             </View>
+            {isForeignProfile && (
+                <View style={styles.bookmarkIconWrapper}>
+                    <Pressable onPress={handleIconPress}>
+                        <Icon name={iconName} color={GlobalStyles.colorPalette.primary[900]} size={GlobalStyles.sizing.icon.regular} />
+                    </Pressable>
+                </View>
+            )}
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    bookmarkIconWrapper: {
+        position: 'absolute', /// !!! absolute value
+        top: 0,
+        right: GlobalStyles.layout.xGap,
+    },
+});
+
+export default Profile;

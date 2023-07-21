@@ -3,7 +3,7 @@ import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
 
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedProps, useAnimatedStyle, useSharedValue, withSpring, withTiming, } from 'react-native-reanimated';
-import { maxTranslateY, screenHeight, screenWidth } from '../../utils/modalMaxShow';
+import { highTranslateY, screenHeight, screenWidth } from '../../utils/modalMaxShow';
 
 import { ModalPropTypes, stepOverHandler } from '.';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -43,13 +43,13 @@ const GeneralModal = forwardRef(
 			})
 			.onUpdate((e) => {
 				translateY.value = e.translationY + context.value.y;
-				translateY.value = Math.max(translateY.value, maxTranslateY);
+				translateY.value = Math.max(translateY.value, highTranslateY);
 			})
 			.onEnd(() => {
 				if (translateY.value > -screenHeight / 1.25) {
 					scrollTo(0);
 				} else if (translateY.value <= -screenHeight / 1.25) {
-					scrollTo(maxTranslateY);
+					scrollTo(highTranslateY);
 				}
 			});
 

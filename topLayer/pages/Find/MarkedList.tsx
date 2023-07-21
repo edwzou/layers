@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import SearchBar from '../../components/Bar/SearchBar'
 import { StyleSheet, View, FlatList } from 'react-native';
-import GlobalStyles from '../../constants/GlobalStyles';
+
+import SearchBar from '../../components/Bar/SearchBar'
 import ProfileCell from '../../components/Cell/ProfileCell'
+
+import GlobalStyles from '../../constants/GlobalStyles';
 import { Find } from '../../constants/GlobalStrings';
 
 type MarkedListPropsType = {
@@ -13,12 +15,14 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
 
     const [isComponentVisible, setComponentVisible] = useState(true);
 
-    const handleSearchBarFocus = () => {
-        setComponentVisible(!isComponentVisible)
+    const handleEmptyString = () => {
+        console.log('handleEmptyString')
+        setComponentVisible(isComponentVisible => true)
     };
 
-    const handleSearchBarBlur = () => {
-        setComponentVisible(!isComponentVisible)
+    const handleNonEmptyString = () => {
+        console.log('handleNonEmptyString')
+        setComponentVisible(isComponentVisible => false)
     };
 
     return (
@@ -26,13 +30,13 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
             <SearchBar
                 placeholder={Find.searchMarked}
                 usersData={usersData}
-                handleOnFocus={handleSearchBarFocus}
-                handleOnBlur={handleSearchBarBlur} />
+                handleEmptyString={handleEmptyString}
+                handleNonEmptyString={handleNonEmptyString} />
             {isComponentVisible &&
                 <FlatList
                     data={usersData}
                     renderItem={({ item }) => (
-                        <ProfileCell profilePicture={item.profile_picture} username={item.username} firstName={item.first_name} lastName={item.last_name} />
+                        <ProfileCell user={item} />
                     )}
                 />
             }
@@ -43,7 +47,6 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: GlobalStyles.layout.xGap,
-        gap: GlobalStyles.layout.xGap,
     },
 });
 
