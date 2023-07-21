@@ -83,7 +83,6 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
 
 const styles = StyleSheet.create({
     bookmarkIconWrapper: {
-        position: 'absolute', /// !!! absolute value
         top: 0,
         right: GlobalStyles.layout.xGap,
     },
