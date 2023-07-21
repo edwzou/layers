@@ -11,10 +11,11 @@ import { bottomsData, outerwearData, outfitData, shoesData, topData } from '../.
 import OutfitCard from '../Card/OutfitCard';
 
 type ClothingCategoryPropType = {
-    category: string
+    category: string,
+    onPress: () => void
 }
 
-export default function ClothingCategory({ category }: ClothingCategoryPropType) {
+export default function ClothingCategory({ category, onPress }: ClothingCategoryPropType) {
     const [data, setData] = useState<any>(); //!!! change any type
 
     useEffect(() => {
@@ -47,7 +48,7 @@ export default function ClothingCategory({ category }: ClothingCategoryPropType)
             {category === ClothingTypes.outfits ?
                 <FlatList
                     data={data}
-                    renderItem={({ item }) => <OutfitCard title={item.title} itemCount={item.items.length} items={item.items} />}
+                    renderItem={({ item }) => <OutfitCard title={item.title} itemCount={item.items.length} items={item.items} onPress={onPress} />}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ gap: GlobalStyles.layout.xGap }}
                 /> :
@@ -55,7 +56,7 @@ export default function ClothingCategory({ category }: ClothingCategoryPropType)
                     data={data}
                     renderItem={({ item }) =>
                         <View style={{ width: ITEM_SIZE(2) }}>
-                            <ItemCell image={item.img} key={item.id} />
+                            <ItemCell image={item.image} key={item.id} onPress={onPress} />
                         </View>
                     }
                     numColumns={2}

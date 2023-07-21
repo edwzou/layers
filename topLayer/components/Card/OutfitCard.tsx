@@ -4,26 +4,27 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import ItemCell from '../Cell/ItemCell'
 import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';
+import { UserClothing } from '../../pages/Match';
 
 const itemCellSize = (screenWidth - 60) / 4;
 
 type OutfitCardPropsType = {
     title: string;
     itemCount: number,
-    items: any[],
+    items: UserClothing[],
+    onPress: () => void,
 };
 
 export default function OutfitCard({
     title,
     itemCount,
     items,
+    onPress
 }: OutfitCardPropsType) {
     const truncatedTitle = title.length > 70 ? title.slice(0, 70) + "..." : title;
     return (
         <Pressable style={styles.container}
-            onPress={() => {
-                console.log('OutfitCard tapped');
-            }}>
+            onPress={onPress}>
             <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Text style={styles.title}>{truncatedTitle}</Text>
                 <Text>
@@ -36,7 +37,7 @@ export default function OutfitCard({
                 data={items.slice(0, 4)}
                 renderItem={({ item }) => (
                     <View style={styles.itemContainer}>
-                        <ItemCell image={item.img} disablePress={true} imageStyle={{ width: '85%', height: '85%' }} />
+                        <ItemCell image={item.image} disablePress={true} imageStyle={{ width: '85%', height: '85%' }} />
                     </View>
                 )}
                 numColumns={2}

@@ -1,5 +1,5 @@
-import { View, TextInput, StyleSheet, Text } from 'react-native';
-import React, { useState } from 'react';
+import { View, TextInput, StyleSheet, Text, Pressable } from 'react-native';
+import React, { useRef, useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 type StackedTextboxPropsType = {
@@ -16,9 +16,15 @@ const StackedTextBox = ({
 	onFieldChange,
 }: StackedTextboxPropsType) => {
 	const [fieldText, setFieldText] = useState(value || '');
+	const textRef = useRef<TextInput>(null);
+
+	const handlePress = () => {
+		if (!textRef.current) return;
+		textRef.current.focus();
+	}
 
 	return (
-		<View style={styles.container}>
+		<Pressable style={styles.container} onPress={handlePress}>
 			<Text style={{ color: GlobalStyles.colorPalette.primary[400] }}>
 				{label}
 			</Text>
@@ -30,8 +36,9 @@ const StackedTextBox = ({
 				}}
 				secureTextEntry={secure || false}
 				clearButtonMode="while-editing"
+				ref={textRef}
 			/>
-		</View>
+		</Pressable>
 	);
 };
 

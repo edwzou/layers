@@ -11,23 +11,21 @@ const FeedbackPage = () => {
     };
 
     return (
-        <>
-            <View style={[styles.container, { gap: 15 }]}>
-                <SquareTextbox
-                    label={Feedback.tellUsWhatYouThink}
-                />
-                <View style={styles.label}>
-                    <Text style={styles.text}>
-                        {Feedback.wereHappyToHelpAt}
+        <View style={[styles.container, { gap: 15 }]}>
+            <SquareTextbox
+                label={Feedback.tellUsWhatYouThink}
+            />
+            <View style={styles.label}>
+                <Text style={styles.text}>
+                    {Feedback.wereHappyToHelpAt}
+                </Text>
+                <Pressable onPress={handleLinkPress}>
+                    <Text style={styles.link}>
+                        {Feedback.teamAtLayersDotCom}
                     </Text>
-                    <Pressable onPress={handleLinkPress}>
-                        <Text style={styles.link}>
-                            {Feedback.teamAtLayersDotCom}
-                        </Text>
-                    </Pressable>
-                </View>
+                </Pressable>
             </View>
-        </>
+        </View>
     )
 };
 

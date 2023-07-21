@@ -8,7 +8,7 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
-import { UserClothing } from '../Match';
+import { UserClothing } from '../../pages/Match';
 
 type OutfitPreviewPropsType = {
 	outerwear: UserClothing,
@@ -54,7 +54,7 @@ const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPre
 				columnWrapperStyle={{ gap: GlobalStyles.layout.xGap }}
 				style={{ height: screenHeight - 350 }}
 			/>
-		</View >
+		</View>
 	);
 };
 

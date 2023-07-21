@@ -9,7 +9,7 @@ import { StepOverTypes, StackNavigation } from '../../constants/Enums';
 import { highTranslateY } from '../../utils/modalMaxShow';
 
 import Profile from './Profile'
-import FeedbackPage from '../Feedback/FeedbackPage';
+import FeedbackPage from '../../ModalContent/Feedback/FeedbackPage';
 
 const ProfilePage = () => {
 
