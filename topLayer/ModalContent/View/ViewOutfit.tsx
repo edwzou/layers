@@ -50,7 +50,7 @@ export default ViewOutfit
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: GlobalStyles.layout.xGap,
+        paddingHorizontal: GlobalStyles.layout.xGap,
         gap: GlobalStyles.layout.gap,
         flex: 1,
     },
@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
     },
     tagsContainer: {
         flexDirection: 'row',
-        gap: 5
+        gap: 8
     }
 })

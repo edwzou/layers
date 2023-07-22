@@ -110,12 +110,12 @@ const GeneralModal = forwardRef(
 const styles = StyleSheet.create({
 	container: {
 		height: screenHeight,
-		paddingTop: 40,
+		paddingTop: 30,
 		width: screenWidth,
 		backgroundColor: GlobalStyles.colorPalette.background,
 		position: 'absolute',
 		top: screenHeight,
-		gap: 40,
+		gap: 20,
 		borderTopRightRadius: 30,
 		borderTopLeftRadius: 30,
 		zIndex: 10,
