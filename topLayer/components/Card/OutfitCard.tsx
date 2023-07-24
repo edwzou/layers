@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
+
 import GlobalStyles from '../../constants/GlobalStyles';
+
 import ItemCell from '../Cell/ItemCell'
 import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -25,7 +27,7 @@ export default function OutfitCard({
     return (
         <Pressable style={styles.container}
             onPress={onPress}>
-            <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <View style={styles.infoBox}>
                 <Text style={styles.title}>{truncatedTitle}</Text>
                 <Text>
                     <View style={[styles.label, GlobalStyles.utils.tagShadow]}>
@@ -48,6 +50,7 @@ export default function OutfitCard({
 
 const styles = StyleSheet.create({
     container: {
+        width: screenWidth - (GlobalStyles.layout.xGap * 2),
         aspectRatio: 1.8,
         borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
         backgroundColor: GlobalStyles.colorPalette.card[100],
@@ -55,6 +58,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 20,
+    },
+    infoBox: {
+        height: (itemCellSize * 2),
+        flexDirection: 'column',
+        justifyContent: 'space-between',
     },
     title: {
         ...GlobalStyles.typography.body,

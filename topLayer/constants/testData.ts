@@ -12,6 +12,192 @@ import shoe3 from '../assets/testShoe3.png';
 
 import { ClothingTypes } from './Enums';
 
+export const clothingData = [
+	{
+		category: "outfits",
+		data: [
+			{
+				title: 'Friday night',
+				items: [
+					{
+						id: 'image0',
+						image: image0,
+						title: 'goose',
+					},
+					{
+						id: 'image1',
+						image: image1,
+						title: 'burberry',
+					},
+					{
+						id: 'image2',
+						image: image2,
+						title: 'shoe',
+					},
+					{
+						id: 'image3',
+						image: image3,
+						title: 'pant',
+					},
+				],
+				category: ClothingTypes.outfits,
+			},
+			{
+				title: 'Weekend casual baby!',
+				items: [
+					{
+						id: 'image0',
+						image: image0,
+						title: 'goose',
+						category: ClothingTypes.outerwear,
+					},
+					{
+						id: 'image1',
+						image: image1,
+						title: 'burberry',
+						category: ClothingTypes.tops,
+					},
+					{
+						id: 'image2',
+						image: image2,
+						title: 'shoe',
+						category: ClothingTypes.shoes,
+					},
+					{
+						id: 'image3',
+						image: image3,
+						title: 'pant',
+						category: ClothingTypes.bottoms,
+					},
+				],
+				category: ClothingTypes.outfits,
+			},
+			{
+				title:
+					"Seattle day 1 let's go get it! Seattle day 1 let's go get it! Seattle day 1 let's go get it! Seattle day 1 let's go get it! Seattle day 1 let's go get it! Seattle day 1 let's go get it!",
+				items: [
+					{
+						id: 'image0',
+						image: image0,
+						title: 'goose',
+					},
+					{
+						id: 'image1',
+						image: image1,
+						title: 'burberry',
+					},
+					{
+						id: 'image2',
+						image: image2,
+						title: 'shoe',
+					},
+					{
+						id: 'image3',
+						image: image3,
+						title: 'pant',
+					},
+				],
+				category: ClothingTypes.outfits,
+			},
+		],
+	},
+	{
+		category: 'outerwear',
+		data: [
+			{
+				id: 'image0',
+				image: image0,
+				title: 'goose',
+			},
+			{
+				id: 'image0',
+				image: image0,
+				title: 'goose',
+			},
+			{
+				id: 'image0',
+				image: image0,
+				title: 'goose',
+			},
+		],
+	},
+	{
+		category: 'tops',
+		data: [
+			{
+				id: 'image1',
+				image: image1,
+				title: 'burberry',
+			},
+			{
+				id: 'image1',
+				image: image1,
+				title: 'burberry',
+			},
+			{
+				id: 'image1',
+				image: image1,
+				title: 'burberry',
+			},
+		],
+	},
+	{
+		category: 'bottoms',
+		data: [
+			{
+				id: 'image3',
+				image: image3,
+				title: 'pant',
+			},
+			{
+				id: 'image4',
+				image: image3,
+				title: 'pant',
+			},
+			{
+				id: 'image5',
+				image: image3,
+				title: 'pant',
+			},
+			{
+				id: 'image6',
+				image: image3,
+				title: 'pant',
+			},
+			{
+				id: 'image7',
+				image: image3,
+				title: 'pant',
+			},
+			{
+				id: 'image3',
+				image: image3,
+				title: 'pant',
+			},
+			{
+				id: 'image4',
+				image: image3,
+				title: 'pant',
+			},
+			{
+				id: 'image5',
+				image: image3,
+				title: 'pant',
+			},
+		],
+	},
+	{
+		category: 'shoes',
+		data: [
+			{
+				id: 'image2',
+				image: image2,
+				title: 'shoe',
+			},
+		],
+	},
+]
+
 export const outerwearData = [
 	{
 		id: 'image0',
