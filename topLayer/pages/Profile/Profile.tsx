@@ -1,15 +1,17 @@
 import React, { useRef, useState } from 'react';
-import { View, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName'
 import Username from '../../components/Name/Username'
 import CategoryBar from '../../components/Bar/CategoryBar';
-import ClothingCategory from '../../components/Category/ClothingCategory'
+import CategorySlide from '../../components/Category/CategorySlide'
 
-import { ClothingTypes, StepOverTypes } from '../../constants/Enums';
+import { ClothingTypes, StepOverTypes, CategoryToIndex, IndexToCategory } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
+import { clothingData } from '../../constants/testData';
+
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
 import { highTranslateY } from '../../utils/modalMaxShow';
 import ViewOutfit from '../../ModalContent/View/ViewOutfit';
@@ -21,13 +23,16 @@ type ProfilePropsType = {
 
 const Profile = ({ isForeignProfile }: ProfilePropsType) => {
 
-    const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
     const previewRef = useRef<refPropType>(null);
     const editModalRef = useRef<refPropType>(null);
-    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //!!! Use state from backend
+    const flatListRef = useRef<FlatList>(null);
 
-    const handleTitlePress = (title: string) => {
-        setSelectedCategory(title);
+    const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
+    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //!!! Use user state from backend
+
+    const handleCategoryChange = (category: string) => {
+        setSelectedCategory(category);
+        handleIndexChange(CategoryToIndex[category])
     };
 
     const handleIconPress = () => {
@@ -37,6 +42,20 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
             setIconName(GlobalStyles.icons.bookmarkFill);
         }
     };
+
+    const handleIndexChange = (index: number) => {
+        if (flatListRef.current) {
+            flatListRef.current?.scrollToIndex({ index, animated: true });
+        }
+    };
+
+    const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
+        if (viewableItems.length > 0) {
+            const visibleItem = viewableItems[0];
+            const index = clothingData.findIndex((item) => item.category === visibleItem.item.category);
+            setSelectedCategory(IndexToCategory[index])
+        }
+    }).current;
 
     return (
         <>
@@ -57,14 +76,20 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>
                     <View>
-                        <CategoryBar handleTitlePress={handleTitlePress} />
+                        <CategoryBar selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
                     </View>
-                    <View style={{ flex: 1, marginHorizontal: GlobalStyles.layout.xGap, marginBottom: GlobalStyles.layout.xGap * 2 }}>
-                        {selectedCategory === ClothingTypes.outfits && <ClothingCategory category={ClothingTypes.outfits} key={ClothingTypes.outfits} onPress={() => { previewRef.current?.scrollTo(highTranslateY) }} />}
-                        {selectedCategory === ClothingTypes.outerwear && <ClothingCategory category={ClothingTypes.outerwear} key={ClothingTypes.outerwear} onPress={() => { previewRef.current?.scrollTo(highTranslateY) }} />}
-                        {selectedCategory === ClothingTypes.tops && <ClothingCategory category={ClothingTypes.tops} key={ClothingTypes.tops} onPress={() => { previewRef.current?.scrollTo(highTranslateY) }} />}
-                        {selectedCategory === ClothingTypes.bottoms && <ClothingCategory category={ClothingTypes.bottoms} key={ClothingTypes.bottoms} onPress={() => { previewRef.current?.scrollTo(highTranslateY) }} />}
-                        {selectedCategory === ClothingTypes.shoes && <ClothingCategory category={ClothingTypes.shoes} key={ClothingTypes.shoes} onPress={() => { previewRef.current?.scrollTo(highTranslateY) }} />}
+                    <View>
+                        <FlatList
+                            ref={flatListRef}
+                            data={clothingData}
+                            renderItem={({ item }) => <CategorySlide clothingData={item} onPress={() => { editModalRef.current?.scrollTo(highTranslateY) }} />}
+                            horizontal
+                            pagingEnabled
+                            snapToAlignment='center'
+                            showsHorizontalScrollIndicator={false}
+                            onViewableItemsChanged={handleViewableItemsChanged}
+                            viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
+                        />
                     </View>
                 </View>
             </View>
@@ -83,6 +108,7 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
 
 const styles = StyleSheet.create({
     bookmarkIconWrapper: {
+        position: 'absolute',
         top: 0,
         right: GlobalStyles.layout.xGap,
     },

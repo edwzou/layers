@@ -16,12 +16,10 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
     const [isComponentVisible, setComponentVisible] = useState(true);
 
     const handleEmptyString = () => {
-        console.log('handleEmptyString')
         setComponentVisible(isComponentVisible => true)
     };
 
     const handleNonEmptyString = () => {
-        console.log('handleNonEmptyString')
         setComponentVisible(isComponentVisible => false)
     };
 

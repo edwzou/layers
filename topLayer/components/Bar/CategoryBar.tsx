@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+
 import GlobalStyles from '../../constants/GlobalStyles';
-import { ClothingCategoryTypes, ClothingTypes } from '../../constants/Enums';
+import { ClothingTypes } from '../../constants/Enums';
 
-export default function CategoryBar({ handleTitlePress }: any) {
-    const [selectedTitle, setSelectedTitle] = useState<ClothingCategoryTypes>(ClothingTypes.outfits);
+type CategoryBarPropsType = {
+    selectedCategory: string,
+    onCategoryChange: (category: string) => void,
+};
 
-    const handleTitlePressAndSetSelectedTitle = (title: ClothingCategoryTypes) => {
-        handleTitlePress(title)
-        setSelectedTitle(title)
+export default function CategoryBar({ selectedCategory, onCategoryChange }: CategoryBarPropsType) {
+
+    const handleCategoryPress = (category: string) => {
+        onCategoryChange(category)
     }
 
     const containerCell = (category: any) => {
-        return <Pressable onPress={() => handleTitlePressAndSetSelectedTitle(category)} style={[styles.titleContainer, selectedTitle === category && styles.currentTitle]}>
-            <Text style={[styles.title, selectedTitle === category && styles.currentTitleText]}>{category.charAt(0).toUpperCase() + category.slice(1)}</Text>
+        return <Pressable onPress={() => handleCategoryPress(category)} style={[styles.titleContainer, selectedCategory === category && styles.currentTitle]}>
+            <Text style={[styles.title, selectedCategory === category && styles.currentTitleText]}>{category.charAt(0).toUpperCase() + category.slice(1)}</Text>
         </Pressable>
     }
 
