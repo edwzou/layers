@@ -1,31 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, Pressable, SafeAreaView } from 'react-native';
-
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { StackTypes } from '../../utils/StackNavigation';
-import { StackNavigation } from '../../constants/Enums';
-
 import Icon from 'react-native-remix-icon';
+
 import GlobalStyles from '../../constants/GlobalStyles';
+
+import { NavigationContext } from '../../pages/Main/Main';
 
 type NavbarPropsType = {
     toggleFeedbackModal: () => void;
 };
 
 const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
-    const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+    const navigationContext = useContext(NavigationContext)
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.icons}>
                 <Pressable onPress={() => {
-                    navigation.navigate(StackNavigation.Match);
+                    navigationContext[1]();
                 }}>
                     <Icon
                         name={GlobalStyles.icons.shirtOutline}
                         color={GlobalStyles.colorPalette.primary[900]}
-                        size={30}
+                        size={GlobalStyles.sizing.icon.regular}
                     />
                 </Pressable>
                 <Pressable onPress={() => toggleFeedbackModal()}>
@@ -47,7 +44,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
                     />
                 </Pressable>
                 <Pressable onPress={() => {
-                    navigation.navigate(StackNavigation.Find);
+                    navigationContext[2]();
                 }}>
                     <Icon
                         name={GlobalStyles.icons.searchOutline}

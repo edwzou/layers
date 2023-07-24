@@ -7,7 +7,7 @@ import Header from '../../components/Header/Header'
 import Selector from './Selector'
 import Button from '../../components/Button/Button'
 
-import { StepOverTypes, ClothingTypes, StackNavigation, NavigationBack } from '../../constants/Enums'
+import { StepOverTypes, ClothingTypes, StackNavigation } from '../../constants/Enums'
 import { baseUrl } from '../../utils/apiUtils';
 import { highTranslateY } from '../../utils/modalMaxShow';
 import axios from 'axios';
@@ -87,7 +87,7 @@ const MatchPage = () => {
     return (
         <>
             <View style={{ gap: 15 }}>
-                <Header text={StackNavigation.Match} back={NavigationBack.close} />
+                <Header text={StackNavigation.Match} rightArrow={true} />
                 <Selector outerwear={data.outerwear} tops={data.tops} bottoms={data.bottoms} shoes={data.shoes} selectedIndex={selectedIndex} />
             </View>
             <Button text={match.preview} onPress={handlePress} style={{ position: 'absolute', bottom: GlobalStyles.layout.gap * 2, alignSelf: 'center' }} />

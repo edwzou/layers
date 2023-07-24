@@ -33,6 +33,7 @@ export const ClothingTypes: ClothingCategoryTypes = {
 export const StackNavigation = {
 	Login: 'Login',
 	SignUp: 'Sign Up',
+	Main: 'Main',
 	Profile: 'Profile',
 	Preview: 'Preview',
 	Match: 'Match',

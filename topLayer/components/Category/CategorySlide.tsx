@@ -2,7 +2,7 @@ import { StyleSheet, View, FlatList } from 'react-native'
 import React from 'react'
 
 import { ITEM_SIZE } from '../../utils/GapCalc';
-import { screenWidth } from '../../utils/modalMaxShow';
+import { screenWidth, screenHeight } from '../../utils/modalMaxShow';
 import OutfitCard from '../Card/OutfitCard';
 import ItemCell from '../Cell/ItemCell';
 
@@ -23,6 +23,7 @@ const CategorySlide = ({ clothingData, onPress }: CategorySlidePropsType) => {
                     renderItem={({ item }) => <OutfitCard title={item.title} itemCount={item.items.length} items={item.items} onPress={onPress} />}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+                    ListFooterComponent={<View style={{ padding: screenHeight * 0.05 }} />}
                 /> :
                 <FlatList
                     style={{ width: screenWidth - (GlobalStyles.layout.xGap * 2) }}
@@ -36,6 +37,7 @@ const CategorySlide = ({ clothingData, onPress }: CategorySlidePropsType) => {
                     contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
                     columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
                     showsVerticalScrollIndicator={false}
+                    ListFooterComponent={<View style={{ padding: screenHeight * 0.05 }} />}
                 />
             }
         </View>

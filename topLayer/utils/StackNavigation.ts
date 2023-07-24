@@ -4,12 +4,10 @@ export type StackTypes = {
 	// !!! Fix these types
 	Login: any;
 	'Sign Up': any;
-	Profile: any;
+	Main: any;
 	Preview: any;
-	Match: any;
 	Edit: any;
 	Feedback: any;
-	Find: any;
 };
 
 export const Stack = createNativeStackNavigator<StackTypes>();
