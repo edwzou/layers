@@ -1,10 +1,9 @@
 // API request
 async function backgroundCropping() {
     console.log('Cropped baby!');
-    console.log('God damn finally got it.');
     // Request parameter
     const endpoint = 'https://sdk.photoroom.com/v1/segment'
-    const apiKey = '2d95a0ff1ff9886a130f08dad268e867eba5456c' // zennteam1 account, 3 calls left
+    const apiKey = '2d95a0ff1ff9886a130f08dad268e867eba5456c' // zennteam1 account, 2 calls left
     const imageURL = 'http://localhost:1234/get-image'
 
     // Creating data
@@ -30,7 +29,7 @@ async function backgroundCropping() {
         // Display the processed image on the web page at localhost:1234
         const blob = await response.blob();
         const imageUrl = URL.createObjectURL(blob);
-        const img = new Image();
+        const img = new Image(); // why is it zoomed in
         img.src = imageUrl;
         document.body.appendChild(img);
         console.log('Image uploaded and processed successfully!');
