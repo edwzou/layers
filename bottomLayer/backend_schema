@@ -1,3 +1,23 @@
+CREATE TYPE color_enum AS ENUM (
+    '#4891FF', -- Blue
+    '#46B9C9', -- Teal
+    '#A3DEC9', -- Mint
+    '#6DC86E', -- Green
+    '#76956B', -- Olive
+    '#EEE16B', -- Yellow
+    '#E8D3B4', -- Beige
+    '#977854', -- Brown
+    '#EBA655', -- Orange
+    '#E55A5A', -- Red
+    '#AD4E4E', -- Maroon
+    '#F67ECE', -- Pink
+    '#B77AC7', -- Purple
+    '#3869B2', -- Navy
+    '#121212', -- Black
+    '#CDCDCD', -- Grey
+    '#F2F2F2'  -- White
+);
+
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE SCHEMA backend_schema;
 CREATE TABLE backend_schema.user (
@@ -10,7 +30,7 @@ CREATE TABLE backend_schema.user (
     private BOOL NOT NULL,
     followers UUID[],
     following UUID[],
-    profile_picture BYTEA
+    profile_picture VARCHAR(255)
 );
 CREATE TABLE backend_schema.outfit (
     oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -18,18 +38,24 @@ CREATE TABLE backend_schema.outfit (
     // Need to limit clothing_items to only refer to ciid UUIDs
     clothing_items UUID[],
     uid UUID NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_outfit_per_user UNIQUE (title, clothing_items, uid),
     CONSTRAINT fit
       FOREIGN KEY (uid) 
       REFERENCES backend_schema.user(uid)
       ON DELETE CASCADE
 );
+
 CREATE TABLE backend_schema.clothing_item (
     ciid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    image BYTEA NOT NULL,
+    image VARCHAR(255) NOT NULL,
     category VARCHAR(255) NOT NULL,
-    title VARCHAR(50) NOT NULL, 
+    title VARCHAR(50) NOT NULL,
     uid UUID NOT NULL,
+    brands VARCHAR[],
+    size VARCHAR(50),
+    color color_enum[],
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_ci_per_user UNIQUE (title, category, uid),
     CONSTRAINT item
       FOREIGN KEY (uid) 
