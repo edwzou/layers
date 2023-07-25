@@ -219,17 +219,39 @@ router.get("/outfits/u/:userId", async (req, res) => {
 router.post("/clothing_items", async (req, res) => {
   try {
     // Extract clothing item details from the request body
-    const { image, category, title, uid } = req.body;
+    const { image, category, title, uid, brands, size, color } = req.body;
     // Insert the clothing item into the database
     await sql`
-      INSERT INTO backend_schema.clothing_item (image, category, title, uid)
-      VALUES ( ${image}, ${category}, ${title}, ${uid})
+      INSERT INTO backend_schema.clothing_item (image, category, title, uid, brands, size, color)
+      VALUES ( ${image}, ${category}, ${title}, ${uid}, ${brands}, ${size}, ${color})
     `;
 
     res.status(200).json({ message: 'Clothing item created successfully'});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Endpoint for updating a specific outfit
+router.put("/clothing_items/:itemId", async (req, res) => {
+  try {
+    // Extract outfit data from the request body
+    const { image, category, title, brands, size, color } = req.body;
+    const { itemId } = req.params;
+
+    // Update the outfit in the database
+    await sql`
+      UPDATE backend_schema.clothing_item
+      SET title = ${title}, image = ${image}, category = ${category}, brands = ${brands}, size = ${size}, color = ${color}
+      WHERE ciid = ${itemId}
+    `;
+
+    // Return the updated outfit
+    res.status(200).json({ message: 'Clothing Item updated successfully', itemId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while updating the clothing item.' });
   }
 });
 
@@ -247,7 +269,9 @@ router.delete("/clothing_items/:itemId", async (req, res) => {
   }
 });
 
-// Endpoint for updating a specific clothing item
+
+
+// Endpoint for retrieving a specific clothing item
 router.get('/clothing_items/:itemId', async (req, res) => {
   try {
     const { itemId } = req.params;
@@ -269,7 +293,7 @@ router.get('/clothing_items/:itemId', async (req, res) => {
   }
 });
 
-// Endpoint for retrieving a specific clothing item
+// Endpoint for retrieving a all clothing items
 router.get("/clothing_items/u/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
@@ -286,24 +310,6 @@ router.get("/clothing_items/u/:user_id", async (req, res) => {
   }
 });
 
-// Endpoint for retrieving all clothing items
-router.get("/clothingItems/:userId", async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const query = `SELECT * FROM clothingItems WHERE uid = '${userId}'`;
-    const result = await conn.query(query);
-    const post = result[0];
-
-    if (post) {
-      res.json(post);
-    } else {
-      res.status(404).json({ error: "Clothing item not found" });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
 
 // Endpoint for authenticating and logging in a user
 router.post("/auth/login", async (req, res) => {
