@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const { auth, requiredScopes } = require('express-oauth2-jwt-bearer');
 
 
 const postgres = require("postgres");
