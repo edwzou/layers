@@ -78,7 +78,7 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
                                     { transform: [{ scale: scale }] },
                                     styles.itemContent
                                 ]}>
-                                <ItemCell image={item.image} size={ITEM_SIZE()} disablePress />
+                                <ItemCell image={item.image} disablePress />
                             </Animated.View>
                         </View>
                     );

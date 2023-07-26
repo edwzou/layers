@@ -8,7 +8,7 @@ import Icon from 'react-native-remix-icon';
 import { stepOverHandler } from '.';
 import { NavigationBack } from '../../constants/Enums';
 
-import { NavigationContext } from '../../pages/Main/Main';
+import { NavigationContext } from '../../pages/Main/MainPage';
 
 type HeaderPropType = {
 	text: string;

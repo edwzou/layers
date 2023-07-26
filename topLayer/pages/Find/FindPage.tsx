@@ -16,12 +16,11 @@ import MarkedList from './MarkedList';
 import Profile from '../../pages/Profile/Profile'
 
 import { highTranslateY, fullTranslateY } from '../../utils/modalMaxShow';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const ShowProfileContext = createContext(() => { });
 
 const FindPage = () => {
-
     const markedListModalRef = useRef<refPropType>(null);
     const profileModalRef = useRef<refPropType>(null);
 
@@ -45,7 +44,7 @@ const FindPage = () => {
 
     return (
         <ShowProfileContext.Provider value={handleProfilePress}>
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Header text={StackNavigation.Find} leftArrow={true} />
                 <View style={styles.content}>
                     <SearchBar
@@ -64,7 +63,7 @@ const FindPage = () => {
                         </Pressable>
                     }
                 </View>
-            </View>
+            </SafeAreaView>
             <GeneralModal
                 title={`${usersData.length} Marked`}
                 content={<MarkedList usersData={usersData} />}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View } from 'react-native'
+import { SafeAreaView } from 'react-native'
 
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal'
 import OutfitPreview from '../../ModalContent/OutfitPreview/OutfitPreview'
@@ -86,10 +86,10 @@ const MatchPage = () => {
 
     return (
         <>
-            <View style={{ gap: 15 }}>
+            <SafeAreaView style={{ gap: 15 }}>
                 <Header text={StackNavigation.Match} rightArrow={true} />
                 <Selector outerwear={data.outerwear} tops={data.tops} bottoms={data.bottoms} shoes={data.shoes} selectedIndex={selectedIndex} />
-            </View>
+            </SafeAreaView>
             <Button text={match.preview} onPress={handlePress} style={{ position: 'absolute', bottom: GlobalStyles.layout.gap * 2, alignSelf: 'center' }} />
             <GeneralModal
                 title={StackNavigation.Preview}

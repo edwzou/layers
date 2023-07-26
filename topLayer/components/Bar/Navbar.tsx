@@ -4,7 +4,7 @@ import Icon from 'react-native-remix-icon';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { NavigationContext } from '../../pages/Main/Main';
+import { NavigationContext } from '../../pages/Main/MainPage';
 
 type NavbarPropsType = {
     toggleFeedbackModal: () => void;

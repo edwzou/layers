@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 import Navbar from '../../components/Bar/Navbar';
 import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
@@ -20,7 +20,7 @@ const ProfilePage = () => {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
             <Navbar toggleFeedbackModal={toggleFeedbackModal} />
             <Profile isForeignProfile={false} />
             <GeneralModal
@@ -29,7 +29,7 @@ const ProfilePage = () => {
                 content={<FeedbackPage />}
                 ref={modalRef}
             />
-        </View>
+        </SafeAreaView>
     );
 };
 

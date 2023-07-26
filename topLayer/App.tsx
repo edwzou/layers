@@ -10,10 +10,6 @@ import { StackNavigation } from './constants/Enums';
 
 import SignInPage from './pages/SignIn/SignInPage';
 import SignUpPage from './pages/SignUp/SignUpPage';
-import MatchPage from './pages/Match/MatchPage';
-import ProfilePage from './pages/Profile/ProfilePage';
-import EditClothingModal from './pages/Edit/EditClothingModal';
-import FindPage from './pages/Find/FindPage'
 import MainPage from './pages/Main/MainPage'
 
 import GlobalStyles from './constants/GlobalStyles';
@@ -36,7 +32,6 @@ export default function App() {
 						) : (
 							<>
 								<Stack.Screen name={StackNavigation.Main} component={MainPage} />
-								<Stack.Screen name={StackNavigation.Edit} component={EditClothingModal} />
 							</>
 						)}
 					</Stack.Navigator>
