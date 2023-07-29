@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// @ts-expect-error
 import { useForm, Controller } from 'react-hook-form';
 import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
@@ -223,6 +222,7 @@ const SignUp = () => {
 						<View style={{ backgroundColor: GlobalStyles.colorPalette.primary[500] + '20', width: '100%', height: 1 }} />
 						<Pressable style={styles.modalSelection} onPress={() => {
 							console.log("Implement Camera")
+
 							// !!! Implement Camera
 						}}><Text>Camera</Text></Pressable>
 					</View>

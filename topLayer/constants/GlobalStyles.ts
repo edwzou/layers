@@ -149,6 +149,7 @@ const icons = {
 	feedbackOutline: 'ri-feedback-line',
 	downFillArrow: 'ri-arrow-down-s-fill',
 	upFillArrow: 'ri-arrow-up-s-fill',
+	flipCamera: 'ri-camera-switch-line',
 };
 
 export default {
