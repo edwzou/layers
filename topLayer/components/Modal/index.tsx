@@ -9,6 +9,7 @@ import Icon from 'react-native-remix-icon';
 export type ModalPropTypes = {
 	title: string;
 	back?: boolean;
+	height?: number;
 	stepOver?: { type: string, handlePress: () => void };
 	content: ReactElement;
 };

@@ -14,7 +14,7 @@ export type refPropType = {
 };
 
 const GeneralModal = forwardRef(
-	({ title, stepOver, content }: ModalPropTypes, ref) => {
+	({ title, stepOver, height = highTranslateY, content }: ModalPropTypes, ref) => {
 		const active = useSharedValue(false);
 
 		const translateY = useSharedValue(0);
@@ -43,13 +43,13 @@ const GeneralModal = forwardRef(
 			})
 			.onUpdate((e) => {
 				translateY.value = e.translationY + context.value.y;
-				translateY.value = Math.max(translateY.value, highTranslateY);
+				translateY.value = Math.max(translateY.value, height);
 			})
 			.onEnd(() => {
 				if (translateY.value > -screenHeight / 1.25) {
 					scrollTo(0);
 				} else if (translateY.value <= -screenHeight / 1.25) {
-					scrollTo(highTranslateY);
+					scrollTo(height);
 				}
 			});
 

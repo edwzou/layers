@@ -73,6 +73,7 @@ const FindPage = () => {
                 title={''}
                 content={<Profile isForeignProfile={true} />}
                 ref={profileModalRef}
+                height={fullTranslateY}
             />
         </ShowProfileContext.Provider>
     );
