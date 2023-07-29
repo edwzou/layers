@@ -25,7 +25,6 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
     const currentIndex = useRef<number>(0);
     const flatListRef = useRef<FlatList<any>>(null);
 
-
     const handleOnViewableItemsChanged = useCallback(({ viewableItems }: any) => {
         const itemsInView = viewableItems.filter(
             ({ item }: any) => item.image && item.category,

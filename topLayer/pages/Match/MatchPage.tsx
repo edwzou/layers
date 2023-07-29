@@ -54,6 +54,7 @@ const MatchPage = () => {
     }, [selectedIndexes])
 
     const selectedIndex = (category: string, index: any) => {
+        // !!! Change to select ID
         if (category === ClothingTypes.outerwear) setSelectedIndexes(data => ({ ...data, outerwear: index }));
         if (category === ClothingTypes.tops) setSelectedIndexes(data => ({ ...data, tops: index }));
         if (category === ClothingTypes.bottoms) setSelectedIndexes(data => ({ ...data, bottoms: index }));
