@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { StackTypes } from '../../utils/StackNavigation';
+import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 
 import GlobalStyles from '../../constants/GlobalStyles';

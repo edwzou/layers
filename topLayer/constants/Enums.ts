@@ -1,4 +1,4 @@
-import { TagActionType, TagCategoryType } from 'components/Tag';
+import { type TagActionType, type TagCategoryType } from 'components/Tag';
 
 const outfits = 'outfits';
 const outerwear = 'outerwear';
@@ -13,21 +13,21 @@ export const StepOverTypes = {
 	next: 'Next',
 } as const;
 
-export type ClothingCategoryTypes = {
+export interface ClothingCategoryTypes {
 	// !!! Change these types
 	outfits: any;
 	outerwear: any;
 	tops: any;
 	bottoms: any;
 	shoes: any;
-};
+}
 
 export const ClothingTypes: ClothingCategoryTypes = {
-	outfits: outfits,
-	outerwear: outerwear,
-	tops: tops,
-	bottoms: bottoms,
-	shoes: shoes,
+	outfits,
+	outerwear,
+	tops,
+	bottoms,
+	shoes,
 } as const;
 
 export const StackNavigation = {

@@ -3,9 +3,9 @@ import React from 'react';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-type ProfilePicturePropType = {
+interface ProfilePicturePropType {
 	image?: any;
-};
+}
 
 const ProfilePicture = ({ image }: ProfilePicturePropType) => {
 	return (

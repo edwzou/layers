@@ -2,12 +2,12 @@ import { View, TextInput, StyleSheet, Text, Pressable } from 'react-native';
 import React, { useRef, useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-type StackedTextboxPropsType = {
+interface StackedTextboxPropsType {
 	label: string;
 	value?: string;
 	secure?: boolean;
 	onFieldChange: (text: string) => void;
-};
+}
 
 const StackedTextBox = ({
 	label,
@@ -19,9 +19,9 @@ const StackedTextBox = ({
 	const textRef = useRef<TextInput>(null);
 
 	const handlePress = () => {
-		if (!textRef.current) return;
+		if (textRef.current == null) return;
 		textRef.current.focus();
-	}
+	};
 
 	return (
 		<Pressable style={styles.container} onPress={handlePress}>

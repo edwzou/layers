@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export type StackTypes = {
+export interface StackTypes {
 	// !!! Fix these types
 	Login: any;
 	'Sign Up': any;
@@ -9,6 +9,6 @@ export type StackTypes = {
 	Edit: any;
 	Feedback: any;
 	Camera: any;
-};
+}
 
 export const Stack = createNativeStackNavigator<StackTypes>();

@@ -1,33 +1,33 @@
-export type UserClothing = {
+export interface UserClothing {
 	id: number;
 	image: string;
 	category: string;
-};
+}
 
-export type UserClothingList = {
+export interface UserClothingList {
 	outerwear: UserClothing[];
 	tops: UserClothing[];
 	bottoms: UserClothing[];
 	shoes: UserClothing[];
-};
+}
 
-export type UserClothingListSingle = {
+export interface UserClothingListSingle {
 	outerwear: UserClothing;
 	tops: UserClothing;
 	bottoms: UserClothing;
 	shoes: UserClothing;
-};
+}
 
-export type UserSelectedClothingList = {
+export interface UserSelectedClothingList {
 	outerwear: number;
 	tops: number;
 	bottoms: number;
 	shoes: number;
-};
+}
 
-export type UserClothingPadding = {
-	outerwear: (UserClothing | Record<string, number>)[];
-	tops: (UserClothing | Record<string, number>)[];
-	bottoms: (UserClothing | Record<string, number>)[];
-	shoes: (UserClothing | Record<string, number>)[];
-};
+export interface UserClothingPadding {
+	outerwear: Array<UserClothing | Record<string, number>>;
+	tops: Array<UserClothing | Record<string, number>>;
+	bottoms: Array<UserClothing | Record<string, number>>;
+	shoes: Array<UserClothing | Record<string, number>>;
+}
