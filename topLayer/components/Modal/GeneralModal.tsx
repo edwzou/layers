@@ -1,20 +1,33 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedProps, useAnimatedStyle, useSharedValue, withSpring, withTiming, } from 'react-native-reanimated';
+import Animated, {
+	useAnimatedProps,
+	useAnimatedStyle,
+	useSharedValue,
+	withSpring,
+	withTiming,
+} from 'react-native-reanimated';
 
-import { highTranslateY, screenHeight, screenWidth } from '../../utils/modalMaxShow';
-import { ModalPropTypes, stepOverHandler } from '.';
+import {
+	highTranslateY,
+	screenHeight,
+	screenWidth,
+} from '../../utils/modalMaxShow';
+import { type ModalPropTypes, stepOverHandler } from '.';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 
-export type refPropType = {
+export interface refPropType {
 	scrollTo: (destination: number) => void;
 	isActive: () => boolean;
-};
+}
 
 const GeneralModal = forwardRef(
-	({ title, stepOver, height = highTranslateY, content }: ModalPropTypes, ref) => {
+	(
+		{ title, stepOver, height = highTranslateY, content }: ModalPropTypes,
+		ref
+	) => {
 		const active = useSharedValue(false);
 
 		const translateY = useSharedValue(0);
@@ -35,7 +48,6 @@ const GeneralModal = forwardRef(
 			scrollTo,
 			isActive,
 		]);
-
 
 		const gesture = Gesture.Pan()
 			.onStart(() => {
@@ -90,11 +102,9 @@ const GeneralModal = forwardRef(
 					<Animated.View style={[styles.container, modalGestureStyle]}>
 						<View style={styles.header}>
 							<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
-							{stepOver ? stepOverHandler(stepOver) : null}
+							{stepOver != null ? stepOverHandler(stepOver) : null}
 						</View>
-						<View style={{ flex: 1 }}>
-							{content}
-						</View>
+						<View style={{ flex: 1 }}>{content}</View>
 					</Animated.View>
 				</GestureDetector>
 			</>
@@ -114,7 +124,7 @@ const styles = StyleSheet.create({
 		borderTopRightRadius: 30,
 		borderTopLeftRadius: 30,
 		zIndex: 10,
-		flex: 1
+		flex: 1,
 	},
 	header: {
 		display: 'flex',

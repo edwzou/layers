@@ -26,7 +26,7 @@ const SignIn = () => {
 	const onSubmit = async (data: any) => {
 		try {
 			const response = await axios.post(`${baseUrl}/auth/login`, {
-				username: data.username,
+				username: data.username !== '' ? data.username : null,
 				email: data.email !== '' ? data.email : null,
 				password: data.password,
 			});
@@ -59,7 +59,8 @@ const SignIn = () => {
 						/>
 					)}
 					name={
-						getValues('username').match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+						getValues('username').match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) !=
+							null
 							? 'email'
 							: 'username'
 					}
@@ -85,7 +86,7 @@ const SignIn = () => {
 				<Button
 					text="Sign in"
 					onPress={handleSubmit(onSubmit)}
-					disabled={Object.keys(dirtyFields).length < 2 ? true : false}
+					disabled={Object.keys(dirtyFields).length < 2}
 				/>
 			</View>
 		</View>

@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-// @ts-expect-error
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
@@ -14,8 +13,12 @@ import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import * as ImagePicker from 'expo-image-picker';
 import { base64Prefix } from '../../utils/Base64Prefix';
 import { baseUrl } from '../../utils/apiUtils';
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from '../../utils/StackNavigation';
+import { StackNavigation } from '../../constants/Enums';
 
-type FormValues = {
+interface FormValues {
 	first_name: string;
 	last_name: string;
 	username: string;
@@ -23,12 +26,13 @@ type FormValues = {
 	password: string;
 	private: boolean;
 	profile_picture: string;
-};
+}
 
 const SignUp = () => {
 	const [image, setImage] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const {
 		control,
@@ -48,7 +52,7 @@ const SignUp = () => {
 	});
 
 	const pickImage = async () => {
-		let result = await ImagePicker.launchImageLibraryAsync({
+		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
 			base64: true,
@@ -103,9 +107,9 @@ const SignUp = () => {
 		<View style={{ gap: 40 }}>
 			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Pressable
-					style={{ alignItems: 'center' }}
+					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						setModalVisible(!modalVisible);
+						navigation.navigate(StackNavigation.Camera);
 					}}
 				>
 					<ProfilePicture image={image} />
@@ -195,10 +199,10 @@ const SignUp = () => {
 				<RadioButton data={privacyOptions} onSelect={setValue} />
 			</View>
 			<View style={{ alignItems: 'center' }}>
-				{errors.email && (
+				{errors.email != null && (
 					<Text style={styles.error}>Please enter a valid email.</Text>
 				)}
-				{errors.password && (
+				{errors.password != null && (
 					<Text style={styles.error}>
 						Password must be 5 characters or more.
 					</Text>
@@ -208,10 +212,10 @@ const SignUp = () => {
 				<Button
 					text="Sign up"
 					onPress={handleSubmit(onSubmit)}
-					disabled={Object.keys(dirtyFields).length < 5 ? true : false}
+					disabled={Object.keys(dirtyFields).length < 5}
 				/>
 			</View>
-			<Modal visible={modalVisible}
+			{/* <Modal visible={modalVisible}
 				animationType="slide"
 				transparent={true}
 				onRequestClose={() => {
@@ -223,12 +227,13 @@ const SignUp = () => {
 						<View style={{ backgroundColor: GlobalStyles.colorPalette.primary[500] + '20', width: '100%', height: 1 }} />
 						<Pressable style={styles.modalSelection} onPress={() => {
 							console.log("Implement Camera")
+
 							// !!! Implement Camera
 						}}><Text>Camera</Text></Pressable>
 					</View>
 					<Pressable style={styles.modalButtons} onPress={() => { setModalVisible(!modalVisible) }}><Text>Cancel</Text></Pressable>
 				</View>
-			</Modal>
+			</Modal> */}
 		</View>
 	);
 };
@@ -260,20 +265,20 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[100],
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		gap: 5,
-		width: '95%'
+		width: '95%',
 	},
 	modalSelection: {
 		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'center',
-		padding: 15
+		padding: 15,
 	},
 	modalButtons: {
 		width: '95%',
 		alignItems: 'center',
 		backgroundColor: GlobalStyles.colorPalette.primary[100],
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
-		padding: 15
+		padding: 15,
 	},
 });
 

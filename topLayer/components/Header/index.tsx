@@ -1,16 +1,15 @@
-import { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 
 import { Text, Pressable } from 'react-native';
-import React from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StepOverTypes } from '../../constants/Enums';
 import Icon from 'react-native-remix-icon';
 
-export type ModalPropTypes = {
+export interface ModalPropTypes {
 	title: string;
-	stepOver?: { type: string, handlePress: () => void };
+	stepOver?: { type: string; handlePress: () => void };
 	content: ReactElement;
-};
+}
 
 export const stepOverHandler = (props: ModalPropTypes['stepOver']) => {
 	switch (props?.type) {

@@ -1,9 +1,9 @@
-export type UserOutfit = {
+export interface UserOutfit {
 	title: string;
-	items: {
+	items: Array<{
 		id: string;
 		image: HTMLImageElement;
 		title: string;
-	}[];
+	}>;
 	category: string;
-};
+}

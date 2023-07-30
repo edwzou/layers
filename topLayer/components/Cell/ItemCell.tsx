@@ -1,36 +1,43 @@
 import React, { memo } from 'react';
-import { Image, ImageStyle, Pressable, StyleSheet } from 'react-native';
+import { Image, type ImageStyle, Pressable, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-type ItemCellPropsType = {
+interface ItemCellPropsType {
 	image: any; // !!! Replace 'any' with 'string'
 	disablePress?: boolean;
 	imageStyle?: ImageStyle;
 	onPress?: () => void;
-};
+}
 
 /**
  * Cells for items
  * * NOTE: wrap cells in a wrapper to adjust size; ItemCell fills the wrapper *
- * @param {string} image - Item image 
+ * @param {string} image - Item image
  * @param {boolean} disablePress - Disables Pressable functionality
  * @param {ImageStyle} imageStyle - Custom image styling
  * @function onPress
  * @returns {ReactElement}
  */
-const ItemCell = ({ image, disablePress = false, imageStyle, onPress }: ItemCellPropsType) => {
+const ItemCell = ({
+	image,
+	disablePress = false,
+	imageStyle,
+	onPress,
+}: ItemCellPropsType) => {
 	return (
 		<Pressable
 			disabled={disablePress}
-			style={[
-				styles.container,
-			]}
+			style={[styles.container]}
 			onPress={onPress}
 		>
-			<Image source={image} style={[styles.image, imageStyle]} resizeMode="contain" />
+			<Image
+				source={image}
+				style={[styles.image, imageStyle]}
+				resizeMode="contain"
+			/>
 		</Pressable>
 	);
-}
+};
 
 export default memo(ItemCell);
 

@@ -14,7 +14,7 @@ import { ClothingTypes } from './Enums';
 
 export const clothingData = [
 	{
-		category: "outfits",
+		category: 'outfits',
 		data: [
 			{
 				title: 'Friday night',
@@ -196,7 +196,7 @@ export const clothingData = [
 			},
 		],
 	},
-]
+];
 
 export const outerwearData = [
 	{
