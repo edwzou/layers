@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 
-type RadioButtonPropsType = {
+interface RadioButtonPropsType {
 	data: any;
 	onSelect: any;
-};
+}
 
 const RadioButton = ({ data, onSelect }: RadioButtonPropsType) => {
 	const [userOption, setUserOption] = useState('Public');

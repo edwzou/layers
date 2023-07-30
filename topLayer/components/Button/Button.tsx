@@ -1,28 +1,33 @@
-import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, Text, type ViewStyle } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import React from 'react';
 
-type ButtonPropsType = {
+interface ButtonPropsType {
 	text: string;
 	onPress: (data: any) => void;
 	disabled?: boolean;
-	style?: ViewStyle
-};
+	style?: ViewStyle;
+}
 
-const Button = ({ text, onPress, style, disabled = false }: ButtonPropsType) => {
+const Button = ({
+	text,
+	onPress,
+	style,
+	disabled = false,
+}: ButtonPropsType) => {
 	return (
 		<Pressable
 			style={[
 				styles.button,
 				GlobalStyles.utils.smallRadius,
 				GlobalStyles.utils.tagShadow,
-				style ? style : null
-				,
+				style != null ? style : null,
 				{
 					backgroundColor: disabled
 						? GlobalStyles.colorPalette.primary[200]
 						: GlobalStyles.colorPalette.primary[500],
-					shadowColor: disabled ? GlobalStyles.colorPalette.primary[200]
+					shadowColor: disabled
+						? GlobalStyles.colorPalette.primary[200]
 						: GlobalStyles.colorPalette.primary[500],
 				},
 			]}
@@ -30,11 +35,14 @@ const Button = ({ text, onPress, style, disabled = false }: ButtonPropsType) => 
 			disabled={disabled}
 		>
 			<Text
-				style={[styles.text, {
-					color: disabled
-						? GlobalStyles.colorPalette.primary[400]
-						: GlobalStyles.colorPalette.background,
-				}]}
+				style={[
+					styles.text,
+					{
+						color: disabled
+							? GlobalStyles.colorPalette.primary[400]
+							: GlobalStyles.colorPalette.background,
+					},
+				]}
 			>
 				{text}
 			</Text>
@@ -52,6 +60,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	text: {
-		...GlobalStyles.typography.body
-	}
+		...GlobalStyles.typography.body,
+	},
 });

@@ -9,7 +9,7 @@
 		"splash": {
 			"image": "./assets/splash.png",
 			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#f2f2f2"
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
@@ -18,11 +18,27 @@
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#ffffff"
+				"backgroundColor": "#f2f2f2"
 			}
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"
-		}
+		},
+		"plugins": [
+			[
+				"expo-camera",
+				{
+					"cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+				}
+			],
+			[
+				"expo-media-library",
+				{
+					"photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+					"savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+					"isAccessMediaLocationEnabled": true
+				}
+			]
+		]
 	}
 }

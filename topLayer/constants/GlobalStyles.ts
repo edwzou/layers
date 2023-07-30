@@ -66,7 +66,6 @@ const colorPalette = {
 
 const layout = {
 	xGap: 16,
-	topHeaderGap: 75,
 	gap: 16,
 };
 
@@ -149,6 +148,10 @@ const icons = {
 	feedbackOutline: 'ri-feedback-line',
 	downFillArrow: 'ri-arrow-down-s-fill',
 	upFillArrow: 'ri-arrow-up-s-fill',
+	rightFillArrow: 'ri-arrow-right-s-fill',
+	leftFillArrow: 'ri-arrow-left-s-fill',
+	flipCameraOutline: 'ri-camera-switch-line',
+	imageFill: 'ri-image-fill',
 };
 
 export default {

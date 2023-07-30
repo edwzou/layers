@@ -1,13 +1,27 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { RouteProp, ParamListBase } from '@react-navigation/native';
+import {
+	NativeStackNavigationEventMap,
+	NativeStackNavigationOptions,
+	createNativeStackNavigator,
+} from '@react-navigation/native-stack';
+import { ReactNode } from 'react';
+
+type StackNavigatorType = {
+	id: string | undefined;
+	initialRouteName: string | undefined;
+	children: ReactNode;
+	screenListeners: any;
+	screenOptions: any;
+};
 
 export type StackTypes = {
-	// !!! Fix these types
-	Login: any;
-	'Sign Up': any;
-	Main: any;
-	Preview: any;
-	Edit: any;
-	Feedback: any;
+	Login: StackNavigatorType;
+	SignUp: StackNavigatorType;
+	Main: StackNavigatorType;
+	Preview: StackNavigatorType;
+	Edit: StackNavigatorType;
+	Feedback: StackNavigatorType;
+	Camera: StackNavigatorType;
 };
 
 export const Stack = createNativeStackNavigator<StackTypes>();

@@ -3,13 +3,13 @@ import React, { useRef, useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Icon from 'react-native-remix-icon';
 
-type InlineTextboxType = {
+interface InlineTextboxType {
 	icon: string;
 	secure?: boolean;
 	placeholder: string;
 	value?: string;
 	onFieldChange: (text: string) => void;
-};
+}
 
 export default function InlineTextbox({
 	icon,
@@ -22,9 +22,9 @@ export default function InlineTextbox({
 	const textRef = useRef<TextInput>(null);
 
 	const handlePress = () => {
-		if (!textRef.current) return;
+		if (textRef.current == null) return;
 		textRef.current.focus();
-	}
+	};
 
 	return (
 		<Pressable style={styles.container} onPress={handlePress}>

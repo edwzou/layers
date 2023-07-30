@@ -8,18 +8,24 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
-import { UserClothing } from '../../pages/Match';
+import { type UserClothing } from '../../pages/Match';
 import { match } from '../../constants/GlobalStrings';
 
-type OutfitPreviewPropsType = {
-	outerwear: UserClothing,
-	tops: UserClothing,
-	bottoms: UserClothing,
-	shoes: UserClothing,
+interface OutfitPreviewPropsType {
+	outerwear: UserClothing;
+	tops: UserClothing;
+	bottoms: UserClothing;
+	shoes: UserClothing;
 	matchName: (text: string) => void;
 }
 
-const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPreviewPropsType) => {
+const OutfitPreview = ({
+	outerwear,
+	tops,
+	bottoms,
+	shoes,
+	matchName,
+}: OutfitPreviewPropsType) => {
 	const [text, setText] = useState('');
 	const [rawData, setRawData] = useState<UserClothing[]>([]);
 	const [data, setData] = useState<UserClothing[]>([]);
@@ -29,12 +35,12 @@ const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPre
 	};
 
 	useEffect(() => {
-		setRawData([outerwear, tops, bottoms, shoes])
-	}, [outerwear, tops, bottoms, shoes])
+		setRawData([outerwear, tops, bottoms, shoes]);
+	}, [outerwear, tops, bottoms, shoes]);
 
 	useEffect(() => {
-		setData(rawData.filter(Boolean))
-	}, [rawData])
+		setData(rawData.filter(Boolean));
+	}, [rawData]);
 
 	return (
 		<View style={styles.container}>
@@ -45,11 +51,11 @@ const OutfitPreview = ({ outerwear, tops, bottoms, shoes, matchName }: OutfitPre
 			/>
 			<FlatList
 				data={data}
-				renderItem={({ item }) =>
+				renderItem={({ item }) => (
 					<View style={{ width: ITEM_SIZE(2) }}>
 						<ItemCell image={item.image} disablePress={false} key={item.id} />
 					</View>
-				}
+				)}
 				numColumns={2}
 				contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
 				columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}

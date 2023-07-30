@@ -1,8 +1,8 @@
-export type TagActionType = {
+export interface TagActionType {
 	add: string;
 	remove: string;
-};
-export type TagCategoryType = {
+}
+export interface TagCategoryType {
 	color: string;
 	brand: string;
-};
+}
