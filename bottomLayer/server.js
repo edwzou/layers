@@ -1,10 +1,19 @@
 const express = require('express');
 const path = require("path");
 const axios = require('axios');
+const { auth } = require('express-oauth2-jwt-bearer');
 
 const app = express();
 app.use(express.json());
 const router = require('./endpoints');
+
+const jwtCheck = auth({
+  audience: 'http://localhost:1234/',
+  issuerBaseURL: 'https://dev-75l58m4fij61lnkg.us.auth0.com/',
+  tokenSigningAlg: 'RS256'
+});
+
+app.use(jwtCheck);
 
 app.use('/', router);
 
