@@ -1,10 +1,10 @@
 import { TagActionType, TagCategoryType } from 'components/Tag';
 
-const outfits = 'outfits'
-const outerwear = 'outerwear'
-const tops = 'tops'
-const bottoms = 'bottoms'
-const shoes = 'shoes'
+const outfits = 'outfits';
+const outerwear = 'outerwear';
+const tops = 'tops';
+const bottoms = 'bottoms';
+const shoes = 'shoes';
 
 export const StepOverTypes = {
 	edit: 'Edit',
@@ -40,6 +40,7 @@ export const StackNavigation = {
 	Feedback: 'Feedback',
 	Find: 'Find',
 	Edit: 'Edit',
+	Camera: 'Camera',
 } as const;
 
 export const NavigationBack = {

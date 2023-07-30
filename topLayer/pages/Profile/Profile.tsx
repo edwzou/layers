@@ -8,7 +8,7 @@ import Username from '../../components/Name/Username'
 import CategoryBar from '../../components/Bar/CategoryBar';
 import CategorySlide from '../../components/Category/CategorySlide'
 
-import { ClothingTypes, StepOverTypes, CategoryToIndex, IndexToCategory } from '../../constants/Enums';
+import { ClothingTypes, StepOverTypes, CategoryToIndex, IndexToCategory, StackNavigation } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { clothingData } from '../../constants/testData';
 
@@ -16,13 +16,16 @@ import GeneralModal, { refPropType } from '../../components/Modal/GeneralModal';
 import { highTranslateY } from '../../utils/modalMaxShow';
 import ViewOutfit from '../../ModalContent/View/ViewOutfit';
 import OutfitEdit from '../../ModalContent/OutfitEdit/OutfitEdit';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackTypes } from '../../utils/StackNavigation';
 
 type ProfilePropsType = {
     isForeignProfile: boolean,
 };
 
 const Profile = ({ isForeignProfile }: ProfilePropsType) => {
-
+    const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const previewRef = useRef<refPropType>(null);
     const editModalRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
@@ -63,7 +66,7 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                 <View style={{ alignItems: 'center', gap: 7 }}>
                     <Pressable
                         onPress={() => {
-                            console.log('PFP Click');
+                            !isForeignProfile ? navigation.navigate(StackNavigation.Camera) : undefined
                         }}
                     >
                         <ProfilePicture />

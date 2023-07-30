@@ -8,6 +8,7 @@ export type StackTypes = {
 	Preview: any;
 	Edit: any;
 	Feedback: any;
+	Camera: any;
 };
 
 export const Stack = createNativeStackNavigator<StackTypes>();

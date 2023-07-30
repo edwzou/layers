@@ -13,6 +13,11 @@ import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import * as ImagePicker from 'expo-image-picker';
 import { base64Prefix } from '../../utils/Base64Prefix';
 import { baseUrl } from '../../utils/apiUtils';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackTypes } from '../../utils/StackNavigation';
+import { StackNavigation } from '../../constants/Enums';
+import { screenWidth } from '../../utils/modalMaxShow';
 
 type FormValues = {
 	first_name: string;
@@ -28,6 +33,7 @@ const SignUp = () => {
 	const [image, setImage] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const {
 		control,
@@ -102,9 +108,9 @@ const SignUp = () => {
 		<View style={{ gap: 40 }}>
 			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Pressable
-					style={{ alignItems: 'center' }}
+					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						setModalVisible(!modalVisible);
+						navigation.navigate(StackNavigation.Camera);
 					}}
 				>
 					<ProfilePicture image={image} />
@@ -210,7 +216,7 @@ const SignUp = () => {
 					disabled={Object.keys(dirtyFields).length < 5 ? true : false}
 				/>
 			</View>
-			<Modal visible={modalVisible}
+			{/* <Modal visible={modalVisible}
 				animationType="slide"
 				transparent={true}
 				onRequestClose={() => {
@@ -228,7 +234,7 @@ const SignUp = () => {
 					</View>
 					<Pressable style={styles.modalButtons} onPress={() => { setModalVisible(!modalVisible) }}><Text>Cancel</Text></Pressable>
 				</View>
-			</Modal>
+			</Modal> */}
 		</View>
 	);
 };

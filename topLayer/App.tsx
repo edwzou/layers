@@ -14,9 +14,10 @@ import MainPage from './pages/Main/MainPage'
 
 import GlobalStyles from './constants/GlobalStyles';
 import CameraComponent from './components/Camera/Camera';
+import CameraWrapper from './components/Camera/CameraWrapper';
 
 export default function App() {
-	const [userToken, setUserToken] = useState(null);
+	const [userToken, setUserToken] = useState("null");
 	return (
 		<NavigationContainer>
 			<GestureHandlerRootView style={{ flex: 1 }}>
@@ -24,7 +25,7 @@ export default function App() {
 					<Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal' }}>
 						{userToken === null ? (
 							<>
-								<Stack.Screen name={StackNavigation.Login} component={CameraComponent} />
+								<Stack.Screen name={StackNavigation.Login} component={SignInPage} />
 								<Stack.Screen
 									name={StackNavigation.SignUp}
 									component={SignUpPage}
@@ -35,6 +36,7 @@ export default function App() {
 								<Stack.Screen name={StackNavigation.Main} component={MainPage} />
 							</>
 						)}
+						<Stack.Screen name={StackNavigation.Camera} component={CameraWrapper} options={{ animation: 'slide_from_bottom', gestureEnabled: true, gestureDirection: 'vertical' }} />
 					</Stack.Navigator>
 					<ExpoStatusBar style="auto" />
 				</View>

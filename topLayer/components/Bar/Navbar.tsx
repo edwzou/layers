@@ -5,6 +5,10 @@ import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import { NavigationContext } from '../../pages/Main/MainPage';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackTypes } from '../../utils/StackNavigation';
+import { StackNavigation } from '../../constants/Enums';
 
 type NavbarPropsType = {
     toggleFeedbackModal: () => void;
@@ -12,6 +16,7 @@ type NavbarPropsType = {
 
 const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
     const navigationContext = useContext(NavigationContext)
+    const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
     return (
         <SafeAreaView style={styles.container}>
@@ -35,7 +40,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
             </View>
             <View style={styles.icons}>
                 <Pressable onPress={() => {
-                    console.log('Add icon tapped');
+                    navigation.navigate(StackNavigation.Camera)
                 }}>
                     <Icon
                         name={GlobalStyles.icons.addCircleOutline}
