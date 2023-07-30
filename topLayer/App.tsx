@@ -16,7 +16,7 @@ import GlobalStyles from './constants/GlobalStyles';
 import CameraWrapper from './components/Camera/CameraWrapper';
 
 export default function App() {
-	const [userToken, setUserToken] = useState('null');
+	const [userToken, setUserToken] = useState(null);
 	return (
 		<NavigationContainer>
 			<GestureHandlerRootView style={{ flex: 1 }}>

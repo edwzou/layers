@@ -32,7 +32,7 @@ export const ClothingTypes: ClothingCategoryTypes = {
 
 export const StackNavigation = {
 	Login: 'Login',
-	SignUp: 'Sign Up',
+	SignUp: 'SignUp',
 	Main: 'Main',
 	Profile: 'Profile',
 	Preview: 'Preview',

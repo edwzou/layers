@@ -26,7 +26,7 @@ const SignIn = () => {
 	const onSubmit = async (data: any) => {
 		try {
 			const response = await axios.post(`${baseUrl}/auth/login`, {
-				username: data.username,
+				username: data.username !== '' ? data.username : null,
 				email: data.email !== '' ? data.email : null,
 				password: data.password,
 			});
@@ -60,7 +60,7 @@ const SignIn = () => {
 					)}
 					name={
 						getValues('username').match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) !=
-						null
+							null
 							? 'email'
 							: 'username'
 					}
