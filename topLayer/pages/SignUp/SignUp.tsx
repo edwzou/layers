@@ -17,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
 
 interface FormValues {
 	first_name: string;
@@ -72,6 +73,8 @@ const SignUp = () => {
 		setValue('profile_picture', image);
 	}, [image]);
 
+    const {authorize} = useAuth0();
+
 	const onSubmit = async (data: FormValues | any) => {
 		try {
 			const response = await axios.post(`${baseUrl}/users`, {
@@ -85,6 +88,7 @@ const SignUp = () => {
 				followers: [],
 				private: data.private,
 			});
+            await authorize({scope: 'openid profile email'}, {customScheme: '{YOUR_CUSTOM_SCHEME}'});
 
 			if (response.status === 200) {
 				alert(`You have created: ${JSON.stringify(response.data)}`);
