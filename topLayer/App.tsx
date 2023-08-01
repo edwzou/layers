@@ -14,53 +14,56 @@ import MainPage from './pages/Main/MainPage';
 
 import GlobalStyles from './constants/GlobalStyles';
 import CameraWrapper from './components/Camera/CameraWrapper';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
 
 export default function App() {
 	const [userToken, setUserToken] = useState(null);
 	return (
-		<NavigationContainer>
-			<GestureHandlerRootView style={{ flex: 1 }}>
-				<View style={styles.container}>
-					<Stack.Navigator
-						screenOptions={{
-							headerShown: false,
-							gestureEnabled: true,
-							gestureDirection: 'horizontal',
-						}}
-					>
-						{userToken === null ? (
-							<>
-								<Stack.Screen
-									name={StackNavigation.Login}
-									component={SignInPage}
-								/>
-								<Stack.Screen
-									name={StackNavigation.SignUp}
-									component={SignUpPage}
-								/>
-							</>
-						) : (
-							<>
-								<Stack.Screen
-									name={StackNavigation.Main}
-									component={MainPage}
-								/>
-							</>
-						)}
-						<Stack.Screen
-							name={StackNavigation.Camera}
-							component={CameraWrapper}
-							options={{
-								animation: 'slide_from_bottom',
-								gestureEnabled: true,
-								gestureDirection: 'vertical',
-							}}
-						/>
-					</Stack.Navigator>
-					<ExpoStatusBar style="auto" />
-				</View>
-			</GestureHandlerRootView>
-		</NavigationContainer>
+        <Auth0Provider domain={"dev-75l58m4fij61lnkg.us.auth0.com"} clientId={"BBFG7VoFoovtTMJwI71tjnFjKamxTIRV"}>
+            <NavigationContainer>
+                <GestureHandlerRootView style={{ flex: 1 }}>
+                    <View style={styles.container}>
+                        <Stack.Navigator
+                            screenOptions={{
+                                headerShown: false,
+                                gestureEnabled: true,
+                                gestureDirection: 'horizontal',
+                            }}
+                        >
+                            {userToken === null ? (
+                                <>
+                                    <Stack.Screen
+                                        name={StackNavigation.Login}
+                                        component={SignInPage}
+                                    />
+                                    <Stack.Screen
+                                        name={StackNavigation.SignUp}
+                                        component={SignUpPage}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <Stack.Screen
+                                        name={StackNavigation.Main}
+                                        component={MainPage}
+                                    />
+                                </>
+                            )}
+                            <Stack.Screen
+                                name={StackNavigation.Camera}
+                                component={CameraWrapper}
+                                options={{
+                                    animation: 'slide_from_bottom',
+                                    gestureEnabled: true,
+                                    gestureDirection: 'vertical',
+                                }}
+                            />
+                        </Stack.Navigator>
+                        <ExpoStatusBar style="auto" />
+                    </View>
+                </GestureHandlerRootView>
+            </NavigationContainer>
+        </Auth0Provider>
 	);
 }
 
