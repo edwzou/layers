@@ -87,6 +87,10 @@ const SignUp = () => {
 				following: [],
 				followers: [],
 				private: data.private,
+			}, {
+				headers: {
+					"Content-Type": 'Multipart/form-data'
+				}
 			});
 			await authorize({ scope: 'openid profile email' }, { customScheme: 'com.authenticate.Layers' });
 
@@ -101,6 +105,7 @@ const SignUp = () => {
 			}
 
 		} catch (error) {
+			console.log(error)
 			alert(error);
 			setLoading(false);
 		}

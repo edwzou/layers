@@ -32,21 +32,25 @@ const SignIn = () => {
 				username: data.username !== '' ? data.username : null,
 				email: data.email !== '' ? data.email : null,
 				password: data.password,
+			}, {
+				headers: {
+					"Content-Type": 'Multipart/form-data'
+				}
 			});
-			await authorize({ scope: 'openid profile email' }, { customScheme: 'com.authenticate.Layers' });
+			// await authorize({ scope: 'openid profile email' }, { customScheme: 'com.authenticate.Layers' });
 
-			// if (user) {
-			// 	console.log(user)
-			// }
+			if (user) {
+				console.log(user)
+			}
 			if (response.status === 200) {
 				alert(`Logged In ${JSON.stringify(response.data)}`);
 			} else {
 				throw new Error(response.statusText);
 			}
+
 		} catch (error) {
 			alert(error);
 		}
-		// console.log(data);
 	};
 
 	return (

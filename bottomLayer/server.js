@@ -121,6 +121,6 @@ app.use('/js', express.static(path.join(__dirname, 'cropping')));
 app.use('/db', express.static(path.join(__dirname, 'database')));
 
 const port = 1234; // You can change this to the desired port number
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
