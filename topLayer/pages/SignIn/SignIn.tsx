@@ -87,6 +87,7 @@ const SignIn = () => {
 					text="Sign in"
 					onPress={handleSubmit(onSubmit)}
 					disabled={Object.keys(dirtyFields).length < 2}
+					bgColor={GlobalStyles.colorPalette.primary[500]}
 				/>
 			</View>
 		</View>

@@ -7,6 +7,7 @@ interface ButtonPropsType {
 	onPress: (data: any) => void;
 	disabled?: boolean;
 	style?: ViewStyle;
+	bgColor: any; // !!! fix any type
 }
 
 const Button = ({
@@ -14,6 +15,7 @@ const Button = ({
 	onPress,
 	style,
 	disabled = false,
+	bgColor,
 }: ButtonPropsType) => {
 	return (
 		<Pressable
@@ -25,10 +27,10 @@ const Button = ({
 				{
 					backgroundColor: disabled
 						? GlobalStyles.colorPalette.primary[200]
-						: GlobalStyles.colorPalette.primary[500],
+						: bgColor,
 					shadowColor: disabled
 						? GlobalStyles.colorPalette.primary[200]
-						: GlobalStyles.colorPalette.primary[500],
+						: bgColor,
 				},
 			]}
 			onPress={onPress}

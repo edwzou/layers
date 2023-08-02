@@ -11,6 +11,9 @@ import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserOutfit } from '.';
 import { outfitData } from '../../constants/testData';
 
+import Button from '../../components/Button/Button'
+import { outfitEdit } from '../../constants/GlobalStrings';
+
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
 //     tops: UserOutfit,
@@ -36,6 +39,10 @@ const OutfitEdit = () => {
 		setData(rawData.filter(Boolean));
 	}, [rawData]);
 
+	const handlePress = () => {
+		console.log('DELETE BUTTON');
+	};
+
 	return (
 		<View style={styles.container}>
 			<StackedTextbox
@@ -57,6 +64,16 @@ const OutfitEdit = () => {
 				columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 				style={{ height: screenHeight - 350 }}
 			/>
+			<Button
+				text={outfitEdit.delete}
+				onPress={handlePress}
+				style={{
+					position: 'absolute',
+					bottom: 120,
+					alignSelf: 'center',
+				}}
+				bgColor={GlobalStyles.colorPalette.danger[600]}
+			/>
 		</View>
 	);
 };
@@ -65,6 +82,7 @@ const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: GlobalStyles.layout.xGap,
 		gap: GlobalStyles.layout.gap,
+		flex: 1,
 	},
 });
 

@@ -150,6 +150,7 @@ const MatchPage = () => {
 					bottom: GlobalStyles.layout.gap * 2,
 					alignSelf: 'center',
 				}}
+				bgColor={GlobalStyles.colorPalette.primary[500]}
 			/>
 			<GeneralModal
 				title={StackNavigation.Preview}

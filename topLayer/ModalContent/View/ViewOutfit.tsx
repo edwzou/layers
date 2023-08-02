@@ -28,27 +28,27 @@ const ViewOutfit = () => {
 			contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
 			columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 			ListFooterComponent={
-				<View style={{ gap: GlobalStyles.layout.gap }}>
-					<View style={styles.categoryContainer}>
+				<View style={{ gap: 20, }}>
+					<View style={[styles.categoryContainer, { top: 4, }]}>
 						<Text style={styles.subheader}>Colors</Text>
 						<View style={styles.tagsContainer}>
 							<ColorTag
 								label="Beige"
 								bgColor="#E8D3B4"
 								action={TagAction.remove}
-								onPress={() => {}}
+								onPress={() => { }}
 							/>
 							<ColorTag
 								label="Red"
 								bgColor="#E55A5A"
 								action={TagAction.remove}
-								onPress={() => {}}
+								onPress={() => { }}
 							/>
 							<ColorTag
 								label="Olive"
 								bgColor="#76956B"
 								action={TagAction.remove}
-								onPress={() => {}}
+								onPress={() => { }}
 							/>
 						</View>
 					</View>
@@ -57,12 +57,12 @@ const ViewOutfit = () => {
 						<View style={styles.tagsContainer}>
 							<BrandTag
 								label="Gap"
-								onPress={() => {}}
+								onPress={() => { }}
 								action={TagAction.remove}
 							/>
 							<BrandTag
 								label="Nike"
-								onPress={() => {}}
+								onPress={() => { }}
 								action={TagAction.remove}
 							/>
 						</View>
@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
 	},
 	tagsContainer: {
 		flexDirection: 'row',
-		gap: 8,
+		gap: 10,
 	},
 });

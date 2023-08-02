@@ -108,7 +108,7 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                                 <CategorySlide
                                     clothingData={item}
                                     onPress={() => {
-                                        editModalRef.current?.scrollTo(highTranslateY);
+                                        previewRef.current?.scrollTo(highTranslateY);
                                     }}
                                 />
                             )}
