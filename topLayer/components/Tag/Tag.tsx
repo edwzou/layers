@@ -37,7 +37,7 @@ const Tag = ({
 					]}
 				>
 					<Text style={{ marginRight: editable ? 5 : 0 }}>
-						<Text style={{ color: GlobalStyles.colorPalette.primary[100] }}>
+						<Text style={{ color: GlobalStyles.colorPalette.primary[100], ...GlobalStyles.typography.body, }}>
 							{label}
 						</Text>
 					</Text>
