@@ -76,6 +76,7 @@ const SignUp = () => {
 	const { authorize, user } = useAuth0();
 
 	const onSubmit = async (data: FormValues | any) => {
+		// Android needs a very specific "Content-Type"
 		try {
 			const response = await axios.post(`${baseUrl}/api/users`, {
 				first_name: data.first_name,
