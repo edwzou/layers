@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import {useAuth0, Auth0Provider} from 'react-native-auth0';
+import { useAuth0, Auth0Provider } from 'react-native-auth0';
 
 interface FormValues {
 	first_name: string;
@@ -73,11 +73,11 @@ const SignUp = () => {
 		setValue('profile_picture', image);
 	}, [image]);
 
-    const {authorize} = useAuth0();
+	const { authorize, user } = useAuth0();
 
 	const onSubmit = async (data: FormValues | any) => {
 		try {
-			const response = await axios.post(`${baseUrl}/users`, {
+			const response = await axios.post(`${baseUrl}/api/users`, {
 				first_name: data.first_name,
 				last_name: data.last_name,
 				username: data.username,
@@ -88,7 +88,7 @@ const SignUp = () => {
 				followers: [],
 				private: data.private,
 			});
-            await authorize({scope: 'openid profile email'}, {customScheme: '{YOUR_CUSTOM_SCHEME}'});
+			await authorize({ scope: 'openid profile email' }, { customScheme: 'com.authenticate.Layers' });
 
 			if (response.status === 200) {
 				alert(`You have created: ${JSON.stringify(response.data)}`);
@@ -96,6 +96,10 @@ const SignUp = () => {
 			} else {
 				throw new Error('An error has occurred');
 			}
+			if (user) {
+				console.log(user);
+			}
+
 		} catch (error) {
 			alert(error);
 			setLoading(false);

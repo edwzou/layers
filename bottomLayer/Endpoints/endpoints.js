@@ -2,14 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiredScopes } = require('express-oauth2-jwt-bearer');
 
+require("dotenv").config();
 
 const postgres = require("postgres");
-require("dotenv").config();
-PGHOST='ep-empty-pond-300198-pooler.us-west-2.aws.neon.tech'
-PGDATABASE='neondb'
-PGUSER='catwalkcommunal'
-PGPASSWORD='RP85mWGNZJVe'
-ENDPOINT_ID='ep-empty-pond-300198-pooler'
+
+const {PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID} = process.env
+
 const URL = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?options=project%3D${ENDPOINT_ID}`;
 
 const sql = postgres(URL, { ssl: "require" });
@@ -316,7 +314,8 @@ router.post("/auth/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     // Perform authentication logic
-
+    // Call Auth0
+    // Send request to Auth0 with the username and password
     res.json({ message: "User authenticated and logged in" });
   } catch (err) {
     console.error(err);

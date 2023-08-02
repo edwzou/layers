@@ -14,11 +14,11 @@ import MainPage from './pages/Main/MainPage';
 
 import GlobalStyles from './constants/GlobalStyles';
 import CameraWrapper from './components/Camera/CameraWrapper';
-import {useAuth0, Auth0Provider} from 'react-native-auth0';
+import { useAuth0, Auth0Provider } from 'react-native-auth0';
 
 export default function App() {
-	const [userToken, setUserToken] = useState(null);
-	return (
+    const [userToken, setUserToken] = useState(null);
+    return (
         <Auth0Provider domain={"dev-75l58m4fij61lnkg.us.auth0.com"} clientId={"BBFG7VoFoovtTMJwI71tjnFjKamxTIRV"}>
             <NavigationContainer>
                 <GestureHandlerRootView style={{ flex: 1 }}>
@@ -64,13 +64,13 @@ export default function App() {
                 </GestureHandlerRootView>
             </NavigationContainer>
         </Auth0Provider>
-	);
+    );
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: GlobalStyles.colorPalette.background,
-		paddingTop: Device.osName === 'Android' ? StatusBar.currentHeight : 0,
-	},
+    container: {
+        flex: 1,
+        backgroundColor: GlobalStyles.colorPalette.background,
+        paddingTop: Device.osName === 'Android' ? StatusBar.currentHeight : 0,
+    },
 });

@@ -1,5 +1,7 @@
 node_modules/
 android/
+ios
+
 .expo/
 dist/
 npm-debug.*
@@ -11,6 +13,7 @@ npm-debug.*
 *.orig.*
 web-build/
 package-lock.json
+
 
 # macOS
 .DS_Store
