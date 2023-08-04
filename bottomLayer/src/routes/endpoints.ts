@@ -4,16 +4,6 @@ const express = require('express');
 const router = express.Router();
 // const { auth, requiredScopes } = require('express-oauth2-jwt-bearer');
 
-// require('dotenv').config();
-
-// const postgres = require('postgres');
-
-// const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
-
-// const URL = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?options=project%3D${ENDPOINT_ID}`;
-
-// const sql = postgres(URL, { ssl: 'require' });
-
 const getPgVersion = async (): Promise<any> => {
   const result = await sql`select version()`;
   console.log(result);
