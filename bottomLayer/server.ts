@@ -12,7 +12,7 @@ app.use(express.json());
 const router = require('./src/routes/endpoints.ts');
 
 const jwtCheck = auth({
-  audience: process.env.BASE_URL,
+  audience: 'http://localhost:1234/',
   issuerBaseURL: 'https://dev-75l58m4fij61lnkg.us.auth0.com/',
   tokenSigningAlg: 'RS256'
 });
