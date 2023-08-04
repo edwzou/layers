@@ -101,26 +101,36 @@ router.put('/:userId', (req, res): void => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
+type Callback<T> = (error: Error | null, result: T | null) => void;
 // Endpoint for retrieving a specific user
 router.get('/:userId', (req, res): void => {
   try {
     const { userId } = req.params;
 
-    const updateUser = async (): Promise<any> => {
-      const user = await sql`
-          SELECT * FROM backend_schema.user
-          WHERE uid = ${userId}
+    const getUser = async (userId: string, callback: Callback<any>): Promise<void> => {
+      try {
+        const user = await sql`
+        SELECT * FROM backend_schema.user
+        WHERE uid = ${userId}
             AND EXISTS (
-              SELECT 1 FROM backend_schema.user WHERE uid = ${userId}
+            SELECT 1 FROM backend_schema.user WHERE uid = ${userId}
             )
-        `;
+    `;
         // Select 1 ensures that the backend_schema.user has at least 1 column
-
-      return user;
+        callback(null, user);
+      } catch (error) {
+        callback(error as Error, null);
+      }
     };
 
-    const user: any = updateUser();
+    const user: any = getUser(userId, (error, user) => {
+      if (error) {
+        console.error('Error:', error);
+      } else {
+        console.log('User:', user);
+        return user;
+      }
+    });
 
     // Return the user information
     res.status(200).json(user[0]);
