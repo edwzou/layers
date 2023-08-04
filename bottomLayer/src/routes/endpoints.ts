@@ -26,7 +26,7 @@ router.use('/search', searchRoute);
 // Endpoint for authenticating and logging in a user
 router.post('/auth/login', async (req: any, res: any) => {
   try {
-    // const { username, password } = req.body;
+    const { username, password } = req.body;
     // Perform authentication logic
     // Call Auth0
     // Send request to Auth0 with the username and password

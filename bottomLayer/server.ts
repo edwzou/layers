@@ -2,36 +2,29 @@ const express = require('express');
 const path = require('path');
 const axios = require('axios');
 const app = express();
+const router = require('./src/routes/endpoints.ts');
 require('dotenv').config();
 
-const { auth } = require('express-oauth2-jwt-bearer');
+const jwtCheck = require('./src/mid leware/auth.ts');
 
 app.use(express.json());
 
 // const privateRouter = require('./app/routes/private-endpoints');
-const router = require('./src/routes/endpoints.ts');
-
-const jwtCheck = auth({
-  audience: 'http://localhost:1234/',
-  issuerBaseURL: 'https://dev-75l58m4fij61lnkg.us.auth0.com/',
-  tokenSigningAlg: 'RS256'
-});
 
 app.get('/', (req: any, res: any) => { res.send('this is an secure server'); });
-
 app.use('/api', router);
 
-// Create a new router for the endpoints that require jwtCheck
-const secureRouter = express.Router();
+// // Create a new router for the endpoints that require jwtCheck
+// const secureRouter = express.Router();
 
-// Apply the JWT authentication middleware (jwtCheck) to the secureRouter
-secureRouter.use(jwtCheck);
+// // Apply the JWT authentication middleware (jwtCheck) to the secureRouter
+// secureRouter.use(jwtCheck);
 
-// Use the original router for your endpoints
-// secureRouter.use(privateRouter);
+// // Use the original router for your endpoints
+// // secureRouter.use(privateRouter);
 
-// Mount the secureRouter on a specific path, e.g., '/api'
-app.use('/api/private', secureRouter);
+// // Mount the secureRouter on a specific path, e.g., '/api'
+// app.use('/api/private', secureRouter);
 
 // Define a route handler for the root URL ("/")
 app.get('/', (req: any, res: any) => {
