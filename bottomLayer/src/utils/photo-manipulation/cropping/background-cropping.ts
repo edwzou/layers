@@ -1,9 +1,11 @@
+require('dotenv').config()
+
 // API request
 async function backgroundCropping() {
     console.log('Cropped baby!');
     // Request parameter
-    const endpoint = 'https://sdk.photoroom.com/v1/segment'
-    const apiKey = '2d95a0ff1ff9886a130f08dad268e867eba5456c' // zennteam1 account, 2 calls left
+    const endpoint = process.env.PHOTOROOM_URL
+    const apiKey = process.env.PHOTOROOM_API_KEY // zennteam1 account, 2 calls left
     const imageURL = 'http://localhost:1234/get-image'
 
     // Creating data
