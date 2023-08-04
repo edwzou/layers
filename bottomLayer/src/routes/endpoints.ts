@@ -1,30 +1,42 @@
-import { sql } from '../utils/sql-import';
-
 const express = require('express');
-const router = express.Router();
-// const { auth, requiredScopes } = require('express-oauth2-jwt-bearer');
+const routerBase = express.Router();
+const routerPublic = express.Router();
+const routerPrivate = express.Router();
 
-const getPgVersion = async (): Promise<any> => {
-  const result = await sql`select version()`;
-  console.log(result);
-  return result;
-};
+// const getPgVersion = async (): Promise<any> => {
+//   const result = await sql`select version()`;
+//   console.log(result);
+//   return result;
+// };
 
-void getPgVersion();
+// void getPgVersion();
+const jwtCheck = require('../middleware/auth.ts');
 
-const userRoute = require('../routes/user.ts');
-const followUserRoute = require('../routes/followUser.ts');
-const outfitRoute = require('../routes/outfit.ts');
-const clothingRoute = require('../routes/clothingItem.ts');
-const searchRoute = require('../routes/search.ts');
+const userRoute = require('../routes/public/user.ts');
+const followUserRoute = require('../routes/public/followUser.ts');
+const outfitRoute = require('../routes/public/outfit.ts');
+const clothingRoute = require('../routes/public/clothingItem.ts');
+const searchRoute = require('../routes/public/search.ts');
 
-router.use('/users', userRoute, followUserRoute);
-router.use('/outfits', outfitRoute);
-router.use('/clothing_items', clothingRoute);
-router.use('/search', searchRoute);
+const privateUserRoute = require('../routes/private/user.ts');
+const privateFollowUserRoute = require('../routes/private/followUser.ts');
+const privateOutfitRoute = require('../routes/private/outfit.ts');
+const privateClothingRoute = require('../routes/private/clothingItem.ts');
+const privateSearchRoute = require('../routes/private/search.ts');
+
+routerPublic.use('/users', userRoute, followUserRoute);
+routerPublic.use('/outfits', outfitRoute);
+routerPublic.use('/clothing_items', clothingRoute);
+routerPublic.use('/search', searchRoute);
+
+routerPrivate.use('/users', privateUserRoute, privateFollowUserRoute);
+routerPrivate.use('/outfits', privateOutfitRoute);
+routerPrivate.use('/clothing_items', privateClothingRoute);
+routerPrivate.use('/search', privateSearchRoute);
+routerPrivate.use(jwtCheck);
 
 // Endpoint for authenticating and logging in a user
-router.post('/auth/login', async (req: any, res: any) => {
+routerBase.post('/auth/login', async (req: any, res: any) => {
   try {
     const { username, password } = req.body;
     // Perform authentication logic
@@ -38,7 +50,7 @@ router.post('/auth/login', async (req: any, res: any) => {
 });
 
 // Endpoint for logging out the currently authenticated user
-router.post('/auth/logout', async (req: any, res: any) => {
+routerPrivate.post('/auth/logout', async (req: any, res: any) => {
   try {
     // Perform logout logic
 
@@ -49,4 +61,4 @@ router.post('/auth/logout', async (req: any, res: any) => {
   }
 });
 
-module.exports = router;
+export { routerBase, routerPublic, routerPrivate };
