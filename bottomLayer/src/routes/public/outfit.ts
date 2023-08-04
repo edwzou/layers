@@ -1,9 +1,10 @@
 import { sql } from '../../utils/sql-import';
 import express from 'express';
 const router = express.Router();
+const { requiresAuth } = require('express-openid-connect');
 
 // Endpoint for retrieving a specific outfit
-router.get('/:outfitId', (req: any, res: any): void => {
+router.get('/:outfitId', requiresAuth(), (req: any, res: any): void => {
   try {
     const { outfitId } = req.params;
 
@@ -30,7 +31,7 @@ router.get('/:outfitId', (req: any, res: any): void => {
 });
 
 // Endpoint for retrieving all outfits
-router.get('/u/:userId', (req: any, res: any): void => {
+router.get('/u/:userId', requiresAuth(), (req: any, res: any): void => {
   try {
     const { userId } = req.params;
     // Query outfits for the specified user

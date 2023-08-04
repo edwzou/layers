@@ -1,9 +1,10 @@
 import express from 'express';
 import { sql } from '../../utils/sql-import';
+const { requiresAuth } = require('express-openid-connect');
 const router = express.Router();
 
 // Endpoint for retrieving a specific clothing item
-router.get('/:itemId', (req: any, res: any): void => {
+router.get('/:itemId', requiresAuth(), (req: any, res: any): void => {
   try {
     const { itemId } = req.params;
 
@@ -32,7 +33,7 @@ router.get('/:itemId', (req: any, res: any): void => {
 });
 
 // Endpoint for retrieving a all clothing items
-router.get('/u/:user_id', (req: any, res: any): void => {
+router.get('/u/:user_id', requiresAuth(), (req: any, res: any): void => {
   try {
     const { userId } = req.params;
 

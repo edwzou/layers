@@ -10,7 +10,8 @@ const routerPrivate = express.Router();
 // };
 
 // void getPgVersion();
-const jwtCheck = require('../middleware/auth.ts');
+
+const authRoute = require('../routes/public/authentication.ts');
 
 const userRoute = require('../routes/public/user.ts');
 const followUserRoute = require('../routes/public/followUser.ts');
@@ -24,6 +25,8 @@ const privateOutfitRoute = require('../routes/private/outfit.ts');
 const privateClothingRoute = require('../routes/private/clothingItem.ts');
 const privateSearchRoute = require('../routes/private/search.ts');
 
+routerBase.use('/', authRoute);
+
 routerPublic.use('/users', userRoute, followUserRoute);
 routerPublic.use('/outfits', outfitRoute);
 routerPublic.use('/clothing_items', clothingRoute);
@@ -33,32 +36,31 @@ routerPrivate.use('/users', privateUserRoute, privateFollowUserRoute);
 routerPrivate.use('/outfits', privateOutfitRoute);
 routerPrivate.use('/clothing_items', privateClothingRoute);
 routerPrivate.use('/search', privateSearchRoute);
-routerPrivate.use(jwtCheck);
 
 // Endpoint for authenticating and logging in a user
-routerBase.post('/auth/login', async (req: any, res: any) => {
-  try {
-    const { username, password } = req.body;
-    // Perform authentication logic
-    // Call Auth0
-    // Send request to Auth0 with the username and password
-    res.json({ message: 'User authenticated and logged in' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+// routerBase.post('/auth/login', async (req: any, res: any) => {
+//   try {
+//     const { username, password } = req.body;
+//     // Perform authentication logic
+//     // Call Auth0
+//     // Send request to Auth0 with the username and password
+//     res.json({ message: 'User authenticated and logged in' });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
-// Endpoint for logging out the currently authenticated user
-routerPrivate.post('/auth/logout', async (req: any, res: any) => {
-  try {
-    // Perform logout logic
+// // Endpoint for logging out the currently authenticated user
+// routerPrivate.post('/auth/logout', async (req: any, res: any) => {
+//   try {
+//     // Perform logout logic
 
-    res.json({ message: 'User logged out' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+//     res.json({ message: 'User logged out' });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
 export { routerBase, routerPublic, routerPrivate };

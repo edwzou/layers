@@ -1,14 +1,14 @@
 import { routerBase, routerPublic, routerPrivate } from './src/routes/endpoints';
-import { type Request, type Response } from 'express';
-import { type RequestContext } from 'express-openid-connect';
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
 const app = express();
+const { auth } = require('./src/middleware/auth.ts');
 require('dotenv').config();
 
 app.use(express.json());
 
+app.use(auth);
 app.get('/', (req: any, res: any) => { res.send('this is an secure server'); });
 app.use('/', routerBase);
 app.use('/api', routerPublic);
