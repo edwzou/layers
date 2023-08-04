@@ -1,6 +1,6 @@
+import { routerBase, routerPublic, routerPrivate } from './src/routes/endpoints';
 import { type Request, type Response } from 'express';
 import { type RequestContext } from 'express-openid-connect';
-import { routerBase, routerPublic, routerPrivate } from './src/routes/endpoints';
 const express = require('express');
 const path = require('path');
 const axios = require('axios');

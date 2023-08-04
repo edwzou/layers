@@ -1,6 +1,4 @@
 const express = require('express');
-const router = express.Router();
-const { auth } = require('../middleware/auth.ts');
 const routerBase = express.Router();
 const routerPublic = express.Router();
 const routerPrivate = express.Router();
