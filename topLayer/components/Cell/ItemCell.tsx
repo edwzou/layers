@@ -1,12 +1,20 @@
 import React, { memo } from 'react';
-import { Image, type ImageStyle, Pressable, StyleSheet } from 'react-native';
+import {
+	Image,
+	type ImageStyle,
+	Pressable,
+	StyleSheet,
+	View,
+} from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
+import Icon from 'react-native-remix-icon';
 
 interface ItemCellPropsType {
 	image: any; // !!! Replace 'any' with 'string'
 	disablePress?: boolean;
 	imageStyle?: ImageStyle;
 	onPress?: () => void;
+	canDelete?: boolean; // New boolean prop for deletable button
 }
 
 /**
@@ -15,6 +23,7 @@ interface ItemCellPropsType {
  * @param {string} image - Item image
  * @param {boolean} disablePress - Disables Pressable functionality
  * @param {ImageStyle} imageStyle - Custom image styling
+ * @param {boolean} canDelete - Whether the delete button is shown
  * @function onPress
  * @returns {ReactElement}
  */
@@ -23,18 +32,29 @@ const ItemCell = ({
 	disablePress = false,
 	imageStyle,
 	onPress,
+	canDelete,
 }: ItemCellPropsType) => {
+
+	const handleDeletePress = () => {
+		console.log('delete button pressed');
+	};
+
 	return (
-		<Pressable
-			disabled={disablePress}
-			style={[styles.container]}
-			onPress={onPress}
-		>
-			<Image
-				source={image}
-				style={[styles.image, imageStyle]}
-				resizeMode="contain"
-			/>
+		<Pressable disabled={disablePress} style={[styles.container]} onPress={onPress}>
+			<Image source={image} style={[styles.image, imageStyle]} resizeMode="contain" />
+			{canDelete && (
+				<View style={styles.deleteButtonContainer}>
+					<Pressable onPress={handleDeletePress}>
+						<View style={styles.deleteButton}>
+							<Icon
+								name={GlobalStyles.icons.closeOutline}
+								color={GlobalStyles.colorPalette.background}
+								size={GlobalStyles.sizing.icon.small}
+							/>
+						</View>
+					</Pressable>
+				</View>
+			)}
 		</Pressable>
 	);
 };
@@ -48,9 +68,23 @@ const styles = StyleSheet.create({
 		borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		aspectRatio: 1 / 1,
+		position: 'relative',
 	},
 	image: {
 		flex: 1,
 		width: '100%',
+	},
+	deleteButtonContainer: {
+		position: 'absolute',
+		top: -6,
+		right: -6,
+	},
+	deleteButton: {
+		width: 21,
+		height: 21,
+		borderRadius: 100,
+		backgroundColor: GlobalStyles.colorPalette.primary[300],
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
