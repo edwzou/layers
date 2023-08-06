@@ -54,13 +54,6 @@
 					"savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
 					"isAccessMediaLocationEnabled": true
 				}
-			],
-			[
-				"react-native-auth0",
-				{
-					"domain": "dev-75l58m4fij61lnkg.us.auth0.com",
-					"customScheme": "com.authenticate.Layers"
-				}
 			]
 		]
 	}

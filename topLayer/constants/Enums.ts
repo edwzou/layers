@@ -41,6 +41,7 @@ export const StackNavigation = {
 	Find: 'Find',
 	Edit: 'Edit',
 	Camera: 'Camera',
+	Auth: 'Auth',
 } as const;
 
 export const NavigationBack = {
