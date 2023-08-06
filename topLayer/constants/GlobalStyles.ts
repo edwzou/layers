@@ -67,6 +67,7 @@ const colorPalette = {
 const layout = {
 	xGap: 16,
 	gap: 16,
+	highTranslateYBottomMargin: 120,
 };
 
 const typography = StyleSheet.create({
@@ -152,6 +153,7 @@ const icons = {
 	leftFillArrow: 'ri-arrow-left-s-fill',
 	flipCameraOutline: 'ri-camera-switch-line',
 	imageFill: 'ri-image-fill',
+	deleteBin2Line: 'delete-bin-2-line',
 };
 
 export default {
