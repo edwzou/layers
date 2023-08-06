@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -11,8 +11,7 @@ import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserOutfit } from '.';
 import { outfitData } from '../../constants/testData';
 
-import Button from '../../components/Button/Button'
-import { outfitEdit } from '../../constants/GlobalStrings';
+import Icon from 'react-native-remix-icon';
 
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
@@ -55,32 +54,33 @@ const OutfitEdit = () => {
 				renderItem={({ item }) => {
 					return (
 						<View style={{ width: ITEM_SIZE(2) }}>
-							<ItemCell image={item.image} disablePress={false} key={item.id} />
+							<ItemCell image={item.image} disablePress={false} key={item.id} canDelete={true} />
 						</View>
 					);
 				}}
 				numColumns={2}
 				contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
 				columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
-				style={{ height: screenHeight - 350 }}
+				style={{ height: screenHeight - 350, padding: 6 }}
 			/>
-			<Button
-				text={outfitEdit.delete}
-				onPress={handlePress}
-				style={{
-					position: 'absolute',
-					bottom: 120,
-					alignSelf: 'center',
-				}}
-				bgColor={GlobalStyles.colorPalette.danger[600]}
-			/>
+			<Pressable onPress={handlePress} style={{
+				position: 'absolute',
+				bottom: GlobalStyles.layout.highTranslateYBottomMargin,
+				alignSelf: 'center',
+			}}>
+				<Icon
+					name={GlobalStyles.icons.deleteBin2Line}
+					color={GlobalStyles.colorPalette.danger[500]}
+					size={GlobalStyles.sizing.icon.regular}
+				/>
+			</Pressable>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		marginHorizontal: GlobalStyles.layout.xGap,
+		marginHorizontal: GlobalStyles.layout.xGap - 6, // Gives extra room for the item cell delete button to render
 		gap: GlobalStyles.layout.gap,
 		flex: 1,
 	},
