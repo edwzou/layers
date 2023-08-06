@@ -17,7 +17,6 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import { useAuth0, Auth0Provider } from 'react-native-auth0';
 
 interface FormValues {
 	first_name: string;
