@@ -23,7 +23,7 @@ router.get('/:userId', (req, res): void => {
     }
   };
 
-  const user: any = getUser(userId, (error, user) => {
+  const user = getUser(userId, (error, user) => {
     if (error != null) {
       console.error('Error:', error);
       res.status(500).json({ error: 'Internal server error' });

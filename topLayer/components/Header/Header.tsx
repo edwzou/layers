@@ -12,7 +12,7 @@ import { NavigationContext } from '../../pages/Main/MainPage';
 
 interface HeaderPropType {
 	text: string;
-	back?: string;
+	back?: boolean;
 	rightArrow?: boolean;
 	leftArrow?: boolean;
 	stepOver?: { type: string; handlePress: () => void };

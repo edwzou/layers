@@ -43,6 +43,7 @@ router.post('/', (req, res) => {
             `;
     };
     void insertUser();
+
     res.status(200).json({ message: 'User created' });
   } catch (err) {
     console.error(err);
