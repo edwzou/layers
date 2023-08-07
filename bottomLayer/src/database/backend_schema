@@ -35,7 +35,7 @@ CREATE TABLE backend_schema.user (
 CREATE TABLE backend_schema.outfit (
     oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     title VARCHAR(50) NOT NULL, 
-    // Need to limit clothing_items to only refer to ciid UUIDs
+    -- Need to limit clothing_items to only refer to ciid UUIDs
     clothing_items UUID[],
     uid UUID NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
