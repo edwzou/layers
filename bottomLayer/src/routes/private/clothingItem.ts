@@ -1,6 +1,24 @@
-import express from 'express';
+import express, { type Request, type Response } from 'express';
 import { sql } from '../../utils/sql-import';
 const router = express.Router();
+
+router.post('/', (req: Request, res: Response): void => {
+  try {
+    const { image, category, title, brands, size, color, uid } = req.body;
+    const insertClothingItem = async (): Promise<any> => {
+      await sql`INSERT INTO backend_schema.clothing_item (image, category, title, brands, size, color, uid)
+            VALUES (${image}, ${category},${title}, ${brands}, ${size}, ${color}, ${uid})
+            `;
+    };
+
+    void insertClothingItem();
+    // Return the created outfit
+    res.status(200).json({ message: 'Clothing item created successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 // Endpoint for retrieving a specific clothing item
 router.get('/:itemId', (req: any, res: any): void => {
