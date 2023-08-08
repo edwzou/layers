@@ -1,5 +1,5 @@
 import express from 'express';
-import { sql } from '../../utils/sql-import';
+import { sql } from '../../utils/sqlImport';
 const router = express.Router();
 
 // Endpoint for creating a specific user

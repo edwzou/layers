@@ -1,14 +1,14 @@
-import { sql } from '../../utils/sql-import';
+import { responseCallback } from '../../utils/responseCallback';
+import { sql } from '../../utils/sqlImport';
 import express from 'express';
 const router = express.Router();
-const { requiresAuth } = require('express-openid-connect');
 
 // Endpoint for retrieving a specific outfit
-router.get('/:outfitId', requiresAuth(), (req: any, res: any): void => {
-  try {
-    const { outfitId } = req.params;
+router.get('/:outfitId', (req: any, res: any): void => {
+  const { outfitId } = req.params;
 
-    const getOutfitById = async (): Promise<any> => {
+  const getOutfitById = async (): Promise<any> => {
+    try {
       const outfit = await sql`
               SELECT * FROM backend_schema.outfit
               WHERE oid = ${outfitId}
@@ -17,43 +17,38 @@ router.get('/:outfitId', requiresAuth(), (req: any, res: any): void => {
               )
           `;
 
-      return outfit;
-    };
+      const result = responseCallback(null, outfit);
 
-    // !!! Await Promise
-    const outfit: any = getOutfitById();
-    // Return the user information
-    res.status(200).json(outfit[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+      res.status(200).json({ message: 'Success', data: result });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+
+  void getOutfitById();
 });
 
 // Endpoint for retrieving all outfits
-router.get('/u/:userId', requiresAuth(), (req: any, res: any): void => {
-  try {
-    const { userId } = req.params;
-    // Query outfits for the specified user
+router.get('/u/:userId', (req: any, res: any): void => {
+  const { userId } = req.params;
 
-    const getAllOutfits = async (): Promise<any> => {
+  // Query outfits for the specified user
+  const getAllOutfits = async (): Promise<any> => {
+    try {
       const outfits = await sql`
         SELECT * FROM backend_schema.outfit
         WHERE uid = ${userId}
           `;
 
-      return outfits;
-    };
+      const result = responseCallback(null, outfits);
 
-    // !!! Await response
-    const outfits = getAllOutfits().then();
-    console.log(outfits);
+      res.status(200).json({ message: 'Success', data: result });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
 
-    res.status(200).json(outfits);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+  void getAllOutfits();
 });
 
 module.exports = router;

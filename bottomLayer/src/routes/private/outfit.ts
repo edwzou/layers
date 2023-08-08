@@ -1,4 +1,4 @@
-import { sql } from '../../utils/sql-import';
+import { sql } from '../../utils/sqlImport';
 import express from 'express';
 const router = express.Router();
 

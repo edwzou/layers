@@ -1,59 +1,52 @@
 import express from 'express';
-import { sql } from '../../utils/sql-import';
-const { requiresAuth } = require('express-openid-connect');
+import { sql } from '../../utils/sqlImport';
+import { responseCallback } from '../../utils/responseCallback';
 const router = express.Router();
 
 // Endpoint for retrieving a specific clothing item
-router.get('/:itemId', requiresAuth(), (req: any, res: any): void => {
-  try {
-    const { itemId } = req.params;
+router.get('/:itemId', (req: any, res: any): void => {
+  const { itemId } = req.params;
 
-    const getClothingById = async (): Promise<any> => {
-      // Query the database to retrieve the clothing item
+  const getClothingById = async (): Promise<any> => {
+    try {
       const item = await sql`
-            SELECT * FROM backend_schema.clothing_item
-            WHERE ciid = ${itemId}   
-              AND EXISTS (
-                  SELECT 1 FROM backend_schema.user WHERE ciid = ${itemId}
-          )
-          `;
+        SELECT * FROM backend_schema.clothing_item
+        WHERE ciid = ${itemId}   
+          AND EXISTS (
+              SELECT 1 FROM backend_schema.user WHERE ciid = ${itemId}
+      )`;
 
-      return item;
-    };
+      const result = responseCallback(null, item);
 
-    // !!! Await Promise
-    const item: any = getClothingById();
+      res.status(200).json({ message: 'Success', data: result });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
 
-    // Return the item
-    res.status(200).json(item[0]);
-  } catch (error) {
-    console.error('Error retrieving clothing item:', error);
-    res.status(500).json({ error: 'An error occurred while retrieving the clothing item' });
-  }
+  void getClothingById();
 });
 
 // Endpoint for retrieving a all clothing items
-router.get('/u/:user_id', requiresAuth(), (req: any, res: any): void => {
-  try {
-    const { userId } = req.params;
+router.get('/u/:userId', (req: any, res: any): void => {
+  const { userId } = req.params;
 
-    const getAllClothing = async (): Promise<any> => {
+  const getAllClothing = async (): Promise<any> => {
+    try {
       const items = await sql`
-            SELECT * FROM backend_schema.clothing_item
-            WHERE uid = ${userId}
-          `;
-      return items;
-    };
+              SELECT * FROM backend_schema.clothing_item
+              WHERE uid = ${userId}
+            `;
 
-    // !!! Await Promise
-    const items = getAllClothing();
+      const result = responseCallback(null, items);
 
-    // Return the items
-    res.status(200).json(items);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+      res.status(200).json({ message: 'Success', data: result });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+
+  void getAllClothing();
 });
 
 module.exports = router;
