@@ -1,9 +1,10 @@
 import express from 'express';
 import { sql } from '../../utils/sqlImport';
 const router = express.Router();
+const { requiresAuth } = require('express-openid-connect');
 
 // Endpoint for creating a specific user
-router.post('/', (req, res) => {
+router.post('/', requiresAuth(), (req, res) => {
   try {
     const {
       first_name,
@@ -52,7 +53,7 @@ router.post('/', (req, res) => {
 });
 
 // Endpoint for deleting a specific user
-router.delete('/:userId', (req, res): void => {
+router.delete('/:userId', requiresAuth(), (req, res): void => {
   try {
     const { userId } = req.params;
 
@@ -70,7 +71,7 @@ router.delete('/:userId', (req, res): void => {
 });
 
 // Endpoints for updating a specific user
-router.put('/:userId', (req, res): void => {
+router.put('/:userId', requiresAuth(), (req, res): void => {
   try {
     const { userId } = req.params;
     const {

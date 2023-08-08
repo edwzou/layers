@@ -1,4 +1,5 @@
 import express from 'express';
+const { requiresAuth } = require('express-openid-connect');
 const router = express.Router();
 
 // Endpoint for following a user

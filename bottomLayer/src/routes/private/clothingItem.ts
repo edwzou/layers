@@ -1,9 +1,10 @@
 import express, { type Request, type Response } from 'express';
 import { sql } from '../../utils/sqlImport';
 import { responseCallback } from '../../utils/responseCallback';
+const { requiresAuth } = require('express-openid-connect');
 const router = express.Router();
 
-router.post('/', (req: Request, res: Response): void => {
+router.post('/', requiresAuth(), (req: Request, res: Response): void => {
   try {
     const { image, category, title, brands, size, color, uid } = req.body;
     const insertClothingItem = async (): Promise<any> => {
@@ -23,7 +24,7 @@ router.post('/', (req: Request, res: Response): void => {
 });
 
 // Endpoint for retrieving a specific clothing item
-router.get('/:itemId', (req: any, res: any): void => {
+router.get('/:itemId', requiresAuth(), (req: any, res: any): void => {
   const { itemId } = req.params;
   const getItem = async (): Promise<void> => {
     try {
@@ -46,7 +47,7 @@ router.get('/:itemId', (req: any, res: any): void => {
 });
 
 // Endpoint for retrieving a all clothing items
-router.get('/u/:userId', (req: any, res: any): void => {
+router.get('/u/:userId', requiresAuth(), (req: any, res: any): void => {
   const { userId } = req.params;
 
   const getAllItems = async (): Promise<void> => {

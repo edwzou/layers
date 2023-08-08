@@ -11,7 +11,7 @@ const routerPrivate = express.Router();
 
 // void getPgVersion();
 
-const authRoute = require('../routes/public/authentication.ts');
+const authRoute = require('../routes/authentication.ts');
 
 const userRoute = require('../routes/public/user.ts');
 const followUserRoute = require('../routes/public/followUser.ts');
