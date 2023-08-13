@@ -13,8 +13,8 @@ router.get('/:userId', (req, res): void => {
         SELECT * FROM backend_schema.user
         WHERE uid = ${userId}
             AND EXISTS (
-            SELECT 1 FROM backend_schema.user WHERE uid = ${userId}
-            )
+                SELECT 1 FROM backend_schema.user WHERE uid = ${userId}
+            )  
     `;
 
       const result = responseCallback(null, user);

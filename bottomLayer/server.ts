@@ -8,10 +8,10 @@ require('dotenv').config();
 
 app.use(express.json());
 
-app.use(auth);
 app.get('/', (req: any, res: any) => { res.send('this is an secure server'); });
 app.use('/', routerBase);
 app.use('/api', routerPublic);
+app.use('/api/private', auth);
 app.use('/api/private', routerPrivate);
 
 // Define a route handler for the root URL ("/")

@@ -2,7 +2,7 @@ const { auth } = require('express-openid-connect');
 require('dotenv').config();
 
 const config: any = {
-  authRequired: false,
+  authRequired: true,
   auth0Logout: true,
   secret: process.env.AUTH0_CLIENT_SECRET,
   baseURL: 'http://localhost:1234',
