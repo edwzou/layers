@@ -16,7 +16,7 @@ const { requiresAuth } = require('express-openid-connect');
 //         WHERE uid = ${userId}
 //             AND EXISTS (
 //                 SELECT 1 FROM backend_schema.user WHERE uid = ${userId}
-//             )  
+//             )
 //     `;
 
 //       const result = responseCallback(null, user);

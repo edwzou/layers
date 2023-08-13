@@ -1,10 +1,10 @@
-import express from "express";
-import { sql } from "../../utils/sqlImport";
-import { responseCallback } from "../../utils/responseCallback";
+import express from 'express';
+import { sql } from '../../utils/sqlImport';
+import { responseCallback } from '../../utils/responseCallback';
 const router = express.Router();
 
 // Endpoint for retrieving a specific outfit
-router.get("/:outfitId", (req: any, res: any): void => {
+router.get('/:outfitId', (req: any, res: any): void => {
   const { outfitId } = req.params;
 
   const getOutfitById = async (outfitId: string): Promise<any> => {
@@ -18,9 +18,9 @@ router.get("/:outfitId", (req: any, res: any): void => {
     `;
 
       const result = responseCallback(null, outfit);
-      res.status(200).json({ message: "Success", data: result });
+      res.status(200).json({ message: 'Success', data: result });
     } catch (error) {
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
@@ -28,7 +28,7 @@ router.get("/:outfitId", (req: any, res: any): void => {
 });
 
 // Endpoint for retrieving all outfits
-router.get("/u/:userId", (req: any, res: any): void => {
+router.get('/u/:userId', (req: any, res: any): void => {
   const { userId } = req.params;
 
   // Query outfits for the specified user
@@ -41,9 +41,9 @@ router.get("/u/:userId", (req: any, res: any): void => {
 
       const result = responseCallback(null, outfits);
 
-      res.status(200).json({ message: "Success", data: result });
+      res.status(200).json({ message: 'Success', data: result });
     } catch (error) {
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
