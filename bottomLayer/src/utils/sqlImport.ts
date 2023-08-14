@@ -13,5 +13,5 @@ const checkValues = (value: string | undefined): string => {
 };
 
 const POSTGRES_URL = `postgres://${checkValues(PG_USER)}:${checkValues(PG_PASSWORD)}@${checkValues(PG_HOST)}/${checkValues(PG_DATABASE)}?options=project%3D${checkValues(ENDPOINT_ID)}`;
-console.log(POSTGRES_URL)
+
 export const sql = postgres(POSTGRES_URL, { ssl: 'require' });

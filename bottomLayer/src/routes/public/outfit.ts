@@ -13,7 +13,7 @@ import {
 const router = express.Router();
 
 // Endpoint for retrieving a specific outfit
-router.get("/:outfitId", (req: any, res: any): void => {
+router.get('/:outfitId', (req: any, res: any): void => {
   const { outfitId } = req.params;
 
   const getOutfitById = async (outfitId: string): Promise<any> => {
@@ -33,7 +33,7 @@ router.get("/:outfitId", (req: any, res: any): void => {
 });
 
 // Endpoint for retrieving all outfits
-router.get("/u/:userId", (req: any, res: any): void => {
+router.get('/u/:userId', (req: any, res: any): void => {
   const { userId } = req.params;
 
   // Query outfits for the specified user
