@@ -48,7 +48,8 @@ export const responseCallbackDelete = (
   error: any,
   id: string,
   res: any,
-  target: string = ""
+  element: any = null,
+  target: string = "",
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
@@ -59,6 +60,9 @@ export const responseCallbackDelete = (
           "Internal Server Error, Failed to Delete " + target + ": " + id
       });
     return error;
+  } else if (element.length === 0) {
+    res.status(400).json({ message: target + " Does Not Exist" });
+    return element;
   } else {
     res.status(200).json({ message: "Successfully Deleted " + target +": " + id });
     return error;

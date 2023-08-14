@@ -1,12 +1,22 @@
 import express from 'express';
+import { getUserCore } from '../../utils/responseCallback';
 const router = express.Router();
 
-// Endpoint for following a user
-router.post('/users/:id/follow', async (req: any, res: any) => {
+// Endpoint for following a user, the url parameter is the user doing the following
+router.post('/follow/:userId', async (req: any, res: any) => {
   try {
-    const { uid } = req.params;
+    const { userId } = req.params;
+    const { toFollowId } = req.body
     // Perform follow user logic
-
+    const follow = async (uid1: string, uid2: string): Promise<void> => {
+      try {
+        const user1 = await getUserCore(uid1)
+        const user2 = await getUserCore(uid2)
+          
+      } catch (error) {
+        
+      }
+    }
     res.json({ message: 'User followed' });
   } catch (err) {
     console.error(err);

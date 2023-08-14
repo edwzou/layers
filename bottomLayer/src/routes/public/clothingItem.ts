@@ -34,12 +34,12 @@ router.get("/u/:userId", (req: any, res: any): void => {
 
   const getAllClothing = async (userId: string): Promise<any> => {
     try {
-      const user = await getUserCore(userId);
+      const run = getUserCore(userId);
       const items = await sql`
         SELECT * FROM backend_schema.clothing_item
         WHERE uid = ${userId}
       `;
-
+      const user = await run;
       responseCallbackGetAll(user, items, res, "Clothing Items");
     } catch (error) {
       responseCallbackGet(error, null, res);

@@ -56,10 +56,12 @@ router.delete('/:userId', (req, res): void => {
   const { userId } = req.params;
   const deleteUser = async (userId: string): Promise<void> => {
     try {
+      // Although the following will take extra time, since delete is such a hefty method
+      // it should be fine
+      const user = await getUserCore(userId);
       await sql`DELETE FROM backend_schema.user WHERE uid = ${userId}`;
 
-      // gives successful feedback on users that don't exist
-      responseCallbackDelete(null, userId, res, 'User');
+      responseCallbackDelete(null, userId, res, user, 'User');
     } catch (error) {
       responseCallbackDelete(error, userId, res);
     }
@@ -82,20 +84,10 @@ router.put('/:userId', (req, res): void => {
     followers,
     following
   } = req.body;
-  console.log(
-    first_name,
-    last_name,
-    email,
-    username,
-    password,
-    privateOption,
-    profile_picture,
-    followers,
-    following
-  );
   const updateUser = async (userId: string): Promise<void> => {
     try {
-      const user = await getUserCore(userId);
+      const run = getUserCore(userId);
+      // console.log(user);
       await sql`UPDATE backend_schema.user
           SET first_name = ${first_name},
               last_name = ${last_name},
@@ -107,7 +99,7 @@ router.put('/:userId', (req, res): void => {
               following = ${following},
               profile_picture = ${profile_picture}
           WHERE uid = ${userId}`;
-
+      const user = await run;
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, user, 'User');
     } catch (error) {

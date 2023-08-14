@@ -2,14 +2,10 @@ import express from "express";
 import { sql } from "../../utils/sqlImport";
 import {
   getUserCore,
-  responseCallback,
   responseCallbackGet,
   responseCallbackGetAll,
 } from "../../utils/responseCallback";
-// import {
-//   getUserCore,
-//   getUserCore2,
-// } from "../../routes/public/user";
+
 const router = express.Router();
 
 // Endpoint for retrieving a specific outfit
@@ -39,12 +35,12 @@ router.get('/u/:userId', (req: any, res: any): void => {
   // Query outfits for the specified user
   const getAllOutfits = async (userId: string): Promise<any> => {
     try {
-      const user = await getUserCore(userId);
+      const run = getUserCore(userId);
       const outfits = await sql`
         SELECT * FROM backend_schema.outfit
         WHERE uid = ${userId}
       `;
-
+      const user =  await run;
       responseCallbackGetAll(user, outfits, res, "Outfits");
     } catch (error) {
       responseCallbackGet(error, null, res);

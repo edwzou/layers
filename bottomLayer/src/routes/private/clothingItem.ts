@@ -25,16 +25,14 @@ router.delete('/:ciid', (req: any, res: any): void => {
   const { ciid } = req.params;
   const deleteItem = async (ciid: string): Promise<void> => {
     try {
+      const clothing = await getItemCore(ciid);
       await sql`DELETE FROM backend_schema.clothing_item WHERE ciid = ${ciid}`;
   
-      // gives successful feedback on clothing items that don't exist
-      responseCallbackDelete(null, ciid, res, 'Clothing Item')
+      responseCallbackDelete(null, ciid, res, clothing, 'Clothing Item')
     } catch (error) {
       responseCallbackDelete(error, ciid, res)
     }
-
   };
-
   void deleteItem(ciid);
 });
 
@@ -47,7 +45,7 @@ router.put('/:ciid', (req: any, res: any): void => {
     const updateItem = async (ciid: string): Promise<void> => {
       // Update the outfit in the database
       try {
-        const item = await getItemCore(ciid);
+        const run = getItemCore(ciid);
         await sql`
           UPDATE backend_schema.clothing_item
           SET image = ${image},
@@ -58,7 +56,7 @@ router.put('/:ciid', (req: any, res: any): void => {
               color = ${color}
           WHERE ciid = ${ciid}
         `;
-
+        const item = await run;
         // responds with successful update even when no changes are made
         responseCallbackUpdate(null, ciid, res, item, "Clothing Item");
       } catch (error) {
