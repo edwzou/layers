@@ -2,4 +2,4 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "title": "Casual Outfit",
   "clothing_items": [],
   "uid": "{ uid }"
-}' http://localhost:1234/outfits
+}' http://localhost:1234/api/private/outfits

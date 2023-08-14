@@ -5,7 +5,8 @@
   "main": "endpoints.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "npx nodemon",
+    "format": "eslint --fix ."
   },
   "keywords": [],
   "author": "",
@@ -15,9 +16,23 @@
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "express-oauth2-jwt-bearer": "^1.5.0",
-    "pg": "^8.11.1",
+    "express-openid-connect": "^2.16.0",
+    "pg": "^8.11.2",
     "postgres": "^3.3.5",
+    "ts-node": "^10.9.1",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.4.6",
+    "@types/pg": "^8.10.2",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "eslint": "^8.46.0",
+    "eslint-config-standard-with-typescript": "^37.0.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.1.6"
   }
 }
