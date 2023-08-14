@@ -17,7 +17,6 @@ type StackNavigatorType = {
 export type StackTypes = {
 	Login: StackNavigatorType;
 	SignUp: StackNavigatorType;
-	Auth: StackNavigatorType;
 	Main: StackNavigatorType;
 	Preview: StackNavigatorType;
 	Edit: StackNavigatorType;

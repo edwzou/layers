@@ -8,7 +8,6 @@ import InlineTextbox from '../../components/Textbox/InlineTextbox';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
-import { useAuth0, Auth0Provider } from 'react-native-auth0';
 
 const SignIn = () => {
 	const {
@@ -24,33 +23,23 @@ const SignIn = () => {
 		},
 	});
 
-	const { authorize, user } = useAuth0();
-
 	const onSubmit = async (data: any) => {
 		try {
-			const response = await axios.post(`${baseUrl}/api/auth/login`, {
+			const response = await axios.post(`${baseUrl}/auth/login`, {
 				username: data.username !== '' ? data.username : null,
 				email: data.email !== '' ? data.email : null,
 				password: data.password,
-			}, {
-				headers: {
-					"Content-Type": 'Multipart/form-data'
-				}
 			});
-			// await authorize({ scope: 'openid profile email' }, { customScheme: 'com.authenticate.Layers' });
 
-			if (user) {
-				console.log(user)
-			}
-			if (response.status === 200) {
-				alert(`Logged In ${JSON.stringify(response.data)}`);
+			if (response.status === 201) {
+				alert(`You have created: ${JSON.stringify(response.data)}`);
 			} else {
-				throw new Error(response.statusText);
+				throw new Error('An error has occurred');
 			}
-
 		} catch (error) {
 			alert(error);
 		}
+		console.log(data);
 	};
 
 	return (

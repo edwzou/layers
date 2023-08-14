@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -8,23 +8,17 @@ import { StackNavigation } from '../../constants/Enums';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 import SignIn from './SignIn';
-import UserAuth from './UserAuth';
-import Button from '../../components/Button/Button';
 
 export default function LoginPage() {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
-	const onPress = () => {
-		navigation.navigate(StackNavigation.Auth);
-	}
 
 	return (
 		<View style={styles.container}>
 			<Text style={[GlobalStyles.typography.header, GlobalStyles.utils.font]}>
 				Layers
 			</Text>
-			{/* <SignIn /> */}
-			{/* <Text>
+			<SignIn />
+			<Text>
 				Don't have an account?{' '}
 				<Text
 					onPress={() => {
@@ -34,9 +28,7 @@ export default function LoginPage() {
 				>
 					Sign up
 				</Text>
-			</Text> */}
-
-			<Button text='Get Started' bgColor={GlobalStyles.colorPalette.primary[500]} onPress={onPress} />
+			</Text>
 		</View>
 	);
 }
