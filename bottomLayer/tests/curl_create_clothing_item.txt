@@ -2,8 +2,8 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "image": "<base64-encoded-image>",
   "category": "Shirts",
   "title": "Striped T-Shirt",
-  "uid": "{ uid }",
   "brands": [],
   "size": "test",
-  "color": ["#4891FF"]
-}' http://localhost:1234/clothing_items
+  "color": ["#4891FF"],
+  "uid": "{ uid }"
+}' http://localhost:1234/api/private/clothing_items

@@ -1,6 +1,15 @@
 import express from "express";
 import { sql } from "../../utils/sqlImport";
-import { responseCallback } from "../../utils/responseCallback";
+import {
+  getUserCore,
+  responseCallback,
+  responseCallbackGet,
+  responseCallbackGetAll,
+} from "../../utils/responseCallback";
+// import {
+//   getUserCore,
+//   getUserCore2,
+// } from "../../routes/public/user";
 const router = express.Router();
 
 // Endpoint for retrieving a specific outfit
@@ -12,15 +21,11 @@ router.get("/:outfitId", (req: any, res: any): void => {
       const outfit = await sql`
         SELECT * FROM backend_schema.outfit
         WHERE oid = ${outfitId}
-            AND EXISTS (
-                SELECT 1 FROM backend_schema.user WHERE oid = ${outfitId}
-            )
     `;
 
-      const result = responseCallback(null, outfit);
-      res.status(200).json({ message: "Success", data: result });
+      responseCallbackGet(null, outfit, res, "Outfits");
     } catch (error) {
-      res.status(500).json({ message: "Internal Server Error" });
+      responseCallbackGet(error, null, res);
     }
   };
 
@@ -32,22 +37,21 @@ router.get("/u/:userId", (req: any, res: any): void => {
   const { userId } = req.params;
 
   // Query outfits for the specified user
-  const getAllOutfits = async (): Promise<any> => {
+  const getAllOutfits = async (userId: string): Promise<any> => {
     try {
+      const user = await getUserCore(userId);
       const outfits = await sql`
         SELECT * FROM backend_schema.outfit
         WHERE uid = ${userId}
-          `;
+      `;
 
-      const result = responseCallback(null, outfits);
-
-      res.status(200).json({ message: "Success", data: result });
+      responseCallbackGetAll(user, outfits, res, "Outfits");
     } catch (error) {
-      res.status(500).json({ message: "Internal Server Error" });
+      responseCallbackGet(error, null, res);
     }
   };
 
-  void getAllOutfits();
+  void getAllOutfits(userId);
 });
 
 module.exports = router;

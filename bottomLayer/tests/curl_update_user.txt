@@ -5,7 +5,8 @@ curl -X PUT -H "Content-Type: application/json" -d '{
   "username": "johndoe",
   "email": "johndoe@example.com",
   "password": "Michael Jackson",
+  "privateOption": true,
   "profile_picture": "new-profile-picture-url",
   "following": [],
   "followers": []
-}' http://localhost:1234/users/{ uid }
+}' http://localhost:1234/api/private/users/{ uid }

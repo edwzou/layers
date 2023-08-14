@@ -1,52 +1,52 @@
-import express from 'express';
-import { sql } from '../../utils/sqlImport';
-import { responseCallback } from '../../utils/responseCallback';
+import express from "express";
+import { sql } from "../../utils/sqlImport";
+import {
+  getUserCore,
+  responseCallback,
+  responseCallbackGet,
+  responseCallbackGetAll,
+} from "../../utils/responseCallback";
 const router = express.Router();
 
 // Endpoint for retrieving a specific clothing item
-router.get('/:itemId', (req: any, res: any): void => {
+router.get("/:itemId", (req: any, res: any): void => {
   const { itemId } = req.params;
 
-  const getClothingById = async (): Promise<any> => {
+  const getClothingById = async (itemId: string): Promise<any> => {
     try {
       const item = await sql`
         SELECT * FROM backend_schema.clothing_item
         WHERE ciid = ${itemId}   
-          AND EXISTS (
-              SELECT 1 FROM backend_schema.user WHERE ciid = ${itemId}
-      )`;
+        `;
 
-      const result = responseCallback(null, item);
-
-      res.status(200).json({ message: 'Success', data: result });
+      responseCallbackGet(null, item, res, "Clothing Item");
     } catch (error) {
-      res.status(500).json({ message: 'Internal Server Error' });
+      responseCallbackGet(error, null, res);
     }
   };
 
-  void getClothingById();
+  void getClothingById(itemId);
 });
 
 // Endpoint for retrieving a all clothing items
-router.get('/u/:userId', (req: any, res: any): void => {
+router.get("/u/:userId", (req: any, res: any): void => {
   const { userId } = req.params;
 
-  const getAllClothing = async (): Promise<any> => {
+  const getAllClothing = async (userId: string): Promise<any> => {
     try {
+      const user = await getUserCore(userId);
       const items = await sql`
-              SELECT * FROM backend_schema.clothing_item
-              WHERE uid = ${userId}
-            `;
+        SELECT * FROM backend_schema.clothing_item
+        WHERE uid = ${userId}
+      `;
 
-      const result = responseCallback(null, items);
-
-      res.status(200).json({ message: 'Success', data: result });
+      responseCallbackGetAll(user, items, res, "Clothing Items");
     } catch (error) {
-      res.status(500).json({ message: 'Internal Server Error' });
+      responseCallbackGet(error, null, res);
     }
   };
 
-  void getAllClothing();
+  void getAllClothing(userId);
 });
 
 module.exports = router;

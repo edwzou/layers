@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const axios = require('axios');
 const app = express();
-const { auth } = require('./src/middleware/auth.ts');
+// const { auth } = require('./src/middleware/auth.ts');
 require('dotenv').config();
 
 app.use(express.json());
@@ -11,7 +11,7 @@ app.use(express.json());
 app.get('/', (req: any, res: any) => { res.send('this is an secure server'); });
 app.use('/', routerBase);
 app.use('/api', routerPublic);
-app.use('/api/private', auth);
+// app.use('/api/private', auth);
 app.use('/api/private', routerPrivate);
 
 // Define a route handler for the root URL ("/")

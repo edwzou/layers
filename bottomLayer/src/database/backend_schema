@@ -27,7 +27,7 @@ CREATE TABLE backend_schema.user (
     email VARCHAR(100) NOT NULL UNIQUE,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    private BOOL NOT NULL,
+    privateOption BOOL NOT NULL,
     followers UUID[],
     following UUID[],
     profile_picture VARCHAR(255)
