@@ -1,3 +1,4 @@
+import { NotFoundError } from "./NotFoundError";
 import { sql } from "./sqlImport";
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
@@ -48,7 +49,6 @@ export const responseCallbackDelete = (
   error: any,
   id: string,
   res: any,
-  element: any = null,
   target: string = "",
 ): Callback<any> => {
   if (error != null) {
@@ -60,9 +60,6 @@ export const responseCallbackDelete = (
           "Internal Server Error, Failed to Delete " + target + ": " + id
       });
     return error;
-  } else if (element.length === 0) {
-    res.status(400).json({ message: target + " Does Not Exist" });
-    return element;
   } else {
     res.status(200).json({ message: "Successfully Deleted " + target +": " + id });
     return error;
@@ -73,16 +70,12 @@ export const responseCallbackUpdate = (
   error: any,
   id: string,
   res: any,
-  user: any = null,
   target: string = ""
 ): Callback<any> => {
   if (error != null) {
-    console.log(error);
+    console.log(error); 
     res.status(500).json({ message: "Internal Server Error" });
     return error;
-  } else if (user.length === 0) {
-    res.status(400).json({ message: target + " Not Found" });
-    return user;
   } else {
     res
       .status(200)
@@ -93,15 +86,11 @@ export const responseCallbackUpdate = (
 
 
 export const responseCallbackGetAll = (
-  user: any,
   element: any,
   res: any,
   notFoundObject = ""
 ): Callback<any> => {
-  if (user.length === 0) {
-    res.status(400).json({ message: "User Not Found" });
-    return element;
-  } else if (element.length === 0) {
+  if (element.length === 0) {
     res.status(400).json({ message: "This User has no " + notFoundObject });
     return element;
   } else {
@@ -116,7 +105,9 @@ export const getUserCore = async (userId: string): Promise<any> => {
         SELECT * FROM backend_schema.user
         WHERE uid = ${userId}
     `;
-
+    if (user.length === 0) {
+      throw new NotFoundError("User Not Found");
+    } 
     return responseCallback(null, user);
   } catch (error) {
     return responseCallback(error, null);
@@ -129,7 +120,9 @@ export const getOutfitCore = async (oid: string): Promise<any> => {
         SELECT * FROM backend_schema.outfit
         WHERE oid = ${oid}
     `;
-
+    if (user.length === 0) {
+      throw new NotFoundError("Outfit Not Found");
+    } 
     return responseCallback(null, user);
   } catch (error) {
     return responseCallback(error, null);
@@ -142,7 +135,9 @@ export const getItemCore = async (ciid: string): Promise<any> => {
         SELECT * FROM backend_schema.clothing_item
         WHERE ciid = ${ciid}
     `;
-
+    if (user.length === 0) {
+      throw new NotFoundError("Clothing Item Not Found");
+    } 
     return responseCallback(null, user);
   } catch (error) {
     return responseCallback(error, null);

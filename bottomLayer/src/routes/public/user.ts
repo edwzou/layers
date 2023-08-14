@@ -15,7 +15,7 @@ router.get("/:userId", (req, res): void => {
       const user = await sql`
         SELECT * FROM backend_schema.user
         WHERE uid = ${userId}
-    `;
+      `;
 
       responseCallbackGet(null, user, res, "User");
     } catch (error) {

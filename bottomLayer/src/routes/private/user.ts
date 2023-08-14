@@ -58,10 +58,10 @@ router.delete('/:userId', (req, res): void => {
     try {
       // Although the following will take extra time, since delete is such a hefty method
       // it should be fine
-      const user = await getUserCore(userId);
+      await getUserCore(userId);
       await sql`DELETE FROM backend_schema.user WHERE uid = ${userId}`;
 
-      responseCallbackDelete(null, userId, res, user, 'User');
+      responseCallbackDelete(null, userId, res, 'User');
     } catch (error) {
       responseCallbackDelete(error, userId, res);
     }
@@ -99,9 +99,9 @@ router.put('/:userId', (req, res): void => {
               following = ${following},
               profile_picture = ${profile_picture}
           WHERE uid = ${userId}`;
-      const user = await run;
+      await run;
       // responds with successful update even when no changes are made
-      responseCallbackUpdate(null, userId, res, user, 'User');
+      responseCallbackUpdate(null, userId, res, 'User');
     } catch (error) {
       responseCallbackUpdate(error, userId, res);
     }

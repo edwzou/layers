@@ -1,14 +1,14 @@
 curl -X POST -H "Content-Type: application/json" -d '{
   "first_name": "John",
   "last_name": "Doe",
-  "username": "johndoe",
-  "email": "johndoe@example.com",
+  "username": "johndoe2",
+  "email": "johndoe@example2.com",
   "password": "password",
-  "private" : true,
+  "privateOption" : true,
   "profile_picture": "profile-picture-url",
   "following": [],
   "followers": []
-}' http://localhost:1234/users
+}' http://localhost:1234/api/private/users
 
 curl -X POST -H "Content-Type: application/json" -d '{
   "first_name": "John",
@@ -16,8 +16,8 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "username": "joebu",
   "email": "joebu@example.com",
   "password": "password",
-  "private" : true,
+  "privateOption" : true,
   "profile_picture": "profile-picture-url",
   "following": [],
   "followers": []
-}' http://localhost:1234/users
+}' http://localhost:1234/api/private/users

@@ -39,8 +39,8 @@ router.get("/u/:userId", (req: any, res: any): void => {
         SELECT * FROM backend_schema.clothing_item
         WHERE uid = ${userId}
       `;
-      const user = await run;
-      responseCallbackGetAll(user, items, res, "Clothing Items");
+      await run;
+      responseCallbackGetAll(items, res, "Clothing Items");
     } catch (error) {
       responseCallbackGet(error, null, res);
     }

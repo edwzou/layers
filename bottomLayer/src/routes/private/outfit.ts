@@ -27,10 +27,10 @@ router.delete('/:outfitId', (req: any, res: any): void => {
   const { outfitId } = req.params;
   const deleteOutfit = async (outfitId: string): Promise<void> => {
     try {
-      const outfit = await getOutfitCore(outfitId);
+      await getOutfitCore(outfitId);
       await sql`DELETE FROM backend_schema.outfit WHERE oid = ${outfitId}`;
   
-      responseCallbackDelete(null, outfitId, res, outfit, 'Outift')
+      responseCallbackDelete(null, outfitId, res, 'Outift')
     } catch (error) {
       responseCallbackDelete(error, outfitId, res)
     }
@@ -55,9 +55,9 @@ router.put('/:oid', (req: any, res: any): void => {
           SET title = ${title}, clothing_items = ${clothing_items}
           WHERE oid = ${oid}
         `;
-        const outfit = await run;
+        await run;
         // responds with successful update even when no changes are made
-        responseCallbackUpdate(null, oid, res, outfit, "Outfit");
+        responseCallbackUpdate(null, oid, res, "Outfit");
       } catch (error) {
         responseCallbackUpdate(error, oid, res)
       }
