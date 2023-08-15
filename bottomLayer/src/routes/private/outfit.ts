@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../utils/Errors/NotFoundError';
 import { getOutfitCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { pool } from '../../utils/sqlImport';
 import express, { type Request, type Response } from 'express';
@@ -44,16 +45,21 @@ router.put('/:oid', (req: Request, res: Response): void => {
 
     const updateOutfit = async (oid: string): Promise<void> => {
       // Update the outfit in the database
-      try {
+      // try {
         const run = getOutfitCore(oid);
         await pool.query('UPDATE backend_schema.outfit SET title = $1, clothing_items = $2 WHERE oid = $3', [title, clothing_items, oid]);
 
-        await run;
+        const outfit = await run;
+        console.log("outfit", outfit)
+        if (outfit instanceof NotFoundError) {
+          responseCallbackUpdate(outfit, oid, res);
+        } else {
+          responseCallbackUpdate(null, oid, res, "Outfit");
+        }
         // responds with successful update even when no changes are made
-        responseCallbackUpdate(null, oid, res, "Outfit");
-      } catch (error) {
-        responseCallbackUpdate(error, oid, res)
-      }
+      // } catch (error) {
+      //   responseCallbackUpdate(error, oid, res)
+      // }
   
     };
 
