@@ -1,10 +1,10 @@
-import express from 'express';
-import { sql } from '../../utils/sqlImport';
-import { getUserCore, responseCallbackDelete, responseCallbackGet, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
+import express, { type Request, type Response } from 'express';
+import { pool } from '../../utils/sqlImport';
+import { getUserCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 const router = express.Router();
 
 // Endpoint for creating a specific user
-router.post('/', (req, res) => {
+router.post('/', (req: Request, res: Response) => {
   const {
     first_name,
     last_name,
@@ -19,29 +19,12 @@ router.post('/', (req, res) => {
 
   const insertUser = async (): Promise<void> => {
     try {
-      await sql`
-          INSERT INTO backend_schema.user (
-              first_name,
-              last_name,
-              email,
-              username,
-              password,
-              private,
-              followers,
-              following,
-              profile_picture
-          ) VALUES (
-              ${first_name},
-              ${last_name},
-              ${email},
-              ${username},
-              ${password},
-              ${privateOption},
-              ${followers},
-              ${following},
-              ${profile_picture}
-          )
-        `;
+      await pool.query(`
+      INSERT INTO backend_schema.user (
+        first_name, last_name, email, username, password, private, followers, following, profile_picture
+        ) VALUES ( 
+          $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture]);
 
       responseCallbackPost(null, res, 'User');
     } catch (error) {
@@ -52,14 +35,14 @@ router.post('/', (req, res) => {
 });
 
 // Endpoint for deleting a specific user
-router.delete('/:userId', (req, res): void => {
+router.delete('/:userId', (req: Request, res: Response): void => {
   const { userId } = req.params;
   const deleteUser = async (userId: string): Promise<void> => {
     try {
       // Although the following will take extra time, since delete is such a hefty method
       // it should be fine
       await getUserCore(userId);
-      await sql`DELETE FROM backend_schema.user WHERE uid = ${userId}`;
+      await pool.query('DELETE FROM backend_schema.user WHERE uid = $1', [userId]);
 
       responseCallbackDelete(null, userId, res, 'User');
     } catch (error) {
@@ -71,7 +54,7 @@ router.delete('/:userId', (req, res): void => {
 });
 
 // Endpoints for updating a specific user
-router.put('/:userId', (req, res): void => {
+router.put('/:userId', (req: Request, res: Response): void => {
   const { userId } = req.params;
   const {
     first_name,
@@ -88,17 +71,18 @@ router.put('/:userId', (req, res): void => {
     try {
       const run = getUserCore(userId);
       // console.log(user);
-      await sql`UPDATE backend_schema.user
-          SET first_name = ${first_name},
-              last_name = ${last_name},
-              email = ${email},
-              username = ${username},
-              password = ${password},
-              private = ${privateOption},
-              followers = ${followers},
-              following = ${following},
-              profile_picture = ${profile_picture}
-          WHERE uid = ${userId}`;
+      await pool.query(`UPDATE backend_schema.user
+        SET first_name = $1,
+            last_name = $2,
+            email = $3,
+            username = $4,
+            password = $5,
+            private = $6,
+            followers = $7,
+            following = $8,
+            profile_picture = $9
+        WHERE uid = $10`,
+      [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture, userId]);
       await run;
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User');

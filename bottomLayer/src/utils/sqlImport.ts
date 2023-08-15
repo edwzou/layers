@@ -1,4 +1,4 @@
-import postgres from 'postgres';
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -14,4 +14,7 @@ const checkValues = (value: string | undefined): string => {
 
 const POSTGRES_URL = `postgres://${checkValues(PG_USER)}:${checkValues(PG_PASSWORD)}@${checkValues(PG_HOST)}/${checkValues(PG_DATABASE)}?options=project%3D${checkValues(ENDPOINT_ID)}`;
 
-export const sql = postgres(POSTGRES_URL, { ssl: 'require' });
+export const pool = new Pool({
+  connectionString: POSTGRES_URL,
+  ssl: true
+});

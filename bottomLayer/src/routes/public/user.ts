@@ -1,23 +1,18 @@
-import express from "express";
-import { sql } from "../../utils/sqlImport";
-import {
-  responseCallback,
-  responseCallbackGet,
-} from "../../utils/responseCallback";
+import express, { type Request, type Response } from 'express';
+import { pool } from '../../utils/sqlImport';
+import { responseCallbackGet } from '../../utils/responseCallback';
 const router = express.Router();
 
 // Endpoint for retrieving a specific user
-router.get("/:userId", (req, res): void => {
+router.get('/:userId', (req: Request, res: Response): void => {
   const { userId } = req.params;
 
   const getUser = async (userId: string): Promise<void> => {
     try {
-      const user = await sql`
-        SELECT * FROM backend_schema.user
-        WHERE uid = ${userId}
-      `;
+      const user = await pool.query('SELECT * FROM backend_schema.user WHERE uid = $1', [userId]);
+      const result = user.rows[0];
 
-      responseCallbackGet(null, user, res, "User");
+      responseCallbackGet(null, result, res, 'User');
     } catch (error) {
       responseCallbackGet(error, null, res);
     }

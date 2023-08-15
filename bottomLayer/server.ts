@@ -1,12 +1,35 @@
 import { routerBase, routerPublic, routerPrivate } from './src/routes/endpoints';
+import { responseCallbackGet } from './src/utils/responseCallback';
+import { sql } from './src/utils/sqlImport';
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
 const app = express();
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+const jwt = require('jsonwebtoken');
 // const { auth } = require('./src/middleware/auth.ts');
 require('dotenv').config();
 
 app.use(express.json());
+app.use(passport.initialize());
+
+// passport.use(new LocalStrategy((username, password, done) => {
+//   // const getUser = async (userId: string): Promise<void> => {
+//   //   try {
+//   //     const user = await sql`
+//   //       SELECT * FROM backend_schema.user
+//   //       WHERE uid = ${userId}
+//   //   `;
+
+//   //     responseCallbackGet(null, user, res, 'User');
+//   //   } catch (error) {
+//   //     responseCallbackGet(error, null, res);
+//   //   }
+//   // };
+
+// }));
 
 app.get('/', (req: any, res: any) => { res.send('this is an secure server'); });
 app.use('/', routerBase);
