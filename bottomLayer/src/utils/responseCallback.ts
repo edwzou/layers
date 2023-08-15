@@ -1,4 +1,4 @@
-import { NotFoundError } from "./NotFoundError";
+import { NotFoundError } from "./Errors/NotFoundError";
 import { sql } from "./sqlImport";
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
