@@ -1,25 +1,18 @@
-import express from "express";
-import { sql } from "../../utils/sqlImport";
-import {
-  getUserCore,
-  responseCallback,
-  responseCallbackGet,
-  responseCallbackGetAll,
-} from "../../utils/responseCallback";
+import express, { type Request, type Response } from 'express';
+import { pool } from '../../utils/sqlImport';
+import { getUserCore, responseCallbackGet, responseCallbackGetAll } from '../../utils/responseCallback';
 const router = express.Router();
 
 // Endpoint for retrieving a specific clothing item
-router.get("/:itemId", (req: any, res: any): void => {
+router.get('/:itemId', (req: Request, res: Response): void => {
   const { itemId } = req.params;
 
   const getClothingById = async (itemId: string): Promise<any> => {
     try {
-      const item = await sql`
-        SELECT * FROM backend_schema.clothing_item
-        WHERE ciid = ${itemId}   
-        `;
+      const item = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE ciid = $1', [itemId]);
 
-      responseCallbackGet(null, item, res, "Clothing Item");
+      const result = item.rows[0];
+      responseCallbackGet(null, result, res, 'Clothing Item');
     } catch (error) {
       responseCallbackGet(error, null, res);
     }
@@ -29,18 +22,16 @@ router.get("/:itemId", (req: any, res: any): void => {
 });
 
 // Endpoint for retrieving a all clothing items
-router.get("/u/:userId", (req: any, res: any): void => {
+router.get('/u/:userId', (req: Request, res: Response): void => {
   const { userId } = req.params;
 
   const getAllClothing = async (userId: string): Promise<any> => {
     try {
-      const user = await getUserCore(userId);
-      const items = await sql`
-        SELECT * FROM backend_schema.clothing_item
-        WHERE uid = ${userId}
-      `;
-
-      responseCallbackGetAll(user, items, res, "Clothing Items");
+      const run = getUserCore(userId);
+      const result = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE uid = $1', [userId]);
+      const items = result.rows;
+      await run;
+      responseCallbackGetAll(items, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);
     }
