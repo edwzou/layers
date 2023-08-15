@@ -186,18 +186,18 @@ export const getUserCoreNoError = async (userId: string): Promise<any> => {
 };
 
 export const getOutfitCore = async (oid: string): Promise<any> => {
-  await pool.query('SELECT * FROM backend_schema.outfit WHERE oid = $1', [oid], (error, result) => {
-    if (!error) {
-      const user = result.rows;
-      console.log("user: ", user);
-      if (user.length === 0) {
-        console.log("test")
-        return new NotFoundError("Outfit Not Found");
-      }
-      return user; 
-    }
-    return error;
-  });
+  try {
+    const result = sql`SELECT * FROM backend_schema.outfit WHERE oid = ${oid}`;
+    const user = result[0];
+    console.log("user: ", user)
+    if (user.length === 0) {
+      const error = new NotFoundError("Outfit Not Found");
+      return Promise.reject(error);
+    } 
+    return responseCallback(null, user);
+  } catch (error) {
+    return responseCallback(error, null);
+  }
 };
 
 export const getItemCore = async (ciid: string): Promise<any> => {
