@@ -110,8 +110,10 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
       [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture, userId]);
       await run;
       // responds with successful update even when no changes are made
+      console.log('test1', run);
       responseCallbackUpdate(null, userId, res, 'User');
     } catch (error) {
+      console.log('test2', error);
       responseCallbackUpdate(error, userId, res);
     }
   };

@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../utils/Errors/NotFoundError';
 import { checkAuthenticated } from '../../middleware/auth';
 import { getOutfitCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { pool } from '../../utils/sqlImport';

@@ -11,7 +11,7 @@ router.get('/:outfitId', (req: Request, res: Response): void => {
   const getOutfitById = async (outfitId: string): Promise<any> => {
     try {
       const outfit = await pool.query('SELECT * FROM backend_schema.outfit WHERE oid = $1', [outfitId]);
-      const result = outfit.rows[0];
+      const result = outfit.rows;
 
       responseCallbackGet(null, result, res, 'Outfits');
     } catch (error) {
