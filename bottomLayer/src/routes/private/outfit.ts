@@ -26,10 +26,10 @@ router.delete('/:outfitId', (req: Request, res: Response): void => {
     try {
       await getOutfitCore(outfitId);
       await pool.query('DELETE FROM backend_schema.outfit WHERE oid = $1', [outfitId]);
-  
-      responseCallbackDelete(null, outfitId, res, 'Outift')
+
+      responseCallbackDelete(null, outfitId, res, 'Outift');
     } catch (error) {
-      responseCallbackDelete(error, outfitId, res)
+      responseCallbackDelete(error, outfitId, res);
     }
   };
 
@@ -42,20 +42,19 @@ router.put('/:oid', (req: Request, res: Response): void => {
   const { oid } = req.params;
   const { title, clothing_items } = req.body;
 
-    const updateOutfit = async (oid: string): Promise<void> => {
-      // Update the outfit in the database
-      try {
-        const run = getOutfitCore(oid);
-        await pool.query('UPDATE backend_schema.outfit SET title = $1, clothing_items = $2 WHERE oid = $3', [title, clothing_items, oid]);
+  const updateOutfit = async (oid: string): Promise<void> => {
+    // Update the outfit in the database
+    try {
+      const run = getOutfitCore(oid);
+      await pool.query('UPDATE backend_schema.outfit SET title = $1, clothing_items = $2 WHERE oid = $3', [title, clothing_items, oid]);
 
-        await run;
-        // responds with successful update even when no changes are made
-        responseCallbackUpdate(null, oid, res, "Outfit");
-      } catch (error) {
-        responseCallbackUpdate(error, oid, res)
-      }
-  
-    };
+      await run;
+      // responds with successful update even when no changes are made
+      responseCallbackUpdate(null, oid, res, 'Outfit');
+    } catch (error) {
+      responseCallbackUpdate(error, oid, res);
+    }
+  };
 
   void updateOutfit(oid);
 });

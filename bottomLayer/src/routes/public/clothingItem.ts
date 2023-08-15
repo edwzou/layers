@@ -31,7 +31,7 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
       const result = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE uid = $1', [userId]);
       const items = result.rows;
       await run;
-      responseCallbackGetAll(items, res, "Clothing Items");
+      responseCallbackGetAll(items, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);
     }

@@ -1,6 +1,4 @@
 import { routerBase, routerPublic, routerPrivate } from './src/routes/endpoints';
-import { responseCallbackGet } from './src/utils/responseCallback';
-import { sql } from './src/utils/sqlImport';
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
