@@ -94,22 +94,23 @@ export const responseCallbackUpdate = (
 
 export const responseCallbackFollow = (
   error: any,
-  username: string,
-  toFollowUsername: string,
+  following: any,
+  follower: any,
   res: Response
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
     res.status(500).json({
-      // If fails username is actually uid
-      message: 'Internal Server Error: ' + username + ' Failed to Follow ' + toFollowUsername,
+      // Where following and follower are the uids
+      message: 'Internal Server Error: ' + following + ' Failed to Follow ' + follower,
       error
     });
     return error;
+    // } else if (following.rowCount === 1 && follower.rowCount === 0) {
   } else {
     res
       .status(200)
-      .json({ message: username + ' Successfully Followed ' + toFollowUsername });
+      .json({ message: following.rows.username + ' Successfully Followed ' + follower });
     return error;
   }
 };
@@ -155,9 +156,9 @@ export const responseCallbackGetAll = (
   }
 };
 
-export const getUserCore = async (userId: string): Promise<any> => {
+export const getUserCore = async (userId: string, client: PoolClient): Promise<any> => {
   try {
-    const result = await pool.query(
+    const result = await client.query(
       'SELECT * FROM backend_schema.user WHERE uid = $1',
       [userId]
     );

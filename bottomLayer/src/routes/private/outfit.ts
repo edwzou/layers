@@ -1,6 +1,6 @@
 import { NotFoundError } from '../../utils/Errors/NotFoundError';
 import { checkAuthenticated } from '../../middleware/auth';
-import { getOutfitCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
+import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { pool } from '../../utils/sqlImport';
 import express, { type Request, type Response } from 'express';
 const router = express.Router();
