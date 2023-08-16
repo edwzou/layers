@@ -1,6 +1,6 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { getItemCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
+import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item

@@ -25,13 +25,14 @@ router.get('/:itemId', (req: Request, res: Response): void => {
 router.get('/u/:userId', (req: Request, res: Response): void => {
   const { userId } = req.params;
 
+  const client = pool.connect();
+
   const getAllClothing = async (userId: string): Promise<any> => {
     try {
-      const result = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE uid = $1', [userId]);
+      const run = pool.query('SELECT * FROM backend_schema.clothing_item WHERE uid = $1', [userId]);
+      await getUserCore(userId, await client)
+      const result = await run;
       const items = result.rows;
-      if (items.length === 0) {
-        await getUserCore(userId)
-      }
       responseCallbackGetAll(items, res, "Clothing Items");
     } catch (error) {
       responseCallbackGet(error, null, res);

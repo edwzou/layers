@@ -18,7 +18,9 @@ const POSTGRES_URL = `postgres://${checkValues(PG_USER)}:${checkValues(
 )}@${checkValues(PG_HOST)}/${checkValues(
   PG_DATABASE
 )}?options=project%3D${checkValues(ENDPOINT_ID)}`;
+
 export const sql = postgres(POSTGRES_URL, { ssl: "require" });
+
 export const pool = new Pool({
   connectionString: POSTGRES_URL,
   ssl: true,
