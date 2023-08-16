@@ -154,6 +154,7 @@ const icons = {
 	flipCameraOutline: 'ri-camera-switch-line',
 	imageFill: 'ri-image-fill',
 	deleteBin2Line: 'delete-bin-2-line',
+	circleLogout: 'logout-circle-line',
 };
 
 export default {

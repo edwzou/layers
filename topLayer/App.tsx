@@ -16,18 +16,27 @@ import GlobalStyles from './constants/GlobalStyles';
 import CameraWrapper from './components/Camera/CameraWrapper';
 import axios from 'axios';
 import { baseUrl } from './utils/apiUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
-	const [user, setUser] = useState<any>(null); //!!! Fix any type
+	const [user, setUser] = useState<string | null>(null); //!!! Fix any type
 
 	useEffect(() => {
 		const getUser = async () => {
-			const user = await axios.get(`${baseUrl}/api/private/users`);
-			setUser(user);
+			try {
+				const value = await AsyncStorage.getItem('session');
+				if (!value) { return }
+
+				setUser(value);
+			} catch (error) {
+				console.log(error)
+			}
 		}
 
 		void getUser();
-	}, [])
+	}, [user])
+
+	console.log(user);
 
 	return (
 		<NavigationContainer>

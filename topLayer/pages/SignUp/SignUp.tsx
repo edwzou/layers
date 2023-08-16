@@ -17,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface FormValues {
 	first_name: string;
@@ -87,8 +88,11 @@ const SignUp = () => {
 			});
 
 			if (response.status === 200) {
-				alert(`You have created: ${JSON.stringify(response.data)}`);
-				setLoading(false);
+				try {
+					await AsyncStorage.setItem('session', response.data.data.uid)
+				} catch (error) {
+					console.log(error);
+				}
 			} else {
 				throw new Error('An error has occurred');
 			}

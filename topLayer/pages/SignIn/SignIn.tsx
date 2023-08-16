@@ -8,6 +8,7 @@ import InlineTextbox from '../../components/Textbox/InlineTextbox';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = () => {
 	const {
@@ -32,14 +33,18 @@ const SignIn = () => {
 			});
 
 			if (response.status === 200) {
-				alert(`You have created: ${JSON.stringify(response.data)}`);
+				try {
+					await AsyncStorage.setItem('session', response.data.data.uid)
+				} catch (error) {
+					console.log(error);
+				}
 			} else {
 				throw new Error('An error has occurred');
 			}
 		} catch (error) {
 			alert(error);
 		}
-		console.log(data);
+		// console.log(data);
 	};
 
 	return (

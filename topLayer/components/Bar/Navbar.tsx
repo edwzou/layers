@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface NavbarPropsType {
     toggleFeedbackModal: () => void;
@@ -63,6 +64,13 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
                 >
                     <Icon
                         name={GlobalStyles.icons.searchOutline}
+                        color={GlobalStyles.colorPalette.primary[900]}
+                        size={GlobalStyles.sizing.icon.regular}
+                    />
+                </Pressable>
+                <Pressable onPress={async () => { await AsyncStorage.removeItem('session') }}>
+                    <Icon
+                        name={GlobalStyles.icons.circleLogout}
                         color={GlobalStyles.colorPalette.primary[900]}
                         size={GlobalStyles.sizing.icon.regular}
                     />

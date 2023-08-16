@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -27,6 +27,8 @@ import OutfitEdit from '../../ModalContent/OutfitEdit/OutfitEdit';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
+import axios, { AxiosResponse } from 'axios';
+import { baseUrl } from '../../utils/apiUtils';
 
 interface ProfilePropsType {
     isForeignProfile: boolean;
@@ -37,6 +39,7 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
     const previewRef = useRef<refPropType>(null);
     const editModalRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
+    const [user, setUser] = useState<AxiosResponse | null | void>(null);
 
     const [selectedCategory, setSelectedCategory] = useState(
         ClothingTypes.outfits
@@ -72,6 +75,19 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
         }
     }).current;
 
+    async function getData() {
+        const result = await axios.get(`${baseUrl}/api/private/users`);
+
+        if (!result) throw new Error('cannot fetch')
+
+        setUser(result.data.data);
+    }
+
+    useEffect(() => {
+        getData()
+        console.log(user);
+    }, [])
+
     // !!! Display edit outfit on click
     // !!! Empty Match page to account for no clothing
 
@@ -89,8 +105,8 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                         <ProfilePicture />
                     </Pressable>
                     <View>
-                        <FullName firstName={'Charlie'} lastName={'Wu'} />
-                        <Username username={'_charlie_wu'} />
+                        <FullName firstName={user.first_name} lastName={user.last_name} />
+                        <Username username={`@${user.username}`} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>
