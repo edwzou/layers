@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../utils/Errors/NotFoundError';
 import { getOutfitCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { pool } from '../../utils/sqlImport';
 import express, { type Request, type Response } from 'express';
@@ -24,12 +25,16 @@ router.delete('/:outfitId', (req: Request, res: Response): void => {
   const { outfitId } = req.params;
   const deleteOutfit = async (outfitId: string): Promise<void> => {
     try {
-      await getOutfitCore(outfitId);
-      await pool.query('DELETE FROM backend_schema.outfit WHERE oid = $1', [outfitId]);
-  
-      responseCallbackDelete(null, outfitId, res, 'Outift')
+      const deleteOutfit = await pool.query('DELETE FROM backend_schema.outfit WHERE oid = $1', [outfitId]);
+      responseCallbackDelete(
+        null,
+        outfitId,
+        res,
+        "Outift",
+        deleteOutfit.rowCount
+      );
     } catch (error) {
-      responseCallbackDelete(error, outfitId, res)
+      responseCallbackDelete(error, outfitId, res, 'Outfit')
     }
   };
 
@@ -45,16 +50,12 @@ router.put('/:oid', (req: Request, res: Response): void => {
     const updateOutfit = async (oid: string): Promise<void> => {
       // Update the outfit in the database
       try {
-        const run = await getOutfitCore(oid);
-        await pool.query('UPDATE backend_schema.outfit SET title = $1, clothing_items = $2 WHERE oid = $3', [title, clothing_items, oid]);
+        const updateOutfit = await pool.query('UPDATE backend_schema.outfit SET title = $1, clothing_items = $2 WHERE oid = $3', [title, clothing_items, oid]);
 
-        // const user = await run;
-        // console.log("User:", user)
         // responds with successful update even when no changes are made
-        responseCallbackUpdate(null, oid, res, "Outfit");
+        responseCallbackUpdate(null, oid, res, "Outfit", updateOutfit.rowCount);
       } catch (error) {
-        console.log("Error", error)
-        responseCallbackUpdate(error, oid, res)
+        responseCallbackUpdate(error, oid, res, 'Outfit')
       }
   
     };

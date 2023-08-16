@@ -29,10 +29,12 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
   // Query outfits for the specified user
   const getAllOutfits = async (userId: string): Promise<any> => {
     try {
-      const run = getUserCore(userId);
       const result = await pool.query('SELECT * FROM backend_schema.outfit WHERE uid = $1', [userId]);
       const outfits = result.rows;
-      await run;
+      if (outfits.length === 0) {
+        await getUserCore(userId)
+      }
+
       responseCallbackGetAll(outfits, res, "Outfits");
     } catch (error) {
       responseCallbackGet(error, null, res);

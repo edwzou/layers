@@ -6,3 +6,15 @@ curl -X PUT -H "Content-Type: application/json" -d '{
     "size": "test",
     "color": ["#4891FF"]
 }' http://localhost:1234/api/private/clothing_items/{ ciid }
+
+curl -X PUT -H "Content-Type: application/json" -d '{
+  "first_name": "Up",
+  "last_name": "Down",
+  "email": "Tom@example.com",
+  "username": "Tom",
+  "password": "Tom",
+  "privateOption": false,
+  "profile_picture": "new",
+  "following": [],
+  "followers": []
+}' http://localhost:1234/api/private/users/644ff3e9-670a-4f74-9f03-a9fb22336521
