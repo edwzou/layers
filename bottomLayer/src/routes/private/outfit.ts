@@ -1,11 +1,14 @@
+import { checkAuthenticated } from '../../middleware/auth';
 import { getOutfitCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { pool } from '../../utils/sqlImport';
 import express, { type Request, type Response } from 'express';
 const router = express.Router();
 
 // Endpoint for creating a new outfit
-router.post('/', (req: Request, res: Response): void => {
-  const { title, clothing_items, uid } = req.body;
+router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
+  const { title, clothing_items } = req.body;
+  const uid = req.user;
+
   const insertOutfit = async (): Promise<any> => {
     try {
       await pool.query('INSERT INTO backend_schema.outfit (title, clothing_items, uid) VALUES ($1, $2, $3)', [title, clothing_items, uid]);
@@ -20,7 +23,7 @@ router.post('/', (req: Request, res: Response): void => {
 });
 
 // Endpoint for deleting a specific outfit
-router.delete('/:outfitId', (req: Request, res: Response): void => {
+router.delete('/:outfitId', checkAuthenticated, (req: Request, res: Response): void => {
   const { outfitId } = req.params;
   const deleteOutfit = async (outfitId: string): Promise<void> => {
     try {
@@ -37,7 +40,7 @@ router.delete('/:outfitId', (req: Request, res: Response): void => {
 });
 
 // Endpoint for updating a specific outfit
-router.put('/:oid', (req: Request, res: Response): void => {
+router.put('/:oid', checkAuthenticated, (req: Request, res: Response): void => {
   // Extract outfit data from the request body
   const { oid } = req.params;
   const { title, clothing_items } = req.body;

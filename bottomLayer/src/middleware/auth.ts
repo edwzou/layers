@@ -1,13 +1,9 @@
-const { auth } = require('express-openid-connect');
-require('dotenv').config();
+import { type Request, type Response } from 'express';
 
-const config: any = {
-  authRequired: true,
-  auth0Logout: true,
-  secret: process.env.AUTH0_CLIENT_SECRET,
-  baseURL: 'http://localhost:1234',
-  clientID: process.env.AUTH0_CLIENT_ID,
-  issuerBaseURL: process.env.ISSUER_BASE_URL
-};
+export function checkAuthenticated (req: Request, res: Response, next: any): any {
+  if (req.isAuthenticated()) {
+    return next();
+  }
 
-module.exports = { auth: auth(config) };
+  res.redirect('/login');
+}

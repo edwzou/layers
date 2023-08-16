@@ -1,4 +1,4 @@
-import { NotFoundError } from "./Errors/NotFoundError";
+import { NotFoundError } from './Errors/NotFoundError';
 import { type Response } from 'express';
 import { pool } from './sqlImport';
 
@@ -18,11 +18,10 @@ export const responseCallbackGet = (
   res: Response,
   notFoundObject = ''
 ): Callback<any> => {
-  if (error != null) {
-    console.log(error);
+  if (error !== null) {
     res.status(500).json({ message: 'Internal Server Error' });
     return error;
-  } else if (element.length === 0) {
+  } else if (element === null || element === undefined || element.length === 0) {
     res.status(400).json({ message: notFoundObject + ' Not Found' });
     return element;
   } else {
@@ -71,11 +70,11 @@ export const responseCallbackUpdate = (
   error: any,
   id: string,
   res: Response,
-  target: string = "",
+  target: string = ''
 ): Callback<any> => {
   if (error != null) {
-    console.log(error); 
-    res.status(500).json({ message: "Internal Server Error" });
+    console.log(error);
+    res.status(500).json({ message: 'Internal Server Error' });
     return error;
   } else {
     res
@@ -91,7 +90,7 @@ export const responseCallbackGetAll = (
   notFoundObject = ''
 ): Callback<any> => {
   if (element.length === 0) {
-    res.status(400).json({ message: "This User has no " + notFoundObject });
+    res.status(400).json({ message: 'This User has no ' + notFoundObject });
     return element;
   } else {
     res.status(200).json({ message: 'Success', data: element });
@@ -104,8 +103,8 @@ export const getUserCore = async (userId: string): Promise<any> => {
     const result = await pool.query('SELECT * FROM backend_schema.user WHERE uid = $1', [userId]);
     const user = result.rows[0];
     if (user.length === 0) {
-      throw new NotFoundError("User Not Found");
-    } 
+      throw new NotFoundError('User Not Found');
+    }
     return responseCallback(null, user);
   } catch (error) {
     return responseCallback(error, null);
@@ -117,8 +116,8 @@ export const getOutfitCore = async (oid: string): Promise<any> => {
     const result = await pool.query('SELECT * FROM backend_schema.outfit WHERE oid = $1', [oid]);
     const user = result.rows[0];
     if (user.length === 0) {
-      throw new NotFoundError("Outfit Not Found");
-    } 
+      throw new NotFoundError('Outfit Not Found');
+    }
     return responseCallback(null, user);
   } catch (error) {
     return responseCallback(error, null);
@@ -130,8 +129,8 @@ export const getItemCore = async (ciid: string): Promise<any> => {
     const result = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE ciid = $1', [ciid]);
     const user = result.rows[0];
     if (user.length === 0) {
-      throw new NotFoundError("Clothing Item Not Found");
-    } 
+      throw new NotFoundError('Clothing Item Not Found');
+    }
     return responseCallback(null, user);
   } catch (error) {
     return responseCallback(error, null);

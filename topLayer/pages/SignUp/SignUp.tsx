@@ -74,7 +74,7 @@ const SignUp = () => {
 
 	const onSubmit = async (data: FormValues | any) => {
 		try {
-			const response = await axios.post(`${baseUrl}/users`, {
+			const response = await axios.post(`${baseUrl}/signup`, {
 				first_name: data.first_name,
 				last_name: data.last_name,
 				username: data.username,
@@ -216,25 +216,6 @@ const SignUp = () => {
 					bgColor={GlobalStyles.colorPalette.primary[500]}
 				/>
 			</View>
-			{/* <Modal visible={modalVisible}
-				animationType="slide"
-				transparent={true}
-				onRequestClose={() => {
-					setModalVisible(!modalVisible);
-				}}>
-				<View style={styles.modalView}>
-					<View style={styles.modalGroup}>
-						<Pressable style={styles.modalSelection} onPress={pickImage}><Text>Library</Text></Pressable>
-						<View style={{ backgroundColor: GlobalStyles.colorPalette.primary[500] + '20', width: '100%', height: 1 }} />
-						<Pressable style={styles.modalSelection} onPress={() => {
-							console.log("Implement Camera")
-
-							// !!! Implement Camera
-						}}><Text>Camera</Text></Pressable>
-					</View>
-					<Pressable style={styles.modalButtons} onPress={() => { setModalVisible(!modalVisible) }}><Text>Cancel</Text></Pressable>
-				</View>
-			</Modal> */}
 		</View>
 	);
 };

@@ -2,7 +2,7 @@ import { StyleSheet, StatusBar, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from './utils/StackNavigation';
@@ -14,9 +14,21 @@ import MainPage from './pages/Main/MainPage';
 
 import GlobalStyles from './constants/GlobalStyles';
 import CameraWrapper from './components/Camera/CameraWrapper';
+import axios from 'axios';
+import { baseUrl } from './utils/apiUtils';
 
 export default function App() {
-	const [userToken, setUserToken] = useState(null);
+	const [user, setUser] = useState<any>(null); //!!! Fix any type
+
+	useEffect(() => {
+		const getUser = async () => {
+			const user = await axios.get(`${baseUrl}/api/private/users`);
+			setUser(user);
+		}
+
+		void getUser();
+	}, [])
+
 	return (
 		<NavigationContainer>
 			<GestureHandlerRootView style={{ flex: 1 }}>
@@ -28,7 +40,7 @@ export default function App() {
 							gestureDirection: 'horizontal',
 						}}
 					>
-						{userToken === null ? (
+						{user === null ? (
 							<>
 								<Stack.Screen
 									name={StackNavigation.Login}
