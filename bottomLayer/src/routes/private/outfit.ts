@@ -28,12 +28,16 @@ router.delete('/:outfitId', checkAuthenticated, (req: Request, res: Response): v
   const { outfitId } = req.params;
   const deleteOutfit = async (outfitId: string): Promise<void> => {
     try {
-      await getOutfitCore(outfitId);
-      await pool.query('DELETE FROM backend_schema.outfit WHERE oid = $1', [outfitId]);
-
-      responseCallbackDelete(null, outfitId, res, 'Outift');
+      const deleteOutfit = await pool.query('DELETE FROM backend_schema.outfit WHERE oid = $1', [outfitId]);
+      responseCallbackDelete(
+        null,
+        outfitId,
+        res,
+        'Outift',
+        deleteOutfit.rowCount
+      );
     } catch (error) {
-      responseCallbackDelete(error, outfitId, res);
+      responseCallbackDelete(error, outfitId, res, 'Outfit');
     }
   };
 

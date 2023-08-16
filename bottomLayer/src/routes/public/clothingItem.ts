@@ -10,8 +10,8 @@ router.get('/:itemId', (req: Request, res: Response): void => {
   const getClothingById = async (itemId: string): Promise<any> => {
     try {
       const item = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE ciid = $1', [itemId]);
+      const result = item.rows;
 
-      const result = item.rows[0];
       responseCallbackGet(null, result, res, 'Clothing Item');
     } catch (error) {
       responseCallbackGet(error, null, res);
@@ -27,7 +27,6 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
 
   const getAllClothing = async (userId: string): Promise<any> => {
     try {
-      const run = getUserCore(userId);
       const result = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE uid = $1', [userId]);
       const items = result.rows;
       await run;

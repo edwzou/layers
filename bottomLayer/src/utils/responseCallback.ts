@@ -9,7 +9,6 @@ export const responseCallback = (error: any, element: any): Callback<any> => {
     console.log(error);
     throw error;
   } else {
-    // console.log("test13", element)
     return element;
   }
 };
@@ -20,8 +19,9 @@ export const responseCallbackGet = (
   res: Response,
   notFoundObject = ''
 ): Callback<any> => {
-  if (error !== null) {
-    res.status(500).json({ message: 'Internal Server Error' });
+  if (error != null) {
+    console.log(error);
+    res.status(500).json({ message: 'Internal Server Error', error });
     return error;
   } else if (element === null || element === undefined || element.length === 0) {
     res.status(400).json({ message: notFoundObject + ' Not Found' });
@@ -51,20 +51,22 @@ export const responseCallbackDelete = (
   error: any,
   id: string,
   res: Response,
-  target: string = ''
+  target: string = '',
+  rowCount: number = 1
 ): Callback<any> => {
-  if (error != null) {
+  if (rowCount === 0) {
+    throw new NotFoundError(target + ' Not Found, id: ' + id);
+  } else if (error != null) {
     console.log(error);
-    res
-      .status(500)
-      .json({
-        message:
-          'Internal Server Error, Failed to Delete ' + target + ': ' + id,
-        error
-      });
+    res.status(500).json({
+      message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id,
+      error
+    });
     return error;
   } else {
-    res.status(200).json({ message: 'Successfully Deleted ' + target + ': ' + id });
+    res
+      .status(200)
+      .json({ message: 'Successfully Deleted ' + target + ': ' + id });
     return error;
   }
 };
@@ -73,11 +75,14 @@ export const responseCallbackUpdate = (
   error: any,
   id: string,
   res: Response,
-  target: string = ''
+  target: string = '',
+  rowCount: number = 1
 ): Callback<any> => {
-  if (error != null) {
+  if (rowCount === 0) {
+    throw new NotFoundError(target + ' Not Found, id: ' + id);
+  } else if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error', error });
+    res.status(500).json({ message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id, error });
     return error;
   } else {
     res
@@ -157,6 +162,7 @@ export const getUserCore = async (userId: string): Promise<any> => {
       [userId]
     );
     const user = result.rows;
+    // console.log("User: ", user)
     if (user.length === 0) {
       throw new NotFoundError('User Not Found, uid: ' + userId);
     }
@@ -186,14 +192,15 @@ export const getUserCoreNoError = async (userId: string): Promise<any> => {
 
 export const getOutfitCore = async (oid: string): Promise<any> => {
   try {
-    const result = sql`SELECT * FROM backend_schema.outfit WHERE oid = ${oid}`;
-    const user = result[0];
-    console.log('user: ', user);
-    if (user.length === 0) {
-      const error = new NotFoundError('Outfit Not Found');
-      return await Promise.reject(error);
+    const result = await pool.query(
+      'SELECT * FROM backend_schema.outfit WHERE oid = $1',
+      [oid]
+    );
+    const outfit = result.rows;
+    if (outfit.length === 0) {
+      throw new NotFoundError('Outfit Not Found, oid: ' + oid);
     }
-    return responseCallback(null, user);
+    return responseCallback(null, outfit);
   } catch (error) {
     return responseCallback(error, null);
   }
@@ -202,11 +209,11 @@ export const getOutfitCore = async (oid: string): Promise<any> => {
 export const getItemCore = async (ciid: string): Promise<any> => {
   try {
     const result = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE ciid = $1', [ciid]);
-    const user = result.rows[0];
-    if (user.length === 0) {
-      throw new NotFoundError('Clothing Item Not Found');
+    const item = result.rows;
+    if (item.length === 0) {
+      throw new NotFoundError('Clothing Item Not Found, ciid: ' + ciid);
     }
-    return responseCallback(null, user);
+    return responseCallback(null, item);
   } catch (error) {
     return responseCallback(error, null);
   }

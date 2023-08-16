@@ -2,6 +2,7 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { getUserCore, responseCallbackDelete, responseCallbackGet, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
+import { NotFoundError } from '../../utils/Errors/NotFoundError';
 const router = express.Router();
 
 // Endpoint for creating a specific user
@@ -61,14 +62,10 @@ router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
 
   const deleteUser = async (): Promise<void> => {
     try {
-      // Although the following will take extra time, since delete is such a hefty method
-      // it should be fine
-      await getUserCore(userId);
-      await pool.query('DELETE FROM backend_schema.user WHERE uid = $1', [userId]);
-
-      responseCallbackDelete(null, userId, res, 'User');
+      const deleteUser = await pool.query('DELETE FROM backend_schema.user WHERE uid = $1', [userId]);
+      responseCallbackDelete(null, userId, res, 'User', deleteUser.rowCount);
     } catch (error) {
-      responseCallbackDelete(error, userId, res);
+      responseCallbackDelete(error, userId, res, 'User');
     }
   };
 
@@ -94,9 +91,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-      const run = getUserCore(userId);
-      // console.log(user);
-      await pool.query(`UPDATE backend_schema.user
+      const updateUser = await pool.query(`UPDATE backend_schema.user
         SET first_name = $1,
             last_name = $2,
             email = $3,
@@ -108,13 +103,10 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
             profile_picture = $9
         WHERE uid = $10`,
       [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture, userId]);
-      await run;
       // responds with successful update even when no changes are made
-      console.log('test1', run);
-      responseCallbackUpdate(null, userId, res, 'User');
+      responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
-      console.log('test2', error);
-      responseCallbackUpdate(error, userId, res);
+      responseCallbackUpdate(error, userId, res, 'User');
     }
   };
 

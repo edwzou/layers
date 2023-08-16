@@ -30,10 +30,15 @@ router.delete('/:ciid', checkAuthenticated, (req: Request, res: Response): void 
       await getItemCore(ciid);
       await pool.query('DELETE FROM backend_schema.clothing_item WHERE ciid = $1', [ciid]);
 
-      // gives successful feedback on clothing items that don't exist
-      responseCallbackDelete(null, ciid, res, 'Clothing Item');
+      responseCallbackDelete(
+        null,
+        ciid,
+        res,
+        'Clothing Item',
+        deleteItem.rowCount
+      );
     } catch (error) {
-      responseCallbackDelete(error, ciid, res);
+      responseCallbackDelete(error, ciid, res, 'Clothing Item');
     }
   };
   void deleteItem(ciid);
