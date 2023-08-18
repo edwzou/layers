@@ -36,6 +36,8 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
       responseCallbackGetAll(items, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);
+    } finally {
+      (await client).release();
     }
   };
 
