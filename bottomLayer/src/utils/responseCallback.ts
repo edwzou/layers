@@ -2,6 +2,7 @@ import { NotFoundError } from "./Errors/NotFoundError";
 import { type Response } from 'express';
 import { pool } from './sqlImport';
 import { PoolClient } from "pg";
+import { UnknownError } from "./Errors/UnknownError";
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
 
@@ -94,24 +95,22 @@ export const responseCallbackUpdate = (
 
 export const responseCallbackFollow = (
   error: any,
-  following: any,
-  follower: any,
+  uid1: string,
+  uid2: string,
   res: Response,
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
     res.status(500).json({
       // Where following and follower are the uids
-      message: "Internal Server Error: " + following + " Failed to Follow " + follower,
+      message: "Internal Server Error: " + uid1 + " Failed to Follow " + uid2,
       error: error,
     });
     return error;
-  // } else if (following.rowCount === 1 && follower.rowCount === 0) {
-
   } else {
     res
       .status(200)
-      .json({ message: following.rows["username"] + " Successfully Followed " + follower });
+      .json({ message: uid1 + " Successfully Followed " + uid2 });
     return error;
   }
 };
@@ -164,7 +163,6 @@ export const getUserCore = async (userId: string, client: PoolClient): Promise<a
       [userId]
     );
     const user = result.rows;
-    // console.log("User: ", user)
     if (user.length === 0) {
       throw new NotFoundError("User Not Found, uid: " + userId);
     } 
@@ -173,3 +171,40 @@ export const getUserCore = async (userId: string, client: PoolClient): Promise<a
     return responseCallback(error, null);
   }
 };
+
+export const clientFollowTransaction = async (
+  uid: string,
+  query: string,
+  client: Promise<PoolClient>,
+  otherQueries: number[],
+  resolution: number = -1,
+): Promise<any> => {
+  const clientOn = await client
+  try {
+    await clientOn.query('BEGIN');
+    const result = await clientOn.query(query);
+    resolution = result.rowCount;
+    if (resolution === 0) {
+      throw new NotFoundError("User Not Found, uid: " + uid);
+    }
+    for (let i = 0; i < otherQueries.length; i++) {
+      while (otherQueries[i] === -1) {
+        continue
+      }
+      if (otherQueries[i] === 0) {
+        throw new UnknownError('The error is unknown in this method')
+      }
+    }
+    await clientOn.query('COMMIT');
+    return responseCallback(null, true);
+  } catch (error) {
+    await clientOn.query('ROLLBACK')
+    if (error instanceof UnknownError) {
+      return responseCallback(null, "Unknown Error");
+    } else if (error instanceof NotFoundError) {
+      return responseCallback(null, 'NotFound Error')
+    }
+    return responseCallback(error, null)
+  }
+};
+

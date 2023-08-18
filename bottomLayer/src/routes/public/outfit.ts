@@ -31,7 +31,10 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
   // Query outfits for the specified user
   const getAllOutfits = async (userId: string): Promise<any> => {
     try {
-      const run = pool.query('SELECT * FROM backend_schema.outfit WHERE uid = $1', [userId]);
+      const run = pool.query(
+        "SELECT * FROM backend_schema.outfit WHERE uid = $1",
+        [userId]
+      );
       await getUserCore(userId, await client);
       const result = await run;
       const outfits = result.rows;
@@ -39,6 +42,8 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
       responseCallbackGetAll(outfits, res, "Outfits");
     } catch (error) {
       responseCallbackGet(error, null, res);
+    } finally {
+      (await client).release();
     }
   };
 
