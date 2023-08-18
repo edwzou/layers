@@ -1,0 +1,3 @@
+curl -X POST -H "Content-Type: application/json" -d '{
+  "toFollowId": "{ uid1 }"
+}' http://localhost:1234/api/private/users/follow/{ uid2 }

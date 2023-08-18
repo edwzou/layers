@@ -28,15 +28,15 @@ CREATE TABLE backend_schema.user (
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     privateOption BOOL NOT NULL,
-    followers UUID[],
-    following UUID[],
+    followers UUID[] NOT NULL,
+    following UUID[], NOT NULL,
     profile_picture VARCHAR(255)
 );
 CREATE TABLE backend_schema.outfit (
     oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     title VARCHAR(50) NOT NULL, 
     -- Need to limit clothing_items to only refer to ciid UUIDs
-    clothing_items UUID[],
+    clothing_items UUID[] NOT NULL,
     uid UUID NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_outfit_per_user UNIQUE (title, clothing_items, uid),
@@ -54,7 +54,7 @@ CREATE TABLE backend_schema.clothing_item (
     uid UUID NOT NULL,
     brands VARCHAR[],
     size VARCHAR(50),
-    color color_enum[],
+    color color_enum[] NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_ci_per_user UNIQUE (title, category, uid),
     CONSTRAINT item

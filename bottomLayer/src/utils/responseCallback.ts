@@ -1,12 +1,14 @@
 import { NotFoundError } from "./Errors/NotFoundError";
 import { type Response } from 'express';
 import { pool } from './sqlImport';
+import { PoolClient } from "pg";
+import { UnknownError } from "./Errors/UnknownError";
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
 
 export const responseCallback = (error: any, element: any): Callback<any> => {
   if (error != null) {
-    return error;
+    throw error;
   } else {
     return element;
   }
@@ -20,7 +22,7 @@ export const responseCallbackGet = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Internal Server Error', error: error });
     return error;
   } else if (element.length === 0) {
     res.status(400).json({ message: notFoundObject + ' Not Found' });
@@ -38,7 +40,7 @@ export const responseCallbackPost = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Internal Server Error', error: error });
     return error;
   } else {
     res.status(200).json({ message: 'Successfully Created a ' + target });
@@ -50,19 +52,22 @@ export const responseCallbackDelete = (
   error: any,
   id: string,
   res: Response,
-  target: string = ''
+  target: string = "",
+  rowCount: number = 1,
 ): Callback<any> => {
-  if (error != null) {
+  if (rowCount === 0) {
+    throw new NotFoundError(target + " Not Found, id: " + id);
+  } else if (error != null) {
     console.log(error);
-    res
-      .status(500)
-      .json({
-        message:
-          'Internal Server Error, Failed to Delete ' + target + ': ' + id
-      });
+    res.status(500).json({
+      message: "Internal Server Error, Failed to Delete " + target + ": " + id,
+      error: error,
+    });
     return error;
   } else {
-    res.status(200).json({ message: 'Successfully Deleted ' + target + ': ' + id });
+    res
+      .status(200)
+      .json({ message: "Successfully Deleted " + target + ": " + id });
     return error;
   }
 };
@@ -72,15 +77,67 @@ export const responseCallbackUpdate = (
   id: string,
   res: Response,
   target: string = "",
+  rowCount: number = 1,
 ): Callback<any> => {
-  if (error != null) {
-    console.log(error); 
-    res.status(500).json({ message: "Internal Server Error" });
+  if (rowCount === 0) {
+    throw new NotFoundError(target + " Not Found, id: " + id);
+  } else if (error != null) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error, Failed to Delete " + target + ": " + id,  error: error });
     return error;
   } else {
     res
       .status(200)
-      .json({ message: 'Successfully Updated ' + target + ': ' + id });
+      .json({ message: "Successfully Updated " + target + ": " + id });
+    return error;
+  }
+};
+
+export const responseCallbackFollow = (
+  error: any,
+  uid1: string,
+  uid2: string,
+  res: Response,
+): Callback<any> => {
+  if (error != null) {
+    console.log(error);
+    res.status(500).json({
+      // Where following and follower are the uids
+      message: "Internal Server Error: " + uid1 + " Failed to Follow " + uid2,
+      error: error,
+    });
+    return error;
+  } else {
+    res
+      .status(200)
+      .json({ message: uid1 + " Successfully Followed " + uid2 });
+    return error;
+  }
+};
+
+export const responseCallbackUnFollow = (
+  error: any,
+  username: string,
+  toUnFollowUsername: string,
+  res: Response
+): Callback<any> => {
+  if (error != null) {
+    console.log(error);
+    res.status(500).json({
+      message:
+        "Internal Server Error: " +
+        username +
+        " Failed to unFollow " +
+        toUnFollowUsername,
+      error: error,
+    });
+    return error;
+  } else {
+    res
+      .status(200)
+      .json({
+        message: username + " Successfully UnFollowed " + toUnFollowUsername,
+      });
     return error;
   }
 };
@@ -99,12 +156,15 @@ export const responseCallbackGetAll = (
   }
 };
 
-export const getUserCore = async (userId: string): Promise<any> => {
+export const getUserCore = async (userId: string, client: PoolClient): Promise<any> => {
   try {
-    const result = await pool.query('SELECT * FROM backend_schema.user WHERE uid = $1', [userId]);
-    const user = result.rows[0];
+    const result = await client.query(
+      "SELECT * FROM backend_schema.user WHERE uid = $1",
+      [userId]
+    );
+    const user = result.rows;
     if (user.length === 0) {
-      throw new NotFoundError("User Not Found");
+      throw new NotFoundError("User Not Found, uid: " + userId);
     } 
     return responseCallback(null, user);
   } catch (error) {
@@ -112,28 +172,39 @@ export const getUserCore = async (userId: string): Promise<any> => {
   }
 };
 
-export const getOutfitCore = async (oid: string): Promise<any> => {
+export const clientFollowTransaction = async (
+  uid: string,
+  query: string,
+  client: Promise<PoolClient>,
+  otherQueries: number[],
+  resolution: number = -1,
+): Promise<any> => {
+  const clientOn = await client
   try {
-    const result = await pool.query('SELECT * FROM backend_schema.outfit WHERE oid = $1', [oid]);
-    const user = result.rows[0];
-    if (user.length === 0) {
-      throw new NotFoundError("Outfit Not Found");
-    } 
-    return responseCallback(null, user);
+    await clientOn.query('BEGIN');
+    const result = await clientOn.query(query);
+    resolution = result.rowCount;
+    if (resolution === 0) {
+      throw new NotFoundError("User Not Found, uid: " + uid);
+    }
+    for (let i = 0; i < otherQueries.length; i++) {
+      while (otherQueries[i] === -1) {
+        continue
+      }
+      if (otherQueries[i] === 0) {
+        throw new UnknownError('The error is unknown in this method')
+      }
+    }
+    await clientOn.query('COMMIT');
+    return responseCallback(null, true);
   } catch (error) {
-    return responseCallback(error, null);
+    await clientOn.query('ROLLBACK')
+    if (error instanceof UnknownError) {
+      return responseCallback(null, "Unknown Error");
+    } else if (error instanceof NotFoundError) {
+      return responseCallback(null, 'NotFound Error')
+    }
+    return responseCallback(error, null)
   }
 };
 
-export const getItemCore = async (ciid: string): Promise<any> => {
-  try {
-    const result = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE ciid = $1', [ciid]);
-    const user = result.rows[0];
-    if (user.length === 0) {
-      throw new NotFoundError("Clothing Item Not Found");
-    } 
-    return responseCallback(null, user);
-  } catch (error) {
-    return responseCallback(error, null);
-  }
-};

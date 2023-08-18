@@ -1,6 +1,6 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { getItemCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
+import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -24,13 +24,17 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
   const { ciid } = req.params;
   const deleteItem = async (ciid: string): Promise<void> => {
     try {
-      await getItemCore(ciid);
-      await pool.query('DELETE FROM backend_schema.clothing_item WHERE ciid = $1', [ciid]);
+      const deleteItem = await pool.query('DELETE FROM backend_schema.clothing_item WHERE ciid = $1', [ciid]);
 
-      // gives successful feedback on clothing items that don't exist
-      responseCallbackDelete(null, ciid, res, 'Clothing Item');
+      responseCallbackDelete(
+        null,
+        ciid,
+        res,
+        "Clothing Item",
+        deleteItem.rowCount
+      );
     } catch (error) {
-      responseCallbackDelete(error, ciid, res);
+      responseCallbackDelete(error, ciid, res, 'Clothing Item')
     }
   };
   void deleteItem(ciid);
@@ -42,11 +46,10 @@ router.put('/:ciid', (req: any, res: any): void => {
   const { ciid } = req.params;
   const { image, category, title, brands, size, color } = req.body;
 
-  const updateItem = async (ciid: string): Promise<void> => {
-    // Update the outfit in the database
-    try {
-      const run = getItemCore(ciid);
-      await pool.query(`
+    const updateItem = async (ciid: string): Promise<void> => {
+      // Update the outfit in the database
+      try {
+        const updateItem = await pool.query(`
         UPDATE backend_schema.clothing_item
         SET image = $1,
             category = $2,
@@ -56,13 +59,13 @@ router.put('/:ciid', (req: any, res: any): void => {
             color = $6
         WHERE ciid = $7
         `, [image, category, title, brands, size, color, ciid]);
-      await run;
-      // responds with successful update even when no changes are made
-      responseCallbackUpdate(null, ciid, res, 'Clothing Item');
-    } catch (error) {
-      responseCallbackUpdate(error, ciid, res);
-    }
-  };
+        // responds with successful update even when no changes are made
+        responseCallbackUpdate(null, ciid, res, "Clothing Item", updateItem.rowCount);
+      } catch (error) {
+        responseCallbackUpdate(error, ciid, res, 'Clothing Item')
+      }
+  
+    };
 
   void updateItem(ciid);
 });
