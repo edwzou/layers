@@ -11,9 +11,9 @@ router.post('/', (req: Request, res: Response): void => {
       await pool.query(`INSERT INTO backend_schema.clothing_item (image, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7)`, [image, category, title, brands, size, color, uid]);
 
-      responseCallbackPost(null, res, 'Clothing Item')
+      responseCallbackPost(null, res, 'Clothing Item');
     } catch (error) {
-      responseCallbackPost(error, res)
+      responseCallbackPost(error, res);
     }
   };
   void insertClothingItem();
@@ -42,9 +42,9 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
 
 // Endpoint for updating a specific outfit
 router.put('/:ciid', (req: any, res: any): void => {
-    // Extract outfit data from the request body
-    const { ciid } = req.params;
-    const { image, category, title, brands, size, color } = req.body;
+  // Extract outfit data from the request body
+  const { ciid } = req.params;
+  const { image, category, title, brands, size, color } = req.body;
 
     const updateItem = async (ciid: string): Promise<void> => {
       // Update the outfit in the database
@@ -67,7 +67,7 @@ router.put('/:ciid', (req: any, res: any): void => {
   
     };
 
-    void updateItem(ciid);
+  void updateItem(ciid);
 });
 
 module.exports = router;
