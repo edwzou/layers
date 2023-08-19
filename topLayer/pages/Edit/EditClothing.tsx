@@ -1,21 +1,34 @@
-import { View, SafeAreaView } from 'react-native';
-import React, { useState } from 'react';
+import { View, SafeAreaView, StyleSheet, FlatList } from 'react-native';
+import React, { useState, useRef } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { ClothingTypes, TagAction } from '../../constants/Enums';
+import { ClothingTypes, TagAction, ColorTags } from '../../constants/Enums';
 import ColorTag from '../../components/Tag/ColorTag';
 import BrandTag from '../../components/Tag/BrandTag';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
 
+import { medTranslateY } from '../../utils/modalMaxShow';
+
+import ColorPicker from '../../pages/Edit/ColorPicker';
+
+import GeneralModal, {
+	type refPropType,
+} from '../../components/Modal/GeneralModal';
+
 import { capitalizeFirstLetter } from '../../utils/misc';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 
 import GlobalStyles from '../../constants/GlobalStyles';
+import { colorTags } from '../../constants/testData';
 import pants from '../../assets/testPants1.png';
+import ColorTagsList from './ColorTagsList';
 
 const EditClothing = () => {
+	const colorPickerRef = useRef<refPropType>(null);
+
+	const [currentColorTags, setColorTags] = useState(colorTags);
 	const [itemName, setItemName] = useState('');
 
 	const [sizeOpen, setSizeOpen] = useState(false);
@@ -23,6 +36,7 @@ const EditClothing = () => {
 	const [sizes, setSizes] = useState([
 		{ label: 'Extra-extra small', value: 'xxs' },
 		{ label: 'Extra small', value: 'xs' },
+		{ label: 'Small', value: 's' },
 		{ label: 'Medium', value: 'm' },
 		{ label: 'Large', value: 'l' },
 		{ label: 'Extra large', value: 'xl' },
@@ -50,6 +64,16 @@ const EditClothing = () => {
 		},
 	]);
 
+	const handleOnRemovePress = (colorToDelete: [string, string]) => {
+		const updatedColorTags = currentColorTags.filter((color) => color !== colorToDelete);
+		setColorTags(updatedColorTags);
+	};
+
+	const handleOnNewColorPress = (colorToAdd: [string, string]) => {
+		setColorTags([...currentColorTags, colorToAdd]);
+		colorPickerRef.current?.scrollTo(0)
+	};
+
 	return (
 		<View style={{ flex: 1 }}>
 			<View
@@ -59,7 +83,7 @@ const EditClothing = () => {
 				}}
 			>
 				<StackedTextBox label="Item name" onFieldChange={setItemName} />
-				<ItemCell image={pants} />
+				<ItemCell image={pants} canDelete={true} />
 				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 					<View style={{ width: ITEM_SIZE(2) }}>
 						<Dropdown
@@ -85,65 +109,49 @@ const EditClothing = () => {
 					</View>
 				</View>
 			</View>
-			<SafeAreaView style={{ flex: 1 }}>
-				{/* !!! ScrollView height may be inconsistent */}
-				<ScrollView
-					contentContainerStyle={{
-						paddingBottom: GlobalStyles.layout.xGap * 6,
-						paddingHorizontal: GlobalStyles.layout.xGap,
-						marginTop: GlobalStyles.layout.gap,
-						gap: GlobalStyles.layout.gap,
-					}}
+			<ColorTagsList data={currentColorTags} onAddPress={() => { colorPickerRef.current?.scrollTo(medTranslateY) }}
+				onRemovePress={handleOnRemovePress} />
+			{/* <View
+					style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}
 				>
-					<View
-						style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1, gap: 5 }}
-					>
-						<ColorTag
-							label="Olive"
-							bgColor="#76956B"
-							action={TagAction.add}
-							onPress={() => {
-								console.log('Color Click');
-							}}
-						/>
-						<ColorTag
-							label="Olive"
-							bgColor="#76956B"
-							action={TagAction.remove}
-							onPress={() => {
-								console.log('Color Click');
-							}}
-						/>
-					</View>
-					<View
-						style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1, gap: 5 }}
-					>
-						<BrandTag
-							label="Arc'teryx"
-							action={TagAction.add}
-							onPress={() => {
-								console.log('Brand Click');
-							}}
-						/>
-						<BrandTag
-							label="yet"
-							action={TagAction.remove}
-							onPress={() => {
-								console.log('Brand Click');
-							}}
-						/>
-						<BrandTag
-							label="Arc'teryx"
-							action={TagAction.remove}
-							onPress={() => {
-								console.log('Brand Click');
-							}}
-						/>
-					</View>
-				</ScrollView>
-			</SafeAreaView>
-		</View>
+					<BrandTag
+						action={TagAction.remove}
+						label="Nike"
+						onPress={() => {
+							console.log('Brand Click');
+						}}
+					/>
+					<BrandTag
+						action={TagAction.remove}
+						label="Arc'teryx"
+						onPress={() => {
+							console.log('Brand Click');
+						}}
+					/>
+					<BrandTag
+						action={TagAction.add}
+						label="Arc'teryx"
+						onPress={() => {
+							console.log('Brand Click');
+						}}
+					/>
+				</View> */}
+			<GeneralModal
+				ref={colorPickerRef}
+				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
+				dim={false}
+			/>
+		</View >
 	);
 };
+
+const styles = StyleSheet.create({
+	colorPickerContainer: {
+		position: 'absolute',
+		width: '100%',
+		alignItems: 'center',
+		marginBottom: 10,
+	},
+});
 
 export default EditClothing;

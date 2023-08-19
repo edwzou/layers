@@ -30,7 +30,13 @@ interface FormValues {
 	profile_picture: string;
 }
 
-const SignUp = () => {
+interface SignUpPropsType {
+	settings: boolean;
+}
+
+const SignUp = ({
+	settings,
+}: SignUpPropsType) => {
 	const [image, setImage] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
@@ -215,12 +221,19 @@ const SignUp = () => {
 				)}
 			</View>
 			<View style={{ alignSelf: 'center' }}>
-				<Button
-					text="Sign up"
-					onPress={handleSubmit(onSubmit)}
-					disabled={Object.keys(dirtyFields).length < 5}
-					bgColor={GlobalStyles.colorPalette.primary[500]}
-				/>
+				{settings
+					? <Button
+						text="Update"
+						onPress={handleSubmit(onSubmit)}
+						disabled={false}
+						bgColor={GlobalStyles.colorPalette.primary[500]}
+					/>
+					: <Button
+						text="Sign up"
+						onPress={handleSubmit(onSubmit)}
+						disabled={Object.keys(dirtyFields).length < 5}
+						bgColor={GlobalStyles.colorPalette.primary[500]}
+					/>}
 			</View>
 		</View>
 	);

@@ -5,15 +5,13 @@ import { TagCategory } from '../../constants/Enums';
 interface BrandTagPropsType {
 	action: string;
 	label?: string;
-	bgColor?: string;
-	onPress: () => void;
+	onPress?: () => void;
 }
 
-const BrandTag = ({ label, action, bgColor, onPress }: BrandTagPropsType) => {
+const BrandTag = ({ action, label, onPress }: BrandTagPropsType) => {
 	return (
 		<Tag
 			label={label}
-			bgColor={bgColor}
 			type={{ category: TagCategory.brand, action }}
 			onPress={onPress}
 		/>

@@ -25,7 +25,7 @@ export interface refPropType {
 
 const GeneralModal = forwardRef(
 	(
-		{ title, stepOver, height = highTranslateY, content }: ModalPropTypes,
+		{ title, stepOver, height = highTranslateY, content, dim = true }: ModalPropTypes,
 		ref
 	) => {
 		const active = useSharedValue(false);
@@ -93,17 +93,19 @@ const GeneralModal = forwardRef(
 					style={[
 						{
 							...StyleSheet.absoluteFillObject,
-							backgroundColor: GlobalStyles.colorPalette.primary[500] + '50',
+							backgroundColor: dim ? GlobalStyles.colorPalette.primary[500] + '50' : 'transparent',
 						},
 						backdropStyle,
 					]}
 				/>
 				<GestureDetector gesture={gesture}>
 					<Animated.View style={[styles.container, modalGestureStyle]}>
-						<View style={styles.header}>
-							<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
-							{stepOver != null ? stepOverHandler(stepOver) : null}
-						</View>
+						{title && (
+							<View style={styles.header}>
+								<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
+								{stepOver != null ? stepOverHandler(stepOver) : null}
+							</View>
+						)}
 						<View style={{ flex: 1 }}>{content}</View>
 					</Animated.View>
 				</GestureDetector>
