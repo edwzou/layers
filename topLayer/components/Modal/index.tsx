@@ -6,11 +6,12 @@ import { StepOverTypes } from '../../constants/Enums';
 import Icon from 'react-native-remix-icon';
 
 export interface ModalPropTypes {
-	title: string;
+	title?: string;
 	back?: boolean;
 	height?: number;
 	stepOver?: { type: string; handlePress: () => void };
 	content: ReactElement;
+	dim?: boolean;
 }
 
 export const stepOverHandler = (props: ModalPropTypes['stepOver']) => {

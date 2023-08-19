@@ -5,11 +5,11 @@ import ItemCell from '../../components/Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { FlatList } from 'react-native-gesture-handler';
 import ColorTag from '../../components/Tag/ColorTag';
-import { TagAction } from '../../constants/Enums';
+import { TagAction, ColorTags } from '../../constants/Enums';
 import { outfitData } from '../../constants/testData';
 import BrandTag from '../../components/Tag/BrandTag';
 
-const ViewOutfit = () => {
+const OutfitView = () => {
 	return (
 		<FlatList
 			data={outfitData[0].items.slice(1)}
@@ -33,22 +33,16 @@ const ViewOutfit = () => {
 						<Text style={styles.subheader}>Colors</Text>
 						<View style={styles.tagsContainer}>
 							<ColorTag
-								label="Beige"
-								bgColor="#E8D3B4"
-								action={TagAction.remove}
-								onPress={() => { }}
+								action={TagAction.static}
+								color={ColorTags.Red}
 							/>
 							<ColorTag
-								label="Red"
-								bgColor="#E55A5A"
-								action={TagAction.remove}
-								onPress={() => { }}
+								action={TagAction.static}
+								color={ColorTags.Orange}
 							/>
 							<ColorTag
-								label="Olive"
-								bgColor="#76956B"
-								action={TagAction.remove}
-								onPress={() => { }}
+								action={TagAction.static}
+								color={ColorTags.Yellow}
 							/>
 						</View>
 					</View>
@@ -75,7 +69,7 @@ const ViewOutfit = () => {
 	);
 };
 
-export default ViewOutfit;
+export default OutfitView;
 
 const styles = StyleSheet.create({
 	container: {

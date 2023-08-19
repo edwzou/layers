@@ -22,11 +22,14 @@ import GeneralModal, {
     type refPropType,
 } from '../../components/Modal/GeneralModal';
 import { highTranslateY } from '../../utils/modalMaxShow';
-import ViewOutfit from '../../ModalContent/View/ViewOutfit';
+import SignUpPage from '../SignUp/SignUpPage';
+import ItemPreview from '../../ModalContent/ItemPreview/ItemPreview'
+import OutfitView from '../../ModalContent/View/OutfitView';
 import OutfitEdit from '../../ModalContent/OutfitEdit/OutfitEdit';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
+import EditClothing from '../Edit/EditClothing';
 
 interface ProfilePropsType {
     isForeignProfile: boolean;
@@ -34,8 +37,11 @@ interface ProfilePropsType {
 
 const Profile = ({ isForeignProfile }: ProfilePropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-    const previewRef = useRef<refPropType>(null);
-    const editModalRef = useRef<refPropType>(null);
+    const settingsRef = useRef<refPropType>(null);
+    const itemPreviewRef = useRef<refPropType>(null);
+    const editClothingRef = useRef<refPropType>(null);
+    const OutfitViewRef = useRef<refPropType>(null);
+    const outfitEditRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
 
     const [selectedCategory, setSelectedCategory] = useState(
@@ -82,7 +88,8 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                     <Pressable
                         onPress={() => {
                             !isForeignProfile
-                                ? navigation.navigate(StackNavigation.Camera)
+                                // ? navigation.navigate(StackNavigation.Camera)
+                                ? settingsRef.current?.scrollTo(highTranslateY)
                                 : undefined;
                         }}
                     >
@@ -108,7 +115,7 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                                 <CategorySlide
                                     clothingData={item}
                                     onPress={() => {
-                                        previewRef.current?.scrollTo(highTranslateY);
+                                        itemPreviewRef.current?.scrollTo(highTranslateY);
                                     }}
                                 />
                             )}
@@ -134,27 +141,54 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                 </View>
             )}
             <GeneralModal
-                ref={previewRef}
-                content={<ViewOutfit />}
-                title="<SOME OUTFIT TITLE>"
+                ref={settingsRef}
+                content={<SignUpPage settings={true} />}
+                title="Settings"
+            />
+            <GeneralModal
+                ref={itemPreviewRef}
+                content={<ItemPreview />}
+                title="<SOME ITEM TITLE>"
                 stepOver={{
                     type: StepOverTypes.edit,
                     handlePress: () => {
-                        editModalRef.current?.scrollTo(highTranslateY);
+                        editClothingRef.current?.scrollTo(highTranslateY);
                     },
                 }}
             />
             <GeneralModal
-                ref={editModalRef}
+                ref={editClothingRef}
+                content={<EditClothing />}
+                title="Edit"
+                stepOver={{
+                    type: StepOverTypes.done,
+                    handlePress: () => {
+
+                    },
+                }}
+            />
+            <GeneralModal
+                ref={OutfitViewRef}
+                content={<OutfitView />}
+                title="<SOME OUTFIT TITLE>"
+                stepOver={{
+                    type: StepOverTypes.edit,
+                    handlePress: () => {
+                        outfitEditRef.current?.scrollTo(highTranslateY);
+                    },
+                }}
+            />
+            <GeneralModal
+                ref={outfitEditRef}
                 content={<OutfitEdit />}
-                title="Edit <SOME OUTFIT TITLE>"
+                title="Edit"
                 back
                 stepOver={{
                     type: StepOverTypes.done,
                     handlePress: () => {
                         console.log('some request');
-                        editModalRef.current?.scrollTo(0);
-                        previewRef.current?.scrollTo(0);
+                        outfitEditRef.current?.scrollTo(0);
+                        OutfitViewRef.current?.scrollTo(0);
                     },
                 }}
             />

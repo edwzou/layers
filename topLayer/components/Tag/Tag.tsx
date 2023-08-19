@@ -8,77 +8,79 @@ import { capitalizeFirstLetter } from '../../utils/misc';
 interface TagPropsType {
 	type: { category: string; action: string };
 	label?: string;
-	editable: boolean;
 	bgColor?: string;
-	onPress: () => void;
+	onPress?: () => void;
 }
 
 const Tag = ({
 	type,
 	label,
-	editable = false,
 	bgColor,
 	onPress,
 }: TagPropsType) => {
 	return (
 		// This Text wrapper allows for the container to have min-content property
 		<Text>
-			{type.action === TagAction.remove ? (
-				<View
-					style={[
-						styles.container,
-						GlobalStyles.utils.tagShadow,
-						{
-							shadowColor: bgColor || GlobalStyles.colorPalette.primary[500],
-							backgroundColor:
-								bgColor || GlobalStyles.colorPalette.primary[500],
-							justifyContent: editable ? 'space-between' : 'center',
-						},
-					]}
-				>
-					<Text style={{ marginRight: editable ? 5 : 0 }}>
-						<Text style={{ color: GlobalStyles.colorPalette.primary[100], ...GlobalStyles.typography.body, }}>
-							{label}
+			{type.action === TagAction.remove || type.action === TagAction.static || type.action === TagAction.push ? (
+				<Pressable onPress={type.action === TagAction.remove || type.action === TagAction.push ? onPress :
+					undefined}>
+					<View
+						style={[
+							styles.container,
+							GlobalStyles.utils.tagShadow,
+							{
+								shadowColor: bgColor || GlobalStyles.colorPalette.primary[500],
+								backgroundColor:
+									bgColor || GlobalStyles.colorPalette.primary[500],
+								justifyContent: type.action === TagAction.remove ? 'space-between' : 'center',
+							},
+						]}
+					>
+						<Text style={{ marginRight: type.action === TagAction.remove ? 2.5 : 0 }}>
+							<Text style={{
+								color: label === "White" ? GlobalStyles.colorPalette.primary[900]
+									: GlobalStyles.colorPalette.primary[100], ...GlobalStyles.typography.body
+							}}>
+								{label}
+							</Text>
+
 						</Text>
-					</Text>
-					{editable ? (
-						<Pressable onPress={onPress}>
+						{type.action === TagAction.remove ? (
 							<Icon
 								name={GlobalStyles.icons.closeOutline}
-								color={GlobalStyles.colorPalette.primary[100]}
+								color={label === "White" ? GlobalStyles.colorPalette.primary[900]
+									: GlobalStyles.colorPalette.primary[100]}
 								size={GlobalStyles.sizing.icon.xSmall}
 							/>
-						</Pressable>
-					) : null}
-				</View>
+						) : null}
+					</View>
+				</Pressable>
 			) : (
-				<View
-					style={[
-						styles.container,
-						{
-							backgroundColor: GlobalStyles.colorPalette.primary[200],
-							justifyContent: editable ? 'space-between' : 'center',
-						},
-					]}
+				<Pressable
+					onPress={onPress}
+					style={{ marginRight: 2.5 }}
 				>
-					{editable ? (
-						<Pressable
-							onPress={onPress}
-							style={{ marginRight: editable ? 2.5 : 0 }}
-						>
-							<Icon
-								name={GlobalStyles.icons.addOutline}
-								color={GlobalStyles.colorPalette.primary[300]}
-								size={GlobalStyles.sizing.icon.xSmall}
-							/>
-						</Pressable>
-					) : null}
-					<Text>
-						<Text style={{ color: GlobalStyles.colorPalette.primary[300] }}>
-							{capitalizeFirstLetter(type.category)}
+					<View
+						style={[
+							styles.container,
+							{
+								backgroundColor: GlobalStyles.colorPalette.primary[200],
+								justifyContent: 'space-between',
+							},
+						]}
+					>
+						<Icon
+							name={GlobalStyles.icons.addOutline}
+							color={GlobalStyles.colorPalette.primary[300]}
+							size={GlobalStyles.sizing.icon.xSmall}
+						/>
+						<Text>
+							<Text style={{ color: GlobalStyles.colorPalette.primary[300], ...GlobalStyles.typography.body, }}>
+								{capitalizeFirstLetter(type.category)}
+							</Text>
 						</Text>
-					</Text>
-				</View>
+					</View>
+				</Pressable>
 			)}
 		</Text>
 	);
