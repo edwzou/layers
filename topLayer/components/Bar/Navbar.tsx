@@ -10,6 +10,9 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { baseUrl } from '../../utils/apiUtils';
+import { UserContext } from '../../utils/UserContext';
 
 interface NavbarPropsType {
     toggleFeedbackModal: () => void;
@@ -18,6 +21,13 @@ interface NavbarPropsType {
 const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
     const navigationContext = useContext(NavigationContext);
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+    const { data, updateData } = useContext(UserContext)
+
+    const handleLogout = async () => {
+        await axios(`${baseUrl}/logout`);
+
+        updateData(null);
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -68,7 +78,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
                         size={GlobalStyles.sizing.icon.regular}
                     />
                 </Pressable>
-                <Pressable onPress={async () => { await AsyncStorage.removeItem('session') }}>
+                <Pressable onPress={handleLogout}>
                     <Icon
                         name={GlobalStyles.icons.circleLogout}
                         color={GlobalStyles.colorPalette.primary[900]}

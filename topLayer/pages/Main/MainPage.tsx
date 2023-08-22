@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
-import React, { createContext, useRef } from 'react';
+import React, { createContext, useContext, useRef } from 'react';
 import PagerView from 'react-native-pager-view';
 
 import ProfilePage from '../Profile/ProfilePage';
 import MatchPage from '../Match/MatchPage';
 import FindPage from '../Find/FindPage';
+import { UserContext } from '../../utils/UserContext';
 
 export const NavigationContext = createContext([() => { }]);
 
@@ -19,6 +20,8 @@ const MainPage: React.FC = () => {
     const navigateToFind = (): void => {
         ref.current?.setPage(2);
     };
+
+    const { data } = useContext(UserContext)
 
     return (
         <NavigationContext.Provider

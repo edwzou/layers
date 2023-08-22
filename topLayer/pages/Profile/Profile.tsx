@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -9,11 +9,11 @@ import CategoryBar from '../../components/Bar/CategoryBar';
 import CategorySlide from '../../components/Category/CategorySlide';
 
 import {
-    ClothingTypes,
     StepOverTypes,
     CategoryToIndex,
     IndexToCategory,
     StackNavigation,
+    ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { clothingData } from '../../constants/testData';
@@ -29,6 +29,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import axios, { AxiosResponse } from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
+import { UserContext } from '../../utils/UserContext';
 
 interface ProfilePropsType {
     isForeignProfile: boolean;
@@ -39,11 +40,15 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
     const previewRef = useRef<refPropType>(null);
     const editModalRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
-    const [user, setUser] = useState<AxiosResponse | null | void>(null);
 
     const [selectedCategory, setSelectedCategory] = useState(
         ClothingTypes.outfits
     );
+
+    const { data, updateData } = useContext(UserContext);
+
+    console.log("Authenticated: " + data)
+
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
 
     const handleCategoryChange = (category: string) => {
@@ -75,19 +80,6 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
         }
     }).current;
 
-    async function getData() {
-        const result = await axios.get(`${baseUrl}/api/private/users`);
-
-        if (!result) throw new Error('cannot fetch')
-
-        setUser(result.data.data);
-    }
-
-    useEffect(() => {
-        getData()
-        console.log(user);
-    }, [])
-
     // !!! Display edit outfit on click
     // !!! Empty Match page to account for no clothing
 
@@ -105,8 +97,8 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                         <ProfilePicture />
                     </Pressable>
                     <View>
-                        <FullName firstName={user.first_name} lastName={user.last_name} />
-                        <Username username={`@${user.username}`} />
+                        <FullName firstName={data.first_name} lastName={data.last_name} />
+                        <Username username={`@${data.username}`} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>

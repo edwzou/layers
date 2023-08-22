@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { View } from 'react-native';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -9,8 +9,10 @@ import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserContext } from '../../utils/UserContext';
 
 const SignIn = () => {
+	const { data, updateData } = useContext(UserContext);
 	const {
 		control,
 		handleSubmit,
@@ -24,6 +26,7 @@ const SignIn = () => {
 		},
 	});
 
+
 	const onSubmit = async (data: any) => {
 		try {
 			const response = await axios.post(`${baseUrl}/login`, {
@@ -34,7 +37,8 @@ const SignIn = () => {
 
 			if (response.status === 200) {
 				try {
-					await AsyncStorage.setItem('session', response.data.data.uid)
+					updateData(response.data.data)
+
 				} catch (error) {
 					console.log(error);
 				}
@@ -44,7 +48,6 @@ const SignIn = () => {
 		} catch (error) {
 			alert(error);
 		}
-		// console.log(data);
 	};
 
 	return (

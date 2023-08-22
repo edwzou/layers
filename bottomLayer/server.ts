@@ -48,10 +48,12 @@ passport.use('login', new LocalStrategy({ usernameField: 'email', passwordField:
       const passwordMatches: boolean = await bcrypt.compare(password, hashedPassword);
 
       if (!passwordMatches) {
+        console.log('Invalid Credentials');
         return done(null, false, { message: 'invalid credentials' });
       }
 
       const user = result.rows[0].uid;
+      console.log(user);
       return done(null, user);
     } catch (err) {
       return done(err);

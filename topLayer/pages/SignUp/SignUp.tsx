@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -18,6 +18,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserContext } from '../../utils/UserContext';
 
 interface FormValues {
 	first_name: string;
@@ -34,6 +35,7 @@ const SignUp = () => {
 	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+	const { data, updateData } = useContext(UserContext);
 
 	const {
 		control,
@@ -84,12 +86,12 @@ const SignUp = () => {
 				profile_picture: data.profile_picture,
 				following: [],
 				followers: [],
-				private: data.private,
+				privateOption: data.private,
 			});
 
 			if (response.status === 200) {
 				try {
-					await AsyncStorage.setItem('session', response.data.data.uid)
+					updateData(response.data.data);
 				} catch (error) {
 					console.log(error);
 				}
