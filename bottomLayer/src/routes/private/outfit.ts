@@ -53,10 +53,10 @@ router.put('/:oid', checkAuthenticated, (req: Request, res: Response): void => {
   const updateOutfit = async (oid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-      const run = await getOutfitCore(oid);
+      // const run = await getOutfitCore(oid);
       await pool.query('UPDATE backend_schema.outfit SET title = $1, clothing_items = $2 WHERE oid = $3', [title, clothing_items, oid]);
 
-      await run;
+      // await run;
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, oid, res, 'Outfit');
     } catch (error) {

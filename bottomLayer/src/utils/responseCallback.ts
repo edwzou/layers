@@ -1,7 +1,7 @@
 import { NotFoundError } from './Errors/NotFoundError';
 import { type Response } from 'express';
-import { pool, sql } from './sqlImport';
 import { UnknownError } from './Errors/UnknownError';
+import { type PoolClient } from 'pg';
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
 
