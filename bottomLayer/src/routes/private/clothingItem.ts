@@ -27,8 +27,7 @@ router.delete('/:ciid', checkAuthenticated, (req: Request, res: Response): void 
   const { ciid } = req.params;
   const deleteItem = async (ciid: string): Promise<void> => {
     try {
-      await getItemCore(ciid);
-      await pool.query('DELETE FROM backend_schema.clothing_item WHERE ciid = $1', [ciid]);
+      const deleteItem = await pool.query('DELETE FROM backend_schema.clothing_item WHERE ciid = $1', [ciid]);
 
       responseCallbackDelete(
         null,
@@ -50,11 +49,10 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
   const { ciid } = req.params;
   const { image, category, title, brands, size, color } = req.body;
 
-  const updateItem = async (ciid: string): Promise<void> => {
-    // Update the outfit in the database
-    try {
-      const run = getItemCore(ciid);
-      await pool.query(`
+    const updateItem = async (ciid: string): Promise<void> => {
+      // Update the outfit in the database
+      try {
+        const updateItem = await pool.query(`
         UPDATE backend_schema.clothing_item
         SET image = $1,
             category = $2,
@@ -64,13 +62,13 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
             color = $6
         WHERE ciid = $7
         `, [image, category, title, brands, size, color, ciid]);
-      await run;
-      // responds with successful update even when no changes are made
-      responseCallbackUpdate(null, ciid, res, 'Clothing Item');
-    } catch (error) {
-      responseCallbackUpdate(error, ciid, res);
-    }
-  };
+        // responds with successful update even when no changes are made
+        responseCallbackUpdate(null, ciid, res, "Clothing Item", updateItem.rowCount);
+      } catch (error) {
+        responseCallbackUpdate(error, ciid, res, 'Clothing Item')
+      }
+  
+    };
 
   void updateItem(ciid);
 });

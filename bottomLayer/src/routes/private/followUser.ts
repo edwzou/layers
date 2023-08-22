@@ -5,6 +5,8 @@ import { pool } from '../../utils/sqlImport';
 import { NotFoundError } from '../../utils/Errors/NotFoundError';
 const router = express.Router();
 
+
+
 // Endpoint for following a user, the url parameter is the user doing the following
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post('/follow/:userId', async (req: any, res: any) => {
@@ -99,11 +101,10 @@ router.post('/follow/:userId', async (req: any, res: any) => {
 });
 
 // Endpoint for unfollowing a user, the url parameter is the user doing the unfollowing
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post('/unfollow/:userId', async (req: any, res: any) => {
   const { userId } = req.params;
   const { unFollowId } = req.body;
-  // Perform unfollow user logic
+    // Perform unfollow user logic
 
   const unfollow = async (uid1: string, uid2: string): Promise<void> => {
     try {
@@ -117,7 +118,6 @@ router.post('/unfollow/:userId', async (req: any, res: any) => {
       UPDATE backend_schema.user
         SET followers = ARRAY_REMOVE(followers, $1)
         WHERE uid = $2`, [uid2, uid1]);
-
       // const result1 = await thread1
       // const result2 = await thread2
       // const user1 = result1.rows[0]

@@ -1,8 +1,7 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { getUserCore, responseCallbackDelete, responseCallbackGet, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
+import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
-import { NotFoundError } from '../../utils/Errors/NotFoundError';
 const router = express.Router();
 
 // Endpoint for creating a specific user
@@ -34,24 +33,6 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
     }
   };
   void insertUser();
-});
-
-// Endpoint for retrieving a specific user
-router.get('/', (req: Request, res: Response): void => {
-  const userId = req.user;
-
-  const getUser = async (): Promise<void> => {
-    try {
-      const user = await pool.query('SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1', [userId]);
-      const result = user.rows[0];
-
-      responseCallbackGet(null, result, res, 'User');
-    } catch (error) {
-      responseCallbackGet(error, null, res);
-    }
-  };
-
-  void getUser();
 });
 
 // Endpoint for deleting a specific user

@@ -1,5 +1,8 @@
 import { NotFoundError } from '../../utils/Errors/NotFoundError';
+<<<<<<< HEAD
 import { checkAuthenticated } from '../../middleware/auth';
+=======
+>>>>>>> main
 import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { pool } from '../../utils/sqlImport';
 import express, { type Request, type Response } from 'express';
@@ -50,20 +53,19 @@ router.put('/:oid', checkAuthenticated, (req: Request, res: Response): void => {
   const { oid } = req.params;
   const { title, clothing_items } = req.body;
 
-  const updateOutfit = async (oid: string): Promise<void> => {
-    // Update the outfit in the database
-    try {
-      // const run = await getOutfitCore(oid);
-      await pool.query('UPDATE backend_schema.outfit SET title = $1, clothing_items = $2 WHERE oid = $3', [title, clothing_items, oid]);
+    const updateOutfit = async (oid: string): Promise<void> => {
+      // Update the outfit in the database
+      try {
+        const updateOutfit = await pool.query('UPDATE backend_schema.outfit SET title = $1, clothing_items = $2 WHERE oid = $3', [title, clothing_items, oid]);
 
-      // await run;
-      // responds with successful update even when no changes are made
-      responseCallbackUpdate(null, oid, res, 'Outfit');
-    } catch (error) {
-      responseCallbackUpdate(error, oid, res);
-    }
-  };
-
+        // responds with successful update even when no changes are made
+        responseCallbackUpdate(null, oid, res, "Outfit", updateOutfit.rowCount);
+      } catch (error) {
+        responseCallbackUpdate(error, oid, res, 'Outfit')
+      }
+  
+    };
+    
   void updateOutfit(oid);
 });
 
