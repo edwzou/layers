@@ -5,12 +5,18 @@ import Header from '../../components/Header/Header';
 import SignUp from './SignUp';
 import { NavigationBack } from '../../constants/Enums';
 
-const SignUpPage = () => {
+interface SignUpPagePropsType {
+	settings?: boolean;
+}
+
+const SignUpPage = ({
+	settings,
+}: SignUpPagePropsType) => {
 	return (
 		<View style={{ gap: 40 }}>
-			<Header text="Sign up" back={NavigationBack.back} />
+			{!settings && <Header text="Sign up" back={NavigationBack.back} />}
 			<View style={styles.container}>
-				<SignUp />
+				<SignUp settings={settings !== undefined ? settings : false} />
 			</View>
 		</View>
 	);

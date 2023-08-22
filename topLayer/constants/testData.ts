@@ -10,7 +10,7 @@ import top3 from '../assets/testTop3.png';
 import pant3 from '../assets/testPants3.png';
 import shoe3 from '../assets/testShoe3.png';
 
-import { ClothingTypes } from './Enums';
+import { ClothingTypes, ColorTags } from './Enums';
 
 export const clothingData = [
 	{
@@ -457,3 +457,11 @@ export const userClothing = [
 		category: ClothingTypes.shoes,
 	},
 ];
+
+export const colorTags = [
+	ColorTags.Beige,
+	ColorTags.Olive,
+	ColorTags.Navy,
+	ColorTags.White,
+	ColorTags.Yellow
+]
