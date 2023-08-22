@@ -1,13 +1,8 @@
 import { NotFoundError } from './Errors/NotFoundError';
 import { type Response } from 'express';
-<<<<<<< HEAD
-import { UnknownError } from './Errors/UnknownError';
-import { type PoolClient } from 'pg';
-=======
 import { pool } from './sqlImport';
-import { PoolClient } from "pg";
-import { UnknownError } from "./Errors/UnknownError";
->>>>>>> main
+import { type PoolClient } from 'pg';
+import { UnknownError } from './Errors/UnknownError';
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
 
@@ -27,7 +22,7 @@ export const responseCallbackGet = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error', error: error });
+    res.status(500).json({ message: 'Internal Server Error', error });
     return error;
   } else if (element === null || element === undefined || element.length === 0) {
     res.status(400).json({ message: notFoundObject + ' Not Found' });
@@ -45,7 +40,7 @@ export const responseCallbackPost = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error', error: error });
+    res.status(500).json({ message: 'Internal Server Error', error });
     return error;
   } else {
     res.status(200).json({ message: 'Successfully Created a ' + target });
@@ -58,15 +53,15 @@ export const responseCallbackDelete = (
   id: string,
   res: Response,
   target: string = '',
-  rowCount: number = 1,
+  rowCount: number = 1
 ): Callback<any> => {
   if (rowCount === 0) {
-    throw new NotFoundError(target + " Not Found, id: " + id);
+    throw new NotFoundError(target + ' Not Found, id: ' + id);
   } else if (error != null) {
     console.log(error);
     res.status(500).json({
-      message: "Internal Server Error, Failed to Delete " + target + ": " + id,
-      error: error,
+      message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id,
+      error
     });
     return error;
   } else {
@@ -81,19 +76,19 @@ export const responseCallbackUpdate = (
   error: any,
   id: string,
   res: Response,
-  target: string = "",
-  rowCount: number = 1,
+  target: string = '',
+  rowCount: number = 1
 ): Callback<any> => {
   if (rowCount === 0) {
-    throw new NotFoundError(target + " Not Found, id: " + id);
+    throw new NotFoundError(target + ' Not Found, id: ' + id);
   } else if (error != null) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error, Failed to Delete " + target + ": " + id,  error: error });
+    res.status(500).json({ message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id, error });
     return error;
   } else {
     res
       .status(200)
-      .json({ message: "Successfully Updated " + target + ": " + id });
+      .json({ message: 'Successfully Updated ' + target + ': ' + id });
     return error;
   }
 };
@@ -102,20 +97,20 @@ export const responseCallbackFollow = (
   error: any,
   uid1: string,
   uid2: string,
-  res: Response,
+  res: Response
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
     res.status(500).json({
       // Where following and follower are the uids
-      message: "Internal Server Error: " + uid1 + " Failed to Follow " + uid2,
-      error: error,
+      message: 'Internal Server Error: ' + uid1 + ' Failed to Follow ' + uid2,
+      error
     });
     return error;
   } else {
     res
       .status(200)
-      .json({ message: uid1 + " Successfully Followed " + uid2 });
+      .json({ message: uid1 + ' Successfully Followed ' + uid2 });
     return error;
   }
 };
@@ -130,18 +125,18 @@ export const responseCallbackUnFollow = (
     console.log(error);
     res.status(500).json({
       message:
-        "Internal Server Error: " +
+        'Internal Server Error: ' +
         username +
-        " Failed to unFollow " +
+        ' Failed to unFollow ' +
         toUnFollowUsername,
-      error: error,
+      error
     });
     return error;
   } else {
     res
       .status(200)
       .json({
-        message: username + " Successfully UnFollowed " + toUnFollowUsername,
+        message: username + ' Successfully UnFollowed ' + toUnFollowUsername
       });
     return error;
   }
@@ -201,7 +196,7 @@ export const responseCallbackGetAll = (
   res: Response,
   notFoundObject = ''
 ): Callback<any> => {
-  if (element.length === 0) {
+  if (element === null || element === undefined || element.length === 0) {
     res.status(400).json({ message: 'This User has no ' + notFoundObject });
     return element;
   } else {
@@ -231,7 +226,7 @@ export const clientFollowTransaction = async (
   query: string,
   client: Promise<PoolClient>,
   otherQueries: number[],
-  resolution: number = -1,
+  resolution: number = -1
 ): Promise<any> => {
   const clientOn = await client;
   try {

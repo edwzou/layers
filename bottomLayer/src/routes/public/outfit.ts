@@ -32,7 +32,7 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
   const getAllOutfits = async (userId: string): Promise<any> => {
     try {
       const run = pool.query(
-        "SELECT * FROM backend_schema.outfit WHERE uid = $1",
+        'SELECT * FROM backend_schema.outfit WHERE uid = $1',
         [userId]
       );
       await getUserCore(userId, await client);
