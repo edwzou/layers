@@ -39,7 +39,8 @@ export const StackNavigation = {
 	Match: 'Match',
 	Feedback: 'Feedback',
 	Find: 'Find',
-	Edit: 'Edit',
+	ItemPreview: 'ItemPreview',
+	EditClothing: 'EditClothing',
 	Camera: 'Camera',
 } as const;
 
@@ -94,5 +95,4 @@ export const ColorTags: Record<string, [string, string]> = {
   Black: ["Black", "#121212"],
   Grey: ["Grey", "#CDCDCD"],
   White: ["White", "#F2F2F2"],
-  Add: ["Add", "#000000"]
 };

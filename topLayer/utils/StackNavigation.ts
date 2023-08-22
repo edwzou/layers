@@ -19,7 +19,8 @@ export type StackTypes = {
 	SignUp: StackNavigatorType;
 	Main: StackNavigatorType;
 	Preview: StackNavigatorType;
-	Edit: StackNavigatorType;
+	ItemPreview: StackNavigatorType;
+	EditClothing: StackNavigatorType;
 	Feedback: StackNavigatorType;
 	Camera: StackNavigatorType;
 };

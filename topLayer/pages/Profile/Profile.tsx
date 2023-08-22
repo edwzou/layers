@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, createContext } from 'react';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -13,41 +13,55 @@ import {
     StepOverTypes,
     CategoryToIndex,
     IndexToCategory,
-    StackNavigation,
+    ColorTags,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { clothingData } from '../../constants/testData';
+import { clothingData, colorTags } from '../../constants/testData';
 
 import GeneralModal, {
     type refPropType,
 } from '../../components/Modal/GeneralModal';
 import { highTranslateY } from '../../utils/modalMaxShow';
 import SignUpPage from '../SignUp/SignUpPage';
-import ItemPreview from '../../ModalContent/ItemPreview/ItemPreview'
-import OutfitView from '../../ModalContent/View/OutfitView';
+import ItemPreview from '../../ModalContent/ItemView/ItemView'
+import OutfitView from '../../ModalContent/OutfitView/OutfitView';
 import OutfitEdit from '../../ModalContent/OutfitEdit/OutfitEdit';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import EditClothing from '../Edit/EditClothing';
+import { UserClothing } from 'pages/Match';
 
 interface ProfilePropsType {
     isForeignProfile: boolean;
 }
+
+export const ColorTagsContext = createContext([ColorTags.Blue]);
 
 const Profile = ({ isForeignProfile }: ProfilePropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const settingsRef = useRef<refPropType>(null);
     const itemPreviewRef = useRef<refPropType>(null);
     const editClothingRef = useRef<refPropType>(null);
-    const OutfitViewRef = useRef<refPropType>(null);
+    const outfitViewRef = useRef<refPropType>(null);
     const outfitEditRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
 
-    const [selectedCategory, setSelectedCategory] = useState(
-        ClothingTypes.outfits
-    );
+    const [selectedItem, setSelectedItem] = useState<UserClothing>({} as UserClothing)
+    const [selectedOutfit, setSelectedOutfit] = useState()
+    const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
+
+    const handleItemChange = (outfit: boolean, item: any) => {
+        if (outfit) {
+            setSelectedOutfit(item);
+            outfitViewRef.current?.scrollTo(highTranslateY);
+        } else {
+            setSelectedItem(item);
+            itemPreviewRef.current?.scrollTo(highTranslateY);
+        }
+    };
+
 
     const handleCategoryChange = (category: string) => {
         setSelectedCategory(category);
@@ -114,9 +128,7 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                             renderItem={({ item }) => (
                                 <CategorySlide
                                     clothingData={item}
-                                    onPress={() => {
-                                        itemPreviewRef.current?.scrollTo(highTranslateY);
-                                    }}
+                                    onPress={handleItemChange}
                                 />
                             )}
                             horizontal
@@ -140,58 +152,60 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                     </Pressable>
                 </View>
             )}
-            <GeneralModal
-                ref={settingsRef}
-                content={<SignUpPage settings={true} />}
-                title="Settings"
-            />
-            <GeneralModal
-                ref={itemPreviewRef}
-                content={<ItemPreview />}
-                title="<SOME ITEM TITLE>"
-                stepOver={{
-                    type: StepOverTypes.edit,
-                    handlePress: () => {
-                        editClothingRef.current?.scrollTo(highTranslateY);
-                    },
-                }}
-            />
-            <GeneralModal
-                ref={editClothingRef}
-                content={<EditClothing />}
-                title="Edit"
-                stepOver={{
-                    type: StepOverTypes.done,
-                    handlePress: () => {
+            <ColorTagsContext.Provider value={colorTags}>
+                <GeneralModal
+                    ref={settingsRef}
+                    content={<SignUpPage settings={true} />}
+                    title="Settings"
+                />
+                <GeneralModal
+                    ref={itemPreviewRef}
+                    content={<ItemPreview clothingItem={selectedItem} />}
+                    title={selectedItem.title}
+                    stepOver={{
+                        type: StepOverTypes.edit,
+                        handlePress: () => {
+                            editClothingRef.current?.scrollTo(highTranslateY);
+                        },
+                    }}
+                />
+                <GeneralModal
+                    ref={editClothingRef}
+                    content={<EditClothing />}
+                    title="Edit"
+                    stepOver={{
+                        type: StepOverTypes.done,
+                        handlePress: () => {
 
-                    },
-                }}
-            />
-            <GeneralModal
-                ref={OutfitViewRef}
-                content={<OutfitView />}
-                title="<SOME OUTFIT TITLE>"
-                stepOver={{
-                    type: StepOverTypes.edit,
-                    handlePress: () => {
-                        outfitEditRef.current?.scrollTo(highTranslateY);
-                    },
-                }}
-            />
-            <GeneralModal
-                ref={outfitEditRef}
-                content={<OutfitEdit />}
-                title="Edit"
-                back
-                stepOver={{
-                    type: StepOverTypes.done,
-                    handlePress: () => {
-                        console.log('some request');
-                        outfitEditRef.current?.scrollTo(0);
-                        OutfitViewRef.current?.scrollTo(0);
-                    },
-                }}
-            />
+                        },
+                    }}
+                />
+                <GeneralModal
+                    ref={outfitViewRef}
+                    content={<OutfitView />}
+                    title="Friday night fit"
+                    stepOver={{
+                        type: StepOverTypes.edit,
+                        handlePress: () => {
+                            outfitEditRef.current?.scrollTo(highTranslateY);
+                        },
+                    }}
+                />
+                <GeneralModal
+                    ref={outfitEditRef}
+                    content={<OutfitEdit />}
+                    title="Edit"
+                    back
+                    stepOver={{
+                        type: StepOverTypes.done,
+                        handlePress: () => {
+                            console.log('some request');
+                            outfitEditRef.current?.scrollTo(0);
+                            outfitViewRef.current?.scrollTo(0);
+                        },
+                    }}
+                />
+            </ColorTagsContext.Provider>
         </>
     );
 };

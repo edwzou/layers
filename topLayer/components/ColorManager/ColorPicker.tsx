@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import ColorTag from '../../components/Tag/ColorTag';
+import ColorTag from '../Tag/ColorTag';
 import { TagAction, ColorTags } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 

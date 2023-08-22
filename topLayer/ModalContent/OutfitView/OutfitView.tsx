@@ -46,7 +46,7 @@ const OutfitView = () => {
 							/>
 						</View>
 					</View>
-					<View style={styles.categoryContainer}>
+					{/* <View style={styles.categoryContainer}>
 						<Text style={styles.subheader}>Brands</Text>
 						<View style={styles.tagsContainer}>
 							<BrandTag
@@ -60,7 +60,7 @@ const OutfitView = () => {
 								action={TagAction.remove}
 							/>
 						</View>
-					</View>
+					</View> */}
 					{/* !!! Very hacky solution, try to fix this */}
 					<View style={{ height: 100 }} />
 				</View>
