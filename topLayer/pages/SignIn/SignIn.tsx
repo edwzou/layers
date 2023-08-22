@@ -30,7 +30,7 @@ const SignIn = () => {
 	const onSubmit = async (data: any) => {
 		try {
 			const response = await axios.post(`${baseUrl}/login`, {
-				// username: data.username !== '' ? data.username : null,
+				// Email login only for now
 				email: data.email !== '' ? data.email : null,
 				password: data.password,
 			});

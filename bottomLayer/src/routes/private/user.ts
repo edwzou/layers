@@ -41,7 +41,7 @@ router.get('/', (req: Request, res: Response): void => {
 
   const getUser = async (): Promise<void> => {
     try {
-      const user = await pool.query('SELECT * FROM backend_schema.user WHERE uid = $1', [userId]);
+      const user = await pool.query('SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1', [userId]);
       const result = user.rows[0];
 
       responseCallbackGet(null, result, res, 'User');
