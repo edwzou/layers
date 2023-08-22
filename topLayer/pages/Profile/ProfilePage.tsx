@@ -26,7 +26,7 @@ const ProfilePage = () => {
 			<Profile isForeignProfile={false} />
 			<GeneralModal
 				title={StackNavigation.Feedback}
-				stepOver={{ type: StepOverTypes.send, handlePress: () => {} }}
+				stepOver={{ type: StepOverTypes.send, handlePress: () => { } }}
 				content={<FeedbackPage />}
 				ref={modalRef}
 			/>

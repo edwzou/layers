@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -9,11 +9,11 @@ import CategoryBar from '../../components/Bar/CategoryBar';
 import CategorySlide from '../../components/Category/CategorySlide';
 
 import {
-    ClothingTypes,
     StepOverTypes,
     CategoryToIndex,
     IndexToCategory,
     StackNavigation,
+    ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { clothingData } from '../../constants/testData';
@@ -30,6 +30,9 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import EditClothing from '../Edit/EditClothing';
+import axios, { AxiosResponse } from 'axios';
+import { baseUrl } from '../../utils/apiUtils';
+import { UserContext } from '../../utils/UserContext';
 
 interface ProfilePropsType {
     isForeignProfile: boolean;
@@ -47,6 +50,11 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
     const [selectedCategory, setSelectedCategory] = useState(
         ClothingTypes.outfits
     );
+
+    const { data, updateData } = useContext(UserContext);
+
+    console.log("Authenticated: " + data)
+
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
 
     const handleCategoryChange = (category: string) => {
@@ -96,8 +104,8 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                         <ProfilePicture />
                     </Pressable>
                     <View>
-                        <FullName firstName={'Charlie'} lastName={'Wu'} />
-                        <Username username={'_charlie_wu'} />
+                        <FullName firstName={data.first_name} lastName={data.last_name} />
+                        <Username username={`@${data.username}`} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>

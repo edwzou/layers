@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -17,6 +17,8 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserContext } from '../../utils/UserContext';
 
 interface FormValues {
 	first_name: string;
@@ -39,6 +41,7 @@ const SignUp = ({
 	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+	const { data, updateData } = useContext(UserContext);
 
 	const {
 		control,
@@ -80,7 +83,7 @@ const SignUp = ({
 
 	const onSubmit = async (data: FormValues | any) => {
 		try {
-			const response = await axios.post(`${baseUrl}/users`, {
+			const response = await axios.post(`${baseUrl}/signup`, {
 				first_name: data.first_name,
 				last_name: data.last_name,
 				username: data.username,
@@ -89,12 +92,15 @@ const SignUp = ({
 				profile_picture: data.profile_picture,
 				following: [],
 				followers: [],
-				private: data.private,
+				privateOption: data.private,
 			});
 
 			if (response.status === 200) {
-				alert(`You have created: ${JSON.stringify(response.data)}`);
-				setLoading(false);
+				try {
+					updateData(response.data.data);
+				} catch (error) {
+					console.log(error);
+				}
 			} else {
 				throw new Error('An error has occurred');
 			}
@@ -229,25 +235,6 @@ const SignUp = ({
 						bgColor={GlobalStyles.colorPalette.primary[500]}
 					/>}
 			</View>
-			{/* <Modal visible={modalVisible}
-				animationType="slide"
-				transparent={true}
-				onRequestClose={() => {
-					setModalVisible(!modalVisible);
-				}}>
-				<View style={styles.modalView}>
-					<View style={styles.modalGroup}>
-						<Pressable style={styles.modalSelection} onPress={pickImage}><Text>Library</Text></Pressable>
-						<View style={{ backgroundColor: GlobalStyles.colorPalette.primary[500] + '20', width: '100%', height: 1 }} />
-						<Pressable style={styles.modalSelection} onPress={() => {
-							console.log("Implement Camera")
-
-							// !!! Implement Camera
-						}}><Text>Camera</Text></Pressable>
-					</View>
-					<Pressable style={styles.modalButtons} onPress={() => { setModalVisible(!modalVisible) }}><Text>Cancel</Text></Pressable>
-				</View>
-			</Modal> */}
 		</View>
 	);
 };

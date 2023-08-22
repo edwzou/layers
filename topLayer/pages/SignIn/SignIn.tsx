@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { View } from 'react-native';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -8,8 +8,11 @@ import InlineTextbox from '../../components/Textbox/InlineTextbox';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserContext } from '../../utils/UserContext';
 
 const SignIn = () => {
+	const { data, updateData } = useContext(UserContext);
 	const {
 		control,
 		handleSubmit,
@@ -23,23 +26,28 @@ const SignIn = () => {
 		},
 	});
 
+
 	const onSubmit = async (data: any) => {
 		try {
-			const response = await axios.post(`${baseUrl}/auth/login`, {
-				username: data.username !== '' ? data.username : null,
+			const response = await axios.post(`${baseUrl}/login`, {
+				// Email login only for now
 				email: data.email !== '' ? data.email : null,
 				password: data.password,
 			});
 
-			if (response.status === 201) {
-				alert(`You have created: ${JSON.stringify(response.data)}`);
+			if (response.status === 200) {
+				try {
+					updateData(response.data.data)
+
+				} catch (error) {
+					console.log(error);
+				}
 			} else {
 				throw new Error('An error has occurred');
 			}
 		} catch (error) {
 			alert(error);
 		}
-		console.log(data);
 	};
 
 	return (

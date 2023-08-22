@@ -1,8 +1,8 @@
-import { NotFoundError } from "./Errors/NotFoundError";
+import { NotFoundError } from './Errors/NotFoundError';
 import { type Response } from 'express';
 import { pool } from './sqlImport';
-import { PoolClient } from "pg";
-import { UnknownError } from "./Errors/UnknownError";
+import { type PoolClient } from 'pg';
+import { UnknownError } from './Errors/UnknownError';
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
 
@@ -22,9 +22,9 @@ export const responseCallbackGet = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error', error: error });
+    res.status(500).json({ message: 'Internal Server Error', error });
     return error;
-  } else if (element.length === 0) {
+  } else if (element === null || element === undefined || element.length === 0) {
     res.status(400).json({ message: notFoundObject + ' Not Found' });
     return element;
   } else {
@@ -40,7 +40,7 @@ export const responseCallbackPost = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error', error: error });
+    res.status(500).json({ message: 'Internal Server Error', error });
     return error;
   } else {
     res.status(200).json({ message: 'Successfully Created a ' + target });
@@ -52,22 +52,22 @@ export const responseCallbackDelete = (
   error: any,
   id: string,
   res: Response,
-  target: string = "",
-  rowCount: number = 1,
+  target: string = '',
+  rowCount: number = 1
 ): Callback<any> => {
   if (rowCount === 0) {
-    throw new NotFoundError(target + " Not Found, id: " + id);
+    throw new NotFoundError(target + ' Not Found, id: ' + id);
   } else if (error != null) {
     console.log(error);
     res.status(500).json({
-      message: "Internal Server Error, Failed to Delete " + target + ": " + id,
-      error: error,
+      message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id,
+      error
     });
     return error;
   } else {
     res
       .status(200)
-      .json({ message: "Successfully Deleted " + target + ": " + id });
+      .json({ message: 'Successfully Deleted ' + target + ': ' + id });
     return error;
   }
 };
@@ -76,19 +76,19 @@ export const responseCallbackUpdate = (
   error: any,
   id: string,
   res: Response,
-  target: string = "",
-  rowCount: number = 1,
+  target: string = '',
+  rowCount: number = 1
 ): Callback<any> => {
   if (rowCount === 0) {
-    throw new NotFoundError(target + " Not Found, id: " + id);
+    throw new NotFoundError(target + ' Not Found, id: ' + id);
   } else if (error != null) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error, Failed to Delete " + target + ": " + id,  error: error });
+    res.status(500).json({ message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id, error });
     return error;
   } else {
     res
       .status(200)
-      .json({ message: "Successfully Updated " + target + ": " + id });
+      .json({ message: 'Successfully Updated ' + target + ': ' + id });
     return error;
   }
 };
@@ -97,20 +97,20 @@ export const responseCallbackFollow = (
   error: any,
   uid1: string,
   uid2: string,
-  res: Response,
+  res: Response
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
     res.status(500).json({
       // Where following and follower are the uids
-      message: "Internal Server Error: " + uid1 + " Failed to Follow " + uid2,
-      error: error,
+      message: 'Internal Server Error: ' + uid1 + ' Failed to Follow ' + uid2,
+      error
     });
     return error;
   } else {
     res
       .status(200)
-      .json({ message: uid1 + " Successfully Followed " + uid2 });
+      .json({ message: uid1 + ' Successfully Followed ' + uid2 });
     return error;
   }
 };
@@ -125,18 +125,67 @@ export const responseCallbackUnFollow = (
     console.log(error);
     res.status(500).json({
       message:
-        "Internal Server Error: " +
+        'Internal Server Error: ' +
         username +
-        " Failed to unFollow " +
+        ' Failed to unFollow ' +
         toUnFollowUsername,
-      error: error,
+      error
     });
     return error;
   } else {
     res
       .status(200)
       .json({
-        message: username + " Successfully UnFollowed " + toUnFollowUsername,
+        message: username + ' Successfully UnFollowed ' + toUnFollowUsername
+      });
+    return error;
+  }
+};
+
+export const responseCallbackFollow = (
+  error: any,
+  uid1: string,
+  uid2: string,
+  res: Response
+): Callback<any> => {
+  if (error != null) {
+    console.log(error);
+    res.status(500).json({
+      // Where following and follower are the uids
+      message: 'Internal Server Error: ' + uid1 + ' Failed to Follow ' + uid2,
+      error
+    });
+    return error;
+  } else {
+    res
+      .status(200)
+      .json({ message: uid1 + ' Successfully Followed ' + uid2 });
+    return error;
+  }
+};
+
+export const responseCallbackUnFollow = (
+  error: any,
+  username: string,
+  toUnFollowUsername: string,
+  res: Response
+): Callback<any> => {
+  if (error != null) {
+    console.log(error);
+    res.status(500).json({
+      message:
+        'Internal Server Error: ' +
+        username +
+        ' Failed to unFollow ' +
+        toUnFollowUsername,
+      error
+    });
+    return error;
+  } else {
+    res
+      .status(200)
+      .json({
+        message: username + ' Successfully UnFollowed ' + toUnFollowUsername
       });
     return error;
   }
@@ -147,8 +196,8 @@ export const responseCallbackGetAll = (
   res: Response,
   notFoundObject = ''
 ): Callback<any> => {
-  if (element.length === 0) {
-    res.status(400).json({ message: "This User has no " + notFoundObject });
+  if (element === null || element === undefined || element.length === 0) {
+    res.status(400).json({ message: 'This User has no ' + notFoundObject });
     return element;
   } else {
     res.status(200).json({ message: 'Success', data: element });
@@ -159,13 +208,13 @@ export const responseCallbackGetAll = (
 export const getUserCore = async (userId: string, client: PoolClient): Promise<any> => {
   try {
     const result = await client.query(
-      "SELECT * FROM backend_schema.user WHERE uid = $1",
+      'SELECT * FROM backend_schema.user WHERE uid = $1',
       [userId]
     );
     const user = result.rows;
     if (user.length === 0) {
-      throw new NotFoundError("User Not Found, uid: " + userId);
-    } 
+      throw new NotFoundError('User Not Found, uid: ' + userId);
+    }
     return responseCallback(null, user);
   } catch (error) {
     return responseCallback(error, null);
@@ -177,34 +226,33 @@ export const clientFollowTransaction = async (
   query: string,
   client: Promise<PoolClient>,
   otherQueries: number[],
-  resolution: number = -1,
+  resolution: number = -1
 ): Promise<any> => {
-  const clientOn = await client
+  const clientOn = await client;
   try {
     await clientOn.query('BEGIN');
     const result = await clientOn.query(query);
     resolution = result.rowCount;
     if (resolution === 0) {
-      throw new NotFoundError("User Not Found, uid: " + uid);
+      throw new NotFoundError('User Not Found, uid: ' + uid);
     }
     for (let i = 0; i < otherQueries.length; i++) {
       while (otherQueries[i] === -1) {
-        continue
+        continue;
       }
       if (otherQueries[i] === 0) {
-        throw new UnknownError('The error is unknown in this method')
+        throw new UnknownError('The error is unknown in this method');
       }
     }
     await clientOn.query('COMMIT');
     return responseCallback(null, true);
   } catch (error) {
-    await clientOn.query('ROLLBACK')
+    await clientOn.query('ROLLBACK');
     if (error instanceof UnknownError) {
-      return responseCallback(null, "Unknown Error");
+      return responseCallback(null, 'Unknown Error');
     } else if (error instanceof NotFoundError) {
-      return responseCallback(null, 'NotFound Error')
+      return responseCallback(null, 'NotFound Error');
     }
-    return responseCallback(error, null)
+    return responseCallback(error, null);
   }
 };
-

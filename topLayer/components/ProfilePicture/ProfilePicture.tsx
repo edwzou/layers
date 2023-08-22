@@ -1,13 +1,13 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
+import { UserContext } from '../../utils/UserContext';
 
-interface ProfilePicturePropType {
-	image?: any;
-}
+const ProfilePicture = () => {
+	const { data } = useContext(UserContext);
+	const image = data.profile_picture;
 
-const ProfilePicture = ({ image }: ProfilePicturePropType) => {
 	return (
 		<Text>
 			{image ? (

@@ -1,11 +1,14 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
+import { checkAuthenticated } from '../../middleware/auth';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
-router.post('/', (req: Request, res: Response): void => {
-  const { image, category, title, brands, size, color, uid } = req.body;
+router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
+  const { image, category, title, brands, size, color } = req.body;
+  const uid = req.user;
+
   const insertClothingItem = async (): Promise<any> => {
     try {
       await pool.query(`INSERT INTO backend_schema.clothing_item (image, category, title, brands, size, color, uid)
@@ -20,7 +23,7 @@ router.post('/', (req: Request, res: Response): void => {
 });
 
 // Endpoint for deleting a specific outfit
-router.delete('/:ciid', (req: Request, res: Response): void => {
+router.delete('/:ciid', checkAuthenticated, (req: Request, res: Response): void => {
   const { ciid } = req.params;
   const deleteItem = async (ciid: string): Promise<void> => {
     try {
@@ -30,18 +33,18 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
         null,
         ciid,
         res,
-        "Clothing Item",
+        'Clothing Item',
         deleteItem.rowCount
       );
     } catch (error) {
-      responseCallbackDelete(error, ciid, res, 'Clothing Item')
+      responseCallbackDelete(error, ciid, res, 'Clothing Item');
     }
   };
   void deleteItem(ciid);
 });
 
 // Endpoint for updating a specific outfit
-router.put('/:ciid', (req: any, res: any): void => {
+router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
   // Extract outfit data from the request body
   const { ciid } = req.params;
   const { image, category, title, brands, size, color } = req.body;

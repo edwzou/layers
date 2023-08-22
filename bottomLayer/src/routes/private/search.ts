@@ -1,8 +1,9 @@
 import express, { type Request, type Response } from 'express';
+import { checkAuthenticated } from '../../middleware/auth';
 const router = express.Router();
 
 // Endpoint for searching users by username or name
-router.get('/users', (req: Request, res: Response): void => {
+router.get('/users', checkAuthenticated, (req: Request, res: Response): void => {
   try {
     // const { query } = req.query;
     // Perform user search logic

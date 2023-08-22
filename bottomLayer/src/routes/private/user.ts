@@ -1,11 +1,11 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { getUserCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
-import { NotFoundError } from '../../utils/Errors/NotFoundError';
+import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
+import { checkAuthenticated } from '../../middleware/auth';
 const router = express.Router();
 
 // Endpoint for creating a specific user
-router.post('/', (req: Request, res: Response) => {
+router.post('/', checkAuthenticated, (req: Request, res: Response) => {
   const {
     first_name,
     last_name,
@@ -36,9 +36,12 @@ router.post('/', (req: Request, res: Response) => {
 });
 
 // Endpoint for deleting a specific user
-router.delete('/:userId', (req: Request, res: Response): void => {
-  const { userId } = req.params;
-  const deleteUser = async (userId: string): Promise<void> => {
+router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
+  const userId = req.user as string;
+
+  if (userId == null) return;
+
+  const deleteUser = async (): Promise<void> => {
     try {
       const deleteUser = await pool.query('DELETE FROM backend_schema.user WHERE uid = $1', [userId]);
       responseCallbackDelete(null, userId, res, 'User', deleteUser.rowCount);
@@ -47,12 +50,15 @@ router.delete('/:userId', (req: Request, res: Response): void => {
     }
   };
 
-  void deleteUser(userId);
+  void deleteUser();
 });
 
 // Endpoints for updating a specific user
-router.put('/:userId', (req: Request, res: Response): void => {
-  const { userId } = req.params;
+router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
+  const userId = req.user as string;
+
+  if (userId == null) return;
+
   const {
     first_name,
     last_name,
@@ -64,7 +70,7 @@ router.put('/:userId', (req: Request, res: Response): void => {
     followers,
     following
   } = req.body;
-  const updateUser = async (userId: string): Promise<void> => {
+  const updateUser = async (): Promise<void> => {
     try {
       const updateUser = await pool.query(`UPDATE backend_schema.user
         SET first_name = $1,
@@ -85,7 +91,7 @@ router.put('/:userId', (req: Request, res: Response): void => {
     }
   };
 
-  void updateUser(userId);
+  void updateUser();
 });
 
 module.exports = router;
