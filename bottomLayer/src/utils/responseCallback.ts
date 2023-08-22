@@ -176,19 +176,24 @@ export const clientFollowTransaction = async (
   uid: string,
   query: string,
   client: Promise<PoolClient>,
+  index: number,
   otherQueries: number[],
-  resolution: number = -1,
 ): Promise<any> => {
   const clientOn = await client
+  // console.log("Client1: ", clientOn);
+  console.log("query1: ", query);
   try {
     await clientOn.query('BEGIN');
+    console.log("running1");
     const result = await clientOn.query(query);
-    resolution = result.rowCount;
-    if (resolution === 0) {
-      throw new NotFoundError("User Not Found, uid: " + uid);
+    otherQueries[index] = result.rowCount;
+    console.log("set: ", otherQueries)
+    if (otherQueries[index] === 0) {
+      throw new NotFoundError("No change in user, uid: " + uid);
     }
     for (let i = 0; i < otherQueries.length; i++) {
       while (otherQueries[i] === -1) {
+        // console.log("queries: ", otherQueries)
         continue
       }
       if (otherQueries[i] === 0) {
@@ -202,9 +207,50 @@ export const clientFollowTransaction = async (
     if (error instanceof UnknownError) {
       return responseCallback(null, "Unknown Error");
     } else if (error instanceof NotFoundError) {
-      return responseCallback(null, 'NotFound Error')
+      return responseCallback(null, "No change in user, uid: " + uid);
     }
     return responseCallback(error, null)
   }
 };
 
+
+export const clientFollowTransaction2 = async (
+  uid: string,
+  query: string,
+  client: Promise<PoolClient>,
+  index: number,
+  otherQueries: number[]
+): Promise<any> => {
+  const clientOn = await client;
+  // console.log("Client2: ", clientOn);
+  console.log("query2: ", query);
+  try {
+    await clientOn.query("BEGIN");
+    console.log("running2")
+    const result = await clientOn.query(query);
+    otherQueries[index] = result.rowCount;
+    console.log("set2: ", otherQueries);
+    if (otherQueries[index] === 0) {
+      throw new NotFoundError("No change in user, uid: " + uid);
+    }
+    for (let i = 0; i < otherQueries.length; i++) {
+      while (otherQueries[i] === -1) {
+        // console.log("queries: ", otherQueries)
+        continue;
+      }
+      if (otherQueries[i] === 0) {
+        throw new UnknownError("The error is unknown in this method");
+      }
+    }
+    await clientOn.query("COMMIT");
+    return responseCallback(null, true);
+  } catch (error) {
+    await clientOn.query("ROLLBACK");
+    if (error instanceof UnknownError) {
+      return responseCallback(null, "Unknown Error");
+    } else if (error instanceof NotFoundError) {
+      return responseCallback(null, "No change in user, uid: " + uid);
+    }
+    return responseCallback(error, null);
+  }
+};
