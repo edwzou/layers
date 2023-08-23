@@ -1,4 +1,4 @@
-import React, { useRef, useState, createContext, SetStateAction, Dispatch } from 'react';
+import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -10,12 +10,12 @@ import CategorySlide from '../../components/Category/CategorySlide';
 import Navbar from '../../components/Bar/Navbar';
 
 import {
-    ClothingTypes,
     StepOverTypes,
     CategoryToIndex,
     IndexToCategory,
     ColorTags,
     StackNavigation,
+    ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { clothingData, colorTags } from '../../constants/testData';
@@ -33,6 +33,9 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import EditClothing from '../Edit/EditClothing';
 import { UserClothing } from 'pages/Match';
+import axios, { AxiosResponse } from 'axios';
+import { baseUrl } from '../../utils/apiUtils';
+import { UserContext } from '../../utils/UserContext';
 
 interface ProfilePropsType {
     selectedItem?: UserClothing;
@@ -50,9 +53,13 @@ const Profile = ({ selectedItem, setSelectedItem, isForeignProfile }: ProfilePro
     const outfitEditRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
 
-
     const [selectedOutfit, setSelectedOutfit] = useState()
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
+
+    const { data, updateData } = useContext(UserContext);
+
+    console.log("Authenticated: " + data)
+
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
 
     const handleItemChange = (outfit: boolean, item: any) => {
@@ -140,8 +147,8 @@ const Profile = ({ selectedItem, setSelectedItem, isForeignProfile }: ProfilePro
                         <ProfilePicture />
                     </Pressable>
                     <View>
-                        <FullName firstName={'Charlie'} lastName={'Wu'} />
-                        <Username username={'_charlie_wu'} />
+                        <FullName firstName={data.first_name} lastName={data.last_name} />
+                        <Username username={`@${data.username}`} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>
