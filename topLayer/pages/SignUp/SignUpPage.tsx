@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
 		marginHorizontal: GlobalStyles.layout.xGap,
-		gap: 40,
+		paddingTop: GlobalStyles.layout.modalTopPadding,
 	},
 });
 

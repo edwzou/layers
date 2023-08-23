@@ -9,10 +9,16 @@ import { TagAction, ColorTags } from '../../constants/Enums';
 import { outfitData } from '../../constants/testData';
 import BrandTag from '../../components/Tag/BrandTag';
 
-const OutfitView = () => {
+import { UserOutfit } from '../OutfitEdit'
+
+interface OutfitViewPropsType {
+	outfit: UserOutfit;
+}
+
+const OutfitView = ({ outfit }: OutfitViewPropsType) => {
 	return (
 		<FlatList
-			data={outfitData[0].items.slice(1)}
+			data={outfit.items.slice(1)}
 			numColumns={2}
 			renderItem={({ item, index }) => {
 				return (
@@ -23,8 +29,7 @@ const OutfitView = () => {
 			}}
 			style={styles.container}
 			showsVerticalScrollIndicator={false}
-			ListHeaderComponent={<ItemCell image={outfitData[0].items[0].image} />}
-			keyExtractor={(item) => item.id}
+			ListHeaderComponent={<ItemCell image={outfit.items[0].image} />}
 			contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
 			columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 			ListFooterComponent={
@@ -46,7 +51,7 @@ const OutfitView = () => {
 							/>
 						</View>
 					</View>
-					<View style={styles.categoryContainer}>
+					{/* <View style={styles.categoryContainer}>
 						<Text style={styles.subheader}>Brands</Text>
 						<View style={styles.tagsContainer}>
 							<BrandTag
@@ -60,7 +65,7 @@ const OutfitView = () => {
 								action={TagAction.remove}
 							/>
 						</View>
-					</View>
+					</View> */}
 					{/* !!! Very hacky solution, try to fix this */}
 					<View style={{ height: 100 }} />
 				</View>

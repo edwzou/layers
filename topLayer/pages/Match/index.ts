@@ -2,6 +2,9 @@ export interface UserClothing {
 	id: number;
 	image: string;
 	category: string;
+	title: string;
+	size: string;
+	colors: [string, string][]
 }
 
 export interface UserClothingList {

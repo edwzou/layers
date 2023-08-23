@@ -29,7 +29,7 @@ const Tag = ({
 							styles.container,
 							GlobalStyles.utils.tagShadow,
 							{
-								shadowColor: bgColor || GlobalStyles.colorPalette.primary[500],
+								shadowColor: label === "White" ? GlobalStyles.colorPalette.primary[300] : bgColor || GlobalStyles.colorPalette.primary[500],
 								backgroundColor:
 									bgColor || GlobalStyles.colorPalette.primary[500],
 								justifyContent: type.action === TagAction.remove ? 'space-between' : 'center',

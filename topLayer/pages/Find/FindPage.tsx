@@ -1,95 +1,68 @@
-import React, { useState, useRef, createContext } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
 
-import GlobalStyles from '../../constants/GlobalStyles';
-import { StackNavigation } from '../../constants/Enums';
-import { find } from '../../constants/GlobalStrings';
-import { usersData } from '../../constants/testData';
-
-import SearchBar from '../../components/Bar/SearchBar';
-import Header from '../../components/Header/Header';
-import GeneralModal, {
-	type refPropType,
-} from '../../components/Modal/GeneralModal';
-
-import Marked from './Marked';
+import Find from './Find';
 import MarkedList from './MarkedList';
-
 import Profile from '../../pages/Profile/Profile';
 
-import { highTranslateY, fullTranslateY } from '../../utils/modalMaxShow';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Stack } from '../../utils/StackNavigation';
+import { NavigationContainer } from '@react-navigation/native';
 
-export const ShowProfileContext = createContext(() => {});
+import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import GlobalStyles from '../../constants/GlobalStyles';
+
+import { headerRight } from '../../components/Modal/HeaderRight';
+import { usersData } from '../../constants/testData';
+
+import { UserOutfit } from '../../pages/OutfitEdit';
 
 const FindPage = () => {
-	const markedListModalRef = useRef<refPropType>(null);
-	const profileModalRef = useRef<refPropType>(null);
 
-	const [isComponentVisible, setComponentVisible] = useState(true);
+    const FindComponent = () => (<Find usersData={usersData} />)
+    const MarkedListComponent = () => (<MarkedList usersData={usersData} />)
+    const ProfileComponent = () => (<Profile isForeignProfile={true} />)
 
-	const handlePress = () => {
-		markedListModalRef.current?.scrollTo(highTranslateY);
-	};
+    return (
+        <NavigationContainer
+            independent={true}>
+            <Stack.Navigator>
+                <Stack.Group
+                    screenOptions={{
+                        headerTitleStyle: GlobalStyles.typography.subtitle,
+                        headerStyle: {
+                            backgroundColor: GlobalStyles.colorPalette.background,
+                        },
+                        headerShadowVisible: false,
+                    }}>
+                    <Stack.Screen
+                        name={StackNavigation.Find}
+                        component={FindComponent}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name={StackNavigation.MarkedList}
+                        component={MarkedListComponent}
+                        options={{
+                            presentation: 'modal',
+                            headerTitle: `${usersData.length} Marked`
+                        }}
+                    />
+                    <Stack.Screen
+                        name={StackNavigation.Profile}
+                        component={ProfileComponent}
+                        options={{
+                            headerShown: false,
+                            presentation: 'modal'
+                        }}
+                    />
+                </Stack.Group>
+            </Stack.Navigator>
+        </NavigationContainer>
+    )
+}
 
-	const handleEmptyString = () => {
-		setComponentVisible((isComponentVisible) => true);
-	};
+export default FindPage
 
-	const handleNonEmptyString = () => {
-		setComponentVisible((isComponentVisible) => false);
-	};
-
-	const handleProfilePress = () => {
-		profileModalRef.current?.scrollTo(fullTranslateY);
-	};
-
-	return (
-		<ShowProfileContext.Provider value={handleProfilePress}>
-			<SafeAreaView style={styles.container}>
-				<Header text={StackNavigation.Find} leftArrow={true} />
-				<View style={styles.content}>
-					<SearchBar
-						placeholder={find.searchProfiles}
-						usersData={usersData}
-						handleEmptyString={handleEmptyString}
-						handleNonEmptyString={handleNonEmptyString}
-					/>
-					{isComponentVisible && (
-						<Pressable onPress={handlePress}>
-							<Marked
-								number={usersData.length}
-								topPfp={usersData[0].profile_picture}
-								middlePfp={usersData[1].profile_picture}
-								bottomPfp={usersData[2].profile_picture}
-							/>
-						</Pressable>
-					)}
-				</View>
-			</SafeAreaView>
-			<GeneralModal
-				title={`${usersData.length} Marked`}
-				content={<MarkedList usersData={usersData} />}
-				ref={markedListModalRef}
-			/>
-			<GeneralModal
-				title={''}
-				content={<Profile isForeignProfile={true} />}
-				ref={profileModalRef}
-				height={fullTranslateY}
-			/>
-		</ShowProfileContext.Provider>
-	);
-};
-
-const styles = StyleSheet.create({
-	container: {
-		gap: 15,
-	},
-	content: {
-		marginHorizontal: GlobalStyles.layout.xGap,
-		gap: 15,
-	},
-});
-
-export default FindPage;
+const styles = StyleSheet.create({})

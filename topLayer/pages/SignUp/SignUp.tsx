@@ -220,12 +220,7 @@ const SignUp = ({
 			</View>
 			<View style={{ alignSelf: 'center' }}>
 				{settings
-					? <Button
-						text="Update"
-						onPress={handleSubmit(onSubmit)}
-						disabled={false}
-						bgColor={GlobalStyles.colorPalette.primary[500]}
-					/>
+					? undefined
 					: <Button
 						text="Sign up"
 						onPress={handleSubmit(onSubmit)}

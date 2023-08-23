@@ -4,6 +4,8 @@ import Icon from 'react-native-remix-icon';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 
+import * as RootNavigation from '../../RootNavigation';
+
 import { NavigationContext } from '../../pages/Main/MainPage';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -58,7 +60,13 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
             <View style={styles.icons}>
                 <Pressable
                     onPress={() => {
-                        navigation.navigate(StackNavigation.Camera);
+                        RootNavigation.navigate(StackNavigation.Camera, {
+                            id: undefined,
+                            initialRouteName: undefined,
+                            children: null,
+                            screenListeners: null,
+                            screenOptions: null
+                        })
                     }}
                 >
                     <Icon
@@ -78,13 +86,13 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
                         size={GlobalStyles.sizing.icon.regular}
                     />
                 </Pressable>
-                <Pressable onPress={handleLogout}>
+                {/* <Pressable onPress={handleLogout}>
                     <Icon
                         name={GlobalStyles.icons.circleLogout}
                         color={GlobalStyles.colorPalette.primary[900]}
                         size={GlobalStyles.sizing.icon.regular}
                     />
-                </Pressable>
+                </Pressable> */}
             </View>
         </SafeAreaView>
     );

@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native';
 import GeneralModal, {
 	type refPropType,
 } from '../../components/Modal/GeneralModal';
-import OutfitPreview from '../../ModalContent/OutfitPreview/OutfitPreview';
+import OutfitPreview from '../OutfitPreview/OutfitPreview';
 import Header from '../../components/Header/Header';
 import Selector from './Selector';
 import Button from '../../components/Button/Button';

@@ -108,16 +108,37 @@ export const clothingData = [
 				id: 'image0',
 				image: image0,
 				title: 'goose',
+				size: 'medium',
+				category: 'outerwear',
+				colors: [
+					ColorTags.Black,
+					ColorTags.Red,
+					ColorTags.White,
+				]
 			},
 			{
 				id: 'image0',
 				image: image0,
 				title: 'goose',
+				size: 'medium',
+				category: 'outerwear',
+				colors: [
+					ColorTags.Black,
+					ColorTags.Red,
+					ColorTags.White,
+				]
 			},
 			{
 				id: 'image0',
 				image: image0,
 				title: 'goose',
+				size: 'medium',
+				category: 'outerwear',
+				colors: [
+					ColorTags.Black,
+					ColorTags.Red,
+					ColorTags.White,
+				]
 			},
 		],
 	},
@@ -127,17 +148,38 @@ export const clothingData = [
 			{
 				id: 'image1',
 				image: image1,
-				title: 'burberry',
+				title: 'my first burberry shirt',
+				size: 'medium',
+				category: 'tops',
+				colors: [
+					ColorTags.Beige,
+					ColorTags.Red,
+					ColorTags.White,
+				]
 			},
 			{
 				id: 'image1',
 				image: image1,
-				title: 'burberry',
+				title: 'YES',
+				size: 'medium',
+				category: 'tops',
+				colors: [
+					ColorTags.Beige,
+					ColorTags.Red,
+					ColorTags.White,
+				]
 			},
 			{
 				id: 'image1',
 				image: image1,
-				title: 'burberry',
+				title: 'beige shirt',
+				size: 'medium',
+				category: 'tops',
+				colors: [
+					ColorTags.Beige,
+					ColorTags.Red,
+					ColorTags.White,
+				]
 			},
 		],
 	},
@@ -148,41 +190,81 @@ export const clothingData = [
 				id: 'image3',
 				image: image3,
 				title: 'pant',
+				size: 'medium',
+				category: 'bottoms',
+				colors: [
+					ColorTags.Olive
+				]
 			},
 			{
 				id: 'image4',
 				image: image3,
 				title: 'pant',
+				size: 'medium',
+				category: 'bottoms',
+				colors: [
+					ColorTags.Olive
+				]
 			},
 			{
 				id: 'image5',
 				image: image3,
 				title: 'pant',
+				size: 'medium',
+				category: 'bottoms',
+				colors: [
+					ColorTags.Olive
+				]
 			},
 			{
 				id: 'image6',
 				image: image3,
 				title: 'pant',
+				size: 'medium',
+				category: 'bottoms',
+				colors: [
+					ColorTags.Olive
+				]
 			},
 			{
 				id: 'image7',
 				image: image3,
 				title: 'pant',
+				size: 'medium',
+				category: 'bottoms',
+				colors: [
+					ColorTags.Olive
+				]
 			},
 			{
 				id: 'image3',
 				image: image3,
 				title: 'pant',
+				size: 'medium',
+				category: 'bottoms',
+				colors: [
+					ColorTags.Olive
+				]
 			},
 			{
 				id: 'image4',
 				image: image3,
 				title: 'pant',
+				size: 'medium',
+				category: 'bottoms',
+				colors: [
+					ColorTags.Olive
+				]
 			},
 			{
 				id: 'image5',
 				image: image3,
 				title: 'pant',
+				size: 'medium',
+				category: 'bottoms',
+				colors: [
+					ColorTags.Olive
+				]
 			},
 		],
 	},
@@ -193,6 +275,15 @@ export const clothingData = [
 				id: 'image2',
 				image: image2,
 				title: 'shoe',
+				size: 'medium',
+				category: 'shoes',
+				colors: [
+					ColorTags.Black,
+					ColorTags.Yellow,
+					ColorTags.Red,
+					ColorTags.Purple,
+					ColorTags.Blue,
+				]
 			},
 		],
 	},
@@ -459,9 +550,7 @@ export const userClothing = [
 ];
 
 export const colorTags = [
-	ColorTags.Beige,
-	ColorTags.Olive,
-	ColorTags.Navy,
+	ColorTags.Black,
+	ColorTags.Red,
 	ColorTags.White,
-	ColorTags.Yellow
 ]

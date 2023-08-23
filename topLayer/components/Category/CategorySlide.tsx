@@ -11,7 +11,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 interface CategorySlidePropsType {
 	clothingData: any; //! !! fix any type
-	onPress: () => void;
+	onPress: (outfit: boolean, item: any) => void;
 }
 
 const CategorySlide = ({ clothingData, onPress }: CategorySlidePropsType) => {
@@ -25,7 +25,7 @@ const CategorySlide = ({ clothingData, onPress }: CategorySlidePropsType) => {
 							title={item.title}
 							itemCount={item.items.length}
 							items={item.items}
-							onPress={onPress}
+							onPress={() => { onPress(true, item) }}
 						/>
 					)}
 					showsVerticalScrollIndicator={false}
@@ -40,7 +40,7 @@ const CategorySlide = ({ clothingData, onPress }: CategorySlidePropsType) => {
 					data={clothingData.data}
 					renderItem={({ item }) => (
 						<View style={{ width: ITEM_SIZE(2) }}>
-							<ItemCell image={item.image} key={item.id} onPress={onPress} />
+							<ItemCell image={item.image} key={item.id} onPress={() => { onPress(false, item) }} />
 						</View>
 					)}
 					numColumns={2}

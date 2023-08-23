@@ -65,6 +65,7 @@ const colorPalette = {
 };
 
 const layout = {
+	modalTopPadding: 3,
 	xGap: 16,
 	gap: 16,
 	highTranslateYBottomMargin: 120,
