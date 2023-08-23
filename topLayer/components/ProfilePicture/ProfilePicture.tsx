@@ -6,7 +6,7 @@ import { UserContext } from '../../utils/UserContext';
 
 const ProfilePicture = () => {
 	const { data } = useContext(UserContext);
-	const image = data.profile_picture;
+	const image = data ? data.profile_picture : null;
 
 	return (
 		<Text>
