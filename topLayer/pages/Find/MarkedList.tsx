@@ -7,11 +7,20 @@ import ProfileCell from '../../components/Cell/ProfileCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from '../../utils/StackNavigation';
+
+import { StackNavigation } from '../../constants/Enums';
+
 interface MarkedListPropsType {
 	usersData: any[]; /// !!! fix any type
 }
 
 const MarkedList = ({ usersData }: MarkedListPropsType) => {
+
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
 	const [isComponentVisible, setComponentVisible] = useState(true);
 
 	const handleEmptyString = () => {
@@ -20,6 +29,16 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
 
 	const handleNonEmptyString = () => {
 		setComponentVisible((isComponentVisible) => false);
+	};
+
+	const handleProfilePress = () => {
+		navigation.navigate(StackNavigation.Profile, {
+			id: undefined,
+			initialRouteName: undefined,
+			children: null,
+			screenListeners: null,
+			screenOptions: null
+		})
 	};
 
 	return (
@@ -33,7 +52,7 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
 			{isComponentVisible && (
 				<FlatList
 					data={usersData}
-					renderItem={({ item }) => <ProfileCell user={item} />}
+					renderItem={({ item }) => <ProfileCell user={item} handleProfilePress={handleProfilePress} />}
 				/>
 			)}
 		</View>

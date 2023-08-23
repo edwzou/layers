@@ -1,21 +1,19 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useContext } from 'react';
+import React from 'react';
 import ItemCell from '../../components/Cell/ItemCell';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { TagAction } from '../../constants/Enums';
 
-import { ColorTagsContext } from '../../pages/Profile/Profile';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
-import { UserClothing } from 'pages/Match';
+import { UserClothing } from '../../pages/Match';
 
 interface ItemViewPropsType {
     clothingItem: UserClothing;
 }
 
 const ItemView = ({ clothingItem }: ItemViewPropsType) => {
-    const colorTags = useContext(ColorTagsContext)
     return (
         <ScrollView>
             <View style={styles.container}>

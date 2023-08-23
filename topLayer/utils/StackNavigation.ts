@@ -20,11 +20,16 @@ export type StackTypes = {
 	Main: StackNavigatorType;
 	Profile: StackNavigatorType;
 	Preview: StackNavigatorType;
+	Match: StackNavigatorType;
 	ItemView: StackNavigatorType;
 	EditClothing: StackNavigatorType;
+	OutfitView: StackNavigatorType;
 	Feedback: StackNavigatorType;
+	Find: StackNavigatorType;
 	Camera: StackNavigatorType;
 	Settings: StackNavigatorType;
+	MarkedList: StackNavigatorType;
+	OutfitPreview: StackNavigatorType;
 };
 
 export const Stack = createNativeStackNavigator<StackTypes>();

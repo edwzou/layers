@@ -21,7 +21,11 @@ import Icon from 'react-native-remix-icon';
 //     matchName: (text: string) => void;
 // }
 
-const OutfitEdit = () => {
+interface OutfitViewPropsType {
+	outfit: UserOutfit;
+}
+
+const OutfitEdit = ({ outfit }: OutfitViewPropsType) => {
 	const [text, setText] = useState('');
 	const [rawData, setRawData] = useState<UserOutfit[]>([]);
 	const [data, setData] = useState<UserOutfit[]>([]);
@@ -45,12 +49,12 @@ const OutfitEdit = () => {
 	return (
 		<View style={styles.container}>
 			<StackedTextbox
-				label="Outfit name"
+				label={outfit.title}
 				onFieldChange={onInputChange}
 				value={text}
 			/>
 			<FlatList
-				data={outfitData[0].items}
+				data={outfit.items}
 				renderItem={({ item }) => {
 					return (
 						<View style={{ width: ITEM_SIZE(2) }}>

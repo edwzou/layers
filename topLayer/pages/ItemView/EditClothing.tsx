@@ -1,5 +1,5 @@
 import { View, StyleSheet, } from 'react-native';
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef } from 'react';
 import { ClothingTypes, TagAction, } from '../../constants/Enums';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
@@ -14,13 +14,16 @@ import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 import image0 from '../../assets/img0.png';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
-import { ColorTagsContext } from '../../pages/Profile/Profile';
+import { UserClothing } from '../Match';
 
-const EditClothing = () => {
-	const colorTags = useContext(ColorTagsContext);
+interface EditClothingPropsType {
+	clothingItem: UserClothing;
+}
+
+const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	const colorPickerRef = useRef<refPropType>(null);
 
-	const [currentColorTags, setColorTags] = useState(colorTags);
+	const [currentColorTags, setColorTags] = useState(clothingItem.colors);
 	const [itemName, setItemName] = useState('');
 
 	const [sizeOpen, setSizeOpen] = useState(false);
@@ -75,7 +78,7 @@ const EditClothing = () => {
 				}}
 			>
 				<StackedTextBox label="Item name" onFieldChange={setItemName} />
-				<ItemCell image={image0} canDelete={true} />
+				<ItemCell image={clothingItem.image} canDelete={true} />
 				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 					<View style={{ width: ITEM_SIZE(2) }}>
 						<Dropdown
@@ -137,13 +140,5 @@ const EditClothing = () => {
 	);
 };
 
-const styles = StyleSheet.create({
-	colorPickerContainer: {
-		position: 'absolute',
-		width: '100%',
-		alignItems: 'center',
-		marginBottom: 10,
-	},
-});
 
 export default EditClothing;

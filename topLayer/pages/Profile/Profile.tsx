@@ -31,8 +31,9 @@ import OutfitEdit from '../../pages/OutfitEdit/OutfitEdit';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import EditClothing from '../Edit/EditClothing';
-import { UserClothing } from 'pages/Match';
+import EditClothing from '../ItemView/EditClothing';
+import { UserClothing } from '../Match';
+import { UserOutfit } from '../OutfitEdit'
 import axios, { AxiosResponse } from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import { UserContext } from '../../utils/UserContext';
@@ -40,12 +41,12 @@ import { UserContext } from '../../utils/UserContext';
 interface ProfilePropsType {
     selectedItem?: UserClothing;
     setSelectedItem?: Dispatch<SetStateAction<UserClothing>>;
+    selectedOutfit?: UserOutfit;
+    setSelectedOutfit?: Dispatch<SetStateAction<UserOutfit>>;
     isForeignProfile: boolean;
 }
 
-export const ColorTagsContext = createContext([ColorTags.Blue]);
-
-const Profile = ({ selectedItem, setSelectedItem, isForeignProfile }: ProfilePropsType) => {
+const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOutfit, isForeignProfile }: ProfilePropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const itemViewRef = useRef<refPropType>(null);
     const editClothingRef = useRef<refPropType>(null);
@@ -53,7 +54,6 @@ const Profile = ({ selectedItem, setSelectedItem, isForeignProfile }: ProfilePro
     const outfitEditRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
 
-    const [selectedOutfit, setSelectedOutfit] = useState()
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
 
     const { data, updateData } = useContext(UserContext);
@@ -63,9 +63,15 @@ const Profile = ({ selectedItem, setSelectedItem, isForeignProfile }: ProfilePro
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
 
     const handleItemChange = (outfit: boolean, item: any) => {
-        if (outfit) {
+        if (outfit && setSelectedOutfit) {
             setSelectedOutfit(item);
-            outfitViewRef.current?.scrollTo(highTranslateY);
+            navigation.navigate(StackNavigation.OutfitView, {
+                id: undefined,
+                initialRouteName: undefined,
+                children: null,
+                screenListeners: null,
+                screenOptions: null
+            })
         } else if (setSelectedItem) {
             setSelectedItem(item);
             navigation.navigate(StackNavigation.ItemView, {
@@ -133,7 +139,7 @@ const Profile = ({ selectedItem, setSelectedItem, isForeignProfile }: ProfilePro
 
     return (
         <>
-            <Navbar toggleFeedbackModal={toggleFeedbackModal} />
+            {!isForeignProfile ? <Navbar toggleFeedbackModal={toggleFeedbackModal} /> : <View style={{ paddingVertical: 20 }} />}
             <View style={{ gap: 25, flex: 1 }}>
                 <View style={{ alignItems: 'center', gap: 7 }}>
                     <Pressable
@@ -147,8 +153,10 @@ const Profile = ({ selectedItem, setSelectedItem, isForeignProfile }: ProfilePro
                         <ProfilePicture />
                     </Pressable>
                     <View>
-                        <FullName firstName={data.first_name} lastName={data.last_name} />
-                        <Username username={`@${data.username}`} />
+                        {/* <FullName firstName={data.first_name} lastName={data.last_name} />
+                        <Username username={`@${data.username}`} /> */}
+                        <FullName firstName={"Doeun"} lastName={"Kwon"} />
+                        <Username username={'billthemuffer'} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>
@@ -177,72 +185,18 @@ const Profile = ({ selectedItem, setSelectedItem, isForeignProfile }: ProfilePro
                         />
                     </View>
                 </View>
+                {isForeignProfile && (
+                    <View style={styles.bookmarkIconWrapper}>
+                        <Pressable onPress={handleIconPress}>
+                            <Icon
+                                name={iconName}
+                                color={GlobalStyles.colorPalette.primary[900]}
+                                size={GlobalStyles.sizing.icon.regular}
+                            />
+                        </Pressable>
+                    </View>
+                )}
             </View>
-            {isForeignProfile && (
-                <View style={styles.bookmarkIconWrapper}>
-                    <Pressable onPress={handleIconPress}>
-                        <Icon
-                            name={iconName}
-                            color={GlobalStyles.colorPalette.primary[900]}
-                            size={GlobalStyles.sizing.icon.regular}
-                        />
-                    </Pressable>
-                </View>
-            )}
-            {/* <ColorTagsContext.Provider value={colorTags}>
-                <GeneralModal
-                    ref={settingsRef}
-                    content={<SignUpPage settings={true} />}
-                    title="Settings"
-                />
-                <GeneralModal
-                    ref={itemPreviewRef}
-                    content={<ItemPreview clothingItem={selectedItem} />}
-                    title={selectedItem.title}
-                    stepOver={{
-                        type: StepOverTypes.edit,
-                        handlePress: () => {
-                            editClothingRef.current?.scrollTo(highTranslateY);
-                        },
-                    }}
-                />
-                <GeneralModal
-                    ref={editClothingRef}
-                    content={<EditClothing />}
-                    title="Edit"
-                    stepOver={{
-                        type: StepOverTypes.done,
-                        handlePress: () => {
-
-                        },
-                    }}
-                />
-                <GeneralModal
-                    ref={outfitViewRef}
-                    content={<OutfitView />}
-                    title="Friday night fit"
-                    stepOver={{
-                        type: StepOverTypes.edit,
-                        handlePress: () => {
-                            outfitEditRef.current?.scrollTo(highTranslateY);
-                        },
-                    }}
-                />
-                <GeneralModal
-                    ref={outfitEditRef}
-                    content={<OutfitEdit />}
-                    title="Edit"
-                    back
-                    stepOver={{
-                        type: StepOverTypes.done,
-                        handlePress: () => {
-                            console.log('some request');
-                            outfitEditRef.current?.scrollTo(0);
-                            outfitViewRef.current?.scrollTo(0);
-                        },
-                    }}
-                />
-            </ColorTagsContext.Provider> */}
         </>
     );
 };

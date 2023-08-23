@@ -42,8 +42,11 @@ export const StackNavigation = {
 	Find: 'Find',
 	ItemView: 'ItemView',
 	EditClothing: 'EditClothing',
+	OutfitView: 'OutfitView',
 	Camera: 'Camera',
 	Settings: 'Settings',
+	MarkedList: 'MarkedList',
+	OutfitPreview: 'OutfitPreview',
 } as const;
 
 export const NavigationBack = {

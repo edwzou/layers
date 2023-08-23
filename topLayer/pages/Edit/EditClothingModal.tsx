@@ -5,7 +5,7 @@ import GeneralModal, {
 } from '../../components/Modal/GeneralModal';
 import { highTranslateY } from '../../utils/modalMaxShow';
 import { type UserClothing } from 'pages/Match';
-import EditClothing from './EditClothing';
+import EditClothing from '../ItemView/EditClothing';
 import { StepOverTypes } from '../../constants/Enums';
 
 interface EditClothingModalPropsType {

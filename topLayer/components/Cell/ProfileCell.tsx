@@ -4,14 +4,14 @@ import Icon from 'react-native-remix-icon';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { ShowProfileContext } from '../../pages/Find/FindPage';
+import { ShowProfileContext } from '../../pages/Find/Find';
 
 interface ProfileCellPropsType {
 	user: any; /// !!! fix any type
+	handleProfilePress: () => void;
 }
 
-const ProfileCell = ({ user }: ProfileCellPropsType) => {
-	const showProfile = useContext(ShowProfileContext);
+const ProfileCell = ({ user, handleProfilePress }: ProfileCellPropsType) => {
 
 	const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkFill);
 
@@ -21,10 +21,6 @@ const ProfileCell = ({ user }: ProfileCellPropsType) => {
 		} else {
 			setIconName(GlobalStyles.icons.bookmarkFill);
 		}
-	};
-
-	const handleProfilePress = () => {
-		showProfile();
 	};
 
 	return (

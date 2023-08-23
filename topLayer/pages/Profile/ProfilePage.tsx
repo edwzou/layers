@@ -1,133 +1,104 @@
-import React, { useState } from 'react';
-import { SafeAreaView, Pressable } from 'react-native';
-import Icon from 'react-native-remix-icon';
+import React, { useState, createContext } from 'react';
+import { SafeAreaView } from 'react-native';
 
-import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import { StackNavigation, StepOverTypes, ColorTags } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
 
 import Profile from './Profile';
 import FeedbackPage from '../Feedback/FeedbackPage';
 import SignUpPage from '../../pages/SignUp/SignUpPage';
-import ItemView from '../../pages/ItemView/ItemView'
+import ItemViewPage from '../../pages/ItemView/ItemViewPage'
+import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { headerRight } from '../../components/Modal/HeaderRight';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { UserClothing } from 'pages/Match';
+import { UserClothing } from '../../pages/Match';
+import { UserOutfit } from '../../pages/OutfitEdit'
+
+import { colorTags } from '../../constants/testData';
+
+export const ColorTagsContext = createContext([ColorTags.Blue]);
 
 const ProfilePage = () => {
 
 	const [selectedItem, setSelectedItem] = useState<UserClothing>({} as UserClothing)
+	const [selectedOutfit, setSelectedOutfit] = useState<UserOutfit>({} as UserOutfit)
 
-	const ProfileComponent = () => (<Profile selectedItem={selectedItem} setSelectedItem={setSelectedItem} isForeignProfile={false} />)
+	const ProfileComponent = () => (<Profile
+		selectedItem={selectedItem}
+		setSelectedItem={setSelectedItem}
+		selectedOutfit={selectedOutfit}
+		setSelectedOutfit={setSelectedOutfit}
+		isForeignProfile={false} />)
 	const SettingsComponent = () => (<SignUpPage settings={true} />)
-	const ItemViewComponent = () => (<ItemView clothingItem={selectedItem} />)
+	const ItemViewPageComponent = () => (<ItemViewPage selectedItem={selectedItem} />)
+	const OutfitViewPageComponent = () => (<OutfitViewPage selectedOutfit={selectedOutfit} />)
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
-			<NavigationContainer
-				independent={true}>
-				<Stack.Navigator>
-					<Stack.Screen
-						options={{
-							headerShown: false,
-						}}
-						name={StackNavigation.Profile}
-						component={ProfileComponent}
-					/>
-					<Stack.Group
-						screenOptions={{
-							presentation: 'modal',
-							headerTitleStyle: GlobalStyles.typography.subtitle,
-							headerStyle: {
-								backgroundColor: GlobalStyles.colorPalette.background,
-							},
-							headerShadowVisible: false,
-						}}>
+			<ColorTagsContext.Provider value={colorTags}>
+				<NavigationContainer
+					independent={true}>
+					<Stack.Navigator>
 						<Stack.Screen
-							name={StackNavigation.Feedback}
-							component={FeedbackPage}
 							options={{
-								headerRight: () => headerRight({
-									type: StepOverTypes.send,
-									handlePress: () => {
-										console.log("Hello")
-									},
-								}),
+								headerShown: false,
 							}}
+							name={StackNavigation.Profile}
+							component={ProfileComponent}
 						/>
-						<Stack.Screen
-							name={StackNavigation.Settings}
-							component={SettingsComponent}
-							options={{
-								headerRight: () => headerRight({
-									type: StepOverTypes.update,
-									handlePress: () => {
-										console.log("Hello")
-									},
-								}),
-							}}
-						/>
-						<Stack.Screen
-							name={StackNavigation.ItemView}
-							component={ItemViewComponent}
-							options={{
-								headerTitle: selectedItem.title,
-							}}
-						/>
-					</Stack.Group>
-					{/* <ColorTagsContext.Provider value={colorTags}>
-						
-						<GeneralModal
-							ref={itemViewRef}
-							content={<ItemView clothingItem={selectedItem} />}
-							title={selectedItem.title}
-							stepOver={{
-								type: StepOverTypes.edit,
-								handlePress: () => {
-									editClothingRef.current?.scrollTo(highTranslateY);
+						<Stack.Group
+							screenOptions={{
+								presentation: 'modal',
+								headerTitleStyle: GlobalStyles.typography.subtitle,
+								headerStyle: {
+									backgroundColor: GlobalStyles.colorPalette.background,
 								},
-							}}
-						/>
-						<GeneralModal
-							ref={editClothingRef}
-							content={<EditClothing />}
-							title="Edit"
-							stepOver={{
-								type: StepOverTypes.done,
-								handlePress: () => {
-
-								},
-							}}
-						/>
-						<GeneralModal
-							ref={outfitViewRef}
-							content={<OutfitView />}
-							title="Friday night fit"
-							stepOver={{
-								type: StepOverTypes.edit,
-								handlePress: () => {
-									outfitEditRef.current?.scrollTo(highTranslateY);
-								},
-							}}
-						/>
-						<GeneralModal
-							ref={outfitEditRef}
-							content={<OutfitEdit />}
-							title="Edit"
-							back
-							stepOver={{
-								type: StepOverTypes.done,
-								handlePress: () => {
-									console.log('some request');
-									outfitEditRef.current?.scrollTo(0);
-									outfitViewRef.current?.scrollTo(0);
-								},
-							}}
-						/>
-					</ColorTagsContext.Provider> */}
-				</Stack.Navigator>
-			</NavigationContainer>
+								headerShadowVisible: false,
+							}}>
+							<Stack.Screen
+								name={StackNavigation.Feedback}
+								component={FeedbackPage}
+								options={{
+									headerRight: () => headerRight({
+										type: StepOverTypes.send,
+										handlePress: () => {
+											console.log("Hello")
+										},
+									}),
+								}}
+							/>
+							<Stack.Screen
+								name={StackNavigation.Settings}
+								component={SettingsComponent}
+								options={{
+									headerRight: () => headerRight({
+										type: StepOverTypes.update,
+										handlePress: () => {
+											console.log("Hello")
+										},
+									}),
+								}}
+							/>
+							<Stack.Screen
+								name={StackNavigation.ItemView}
+								component={ItemViewPageComponent}
+								options={{
+									headerShown: false,
+								}}
+							/>
+							<Stack.Screen
+								name={StackNavigation.OutfitView}
+								component={OutfitViewPageComponent}
+								options={{
+									headerShown: false,
+								}}
+							/>
+						</Stack.Group>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</ColorTagsContext.Provider>
 		</SafeAreaView>
 	);
 };

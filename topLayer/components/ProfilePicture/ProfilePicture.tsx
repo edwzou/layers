@@ -6,24 +6,24 @@ import { UserContext } from '../../utils/UserContext';
 
 const ProfilePicture = () => {
 	const { data } = useContext(UserContext);
-	const image = data.profile_picture;
+	// const image = data.profile_picture;
 
 	return (
 		<Text>
-			{image ? (
+			{/* {image ? (
 				<Image
 					style={styles.profilePicture}
 					source={{ uri: image !== '' || !image ? image : null }}
 				/>
-			) : (
-				<View style={styles.profilePicture}>
-					<Icon
-						name={GlobalStyles.icons.userOutline2}
-						color={GlobalStyles.colorPalette.primary[300]}
-						size={35}
-					/>
-				</View>
-			)}
+			) : ( */}
+			<View style={styles.profilePicture}>
+				<Icon
+					name={GlobalStyles.icons.userOutline2}
+					color={GlobalStyles.colorPalette.primary[300]}
+					size={35}
+				/>
+			</View>
+			{/* )} */}
 		</Text>
 	);
 };
