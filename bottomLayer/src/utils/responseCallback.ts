@@ -142,55 +142,6 @@ export const responseCallbackUnFollow = (
   }
 };
 
-export const responseCallbackFollow = (
-  error: any,
-  uid1: string,
-  uid2: string,
-  res: Response
-): Callback<any> => {
-  if (error != null) {
-    console.log(error);
-    res.status(500).json({
-      // Where following and follower are the uids
-      message: 'Internal Server Error: ' + uid1 + ' Failed to Follow ' + uid2,
-      error
-    });
-    return error;
-  } else {
-    res
-      .status(200)
-      .json({ message: uid1 + ' Successfully Followed ' + uid2 });
-    return error;
-  }
-};
-
-export const responseCallbackUnFollow = (
-  error: any,
-  username: string,
-  toUnFollowUsername: string,
-  res: Response
-): Callback<any> => {
-  if (error != null) {
-    console.log(error);
-    res.status(500).json({
-      message:
-        'Internal Server Error: ' +
-        username +
-        ' Failed to unFollow ' +
-        toUnFollowUsername,
-      error
-    });
-    return error;
-  } else {
-    res
-      .status(200)
-      .json({
-        message: username + ' Successfully UnFollowed ' + toUnFollowUsername
-      });
-    return error;
-  }
-};
-
 export const responseCallbackGetAll = (
   element: any,
   res: Response,
