@@ -153,10 +153,8 @@ const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOut
                         <ProfilePicture />
                     </Pressable>
                     <View>
-                        {/* <FullName firstName={data.first_name} lastName={data.last_name} />
-                        <Username username={`@${data.username}`} /> */}
-                        <FullName firstName={"Doeun"} lastName={"Kwon"} />
-                        <Username username={'billthemuffer'} />
+                        <FullName firstName={data.first_name} lastName={data.last_name} />
+                        <Username username={`@${data.username}`} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>

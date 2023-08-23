@@ -46,7 +46,7 @@ export default function App() {
 							}}
 
 						>
-							{/* {!user ? (
+							{!user ? (
 								<>
 									<Stack.Screen
 										name={StackNavigation.Login}
@@ -57,14 +57,14 @@ export default function App() {
 										component={SignUpPage}
 									/>
 								</>
-							) : ( */}
-							<>
-								<Stack.Screen
-									name={StackNavigation.Main}
-									component={MainPage}
-								/>
-							</>
-							{/* )} */}
+							) : (
+								<>
+									<Stack.Screen
+										name={StackNavigation.Main}
+										component={MainPage}
+									/>
+								</>
+							)}
 							<Stack.Screen
 								name={StackNavigation.Camera}
 								component={CameraWrapper}

@@ -38,7 +38,6 @@ const SignUp = ({
 	settings,
 }: SignUpPropsType) => {
 	const [image, setImage] = useState('');
-	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { data, updateData } = useContext(UserContext);
@@ -106,7 +105,6 @@ const SignUp = ({
 			}
 		} catch (error) {
 			alert(error);
-			setLoading(false);
 		}
 	};
 
@@ -124,7 +122,7 @@ const SignUp = ({
 						navigation.navigate(StackNavigation.Camera);
 					}}
 				>
-					<ProfilePicture image={image} />
+					<ProfilePicture />
 				</Pressable>
 				<View
 					style={{
