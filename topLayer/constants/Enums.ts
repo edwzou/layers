@@ -11,6 +11,7 @@ export const StepOverTypes = {
 	done: 'Done',
 	send: 'Send',
 	next: 'Next',
+	update: 'Update',
 } as const;
 
 export interface ClothingCategoryTypes {
@@ -39,9 +40,10 @@ export const StackNavigation = {
 	Match: 'Match',
 	Feedback: 'Feedback',
 	Find: 'Find',
-	ItemPreview: 'ItemPreview',
+	ItemView: 'ItemView',
 	EditClothing: 'EditClothing',
 	Camera: 'Camera',
+	Settings: 'Settings',
 } as const;
 
 export const NavigationBack = {

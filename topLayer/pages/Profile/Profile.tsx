@@ -1,4 +1,4 @@
-import React, { useRef, useState, createContext } from 'react';
+import React, { useRef, useState, createContext, SetStateAction, Dispatch } from 'react';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -7,6 +7,7 @@ import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
 import CategoryBar from '../../components/Bar/CategoryBar';
 import CategorySlide from '../../components/Category/CategorySlide';
+import Navbar from '../../components/Bar/Navbar';
 
 import {
     ClothingTypes,
@@ -14,6 +15,7 @@ import {
     CategoryToIndex,
     IndexToCategory,
     ColorTags,
+    StackNavigation,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { clothingData, colorTags } from '../../constants/testData';
@@ -23,9 +25,9 @@ import GeneralModal, {
 } from '../../components/Modal/GeneralModal';
 import { highTranslateY } from '../../utils/modalMaxShow';
 import SignUpPage from '../SignUp/SignUpPage';
-import ItemPreview from '../../ModalContent/ItemView/ItemView'
-import OutfitView from '../../ModalContent/OutfitView/OutfitView';
-import OutfitEdit from '../../ModalContent/OutfitEdit/OutfitEdit';
+import ItemView from '../../pages/ItemView/ItemView'
+import OutfitView from '../../pages/OutfitView/OutfitView';
+import OutfitEdit from '../../pages/OutfitEdit/OutfitEdit';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -33,21 +35,22 @@ import EditClothing from '../Edit/EditClothing';
 import { UserClothing } from 'pages/Match';
 
 interface ProfilePropsType {
+    selectedItem?: UserClothing;
+    setSelectedItem?: Dispatch<SetStateAction<UserClothing>>;
     isForeignProfile: boolean;
 }
 
 export const ColorTagsContext = createContext([ColorTags.Blue]);
 
-const Profile = ({ isForeignProfile }: ProfilePropsType) => {
+const Profile = ({ selectedItem, setSelectedItem, isForeignProfile }: ProfilePropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-    const settingsRef = useRef<refPropType>(null);
-    const itemPreviewRef = useRef<refPropType>(null);
+    const itemViewRef = useRef<refPropType>(null);
     const editClothingRef = useRef<refPropType>(null);
     const outfitViewRef = useRef<refPropType>(null);
     const outfitEditRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
 
-    const [selectedItem, setSelectedItem] = useState<UserClothing>({} as UserClothing)
+
     const [selectedOutfit, setSelectedOutfit] = useState()
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
@@ -56,12 +59,17 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
         if (outfit) {
             setSelectedOutfit(item);
             outfitViewRef.current?.scrollTo(highTranslateY);
-        } else {
+        } else if (setSelectedItem) {
             setSelectedItem(item);
-            itemPreviewRef.current?.scrollTo(highTranslateY);
+            navigation.navigate(StackNavigation.ItemView, {
+                id: undefined,
+                initialRouteName: undefined,
+                children: null,
+                screenListeners: null,
+                screenOptions: null
+            })
         }
     };
-
 
     const handleCategoryChange = (category: string) => {
         setSelectedCategory(category);
@@ -92,18 +100,40 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
         }
     }).current;
 
+    const toggleFeedbackModal = () => {
+        navigation.navigate(StackNavigation.Feedback, {
+            id: undefined,
+            initialRouteName: undefined,
+            children: null,
+            screenListeners: null,
+            screenOptions: null
+        })
+    };
+
+    const toggleSettingsModal = () => {
+        console.log("toggleSettingsModal")
+        navigation.navigate(StackNavigation.Settings, {
+            id: undefined,
+            initialRouteName: undefined,
+            children: null,
+            screenListeners: null,
+            screenOptions: null
+        })
+    }
+
     // !!! Display edit outfit on click
     // !!! Empty Match page to account for no clothing
 
     return (
         <>
+            <Navbar toggleFeedbackModal={toggleFeedbackModal} />
             <View style={{ gap: 25, flex: 1 }}>
                 <View style={{ alignItems: 'center', gap: 7 }}>
                     <Pressable
                         onPress={() => {
                             !isForeignProfile
                                 // ? navigation.navigate(StackNavigation.Camera)
-                                ? settingsRef.current?.scrollTo(highTranslateY)
+                                ? toggleSettingsModal()
                                 : undefined;
                         }}
                     >
@@ -152,7 +182,7 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                     </Pressable>
                 </View>
             )}
-            <ColorTagsContext.Provider value={colorTags}>
+            {/* <ColorTagsContext.Provider value={colorTags}>
                 <GeneralModal
                     ref={settingsRef}
                     content={<SignUpPage settings={true} />}
@@ -205,7 +235,7 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
                         },
                     }}
                 />
-            </ColorTagsContext.Provider>
+            </ColorTagsContext.Provider> */}
         </>
     );
 };

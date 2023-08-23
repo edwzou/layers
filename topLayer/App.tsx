@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from './utils/StackNavigation';
 import { StackNavigation } from './constants/Enums';
+import { navigationRef } from './RootNavigation';
 
 import SignInPage from './pages/SignIn/SignInPage';
 import SignUpPage from './pages/SignUp/SignUpPage';
@@ -18,7 +19,7 @@ import CameraWrapper from './components/Camera/CameraWrapper';
 export default function App() {
 	const [userToken, setUserToken] = useState(null);
 	return (
-		<NavigationContainer>
+		<NavigationContainer ref={navigationRef}>
 			<GestureHandlerRootView style={{ flex: 1 }}>
 				<View style={styles.container}>
 					<Stack.Navigator

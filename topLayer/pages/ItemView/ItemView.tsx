@@ -10,11 +10,11 @@ import { ColorTagsContext } from '../../pages/Profile/Profile';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
 import { UserClothing } from 'pages/Match';
 
-interface ItemPreviewPropsType {
+interface ItemViewPropsType {
     clothingItem: UserClothing;
 }
 
-const ItemPreview = ({ clothingItem }: ItemPreviewPropsType) => {
+const ItemView = ({ clothingItem }: ItemViewPropsType) => {
     const colorTags = useContext(ColorTagsContext)
     return (
         <ScrollView>
@@ -45,7 +45,7 @@ const ItemPreview = ({ clothingItem }: ItemPreviewPropsType) => {
     );
 };
 
-export default ItemPreview;
+export default ItemView;
 
 const styles = StyleSheet.create({
     container: {

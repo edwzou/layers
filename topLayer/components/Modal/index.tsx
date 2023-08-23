@@ -1,3 +1,6 @@
+/// NO LONGER IN USE
+
+
 import React, { type ReactElement } from 'react';
 
 import { Text, Pressable } from 'react-native';
@@ -60,6 +63,23 @@ export const stepOverHandler = (props: ModalPropTypes['stepOver']) => {
 						]}
 					>
 						Done
+					</Text>
+				</Pressable>
+			);
+		}
+		case StepOverTypes.edit: {
+			return (
+				<Pressable
+					onPress={props.handlePress}
+					style={{ position: 'absolute', right: GlobalStyles.layout.xGap }}
+				>
+					<Text
+						style={[
+							{ color: GlobalStyles.colorPalette.info[500] },
+							GlobalStyles.typography.body,
+						]}
+					>
+						Edit
 					</Text>
 				</Pressable>
 			);
