@@ -64,7 +64,10 @@ app.use('/', routerBase);
 app.use('/api', routerPublic);
 app.use('/api/private', routerPrivate);
 
-const port = 1234; // You can change this to the desired port number
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(process.env.PORT, () => {
+  if (process.env.PORT == null) {
+    return null;
+  }
+
+  console.log(`Server is running on port ${process.env.PORT}`);
 });

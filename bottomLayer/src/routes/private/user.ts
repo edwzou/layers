@@ -1,9 +1,25 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
+import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate, responseCallbackGet } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
 const router = express.Router();
 
+router.get('/', (req: Request, res: Response): void => {
+  const userId = req.user;
+
+  const getUser = async (): Promise<void> => {
+    try {
+      const user = await pool.query('SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1', [userId]);
+      const result = user.rows[0];
+
+      responseCallbackGet(null, result, res, 'User');
+    } catch (error) {
+      responseCallbackGet(error, null, res);
+    }
+  };
+
+  void getUser();
+});
 // Endpoint for creating a specific user
 router.post('/', checkAuthenticated, (req: Request, res: Response) => {
   const {
@@ -25,7 +41,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
         first_name, last_name, email, username, password, private, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture]);
+        [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture]);
 
       responseCallbackPost(null, res, 'User');
     } catch (error) {
@@ -83,7 +99,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
             following = $8,
             profile_picture = $9
         WHERE uid = $10`,
-      [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture, userId]);
+        [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture, userId]);
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
