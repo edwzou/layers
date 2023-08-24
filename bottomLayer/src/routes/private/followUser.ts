@@ -1,5 +1,5 @@
 import express from 'express';
-import { clientFollowTransaction, clientFollowTransaction2, getUserCore, responseCallbackFollow, responseCallbackUnFollow } from '../../utils/responseCallback';
+import { clientFollow, responseCallbackFollow } from '../../utils/responseCallback';
 import { AlreadyFollowError } from '../../utils/Errors/AlreadyFollow';
 import { pool } from '../../utils/sqlImport';
 import { NotFoundError } from '../../utils/Errors/NotFoundError';
@@ -66,27 +66,58 @@ router.post('/follow/:userId', async (req: any, res: any) => {
           [uid1]
         );
 
-        const followingT = clientFollowTransaction(uid2, following, client1, 1, queries)
-        const followerT = clientFollowTransaction2(uid1, follower, client2, 2, queries);
+        const followingQ = clientFollow(uid2, following, client1, 1, queries)
+        const followerT = clientFollow(uid1, follower, client2, 2, queries);
         queries[0] = (await user).rows.length
         if (queries[0] === 0) {
           errors.push('User Not Found, uid: ' + uid1)
         }
-        console.log("BReak1: ", queries)
-        errors.push(await followingT)
-        errors.push(await followerT)
+        console.log("BReak1: ", queries);
+        // if followingQ is an error it is thrown and caught below so it should never be an error
+        (await followingQ) !== null && errors.push(await followingQ);
+        (await followerT) !== null && errors.push(await followerT);
+        console.log("errors1: ", errors);
         if (errors.length > 0) {
           if (errors.length == 3) {
-            throw new NotFoundError('None of the users referenced in the follow request exist\nuid1: ' + uid1 + '\nuid2: ' + uid2)
+            if (errors[2].startsWith("No change in user while reverting initial query, uid: ")) {
+              throw new NotFoundError(
+                "The follwer user referenced in the follow request does not exist\nuid1: " +
+                  uid1 +
+                  "\n" +
+                  errors[2]
+              );
+            }
+              throw new NotFoundError(
+                "None of the users referenced in the follow request exist\nuid1: " +
+                  uid1 +
+                  "\nuid2: " +
+                  uid2
+              );
           } else if (errors.length == 2) {
-            if (!errors[0].startsWith('User Not Found, uid: ')) {
-              throw new NotFoundError('These two users already follow each other\nuid1: ' + uid1 + '\nuid2: ' + uid2)
+            if (errors[0].startsWith('User Not Found, uid: ')) {
+              throw new NotFoundError('The follwer user referenced in the follow request does not exist\nuid1: ' + uid1)
+            } else if (
+              errors[0].startsWith(
+                "No change in user while reverting initial query, uid: "
+              )
+            ) {
+              throw new NotFoundError(
+                "The follwing user referenced in the follow request does not exist\nuid2: " +
+                  uid2 +
+                  "\n" +
+                  errors[0]
+              );
             } else {
-              throw new NotFoundError('One of the users referenced in the follow request does not exist\nuid1: ' + uid1)
+              throw new Error(
+                "These two users already follow each other\nuid1: " +
+                  uid1 +
+                  "\nuid2: " +
+                  uid2
+              );
             }
           } else {
             throw new NotFoundError(
-              "One of the users referenced in the follow request does not exist\nuid2: " +
+              "The follwing user referenced in the follow request does not exist\nuid2: " +
                 uid2
             );
           }

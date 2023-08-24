@@ -1,13 +1,22 @@
 import { NotFoundError } from "./Errors/NotFoundError";
 import { type Response } from 'express';
-import { pool } from './sqlImport';
-import { PoolClient } from "pg";
+import { mutex, pool } from './sqlImport';
+import { PoolClient, Query, QueryResult } from "pg";
 import { UnknownError } from "./Errors/UnknownError";
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
 
 export const responseCallback = (error: any, element: any): Callback<any> => {
   if (error != null) {
+    throw error;
+  } else {
+    return element;
+  }
+};
+
+export const responseCallback2 = (error: any, element: any): Callback<any> => {
+  if (error != null) {
+    console.log("Error: ", error);
     throw error;
   } else {
     return element;
@@ -172,7 +181,7 @@ export const getUserCore = async (userId: string, client: PoolClient): Promise<a
   }
 };
 
-export const clientFollowTransaction = async (
+export const clientFollow = async (
   uid: string,
   query: string,
   client: Promise<PoolClient>,
@@ -183,10 +192,14 @@ export const clientFollowTransaction = async (
   // console.log("Client1: ", clientOn);
   console.log("query1: ", query);
   try {
-    await clientOn.query('BEGIN');
     console.log("running1");
-    const result = await clientOn.query(query);
-    otherQueries[index] = result.rowCount;
+    const result2 = await mutex.withLock(async(): Promise<QueryResult<any>> => {
+      console.log("test1")
+      const result = await clientOn.query(query);
+      return result
+    })
+    console.log("result: ", result2)
+    otherQueries[index] = (result2 as QueryResult).rowCount;
     console.log("set: ", otherQueries)
     if (otherQueries[index] === 0) {
       throw new NotFoundError("No change in user, uid: " + uid);
@@ -197,22 +210,57 @@ export const clientFollowTransaction = async (
         continue
       }
       if (otherQueries[i] === 0) {
-        throw new UnknownError('The error is unknown in this method')
+        throw new UnknownError('The error is unknown in this method, need to revert its changes.')
       }
     }
-    await clientOn.query('COMMIT');
-    return responseCallback(null, true);
-  } catch (error) {
-    await clientOn.query('ROLLBACK')
-    if (error instanceof UnknownError) {
-      return responseCallback(null, "Unknown Error");
-    } else if (error instanceof NotFoundError) {
-      return responseCallback(null, "No change in user, uid: " + uid);
+    return responseCallback(null, null);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      if (error.name === UnknownError.name) {
+        // this is only called on 0,1
+        await clientUndoFollowTransaction(uid, revertFollowQuery(query), clientOn);
+      } else if (error.name === NotFoundError.name) {
+        // console.log("hit")
+        return responseCallback(null, "No change in user, uid: " + uid);
+      }
+      // console.log("hit2", typeof error, error instanceof NotFoundError, (error as Error).name);
+      return responseCallback(error, null)
     }
-    return responseCallback(error, null)
   }
 };
 
+export const clientUndoFollowTransaction = async (
+  uid: string,
+  query: string,
+  client: PoolClient,
+): Promise<any> => {
+  try {
+    await client.query("BEGIN");
+    const result = await client.query(query);
+    if (result.rowCount === 0) {
+      throw new Error(
+        "No change in user while reverting initial query, uid: " + uid
+      );
+    }
+    await client.query("COMMIT");
+    return responseCallback(null, null);
+  } catch (error) {
+    await client.query("ROLLBACK");
+    return responseCallback(
+      null,
+      "No change in user while reverting initial query, uid: " + uid
+    );
+  }
+}
+
+export const revertFollowQuery = (
+  query: string,
+): string => {
+  query.replace('array_append', 'array_remove')
+  const indexOfAnd = query.indexOf("AND");
+  const reversion = query.substring(0, indexOfAnd)
+  return reversion
+}
 
 export const clientFollowTransaction2 = async (
   uid: string,
