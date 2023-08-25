@@ -92,11 +92,17 @@ const SignUp = ({
 				following: [],
 				followers: [],
 				privateOption: data.private,
+			}, {
+					headers: {
+						'Content-Type': 'application/json'
+					}
 			});
 
 			if (response.status === 200) {
 				try {
-					updateData(response.data.data);
+				const sessionData = JSON.stringify(response.data.data);
+				await AsyncStorage.setItem('session', sessionData);
+					updateData(sessionData);
 				} catch (error) {
 					console.log(error);
 				}

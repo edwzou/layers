@@ -8,8 +8,8 @@ import InlineTextbox from '../../components/Textbox/InlineTextbox';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../utils/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = () => {
   const { data, updateData } = useContext(UserContext);
@@ -36,12 +36,16 @@ const SignIn = () => {
         // Email login only for now
         email: data.email !== '' ? data.email : null,
         password: data.password,
-      });
-      console.log(response);
-      console.log("YEET");
+      }, {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+			});
 
       if (response.status === 200) {
-        updateData(response.data.data)
+				const sessionData = JSON.stringify(response.data.data);
+				await AsyncStorage.setItem('session', sessionData);
+				updateData(sessionData);
       } else {
         throw new Error('An error has occurred');
       }
