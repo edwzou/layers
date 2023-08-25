@@ -1,7 +1,6 @@
 import { NotFoundError } from "./Errors/NotFoundError";
 import { type Response } from 'express';
-import { mutex, pool } from './sqlImport';
-import { PoolClient, Query, QueryResult } from "pg";
+import { PoolClient } from "pg";
 import { UnknownError } from "./Errors/UnknownError";
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
@@ -193,13 +192,11 @@ export const clientFollow = async (
   console.log("query1: ", query);
   try {
     console.log("running1");
-    const result2 = await mutex.withLock(async(): Promise<QueryResult<any>> => {
-      console.log("test1")
-      const result = await clientOn.query(query);
-      return result
-    })
-    console.log("result: ", result2)
-    otherQueries[index] = (result2 as QueryResult).rowCount;
+
+    const result = await clientOn.query(query);
+
+    console.log("result: ", result)
+    otherQueries[index] = result.rowCount;
     console.log("set: ", otherQueries)
     if (otherQueries[index] === 0) {
       throw new NotFoundError("No change in user, uid: " + uid);
@@ -213,6 +210,7 @@ export const clientFollow = async (
         throw new UnknownError('The error is unknown in this method, need to revert its changes.')
       }
     }
+    console.log('set2: ', otherQueries)
     return responseCallback(null, null);
   } catch (error: unknown) {
     if (error instanceof Error) {

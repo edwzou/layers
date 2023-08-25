@@ -22,7 +22,7 @@ router.post('/', (req: Request, res: Response) => {
     try {
       await pool.query(`
       INSERT INTO backend_schema.user (
-        first_name, last_name, email, username, password, private, followers, following, profile_picture
+        first_name, last_name, email, username, password, privateOption, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
       [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture]);
@@ -72,7 +72,7 @@ router.put('/:userId', (req: Request, res: Response): void => {
             email = $3,
             username = $4,
             password = $5,
-            private = $6,
+            privateOption = $6,
             followers = $7,
             following = $8,
             profile_picture = $9

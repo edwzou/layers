@@ -29,7 +29,7 @@ CREATE TABLE backend_schema.user (
     password VARCHAR(255) NOT NULL,
     privateOption BOOL NOT NULL,
     followers UUID[] NOT NULL,
-    following UUID[], NOT NULL,
+    following UUID[] NOT NULL,
     profile_picture VARCHAR(255)
 );
 CREATE TABLE backend_schema.outfit (

@@ -1,6 +1,5 @@
 import express from 'express';
 import { clientFollow, responseCallbackFollow } from '../../utils/responseCallback';
-import { AlreadyFollowError } from '../../utils/Errors/AlreadyFollow';
 import { pool } from '../../utils/sqlImport';
 import { NotFoundError } from '../../utils/Errors/NotFoundError';
 const router = express.Router();
@@ -65,9 +64,8 @@ router.post('/follow/:userId', async (req: any, res: any) => {
           "SELECT * FROM backend_schema.user WHERE uid = $1",
           [uid1]
         );
-
         const followingQ = clientFollow(uid2, following, client1, 1, queries)
-        const followerT = clientFollow(uid1, follower, client2, 2, queries);
+        const followerQ = clientFollow(uid1, follower, client2, 2, queries);
         queries[0] = (await user).rows.length
         if (queries[0] === 0) {
           errors.push('User Not Found, uid: ' + uid1)
@@ -75,7 +73,7 @@ router.post('/follow/:userId', async (req: any, res: any) => {
         console.log("BReak1: ", queries);
         // if followingQ is an error it is thrown and caught below so it should never be an error
         (await followingQ) !== null && errors.push(await followingQ);
-        (await followerT) !== null && errors.push(await followerT);
+        (await followerQ) !== null && errors.push(await followerQ);
         console.log("errors1: ", errors);
         if (errors.length > 0) {
           if (errors.length == 3) {

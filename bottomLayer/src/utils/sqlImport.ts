@@ -1,6 +1,5 @@
 import postgres from "postgres";
 import { Pool } from "pg";
-import advisoryLock from "advisory-lock";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -27,6 +26,3 @@ export const pool = new Pool({
   // ssl: true,
 });
 
-export const mutex = advisoryLock(POSTGRES_URL) (
-  "database-lock"
-)
