@@ -58,8 +58,6 @@ const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOut
 
     const { data, updateData } = useContext(UserContext);
 
-    console.log("Authenticated: " + data)
-
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
 
     const handleItemChange = (outfit: boolean, item: any) => {
@@ -124,7 +122,6 @@ const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOut
     };
 
     const toggleSettingsModal = () => {
-        console.log("toggleSettingsModal")
         navigation.navigate(StackNavigation.Settings, {
             id: undefined,
             initialRouteName: undefined,

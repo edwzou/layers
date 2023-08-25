@@ -15,78 +15,89 @@ import MainPage from './pages/Main/MainPage';
 
 import GlobalStyles from './constants/GlobalStyles';
 import CameraWrapper from './components/Camera/CameraWrapper';
-import axios from 'axios';
-import { baseUrl } from './utils/apiUtils';
 import { UserContext } from './utils/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
 
-	const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
-	const userContextValue = {
-		data: user,
-		updateData: (user: any) => {
-			setUser(user);
-		}
-	}
+  const userContextValue = {
+    data: user,
+    updateData: (user: any) => {
+      setUser(user);
+    }
+  }
 
 
-	useEffect(() => { console.log("App: " + JSON.stringify(user)) }, [user])
+  useEffect(() => {
+    const getUser = async () => {
+      const credentials = await AsyncStorage.getItem('session');
 
-	return (
-		<NavigationContainer ref={navigationRef}>
-			<GestureHandlerRootView style={{ flex: 1 }}>
-				<View style={styles.container}>
-					<UserContext.Provider value={userContextValue}>
-						<Stack.Navigator
-							screenOptions={{
-								headerShown: false,
-								gestureEnabled: true,
-								gestureDirection: 'horizontal',
-							}}
+			if (!credentials) {
+				return setUser(null);
+			}
 
-						>
-							{!user ? (
-								<>
-									<Stack.Screen
-										name={StackNavigation.Login}
-										component={SignInPage}
-									/>
-									<Stack.Screen
-										name={StackNavigation.SignUp}
-										component={SignUpPage}
-									/>
-								</>
-							) : (
-								<>
-									<Stack.Screen
-										name={StackNavigation.Main}
-										component={MainPage}
-									/>
-								</>
-							)}
-							<Stack.Screen
-								name={StackNavigation.Camera}
-								component={CameraWrapper}
-								options={{
-									animation: 'slide_from_bottom',
-									gestureEnabled: true,
-									gestureDirection: 'vertical',
-								}}
-							/>
-						</Stack.Navigator>
-						<ExpoStatusBar style="auto" />
-					</UserContext.Provider>
-				</View>
-			</GestureHandlerRootView>
-		</NavigationContainer>
-	);
+			setUser(JSON.parse(credentials));
+    };
+
+		void getUser();
+  }, [user])
+
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <UserContext.Provider value={userContextValue}>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+                gestureEnabled: true,
+                gestureDirection: 'horizontal',
+              }}
+
+            >
+              {!user ? (
+                <>
+                  <Stack.Screen
+                    name={StackNavigation.Login}
+                    component={SignInPage}
+                  />
+                  <Stack.Screen
+                    name={StackNavigation.SignUp}
+                    component={SignUpPage}
+                  />
+                </>
+              ) : (
+                <>
+                  <Stack.Screen
+                    name={StackNavigation.Main}
+                    component={MainPage}
+                  />
+                </>
+              )}
+              <Stack.Screen
+                name={StackNavigation.Camera}
+                component={CameraWrapper}
+                options={{
+                  animation: 'slide_from_bottom',
+                  gestureEnabled: true,
+                  gestureDirection: 'vertical',
+                }}
+              />
+            </Stack.Navigator>
+            <ExpoStatusBar style="auto" />
+          </UserContext.Provider>
+        </View>
+      </GestureHandlerRootView>
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: GlobalStyles.colorPalette.background,
-		paddingTop: Device.osName === 'Android' ? StatusBar.currentHeight : 0,
-	},
+  container: {
+    flex: 1,
+    backgroundColor: GlobalStyles.colorPalette.background,
+    paddingTop: Device.osName === 'Android' ? StatusBar.currentHeight : 0,
+  },
 });
