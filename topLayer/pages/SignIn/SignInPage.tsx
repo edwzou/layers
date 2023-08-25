@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +13,7 @@ export default function LoginPage() {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	return (
-		<View style={styles.container}>
+		<Pressable onPress={Keyboard.dismiss} style={styles.container}>
 			<Text style={[GlobalStyles.typography.header, GlobalStyles.utils.font]}>
 				Layers
 			</Text>
@@ -29,7 +29,8 @@ export default function LoginPage() {
 					Sign up
 				</Text>
 			</Text>
-		</View>
+		</Pressable>
+
 	);
 }
 

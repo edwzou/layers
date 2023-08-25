@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
@@ -93,15 +93,15 @@ const SignUp = ({
 				followers: [],
 				privateOption: data.private,
 			}, {
-					headers: {
-						'Content-Type': 'application/json'
-					}
+				headers: {
+					'Content-Type': 'application/json'
+				}
 			});
 
 			if (response.status === 200) {
 				try {
-				const sessionData = JSON.stringify(response.data.data);
-				await AsyncStorage.setItem('session', sessionData);
+					const sessionData = JSON.stringify(response.data.data);
+					await AsyncStorage.setItem('session', sessionData);
 					updateData(sessionData);
 				} catch (error) {
 					console.log(error);
@@ -120,7 +120,7 @@ const SignUp = ({
 	];
 
 	return (
-		<View style={{ gap: 40 }}>
+		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
 			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Pressable
 					style={{ alignSelf: 'center' }}
@@ -234,7 +234,7 @@ const SignUp = ({
 						bgColor={GlobalStyles.colorPalette.primary[500]}
 					/>}
 			</View>
-		</View>
+		</Pressable>
 	);
 };
 

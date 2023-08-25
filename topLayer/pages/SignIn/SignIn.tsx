@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { useContext, } from 'react';
 import { View } from 'react-native';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -28,24 +28,21 @@ const SignIn = () => {
 
 
   const onSubmit = async (data: any) => {
-    console.log("before try")
     try {
-      console.log("inside try: " + JSON.stringify(data.email))
-			console.log(baseUrl)
       const response = await axios.post(`${baseUrl}/login`, {
         // Email login only for now
         email: data.email !== '' ? data.email : null,
         password: data.password,
       }, {
-					headers: {
-						'Content-Type': 'application/json'
-					}
-			});
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
       if (response.status === 200) {
-				const sessionData = JSON.stringify(response.data.data);
-				await AsyncStorage.setItem('session', sessionData);
-				updateData(sessionData);
+        const sessionData = JSON.stringify(response.data.data);
+        await AsyncStorage.setItem('session', sessionData);
+        updateData(sessionData);
       } else {
         throw new Error('An error has occurred');
       }

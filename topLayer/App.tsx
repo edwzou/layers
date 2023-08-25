@@ -1,7 +1,7 @@
-import { StyleSheet, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, View, Keyboard, Pressable } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -34,14 +34,14 @@ export default function App() {
     const getUser = async () => {
       const credentials = await AsyncStorage.getItem('session');
 
-			if (!credentials) {
-				return setUser(null);
-			}
+      if (!credentials) {
+        return setUser(null);
+      }
 
-			setUser(JSON.parse(credentials));
+      setUser(JSON.parse(credentials));
     };
 
-		void getUser();
+    void getUser();
   }, [user])
 
   return (
@@ -49,6 +49,7 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.container}>
           <UserContext.Provider value={userContextValue}>
+            {/* <Pressable onPress={Keyboard.dismiss}> */}
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,
@@ -87,6 +88,7 @@ export default function App() {
               />
             </Stack.Navigator>
             <ExpoStatusBar style="auto" />
+            {/* </Pressable> */}
           </UserContext.Provider>
         </View>
       </GestureHandlerRootView>

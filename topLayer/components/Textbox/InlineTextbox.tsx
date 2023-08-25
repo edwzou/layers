@@ -2,7 +2,6 @@ import { View, TextInput, StyleSheet, Pressable } from 'react-native';
 import React, { useRef, useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Icon from 'react-native-remix-icon';
-
 interface InlineTextboxType {
 	icon: string;
 	secure?: boolean;
