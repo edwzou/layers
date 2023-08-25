@@ -53,7 +53,7 @@ passport.use('login', new LocalStrategy({ usernameField: 'email', passwordField:
       }
 
       const user = result.rows[0].uid;
-      console.log(user);
+
       return done(null, user);
     } catch (err) {
       return done(err);
