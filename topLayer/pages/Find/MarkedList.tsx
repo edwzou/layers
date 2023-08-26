@@ -32,7 +32,7 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
 	};
 
 	const handleProfilePress = () => {
-		navigation.navigate(StackNavigation.Profile, {
+		navigation.navigate(StackNavigation.ForeignProfile, {
 			id: undefined,
 			initialRouteName: undefined,
 			children: null,

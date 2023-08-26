@@ -123,6 +123,7 @@ const utils = StyleSheet.create({
 
 const sizing = {
 	icon: {
+		large: 40,
 		regular: 30,
 		small: 20,
 		xSmall: 16,
@@ -156,6 +157,7 @@ const icons = {
 	imageFill: 'ri-image-fill',
 	deleteBin2Line: 'delete-bin-2-line',
 	circleLogout: 'logout-circle-line',
+	privateOutline: 'ri-lock-line',
 };
 
 export default {
