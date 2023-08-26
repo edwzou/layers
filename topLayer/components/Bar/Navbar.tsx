@@ -80,13 +80,13 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
             size={GlobalStyles.sizing.icon.regular}
           />
         </Pressable>
-        <Pressable onPress={handleLogout}>
+        {/* <Pressable onPress={handleLogout}>
           <Icon
             name={GlobalStyles.icons.circleLogout}
             color={GlobalStyles.colorPalette.primary[900]}
             size={GlobalStyles.sizing.icon.regular}
           />
-        </Pressable>
+        </Pressable> */}
       </View>
     </SafeAreaView>
   );

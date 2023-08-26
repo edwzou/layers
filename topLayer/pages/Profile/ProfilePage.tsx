@@ -28,7 +28,7 @@ const ProfilePage = () => {
 	const ProfileComponent = () => (<Profile
 		setSelectedItem={setSelectedItem}
 		setSelectedOutfit={setSelectedOutfit} />)
-	const SettingsPageComponent = () => (<SettingsPage />)
+	const SettingsComponent = () => (<SignUpPage settings={true} />)
 	const ItemViewPageComponent = () => (<ItemViewPage selectedItem={selectedItem} />)
 	const OutfitViewPageComponent = () => (<OutfitViewPage selectedOutfit={selectedOutfit} />)
 
