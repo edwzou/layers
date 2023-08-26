@@ -30,6 +30,7 @@ export type StackTypes = {
 	Settings: StackNavigatorType;
 	MarkedList: StackNavigatorType;
 	OutfitPreview: StackNavigatorType;
+	ForeignProfile: StackNavigatorType;
 };
 
 export const Stack = createNativeStackNavigator<StackTypes>();

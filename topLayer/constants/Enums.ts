@@ -47,6 +47,7 @@ export const StackNavigation = {
 	Settings: 'Settings',
 	MarkedList: 'MarkedList',
 	OutfitPreview: 'OutfitPreview',
+	ForeignProfile: 'ForeignProfile'
 } as const;
 
 export const NavigationBack = {

@@ -1,5 +1,5 @@
 import React, { useRef, useState, SetStateAction, Dispatch, useContext } from 'react';
-import { View, Pressable, StyleSheet, FlatList } from 'react-native';
+import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
@@ -26,14 +26,11 @@ import { UserOutfit } from '../OutfitEdit'
 import { UserContext } from '../../utils/UserContext';
 
 interface ProfilePropsType {
-    selectedItem?: UserClothing;
     setSelectedItem?: Dispatch<SetStateAction<UserClothing>>;
-    selectedOutfit?: UserOutfit;
     setSelectedOutfit?: Dispatch<SetStateAction<UserOutfit>>;
-    isForeignProfile: boolean;
 }
 
-const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOutfit, isForeignProfile }: ProfilePropsType) => {
+const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
 
@@ -67,14 +64,6 @@ const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOut
     const handleCategoryChange = (category: string) => {
         setSelectedCategory(category);
         handleIndexChange(CategoryToIndex[category]);
-    };
-
-    const handleIconPress = () => {
-        if (iconName === GlobalStyles.icons.bookmarkFill) {
-            setIconName(GlobalStyles.icons.bookmarkOutline);
-        } else {
-            setIconName(GlobalStyles.icons.bookmarkFill);
-        }
     };
 
     const handleIndexChange = (index: number) => {
@@ -115,14 +104,12 @@ const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOut
 
     return (
         <>
-            {!isForeignProfile ? <Navbar toggleFeedbackModal={toggleFeedbackModal} /> : <View style={{ paddingVertical: 20 }} />}
+            <Navbar toggleFeedbackModal={toggleFeedbackModal} />
             <View style={{ gap: 25, flex: 1 }}>
                 <View style={{ alignItems: 'center', gap: 7 }}>
                     <Pressable
                         onPress={() => {
-                            !isForeignProfile
-                                ? toggleSettingsModal()
-                                : undefined;
+                            toggleSettingsModal()
                         }}
                     >
                         <ProfilePicture />
@@ -158,18 +145,7 @@ const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOut
                         />
                     </View>
                 </View>
-                {isForeignProfile && (
-                    <View style={styles.bookmarkIconWrapper}>
-                        <Pressable onPress={handleIconPress}>
-                            <Icon
-                                name={iconName}
-                                color={GlobalStyles.colorPalette.primary[900]}
-                                size={GlobalStyles.sizing.icon.regular}
-                            />
-                        </Pressable>
-                    </View>
-                )}
-            </View>
+            </View >
         </>
     );
 };
@@ -180,6 +156,7 @@ const styles = StyleSheet.create({
         top: 0,
         right: GlobalStyles.layout.xGap,
     },
+
 });
 
 export default Profile;
