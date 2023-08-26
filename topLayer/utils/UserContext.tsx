@@ -1,3 +1,8 @@
 import { createContext } from "react";
 
-export const UserContext = createContext({ data: null, updateData: (user: any) => { } });
+type UserContextType = {
+    data: Record<string, unknown> | null,
+    updateData: (user: any) => void
+}
+
+export const UserContext = createContext<UserContextType>({ data: null, updateData: (user) => { } });

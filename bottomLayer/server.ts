@@ -19,8 +19,12 @@ app.use(session({
     return uuidv4();
   },
   store: new FileStore(), // !!! send this to database for production
-  secret: 'layers private secret',
+  secret: process.env.SESSION_SECRET ?? 'layersSession',
   resave: false,
+  cookie: {
+    maxAge: Date.now() + (30 * 86400 * 1000), // Sessions last a month from login
+    secure: false // !!! Make this true by once we add HTTPS
+  },
   saveUninitialized: false
 }));
 

@@ -1,17 +1,13 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet, Pressable, SafeAreaView } from 'react-native';
-import Icon from 'react-native-remix-icon';
 
+import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import * as RootNavigation from '../../RootNavigation';
 
 import { NavigationContext } from '../../pages/Main/MainPage';
-import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import { UserContext } from '../../utils/UserContext';
@@ -22,12 +18,10 @@ interface NavbarPropsType {
 
 const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
   const navigationContext = useContext(NavigationContext);
-  const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
   const { data, updateData } = useContext(UserContext)
 
   const handleLogout = async () => {
     await axios(`${baseUrl}/logout`);
-    await AsyncStorage.removeItem('session');
     updateData(null);
   }
 
