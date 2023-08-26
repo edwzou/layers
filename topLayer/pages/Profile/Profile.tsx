@@ -130,6 +130,7 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
                     <View>
                         <FullName firstName={data.first_name} lastName={data.last_name} />
                         <Username username={`@${data.username}`} />
+
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>

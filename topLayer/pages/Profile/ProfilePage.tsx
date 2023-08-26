@@ -6,7 +6,7 @@ import { Stack } from '../../utils/StackNavigation';
 
 import Profile from './Profile';
 import FeedbackPage from '../Feedback/FeedbackPage';
-import SignUpPage from '../../pages/SignUp/SignUpPage';
+import SettingsPage from './SettingsPage';
 import ItemViewPage from '../../pages/ItemView/ItemViewPage'
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { headerRight } from '../../components/Modal/HeaderRight';
@@ -28,7 +28,7 @@ const ProfilePage = () => {
 	const ProfileComponent = () => (<Profile
 		setSelectedItem={setSelectedItem}
 		setSelectedOutfit={setSelectedOutfit} />)
-	const SettingsComponent = () => (<SignUpPage settings={true} />)
+	const SettingsPageComponent = () => (<SettingsPage />)
 	const ItemViewPageComponent = () => (<ItemViewPage selectedItem={selectedItem} />)
 	const OutfitViewPageComponent = () => (<OutfitViewPage selectedOutfit={selectedOutfit} />)
 
@@ -68,7 +68,7 @@ const ProfilePage = () => {
 							/>
 							<Stack.Screen
 								name={StackNavigation.Settings}
-								component={SettingsComponent}
+								component={SettingsPageComponent}
 								options={{
 									headerRight: () => headerRight({
 										type: StepOverTypes.update,
