@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
   const userId = req.user;
-
   const getUser = async (): Promise<void> => {
     try {
       const user = await pool.query('SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1', [userId]);
@@ -28,7 +27,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
     email,
     username,
     password,
-    privateOption,
+    private_option,
     profile_picture,
     followers,
     following
@@ -38,10 +37,10 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
     try {
       await pool.query(`
       INSERT INTO backend_schema.user (
-        first_name, last_name, email, username, password, private, followers, following, profile_picture
+        first_name, last_name, email, username, password, private_option, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture]);
+      [first_name, last_name, email, username, password, private_option, followers, following, profile_picture]);
 
       responseCallbackPost(null, res, 'User');
     } catch (error) {
@@ -81,7 +80,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
     email,
     username,
     password,
-    privateOption,
+    private_option,
     profile_picture,
     followers,
     following
@@ -99,7 +98,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
             following = $8,
             profile_picture = $9
         WHERE uid = $10`,
-        [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture, userId]);
+      [first_name, last_name, email, username, password, private_option, followers, following, profile_picture, userId]);
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {

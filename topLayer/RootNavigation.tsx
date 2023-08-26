@@ -1,5 +1,3 @@
-// RootNavigation.js
-
 import { createNavigationContainerRef } from '@react-navigation/native';
 import { StackNavigatorType } from './utils/StackNavigation'
 

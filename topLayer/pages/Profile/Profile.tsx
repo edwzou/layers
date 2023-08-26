@@ -1,4 +1,4 @@
-import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
+import React, { useRef, useState, SetStateAction, Dispatch, useContext } from 'react';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -10,32 +10,19 @@ import CategorySlide from '../../components/Category/CategorySlide';
 import Navbar from '../../components/Bar/Navbar';
 
 import {
-    StepOverTypes,
     CategoryToIndex,
     IndexToCategory,
-    ColorTags,
     StackNavigation,
     ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { clothingData, colorTags } from '../../constants/testData';
+import { clothingData } from '../../constants/testData';
 
-import GeneralModal, {
-    type refPropType,
-} from '../../components/Modal/GeneralModal';
-import { highTranslateY } from '../../utils/modalMaxShow';
-import SignUpPage from '../SignUp/SignUpPage';
-import ItemView from '../../pages/ItemView/ItemView'
-import OutfitView from '../../pages/OutfitView/OutfitView';
-import OutfitEdit from '../../pages/OutfitEdit/OutfitEdit';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import EditClothing from '../ItemView/EditClothing';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitEdit'
-import axios, { AxiosResponse } from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
 import { UserContext } from '../../utils/UserContext';
 
 interface ProfilePropsType {
@@ -48,17 +35,12 @@ interface ProfilePropsType {
 
 const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOutfit, isForeignProfile }: ProfilePropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-    const itemViewRef = useRef<refPropType>(null);
-    const editClothingRef = useRef<refPropType>(null);
-    const outfitViewRef = useRef<refPropType>(null);
-    const outfitEditRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
 
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
 
-    const { data, updateData } = useContext(UserContext);
-
-    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
+    const { data } = useContext(UserContext);
+    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline);
 
     const handleItemChange = (outfit: boolean, item: any) => {
         if (outfit && setSelectedOutfit) {
@@ -131,9 +113,6 @@ const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOut
         })
     }
 
-    // !!! Display edit outfit on click
-    // !!! Empty Match page to account for no clothing
-
     return (
         <>
             {!isForeignProfile ? <Navbar toggleFeedbackModal={toggleFeedbackModal} /> : <View style={{ paddingVertical: 20 }} />}
@@ -142,7 +121,6 @@ const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOut
                     <Pressable
                         onPress={() => {
                             !isForeignProfile
-                                // ? navigation.navigate(StackNavigation.Camera)
                                 ? toggleSettingsModal()
                                 : undefined;
                         }}
@@ -150,8 +128,8 @@ const Profile = ({ selectedItem, setSelectedItem, selectedOutfit, setSelectedOut
                         <ProfilePicture />
                     </Pressable>
                     <View>
-                        <FullName firstName={data.first_name} lastName={data.last_name} />
-                        <Username username={`@${data.username}`} />
+                        <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
+                        <Username username={`@${data ? data.username : ''}`} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>
