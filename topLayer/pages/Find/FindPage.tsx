@@ -3,7 +3,7 @@ import React from 'react'
 
 import Find from './Find';
 import MarkedList from './MarkedList';
-import Profile from '../../pages/Profile/Profile';
+import ForeignProfile from '../../pages/Profile/ForeignProfile';
 
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer } from '@react-navigation/native';
@@ -20,7 +20,7 @@ const FindPage = () => {
 
     const FindComponent = () => (<Find usersData={usersData} />)
     const MarkedListComponent = () => (<MarkedList usersData={usersData} />)
-    const ProfileComponent = () => (<Profile isForeignProfile={true} />)
+    const ForeignProfileComponent = () => (<ForeignProfile isPrivate={false} />)
 
     return (
         <NavigationContainer
@@ -50,8 +50,8 @@ const FindPage = () => {
                         }}
                     />
                     <Stack.Screen
-                        name={StackNavigation.Profile}
-                        component={ProfileComponent}
+                        name={StackNavigation.ForeignProfile}
+                        component={ForeignProfileComponent}
                         options={{
                             headerShown: false,
                             presentation: 'modal'

@@ -26,11 +26,8 @@ const ProfilePage = () => {
 	const [selectedOutfit, setSelectedOutfit] = useState<UserOutfit>({} as UserOutfit)
 
 	const ProfileComponent = () => (<Profile
-		selectedItem={selectedItem}
 		setSelectedItem={setSelectedItem}
-		selectedOutfit={selectedOutfit}
-		setSelectedOutfit={setSelectedOutfit}
-		isForeignProfile={false} />)
+		setSelectedOutfit={setSelectedOutfit} />)
 	const SettingsComponent = () => (<SignUpPage settings={true} />)
 	const ItemViewPageComponent = () => (<ItemViewPage selectedItem={selectedItem} />)
 	const OutfitViewPageComponent = () => (<OutfitViewPage selectedOutfit={selectedOutfit} />)

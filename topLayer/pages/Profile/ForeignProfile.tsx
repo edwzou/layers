@@ -38,16 +38,19 @@ import axios, { AxiosResponse } from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import { UserContext } from '../../utils/UserContext';
 
-interface ProfilePropsType {
+interface ForeignProfilePropsType {
     setSelectedItem?: Dispatch<SetStateAction<UserClothing>>;
     setSelectedOutfit?: Dispatch<SetStateAction<UserOutfit>>;
+    isPrivate: boolean;
 }
 
-const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
+const ForeignProfile = ({ setSelectedItem, setSelectedOutfit, isPrivate }: ForeignProfilePropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
 
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
+
+    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
 
     const handleItemChange = (outfit: boolean, item: any) => {
         if (outfit && setSelectedOutfit) {
@@ -76,6 +79,14 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
         handleIndexChange(CategoryToIndex[category]);
     };
 
+    const handleIconPress = () => {
+        if (iconName === GlobalStyles.icons.bookmarkFill) {
+            setIconName(GlobalStyles.icons.bookmarkOutline);
+        } else {
+            setIconName(GlobalStyles.icons.bookmarkFill);
+        }
+    };
+
     const handleIndexChange = (index: number) => {
         if (flatListRef.current != null) {
             flatListRef.current?.scrollToIndex({ index, animated: true });
@@ -92,71 +103,67 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
         }
     }).current;
 
-    const toggleFeedbackModal = () => {
-        navigation.navigate(StackNavigation.Feedback, {
-            id: undefined,
-            initialRouteName: undefined,
-            children: null,
-            screenListeners: null,
-            screenOptions: null
-        })
-    };
-
-    const toggleSettingsModal = () => {
-        navigation.navigate(StackNavigation.Settings, {
-            id: undefined,
-            initialRouteName: undefined,
-            children: null,
-            screenListeners: null,
-            screenOptions: null
-        })
-    }
-
     // !!! Display edit outfit on click
     // !!! Empty Match page to account for no clothing
 
     return (
         <>
-            <Navbar toggleFeedbackModal={toggleFeedbackModal} />
+            <View style={{ paddingVertical: 20 }} />
             <View style={{ gap: 25, flex: 1 }}>
                 <View style={{ alignItems: 'center', gap: 7 }}>
-                    <Pressable
-                        onPress={() => {
-                            toggleSettingsModal()
-                        }}
-                    >
-                        <ProfilePicture />
-                    </Pressable>
+                    <ProfilePicture />
                     <View>
-                        <FullName firstName={data.first_name} lastName={data.last_name} />
-                        <Username username={`@${data.username}`} />
+                        {/* <FullName firstName={data.first_name} lastName={data.last_name} />
+                        <Username username={`@${data.username}`} /> */}
+                        <FullName firstName={"Joe"} lastName={"Bu"} />
+                        <Username username={"joegbu"} />
                     </View>
                 </View>
-                <View style={{ gap: 15, flex: 1 }}>
-                    <View>
-                        <CategoryBar
-                            selectedCategory={selectedCategory}
-                            onCategoryChange={handleCategoryChange}
+                {isPrivate ? (
+                    <View style={{ alignItems: 'center', flex: 1, top: 150, gap: 5 }}>
+                        <Icon
+                            name={GlobalStyles.icons.privateOutline}
+                            color={GlobalStyles.colorPalette.primary[300]}
+                            size={GlobalStyles.sizing.icon.large}
                         />
+                        <Text style={[GlobalStyles.typography.subtitle, { color: GlobalStyles.colorPalette.primary[300] }]}>Private</Text>
                     </View>
-                    <View>
-                        <FlatList
-                            ref={flatListRef}
-                            data={clothingData}
-                            renderItem={({ item }) => (
-                                <CategorySlide
-                                    clothingData={item}
-                                    onPress={handleItemChange}
-                                />
-                            )}
-                            horizontal
-                            pagingEnabled
-                            snapToAlignment="center"
-                            showsHorizontalScrollIndicator={false}
-                            onViewableItemsChanged={handleViewableItemsChanged}
-                            viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
+                ) : (
+                    <View style={{ gap: 15, flex: 1 }}>
+                        <View>
+                            <CategoryBar
+                                selectedCategory={selectedCategory}
+                                onCategoryChange={handleCategoryChange}
+                            />
+                        </View>
+                        <View>
+                            <FlatList
+                                ref={flatListRef}
+                                data={clothingData}
+                                renderItem={({ item }) => (
+                                    <CategorySlide
+                                        clothingData={item}
+                                        onPress={handleItemChange}
+                                    />
+                                )}
+                                horizontal
+                                pagingEnabled
+                                snapToAlignment="center"
+                                showsHorizontalScrollIndicator={false}
+                                onViewableItemsChanged={handleViewableItemsChanged}
+                                viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
+                            />
+                        </View>
+                    </View>
+                )}
+                <View style={styles.bookmarkIconWrapper}>
+                    <Pressable onPress={handleIconPress}>
+                        <Icon
+                            name={iconName}
+                            color={GlobalStyles.colorPalette.primary[900]}
+                            size={GlobalStyles.sizing.icon.regular}
                         />
-                    </View>
+                    </Pressable>
                 </View>
             </View >
         </>
@@ -172,4 +179,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Profile;
+export default ForeignProfile;
