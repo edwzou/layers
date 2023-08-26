@@ -29,13 +29,7 @@ interface FormValues {
 	profile_picture: string;
 }
 
-interface SignUpPropsType {
-	settings: boolean;
-}
-
-const SignUp = ({
-	settings,
-}: SignUpPropsType) => {
+const SignUp = () => {
 	const [image, setImage] = useState('');
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -222,14 +216,12 @@ const SignUp = ({
 				)}
 			</View>
 			<View style={{ alignSelf: 'center' }}>
-				{settings
-					? undefined
-					: <Button
-						text="Sign up"
-						onPress={handleSubmit(onSubmit)}
-						disabled={Object.keys(dirtyFields).length < 5}
-						bgColor={GlobalStyles.colorPalette.primary[500]}
-					/>}
+				<Button
+					text="Sign up"
+					onPress={handleSubmit(onSubmit)}
+					disabled={Object.keys(dirtyFields).length < 5}
+					bgColor={GlobalStyles.colorPalette.primary[500]}
+				/>
 			</View>
 		</Pressable>
 	);
