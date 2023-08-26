@@ -1,5 +1,6 @@
-import React, { useRef, useState, SetStateAction, Dispatch, useContext } from 'react';
-import { View, Pressable, StyleSheet, FlatList, Text, Text, Text } from 'react-native';
+import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
+import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
+import Icon from 'react-native-remix-icon';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
@@ -34,7 +35,6 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
     const flatListRef = useRef<FlatList>(null);
 
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
-
     const { data } = useContext(UserContext);
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline);
 
