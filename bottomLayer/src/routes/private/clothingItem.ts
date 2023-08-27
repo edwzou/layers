@@ -2,6 +2,9 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
+import axios from 'axios';
+import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
+import { uploadURIToS3 } from '../../s3/upload-uri-to-s3';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -52,6 +55,10 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
     const updateItem = async (ciid: string): Promise<void> => {
       // Update the outfit in the database
       try {
+        const response = await axios.get(image, { responseType: 'arraybuffer' });
+        const imageBuffer = Buffer.from(response.data, 'binary');
+        await uploadURIToS3(imageBuffer, ciid); // uploading URI to S3
+        const URL = await downloadURLFromS3(ciid); // downloading URL from S3
         const updateItem = await pool.query(`
         UPDATE backend_schema.clothing_item
         SET image = $1,
@@ -61,7 +68,7 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
             size = $5,
             color = $6
         WHERE ciid = $7
-        `, [image, category, title, brands, size, color, ciid]);
+        `, [URL, category, title, brands, size, color, ciid]);
         // responds with successful update even when no changes are made
         responseCallbackUpdate(null, ciid, res, "Clothing Item", updateItem.rowCount);
       } catch (error) {
