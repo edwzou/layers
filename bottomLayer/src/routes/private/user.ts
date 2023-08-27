@@ -9,11 +9,11 @@ const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
   const userId = req.user;
+
   const getUser = async (): Promise<void> => {
     try {
       const user = await pool.query('SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1', [userId]);
       const result = user.rows[0];
-
       responseCallbackGet(null, result, res, 'User');
     } catch (error) {
       responseCallbackGet(error, null, res);
@@ -38,18 +38,22 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
 
   const insertUser = async (): Promise<void> => {
     try {
+      const response = await axios.get(profile_picture, { responseType: 'arraybuffer' });
+      const imageBuffer = Buffer.from(response.data, 'binary');
+      await uploadURIToS3(imageBuffer, username); // uploading URI to S3
+      const URL = await downloadURLFromS3(username); // downloading URL from S3
       await pool.query(`
       INSERT INTO backend_schema.user (
         first_name, last_name, email, username, password, private_option, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [first_name, last_name, email, username, password, private_option, followers, following, profile_picture]);
-
+      [first_name, last_name, email, username, password, private_option, followers, following, URL]);
       responseCallbackPost(null, res, 'User');
     } catch (error) {
       responseCallbackPost(error, res);
     }
   };
+
   void insertUser();
 });
 
@@ -92,8 +96,8 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
     try {
       const response = await axios.get(profile_picture, { responseType: 'arraybuffer' });
       const imageBuffer = Buffer.from(response.data, 'binary');
-      await uploadURIToS3(imageBuffer, userId); // uploading URI to S3
-      const URL = await downloadURLFromS3(userId); // downloading URL from S3
+      await uploadURIToS3(imageBuffer, username); // uploading URI to S3
+      const URL = await downloadURLFromS3(username); // downloading URL from S3
       const updateUser = await pool.query(`UPDATE backend_schema.user
         SET first_name = $1,
             last_name = $2,
@@ -106,7 +110,6 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
             profile_picture = $9
         WHERE uid = $10`,
       [first_name, last_name, email, username, password, private_option, followers, following, URL, userId]);
-      // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
       responseCallbackUpdate(error, userId, res, 'User');
