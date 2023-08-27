@@ -90,18 +90,22 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
+      const response = await axios.get(profile_picture, { responseType: 'arraybuffer' });
+      const imageBuffer = Buffer.from(response.data, 'binary');
+      await uploadURIToS3(imageBuffer, userId); // uploading URI to S3
+      const URL = await downloadURLFromS3(userId); // downloading URL from S3
       const updateUser = await pool.query(`UPDATE backend_schema.user
         SET first_name = $1,
             last_name = $2,
             email = $3,
             username = $4,
             password = $5,
-            private = $6,
+            private_option = $6,
             followers = $7,
             following = $8,
             profile_picture = $9
         WHERE uid = $10`,
-      [first_name, last_name, email, username, password, private_option, followers, following, profile_picture, userId]);
+      [first_name, last_name, email, username, password, private_option, followers, following, URL, userId]);
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
@@ -110,38 +114,6 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   };
 
   void updateUser();
-});
-
-// Endpoints for updating a specific user's profile picture with image URL
-router.put('/update-profile-picture', (req: Request, res: Response): void => {
-  const userId = req.user as string;
-  const { profile_picture } = req.body; // URI of frontend
-
-  if (!userId || !profile_picture) {
-    res.status(400).json({ error: 'Invalid userId or profile_picture' });
-  }
-
-  const updateProfilePicture = async (userId: string): Promise<void> => {
-    try {
-      const response = await axios.get(profile_picture, { responseType: 'arraybuffer' });
-      const imageBuffer = Buffer.from(response.data, 'binary');
-      await uploadURIToS3(imageBuffer, userId); // upload URI to S3
-    
-      const URL = await downloadURLFromS3(userId); // getting URL from S3
-      console.log(URL);
-      const updateProfilePicture = await pool.query(`
-      UPDATE backend_schema.user
-      SET profile_picture = $1
-      WHERE  uid = $2
-      `, [URL, userId]);
-      responseCallbackUpdate(null, userId, res, 'Profile Picture URL', updateProfilePicture.rowCount);
-    } catch (error) {
-      console.error(error);
-      responseCallbackUpdate(error, userId, res, 'Profile Picture URL');
-    }
-  };
-
-  void updateProfilePicture(userId);
 });
 
 module.exports = router;
