@@ -2,22 +2,17 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
-import axios from 'axios';
-import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
-import { uploadURIToS3 } from '../../s3/upload-uri-to-s3';
+import { convertImage } from '../../s3/convertImage';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
 router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
   const uid = req.user;
   const { image, category, title, brands, size, color } = req.body;
-  
+
   const insertClothingItem = async (): Promise<any> => {
     try {
-      const response = await axios.get(image, { responseType: 'arraybuffer' });
-      const imageBuffer = Buffer.from(response.data, 'binary');
-      await uploadURIToS3(imageBuffer, title); // uploading URI to S3
-      const URL = await downloadURLFromS3(title); // downloading URL from S3
+      const URL = await convertImage(image, title);
       await pool.query(`INSERT INTO backend_schema.clothing_item (image, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7)`, [URL, category, title, brands, size, color, uid]);
 
@@ -53,10 +48,7 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
 
   const updateItem = async (ciid: string): Promise<void> => {
     try {
-      const response = await axios.get(image, { responseType: 'arraybuffer' });
-      const imageBuffer = Buffer.from(response.data, 'binary');
-      await uploadURIToS3(imageBuffer, title); // uploading URI to S3
-      const URL = await downloadURLFromS3(title); // downloading URL from S3
+      const URL = await convertImage(image, title);
       const updateItem = await pool.query(`
       UPDATE backend_schema.clothing_item
       SET image = $1,
