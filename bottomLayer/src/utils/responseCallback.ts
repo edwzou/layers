@@ -91,7 +91,7 @@ export const responseCallbackUpdate = (
     throw new NotFoundError(target + " Not Found, id: " + id);
   } else if (error != null) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error, Failed to Delete " + target + ": " + id,  error: error });
+    res.status(500).json({ message: "Internal Server Error, Failed to Update " + target + ": " + id,  error: error });
     return error;
   } else {
     res
@@ -201,15 +201,15 @@ export const clientFollow = async (
     if (otherQueries[index] === 0) {
       throw new NotFoundError("No change in user, uid: " + uid);
     }
-    for (let i = 0; i < otherQueries.length; i++) {
-      while (otherQueries[i] === -1) {
-        // console.log("queries: ", otherQueries)
-        continue
-      }
-      if (otherQueries[i] === 0) {
-        throw new UnknownError('The error is unknown in this method, need to revert its changes.')
-      }
-    }
+    // for (let i = 0; i < otherQueries.length; i++) {
+    //   while (otherQueries[i] === -1) {
+    //     // console.log("queries: ", otherQueries)
+    //     continue
+    //   }
+    //   if (otherQueries[i] === 0) {
+    //     throw new UnknownError('The error is unknown in this method, need to revert its changes.')
+    //   }
+    // }
     console.log('set2: ', otherQueries)
     return responseCallback(null, null);
   } catch (error: unknown) {
@@ -300,3 +300,12 @@ export const clientFollowTransaction2 = async (
     return responseCallback(error, null);
   }
 };
+
+ const waitForEvent = (): Promise<any> => {
+   return new Promise((resolve) => {
+     eventEmitter.on("variableChanged", (newValue: any) => {
+       console.log("Async function 2: sharedVariable changed to", newValue);
+       resolve(newValue);
+     });
+   });
+ };

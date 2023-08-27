@@ -1,7 +1,6 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { getUserCore, responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
-import { NotFoundError } from '../../utils/Errors/NotFoundError';
+import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 const router = express.Router();
 
 // Endpoint for creating a specific user
@@ -25,7 +24,7 @@ router.post('/', (req: Request, res: Response) => {
         first_name, last_name, email, username, password, privateOption, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture]);
+      [first_name, last_name, email.toLowerCase(), username, password, privateOption, followers, following, profile_picture]);
 
       responseCallbackPost(null, res, 'User');
     } catch (error) {
@@ -77,7 +76,7 @@ router.put('/:userId', (req: Request, res: Response): void => {
             following = $8,
             profile_picture = $9
         WHERE uid = $10`,
-      [first_name, last_name, email, username, password, privateOption, followers, following, profile_picture, userId]);
+      [first_name, last_name, email.toLowerCase(), username, password, privateOption, followers, following, profile_picture, userId]);
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
