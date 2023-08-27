@@ -13,7 +13,7 @@ curl -X PUT -H "Content-Type: application/json" -d '{
   "email": "Tom@example.com",
   "username": "Tom",
   "password": "Tom",
-  "privateOption": false,
+  "private_option": false,
   "profile_picture": "new",
   "following": [],
   "followers": []

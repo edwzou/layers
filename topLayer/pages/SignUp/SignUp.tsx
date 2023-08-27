@@ -17,7 +17,6 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../utils/UserContext';
 
 interface FormValues {
@@ -26,7 +25,7 @@ interface FormValues {
 	username: string;
 	email: string;
 	password: string;
-	private: boolean;
+	private_option: boolean;
 	profile_picture: string;
 }
 
@@ -34,7 +33,7 @@ const SignUp = () => {
 	const [image, setImage] = useState('');
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const { data, updateData } = useContext(UserContext);
+	const { updateData } = useContext(UserContext);
 
 	const {
 		control,
@@ -48,7 +47,7 @@ const SignUp = () => {
 			username: '',
 			email: '',
 			password: '',
-			private: false,
+			private_option: false,
 			profile_picture: image,
 		},
 	});
@@ -74,34 +73,32 @@ const SignUp = () => {
 		setValue('profile_picture', image);
 	}, [image]);
 
-	const onSubmit = async (data: FormValues | any) => {
+	const onSubmit = async (formData: FormValues | any) => {
 		try {
-			const response = await axios.post(`${baseUrl}/signup`, {
-				first_name: data.first_name,
-				last_name: data.last_name,
-				username: data.username,
-				email: data.email,
-				password: data.password,
-				profile_picture: data.profile_picture,
+			const { data, status } = await axios.post(`${baseUrl}/signup`, {
+				first_name: formData.first_name,
+				last_name: formData.last_name,
+				username: formData.username,
+				email: formData.email,
+				password: formData.password,
+				profile_picture: formData.profile_picture,
 				following: [],
 				followers: [],
-				privateOption: data.private,
+				private_option: formData.private_option,
 			}, {
 				headers: {
 					'Content-Type': 'application/json'
 				}
 			});
 
-			if (response.status === 200) {
+			if (status === 200) {
 				try {
-					const sessionData = JSON.stringify(response.data.data);
-					await AsyncStorage.setItem('session', sessionData);
-					updateData(sessionData);
+					updateData(data.data);
 				} catch (error) {
 					console.log(error);
 				}
 			} else {
-				throw new Error('An error has occurred');
+				throw new Error('Not Authorized.');
 			}
 		} catch (error) {
 			alert(error);
@@ -242,7 +239,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 		alignItems: 'center',
 		gap: 5,
-		// backgroundColor: GlobalStyles.colorPalette.primary[400] + '40',
 		paddingBottom: 25,
 		shadowColor: '#000',
 		shadowOffset: {

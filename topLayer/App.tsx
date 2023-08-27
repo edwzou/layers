@@ -1,8 +1,8 @@
-import { StyleSheet, StatusBar, View, Keyboard, Pressable } from 'react-native';
+import { StyleSheet, StatusBar, View, } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import { GestureHandlerRootView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useEffect, useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from './utils/StackNavigation';
@@ -16,11 +16,12 @@ import MainPage from './pages/Main/MainPage';
 import GlobalStyles from './constants/GlobalStyles';
 import CameraWrapper from './components/Camera/CameraWrapper';
 import { UserContext } from './utils/UserContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { baseUrl } from './utils/apiUtils';
 
 export default function App() {
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<Record<string, unknown> | null>(null);
 
   const userContextValue = {
     data: user,
@@ -29,27 +30,25 @@ export default function App() {
     }
   }
 
-
   useEffect(() => {
     const getUser = async () => {
-      const credentials = await AsyncStorage.getItem('session');
+      const { data, status } = await axios.get(`${baseUrl}/api/private/users`)
 
-      if (!credentials) {
-        return setUser(null);
+      if (status === 200) {
+        return setUser(data.data);
       }
 
-      setUser(JSON.parse(credentials));
+      return setUser(null);
     };
 
     void getUser();
-  }, [user])
+  }, [])
 
   return (
     <NavigationContainer ref={navigationRef}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.container}>
           <UserContext.Provider value={userContextValue}>
-            {/* <Pressable onPress={Keyboard.dismiss}> */}
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,
@@ -88,7 +87,6 @@ export default function App() {
               />
             </Stack.Navigator>
             <ExpoStatusBar style="auto" />
-            {/* </Pressable> */}
           </UserContext.Provider>
         </View>
       </GestureHandlerRootView>

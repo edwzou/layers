@@ -9,10 +9,9 @@ import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
 import { UserContext } from '../../utils/UserContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = () => {
-  const { data, updateData } = useContext(UserContext);
+  const { updateData } = useContext(UserContext);
   const {
     control,
     handleSubmit,
@@ -27,22 +26,24 @@ const SignIn = () => {
   });
 
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (formData: any) => {
     try {
-      const response = await axios.post(`${baseUrl}/login`, {
-        // Email login only for now
-        email: data.email !== '' ? data.email : null,
-        password: data.password,
+      const { status } = await axios.post(`${baseUrl}/login`, {
+        email: formData.email !== '' ? formData.email : null,
+        password: formData.password,
       }, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
 
-      if (response.status === 200) {
-        const sessionData = JSON.stringify(response.data.data);
-        await AsyncStorage.setItem('session', sessionData);
-        updateData(sessionData);
+      if (status === 200) {
+        const { data: userData, status } = await axios.get(`${baseUrl}/api/private/users`);
+
+        if (status === 200) {
+          updateData(userData.data);
+        }
+
       } else {
         throw new Error('An error has occurred');
       }

@@ -21,7 +21,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitEdit'
-
+import { UserContext } from '../../utils/UserContext';
 interface ProfilePropsType {
     setSelectedItem: Dispatch<SetStateAction<UserClothing>>;
     setSelectedOutfit: Dispatch<SetStateAction<UserOutfit>>;
@@ -32,6 +32,8 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
     const flatListRef = useRef<FlatList>(null);
 
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
+    const { data } = useContext(UserContext);
+    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline);
 
     const handleItemChange = (outfit: boolean, item: any) => {
         if (outfit) {
@@ -96,9 +98,6 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
         })
     }
 
-    // !!! Display edit outfit on click
-    // !!! Empty Match page to account for no clothing
-
     return (
         <>
             <Navbar toggleFeedbackModal={toggleFeedbackModal} />
@@ -112,8 +111,8 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
                         <ProfilePicture />
                     </Pressable>
                     <View>
-                        <FullName firstName={data.first_name} lastName={data.last_name} />
-                        <Username username={`@${data.username}`} />
+                        <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
+                        <Username username={`@${data ? data.username : ''}`} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>

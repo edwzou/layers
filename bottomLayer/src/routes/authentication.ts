@@ -12,14 +12,13 @@ router.post('/login', passport.authenticate('login', {
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post('/signup', async (req: Request, res: Response, next: any) => {
-  const { first_name, last_name, email, username, password, privateOption, followers, following, profile_picture } = req.body;
+  const { first_name, last_name, email, username, password, private_option, followers, following, profile_picture } = req.body;
   const hashedPass = await bcrypt.hash(password, 10);
-
   const user = await pool.query(`
   INSERT INTO backend_schema.user (
-    first_name, last_name, email, username, password, private, followers, following, profile_picture
+    first_name, last_name, email, username, password, private_option, followers, following, profile_picture
     ) VALUES (
-      $1, $2, $3, $4, $5, $6, $7, $8, $9)`, [first_name, last_name, email, username, hashedPass, privateOption, followers, following, profile_picture]);
+      $1, $2, $3, $4, $5, $6, $7, $8, $9)`, [first_name, last_name, email, username, hashedPass, private_option, followers, following, profile_picture]);
 
   if (user.rowCount > 0) {
     next();
@@ -33,6 +32,7 @@ router.post('/signup', async (req: Request, res: Response, next: any) => {
 
 router.get('/logout', (req: Request, res: Response, next: any) => {
   req.logOut((err) => {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (err) {
       return next(err);
     }
