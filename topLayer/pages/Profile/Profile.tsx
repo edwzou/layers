@@ -1,6 +1,5 @@
-import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
-import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
-import Icon from 'react-native-remix-icon';
+import React, { useRef, useState, SetStateAction, Dispatch } from 'react';
+import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
@@ -10,37 +9,22 @@ import CategorySlide from '../../components/Category/CategorySlide';
 import Navbar from '../../components/Bar/Navbar';
 
 import {
-    StepOverTypes,
     CategoryToIndex,
     IndexToCategory,
-    ColorTags,
     StackNavigation,
     ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { clothingData, colorTags } from '../../constants/testData';
-
-import GeneralModal, {
-    type refPropType,
-} from '../../components/Modal/GeneralModal';
-import { highTranslateY } from '../../utils/modalMaxShow';
-import SignUpPage from '../SignUp/SignUpPage';
-import ItemView from '../../pages/ItemView/ItemView'
-import OutfitView from '../../pages/OutfitView/OutfitView';
-import OutfitEdit from '../../pages/OutfitEdit/OutfitEdit';
+import { clothingData } from '../../constants/testData';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import EditClothing from '../ItemView/EditClothing';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitEdit'
-import axios, { AxiosResponse } from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
-import { UserContext } from '../../utils/UserContext';
 
 interface ProfilePropsType {
-    setSelectedItem?: Dispatch<SetStateAction<UserClothing>>;
-    setSelectedOutfit?: Dispatch<SetStateAction<UserOutfit>>;
+    setSelectedItem: Dispatch<SetStateAction<UserClothing>>;
+    setSelectedOutfit: Dispatch<SetStateAction<UserOutfit>>;
 }
 
 const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
@@ -50,7 +34,7 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
 
     const handleItemChange = (outfit: boolean, item: any) => {
-        if (outfit && setSelectedOutfit) {
+        if (outfit) {
             setSelectedOutfit(item);
             navigation.navigate(StackNavigation.OutfitView, {
                 id: undefined,
@@ -59,7 +43,7 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
                 screenListeners: null,
                 screenOptions: null
             })
-        } else if (setSelectedItem) {
+        } else {
             setSelectedItem(item);
             navigation.navigate(StackNavigation.ItemView, {
                 id: undefined,
@@ -130,7 +114,6 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
                     <View>
                         <FullName firstName={data.first_name} lastName={data.last_name} />
                         <Username username={`@${data.username}`} />
-
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>
