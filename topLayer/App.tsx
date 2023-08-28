@@ -1,4 +1,4 @@
-import { StyleSheet, StatusBar, View, } from 'react-native';
+import { StyleSheet, StatusBar, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -20,84 +20,82 @@ import axios from 'axios';
 import { baseUrl } from './utils/apiUtils';
 
 export default function App() {
+	const [user, setUser] = useState<Record<string, unknown> | null>(null);
 
-  const [user, setUser] = useState<Record<string, unknown> | null>(null);
+	const userContextValue = {
+		data: user,
+		updateData: (user: any) => {
+			setUser(user);
+		},
+	};
 
-  const userContextValue = {
-    data: user,
-    updateData: (user: any) => {
-      setUser(user);
-    }
-  }
+	useEffect(() => {
+		const getUser = async () => {
+			const { data, status } = await axios.get(`${baseUrl}/api/private/users`);
 
-  useEffect(() => {
-    const getUser = async () => {
-      const { data, status } = await axios.get(`${baseUrl}/api/private/users`)
+			if (status === 200) {
+				return setUser(data.data);
+			}
 
-      if (status === 200) {
-        return setUser(data.data);
-      }
+			return setUser(null);
+		};
 
-      return setUser(null);
-    };
+		void getUser();
+	}, []);
 
-    void getUser();
-  }, [])
-
-  return (
-    <NavigationContainer ref={navigationRef}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <UserContext.Provider value={userContextValue}>
-            <Stack.Navigator
-              screenOptions={{
-                headerShown: false,
-                gestureEnabled: true,
-                gestureDirection: 'horizontal',
-              }}
-
-            >
-              {!user ? (
-                <>
-                  <Stack.Screen
-                    name={StackNavigation.Login}
-                    component={SignInPage}
-                  />
-                  <Stack.Screen
-                    name={StackNavigation.SignUp}
-                    component={SignUpPage}
-                  />
-                </>
-              ) : (
-                <>
-                  <Stack.Screen
-                    name={StackNavigation.Main}
-                    component={MainPage}
-                  />
-                </>
-              )}
-              <Stack.Screen
-                name={StackNavigation.Camera}
-                component={CameraWrapper}
-                options={{
-                  animation: 'slide_from_bottom',
-                  gestureEnabled: true,
-                  gestureDirection: 'vertical',
-                }}
-              />
-            </Stack.Navigator>
-            <ExpoStatusBar style="auto" />
-          </UserContext.Provider>
-        </View>
-      </GestureHandlerRootView>
-    </NavigationContainer>
-  );
+	return (
+		<NavigationContainer ref={navigationRef}>
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<View style={styles.container}>
+					<UserContext.Provider value={userContextValue}>
+						<Stack.Navigator
+							screenOptions={{
+								headerShown: false,
+								gestureEnabled: true,
+								gestureDirection: 'horizontal',
+							}}
+						>
+							{!user ? (
+								<>
+									<Stack.Screen
+										name={StackNavigation.Login}
+										component={SignInPage}
+									/>
+									<Stack.Screen
+										name={StackNavigation.SignUp}
+										component={SignUpPage}
+									/>
+								</>
+							) : (
+								<>
+									<Stack.Screen
+										name={StackNavigation.Main}
+										component={MainPage}
+									/>
+								</>
+							)}
+							<Stack.Screen
+								name={StackNavigation.Camera}
+								component={CameraWrapper}
+								options={{
+									animation: 'slide_from_bottom',
+									gestureEnabled: true,
+									gestureDirection: 'vertical',
+								}}
+							/>
+						</Stack.Navigator>
+						<ExpoStatusBar style="auto" />
+					</UserContext.Provider>
+				</View>
+			</GestureHandlerRootView>
+		</NavigationContainer>
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: GlobalStyles.colorPalette.background,
-    paddingTop: Device.osName === 'Android' ? StatusBar.currentHeight : 0,
-  },
+	container: {
+		flex: 1,
+		backgroundColor: GlobalStyles.colorPalette.background,
+		paddingTop: Device.osName === 'Android' ? StatusBar.currentHeight : 0,
+	},
 });
