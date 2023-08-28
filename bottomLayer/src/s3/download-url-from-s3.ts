@@ -1,18 +1,36 @@
-import { getBucketName, s3 } from '../utils/awsImport';
-import { GetObjectCommand } from '@aws-sdk/client-s3';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 // Function to retrieve the URL of an S3 object
 async function downloadURLFromS3(objectKey: string) {
+  if (
+    !process.env.AWS_BUCKET_NAME ||
+    !process.env.AWS_ACCESS_KEY ||
+    !process.env.AWS_SECRET_KEY ||
+    !process.env.AWS_BUCKET_REGION
+  ) {
+    throw new Error('One or more AWS environment variables are not defined.');
+  }
   const params = {
-    Bucket: getBucketName(),
+    Bucket: process.env.AWS_BUCKET_NAME,
     Key: objectKey
   };
-
   try {
-    const signedUrl = await getSignedUrl(s3, new GetObjectCommand(params), {
-      expiresIn: 3600
+    const s3Client = new S3Client({
+      region: process.env.AWS_BUCKET_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_SECRET_KEY
+      }
     });
+
+    const signedUrl = await getSignedUrl(
+      s3Client,
+      new GetObjectCommand(params),
+      {
+        expiresIn: 3600
+      }
+    );
 
     if (!signedUrl) {
       throw new Error('could not get url');
@@ -30,11 +48,10 @@ async function downloadURLFromS3(objectKey: string) {
     }
 
     console.log('Download sucessful:', shorterUrl);
-    s3.destroy();
+    s3Client.destroy();
     return shorterUrl;
   } catch (error) {
     console.error('Error generating signed URL:', error);
-    s3.destroy();
   }
 }
 
