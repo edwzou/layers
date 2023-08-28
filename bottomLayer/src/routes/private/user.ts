@@ -44,10 +44,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
 
   const insertUser = async (): Promise<void> => {
     try {
-<<<<<<< HEAD
       const URL = await convertImage(profile_picture, username);
-=======
->>>>>>> 455d0fe8 (add prettier to backend. formatting)
       await pool.query(
         `
       INSERT INTO backend_schema.user (
@@ -63,16 +60,9 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
           private_option,
           followers,
           following,
-<<<<<<< HEAD
           URL
         ]
       );
-=======
-          profile_picture
-        ]
-      );
-
->>>>>>> 455d0fe8 (add prettier to backend. formatting)
       responseCallbackPost(null, res, 'User');
     } catch (error) {
       responseCallbackPost(error, res);
@@ -122,10 +112,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-<<<<<<< HEAD
       const URL = await convertImage(profile_picture, username);
-=======
->>>>>>> 455d0fe8 (add prettier to backend. formatting)
       const updateUser = await pool.query(
         `UPDATE backend_schema.user
         SET first_name = $1,
@@ -147,18 +134,10 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
           private_option,
           followers,
           following,
-<<<<<<< HEAD
           URL,
           userId
         ]
       );
-=======
-          profile_picture,
-          userId
-        ]
-      );
-      // responds with successful update even when no changes are made
->>>>>>> 455d0fe8 (add prettier to backend. formatting)
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
       responseCallbackUpdate(error, userId, res, 'User');

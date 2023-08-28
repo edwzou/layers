@@ -2,7 +2,10 @@ import axios from 'axios';
 import { downloadURLFromS3 } from './download-url-from-s3';
 import { uploadURIToS3 } from './upload-uri-to-s3';
 
-async function convertImage(URI: string, key: string) {
+export const convertImage = async (
+  URI: string,
+  key: string
+): Promise<string> => {
   try {
     const response = await axios.get(URI, { responseType: 'arraybuffer' });
     // const imageBuffer = Buffer.from(response.data, 'binary');
@@ -14,6 +17,4 @@ async function convertImage(URI: string, key: string) {
     console.error('Error converting URI:', error);
     throw error;
   }
-}
-
-export { convertImage };
+};
