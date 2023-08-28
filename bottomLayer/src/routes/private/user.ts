@@ -7,7 +7,6 @@ import {
   responseCallbackGet
 } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
-import { convertImage } from '../../s3/convertImage';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
@@ -60,7 +59,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
           private_option,
           followers,
           following,
-          URL
+          profile_picture
         ]
       );
       responseCallbackPost(null, res, 'User');
@@ -134,7 +133,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
           private_option,
           followers,
           following,
-          URL,
+          profile_picture,
           userId
         ]
       );
