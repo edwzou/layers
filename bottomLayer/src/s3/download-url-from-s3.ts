@@ -28,7 +28,7 @@ async function downloadURLFromS3(objectKey: string) {
       s3Client,
       new GetObjectCommand(params),
       {
-        expiresIn: 3600
+        expiresIn: 300
       }
     );
 
