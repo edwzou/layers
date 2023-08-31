@@ -6,6 +6,10 @@ dotenv.config();
 
 async function removeBackground(imageData: Buffer): Promise<Buffer> {
   try {
+    if (!process.env.RB_ENDPOINT || !process.env.RB_API_KEY) {
+      throw new Error('One or more remove_background environment variables are not defined.');
+    };
+
     const formData = new FormData();
     formData.append('image_file', imageData, {
       filename: 'image.jpg', // Set the desired filename
@@ -14,9 +18,9 @@ async function removeBackground(imageData: Buffer): Promise<Buffer> {
 
     const config = {
       method: 'post',
-      url: 'https://api.removal.ai/3.0/remove',
+      url: process.env.RB_ENDPOINT,
       headers: {
-        'Rm-Token': '64f0fd47e87a49.31528976',
+        'Rm-Token': process.env.RB_API_KEY, // 3 more calls
         ...formData.getHeaders(),
       },
       data: formData
