@@ -2,7 +2,7 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
-import { convertImage } from '../../s3/convertImage';
+import { convertImage } from '../../s3/convert-image';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
