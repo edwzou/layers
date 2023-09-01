@@ -36,7 +36,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
 
   const insertUser = async (): Promise<void> => {
     try {
-      const URL = await convertImage(profile_picture, username);
+      const URL = await convertImage(profile_picture, username, false);
       await pool.query(`
       INSERT INTO backend_schema.user (
         first_name, last_name, email, username, password, private_option, followers, following, profile_picture
@@ -89,7 +89,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-      const URL = await convertImage(profile_picture, username);
+      const URL = await convertImage(profile_picture, username, false);
       const updateUser = await pool.query(`UPDATE backend_schema.user
         SET first_name = $1,
             last_name = $2,

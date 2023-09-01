@@ -12,7 +12,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
 
   const insertClothingItem = async (): Promise<any> => {
     try {
-      const URL = await convertImage(image, title);
+      const URL = await convertImage(image, title, true);
       await pool.query(`INSERT INTO backend_schema.clothing_item (image, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7)`, [URL, category, title, brands, size, color, uid]);
 
@@ -48,7 +48,7 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
 
   const updateItem = async (ciid: string): Promise<void> => {
     try {
-      const URL = await convertImage(image, title);
+      const URL = await convertImage(image, title, true);
       const updateItem = await pool.query(`
       UPDATE backend_schema.clothing_item
       SET image = $1,
