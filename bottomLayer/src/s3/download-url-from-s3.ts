@@ -22,8 +22,7 @@ async function downloadURLFromS3(objectKey: string): Promise<string> {
       if (shorterUrl.length <= 255) {
         return shorterUrl;
       }
-      
-      console.log('Download sucessful:', shorterUrl);
+
       return shorterUrl
     } catch (error) {
       console.error('Error generating signed URL:', error);

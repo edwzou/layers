@@ -2,16 +2,18 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate, responseCallbackGet } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
-import { convertImage } from '../../s3/convertImage';
+import axios from 'axios';
+import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
+import { uploadURIToS3 } from '../../s3/upload-uri-to-s3';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
   const userId = req.user;
-
   const getUser = async (): Promise<void> => {
     try {
       const user = await pool.query('SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1', [userId]);
       const result = user.rows[0];
+
       responseCallbackGet(null, result, res, 'User');
     } catch (error) {
       responseCallbackGet(error, null, res);
@@ -36,19 +38,18 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
 
   const insertUser = async (): Promise<void> => {
     try {
-      const URL = await convertImage(profile_picture, username);
       await pool.query(`
       INSERT INTO backend_schema.user (
         first_name, last_name, email, username, password, private_option, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [first_name, last_name, email, username, password, private_option, followers, following, URL]);
+      [first_name, last_name, email, username, password, private_option, followers, following, profile_picture]);
+
       responseCallbackPost(null, res, 'User');
     } catch (error) {
       responseCallbackPost(error, res);
     }
   };
-
   void insertUser();
 });
 
@@ -89,7 +90,10 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-      const URL = await convertImage(profile_picture, username);
+      const response = await axios.get(profile_picture, { responseType: 'arraybuffer' });
+      const imageBuffer = Buffer.from(response.data, 'binary');
+      await uploadURIToS3(imageBuffer, userId); // uploading URI to S3
+      const URL = await downloadURLFromS3(userId); // downloading URL from S3
       const updateUser = await pool.query(`UPDATE backend_schema.user
         SET first_name = $1,
             last_name = $2,
@@ -102,6 +106,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
             profile_picture = $9
         WHERE uid = $10`,
       [first_name, last_name, email, username, password, private_option, followers, following, URL, userId]);
+      // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
       responseCallbackUpdate(error, userId, res, 'User');
