@@ -1,5 +1,6 @@
-import React, { useRef, useState, SetStateAction, Dispatch } from 'react';
-import { View, Pressable, StyleSheet, FlatList } from 'react-native';
+import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
+import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
+import Icon from 'react-native-remix-icon';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
@@ -16,15 +17,17 @@ import {
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { clothingData } from '../../constants/testData';
+
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitEdit'
 import { UserContext } from '../../utils/UserContext';
+
 interface ProfilePropsType {
-    setSelectedItem: Dispatch<SetStateAction<UserClothing>>;
-    setSelectedOutfit: Dispatch<SetStateAction<UserOutfit>>;
+    setSelectedItem?: Dispatch<SetStateAction<UserClothing>>;
+    setSelectedOutfit?: Dispatch<SetStateAction<UserOutfit>>;
 }
 
 const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
@@ -36,7 +39,7 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline);
 
     const handleItemChange = (outfit: boolean, item: any) => {
-        if (outfit) {
+        if (outfit && setSelectedOutfit) {
             setSelectedOutfit(item);
             navigation.navigate(StackNavigation.OutfitView, {
                 id: undefined,
@@ -45,7 +48,7 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
                 screenListeners: null,
                 screenOptions: null
             })
-        } else {
+        } else if (setSelectedItem) {
             setSelectedItem(item);
             navigation.navigate(StackNavigation.ItemView, {
                 id: undefined,

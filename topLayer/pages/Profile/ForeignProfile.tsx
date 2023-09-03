@@ -1,4 +1,4 @@
-import React, { useRef, useState, SetStateAction, Dispatch } from 'react';
+import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
 import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -7,25 +7,40 @@ import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
 import CategoryBar from '../../components/Bar/CategoryBar';
 import CategorySlide from '../../components/Category/CategorySlide';
+import Navbar from '../../components/Bar/Navbar';
 
 import {
+    StepOverTypes,
     CategoryToIndex,
     IndexToCategory,
+    ColorTags,
     StackNavigation,
     ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { clothingData } from '../../constants/testData';
+import { clothingData, colorTags } from '../../constants/testData';
 
+import GeneralModal, {
+    type refPropType,
+} from '../../components/Modal/GeneralModal';
+import { highTranslateY } from '../../utils/modalMaxShow';
+import SignUpPage from '../SignUp/SignUpPage';
+import ItemView from '../../pages/ItemView/ItemView'
+import OutfitView from '../../pages/OutfitView/OutfitView';
+import OutfitEdit from '../../pages/OutfitEdit/OutfitEdit';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
+import EditClothing from '../ItemView/EditClothing';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitEdit'
+import axios, { AxiosResponse } from 'axios';
+import { baseUrl } from '../../utils/apiUtils';
+import { UserContext } from '../../utils/UserContext';
 
 interface ForeignProfilePropsType {
-    setSelectedItem: Dispatch<SetStateAction<UserClothing>>;
-    setSelectedOutfit: Dispatch<SetStateAction<UserOutfit>>;
+    setSelectedItem?: Dispatch<SetStateAction<UserClothing>>;
+    setSelectedOutfit?: Dispatch<SetStateAction<UserOutfit>>;
     isPrivate: boolean;
 }
 
@@ -38,8 +53,7 @@ const ForeignProfile = ({ setSelectedItem, setSelectedOutfit, isPrivate }: Forei
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
 
     const handleItemChange = (outfit: boolean, item: any) => {
-        console.log("handleItemChange")
-        if (outfit) {
+        if (outfit && setSelectedOutfit) {
             setSelectedOutfit(item);
             navigation.navigate(StackNavigation.OutfitView, {
                 id: undefined,
@@ -48,7 +62,7 @@ const ForeignProfile = ({ setSelectedItem, setSelectedOutfit, isPrivate }: Forei
                 screenListeners: null,
                 screenOptions: null
             })
-        } else {
+        } else if (setSelectedItem) {
             setSelectedItem(item);
             navigation.navigate(StackNavigation.ItemView, {
                 id: undefined,

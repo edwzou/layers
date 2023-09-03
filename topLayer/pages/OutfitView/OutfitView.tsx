@@ -6,6 +6,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { FlatList } from 'react-native-gesture-handler';
 import ColorTag from '../../components/Tag/ColorTag';
 import { TagAction, ColorTags } from '../../constants/Enums';
+import { outfitData } from '../../constants/testData';
 import BrandTag from '../../components/Tag/BrandTag';
 
 import { UserOutfit } from '../OutfitEdit'
