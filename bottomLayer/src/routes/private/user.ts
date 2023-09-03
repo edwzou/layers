@@ -2,9 +2,6 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate, responseCallbackGet } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
-import axios from 'axios';
-import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
-import { uploadURIToS3 } from '../../s3/upload-uri-to-s3';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
@@ -90,22 +87,18 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-      const response = await axios.get(profile_picture, { responseType: 'arraybuffer' });
-      const imageBuffer = Buffer.from(response.data, 'binary');
-      await uploadURIToS3(imageBuffer, userId); // uploading URI to S3
-      const URL = await downloadURLFromS3(userId); // downloading URL from S3
       const updateUser = await pool.query(`UPDATE backend_schema.user
         SET first_name = $1,
             last_name = $2,
             email = $3,
             username = $4,
             password = $5,
-            private_option = $6,
+            private = $6,
             followers = $7,
             following = $8,
             profile_picture = $9
         WHERE uid = $10`,
-      [first_name, last_name, email, username, password, private_option, followers, following, URL, userId]);
+      [first_name, last_name, email, username, password, private_option, followers, following, profile_picture, userId]);
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
