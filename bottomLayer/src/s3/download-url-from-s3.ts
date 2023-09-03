@@ -10,19 +10,9 @@ async function downloadURLFromS3(objectKey: string): Promise<string> {
     };
     
     try {
-      const signedUrl = await getSignedUrl(s3, new GetObjectCommand(params), { expiresIn: 3600 });
-  
-      // Split the signed URL into its components
-      const urlParts = new URL(signedUrl);
-  
-      // Compose a shorter version of the URL with minimal query parameters
-      const shorterUrl = `${urlParts.origin}${urlParts.pathname}`;
-  
-      // Return the shorter URL if it fits within 255 characters
-      if (shorterUrl.length <= 255) {
-        return shorterUrl;
-      }
-      
+      const signedUrl = await getSignedUrl(s3, new GetObjectCommand(params), { expiresIn: 300 });
+      const urlParts = new URL(signedUrl); // Split the signed URL into its components
+      const shorterUrl = `${urlParts.origin}${urlParts.pathname}`; // Compose a shorter version of the URL with minimal query parameters
       console.log('Download sucessful:', shorterUrl);
       return shorterUrl
     } catch (error) {
