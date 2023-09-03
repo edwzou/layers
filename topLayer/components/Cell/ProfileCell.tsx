@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
 import GlobalStyles from '../../constants/GlobalStyles';
+
+import { ShowProfileContext } from '../../pages/Find/Find';
 
 interface ProfileCellPropsType {
 	user: any; /// !!! fix any type
