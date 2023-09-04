@@ -1,19 +1,21 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 import Find from './Find';
 import MarkedList from './MarkedList';
 import ForeignProfile from '../../pages/Profile/ForeignProfile';
-import ItemViewPage from '../../pages/ItemView/ItemViewPage';
-import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { StackNavigation } from '../../constants/Enums';
+import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
+import { headerRight } from '../../components/Modal/HeaderRight';
 import { usersData } from '../../constants/testData';
+
+
+import { UserOutfit } from '../../pages/OutfitEdit';
 
 const FindPage = () => {
 
@@ -42,8 +44,19 @@ const FindPage = () => {
                             headerShown: false
                         }}
                     />
-                    <Stack.Group
-                        screenOptions={{
+                    <Stack.Screen
+                        name={StackNavigation.MarkedList}
+                        component={MarkedListComponent}
+                        options={{
+                            presentation: 'modal',
+                            headerTitle: `${usersData.length} Marked`
+                        }}
+                    />
+                    <Stack.Screen
+                        name={StackNavigation.ForeignProfile}
+                        component={ForeignProfileComponent}
+                        options={{
+                            headerShown: false,
                             presentation: 'modal'
                         }}>
                         <Stack.Screen
@@ -75,6 +88,8 @@ const FindPage = () => {
                             }}
                         />
                     </Stack.Group>
+                        }}
+                    />
                 </Stack.Group>
             </Stack.Navigator>
         </NavigationContainer>

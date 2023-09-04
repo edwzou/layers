@@ -1,5 +1,6 @@
-import React, { useRef, useState, useContext } from 'react';
-import { View, Pressable, StyleSheet, FlatList } from 'react-native';
+import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
+import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
+import Icon from 'react-native-remix-icon';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
@@ -16,6 +17,7 @@ import {
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { clothingData } from '../../constants/testData';
+
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
