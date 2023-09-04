@@ -14,6 +14,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { headerRight } from '../../components/Modal/HeaderRight';
 import { usersData } from '../../constants/testData';
 
+
 import { UserOutfit } from '../../pages/OutfitEdit';
 
 const FindPage = () => {
@@ -21,6 +22,8 @@ const FindPage = () => {
     const FindComponent = () => (<Find usersData={usersData} />)
     const MarkedListComponent = () => (<MarkedList usersData={usersData} />)
     const ForeignProfileComponent = () => (<ForeignProfile isPrivate={false} />)
+    const ItemViewPageComponent = () => (<ItemViewPage />)
+    const OutfitViewPageComponent = () => (<OutfitViewPage />)
 
     return (
         <NavigationContainer
@@ -55,6 +58,36 @@ const FindPage = () => {
                         options={{
                             headerShown: false,
                             presentation: 'modal'
+                        }}>
+                        <Stack.Screen
+                            name={StackNavigation.MarkedList}
+                            component={MarkedListComponent}
+                            options={{
+                                headerTitle: `${usersData.length} Marked`
+                            }}
+                        />
+                        <Stack.Screen
+                            name={StackNavigation.ForeignProfile}
+                            component={ForeignProfileComponent}
+                            options={{
+                                headerShown: false,
+                            }}
+                        />
+                        <Stack.Screen
+                            name={StackNavigation.ItemView}
+                            component={ItemViewPage}
+                            options={{
+                                headerShown: false,
+                            }}
+                        />
+                        <Stack.Screen
+                            name={StackNavigation.OutfitView}
+                            component={OutfitViewPage}
+                            options={{
+                                headerShown: false,
+                            }}
+                        />
+                    </Stack.Group>
                         }}
                     />
                 </Stack.Group>

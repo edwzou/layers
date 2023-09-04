@@ -119,7 +119,7 @@ const Settings = () => {
                 <Pressable
                     style={{ alignSelf: 'center' }}
                     onPress={() => {
-                        navigation.navigate(StackNavigation.Camera);
+                        navigation.navigate(StackNavigation.Camera, {});
                     }}
                 >
                     <ProfilePicture />
