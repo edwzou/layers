@@ -14,7 +14,7 @@ import { headerRight } from '../../components/Modal/HeaderRight';
 
 const OutfitViewPage = ({ route }: any) => {
 
-    const { item } = route.params;
+    const { item, editable } = route.params;
 
     const OutfitViewComponent = () => (<OutfitView outfit={item} />)
     const OutfitEditComponent = () => (<OutfitEdit outfit={item} />)
@@ -36,12 +36,12 @@ const OutfitViewPage = ({ route }: any) => {
                         component={OutfitViewComponent}
                         options={({ navigation }) => ({
                             headerTitle: item.title,
-                            headerRight: () => headerRight({
+                            headerRight: editable ? (() => headerRight({
                                 type: StepOverTypes.edit,
                                 handlePress: () => {
                                     navigation.navigate(StackNavigation.EditClothing);
                                 },
-                            }),
+                            })) : undefined,
                         })}
                     />
                     <Stack.Screen
