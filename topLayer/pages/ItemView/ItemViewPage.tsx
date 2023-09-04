@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native'
-import React from 'react'
 
 import ItemView from './ItemView'
 import EditClothing from './EditClothing';
@@ -12,16 +11,12 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 import { headerRight } from '../../components/Modal/HeaderRight';
 
-import { UserClothing } from '../../pages/Match';
+const ItemViewPage = ({ route }: any) => {
 
-interface ItemViewPagePropsType {
-    selectedItem: UserClothing;
-}
+    const { item } = route.params;
 
-const ItemViewPage = ({ selectedItem }: ItemViewPagePropsType) => {
-
-    const ItemViewComponent = () => (<ItemView clothingItem={selectedItem} />)
-    const EditClothingComponent = () => (<EditClothing clothingItem={selectedItem} />)
+    const ItemViewComponent = () => (<ItemView clothingItem={item} />)
+    const EditClothingComponent = () => (<EditClothing clothingItem={item} />)
 
     return (
         <NavigationContainer
@@ -39,7 +34,7 @@ const ItemViewPage = ({ selectedItem }: ItemViewPagePropsType) => {
                         name={StackNavigation.ItemView}
                         component={ItemViewComponent}
                         options={({ navigation }) => ({
-                            headerTitle: selectedItem.title,
+                            headerTitle: item.title,
                             headerRight: () => headerRight({
                                 type: StepOverTypes.edit,
                                 handlePress: () => {

@@ -22,7 +22,7 @@ export default function LoginPage() {
 				Don't have an account?{' '}
 				<Text
 					onPress={() => {
-						navigation.navigate(StackNavigation.SignUp);
+						navigation.navigate(StackNavigation.SignUp, {});
 					}}
 					style={{ color: GlobalStyles.colorPalette.info[500] }}
 				>

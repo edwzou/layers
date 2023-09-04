@@ -1,14 +1,12 @@
 import {
 	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import { UserClothing } from '../pages/Match';
+import { UserOutfit } from '../pages/OutfitEdit';
 import { ReactNode } from 'react';
 
 export type StackNavigatorType = {
-	id: string | undefined;
-	initialRouteName: string | undefined;
-	children: ReactNode;
-	screenListeners: any;
-	screenOptions: any;
+	item?: UserClothing | UserOutfit;
 };
 
 export type StackTypes = {
