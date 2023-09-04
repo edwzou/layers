@@ -8,14 +8,13 @@ import ForeignProfile from '../../pages/Profile/ForeignProfile';
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import { StackNavigation } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { headerRight } from '../../components/Modal/HeaderRight';
 import { usersData } from '../../constants/testData';
 
-
-import { UserOutfit } from '../../pages/OutfitEdit';
+import ItemViewPage from '../../pages/ItemView/ItemViewPage';
+import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
 const FindPage = () => {
 
@@ -44,19 +43,8 @@ const FindPage = () => {
                             headerShown: false
                         }}
                     />
-                    <Stack.Screen
-                        name={StackNavigation.MarkedList}
-                        component={MarkedListComponent}
-                        options={{
-                            presentation: 'modal',
-                            headerTitle: `${usersData.length} Marked`
-                        }}
-                    />
-                    <Stack.Screen
-                        name={StackNavigation.ForeignProfile}
-                        component={ForeignProfileComponent}
-                        options={{
-                            headerShown: false,
+                    <Stack.Group
+                        screenOptions={{
                             presentation: 'modal'
                         }}>
                         <Stack.Screen
@@ -88,8 +76,6 @@ const FindPage = () => {
                             }}
                         />
                     </Stack.Group>
-                        }}
-                    />
                 </Stack.Group>
             </Stack.Navigator>
         </NavigationContainer>
