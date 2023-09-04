@@ -9,7 +9,7 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserOutfit } from '.';
-import { outfitData } from '../../constants/testData';
+import { outfitEdit } from '../../constants/GlobalStrings'
 
 import Icon from 'react-native-remix-icon';
 
@@ -49,7 +49,7 @@ const OutfitEdit = ({ outfit }: OutfitViewPropsType) => {
 	return (
 		<View style={styles.container}>
 			<StackedTextbox
-				label={outfit.title}
+				label={outfitEdit.outfitName}
 				onFieldChange={onInputChange}
 				value={text}
 			/>

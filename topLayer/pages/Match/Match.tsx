@@ -29,8 +29,6 @@ const Match = () => {
 
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-    const modalRef = useRef<refPropType>(null);
-
     const [selectedIndexes, setSelectedIndexes] =
         useState<UserSelectedClothingList>({} as UserSelectedClothingList);
     const [matchName, setMatchName] = useState('');

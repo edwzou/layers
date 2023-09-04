@@ -13,7 +13,7 @@ import { headerRight } from '../../components/Modal/HeaderRight';
 
 const ItemViewPage = ({ route }: any) => {
 
-    const { item } = route.params;
+    const { item, editable } = route.params;
 
     const ItemViewComponent = () => (<ItemView clothingItem={item} />)
     const EditClothingComponent = () => (<EditClothing clothingItem={item} />)
@@ -35,12 +35,12 @@ const ItemViewPage = ({ route }: any) => {
                         component={ItemViewComponent}
                         options={({ navigation }) => ({
                             headerTitle: item.title,
-                            headerRight: () => headerRight({
+                            headerRight: editable ? (() => headerRight({
                                 type: StepOverTypes.edit,
                                 handlePress: () => {
                                     navigation.navigate(StackNavigation.EditClothing);
                                 },
-                            }),
+                            })) : undefined,
                         })}
                     />
                     <Stack.Screen

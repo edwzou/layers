@@ -6,6 +6,7 @@ import { UserOutfit } from '../pages/OutfitEdit';
 
 export type StackNavigatorType = {
 	item?: UserClothing | UserOutfit;
+	editable?: boolean;
 	matchItems?: {
 		outerwear: UserClothing,
 		tops: UserClothing,

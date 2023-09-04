@@ -35,10 +35,12 @@ const Profile = () => {
         if ('items' in item) {
             navigation.navigate(StackNavigation.OutfitView, {
                 item: item,
+                editable: true,
             })
         } else {
             navigation.navigate(StackNavigation.ItemView, {
                 item: item,
+                editable: true,
             })
         }
     };
