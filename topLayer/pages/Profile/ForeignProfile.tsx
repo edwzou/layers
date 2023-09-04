@@ -1,4 +1,4 @@
-import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -7,36 +7,22 @@ import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
 import CategoryBar from '../../components/Category/CategoryBar';
 import CategorySlides from '../../components/Category/CategorySlides';
-import Navbar from '../../components/Bar/Navbar';
 
 import {
-    StepOverTypes,
     CategoryToIndex,
     IndexToCategory,
-    ColorTags,
     StackNavigation,
     ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { clothingData, colorTags } from '../../constants/testData';
+import { clothingData } from '../../constants/testData';
 
-import GeneralModal, {
-    type refPropType,
-} from '../../components/Modal/GeneralModal';
-import { highTranslateY } from '../../utils/modalMaxShow';
-import SignUpPage from '../SignUp/SignUpPage';
-import ItemView from '../../pages/ItemView/ItemView'
-import OutfitView from '../../pages/OutfitView/OutfitView';
-import OutfitEdit from '../../pages/OutfitEdit/OutfitEdit';
+
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import EditClothing from '../ItemView/EditClothing';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitEdit'
-import axios, { AxiosResponse } from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
-import { UserContext } from '../../utils/UserContext';
 
 interface ForeignProfilePropsType {
     isPrivate: boolean;

@@ -1,12 +1,8 @@
-import { RouteProp, ParamListBase } from '@react-navigation/native';
 import {
-	NativeStackNavigationEventMap,
-	NativeStackNavigationOptions,
 	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 import { UserClothing } from '../pages/Match';
 import { UserOutfit } from '../pages/OutfitEdit';
-import { ReactNode } from 'react';
 
 export type StackNavigatorType = {
 	item?: UserClothing | UserOutfit;

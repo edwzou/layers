@@ -1,5 +1,5 @@
 import { StyleSheet, FlatList, Dimensions } from 'react-native'
-import React, { useContext } from 'react'
+import React from 'react'
 
 import CategorySlide from './CategorySlide';
 

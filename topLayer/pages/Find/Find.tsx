@@ -1,4 +1,4 @@
-import React, { useState, useRef, createContext } from 'react';
+import React, { useState, createContext } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -11,16 +11,9 @@ import { type StackTypes } from '../../utils/StackNavigation';
 
 import SearchBar from '../../components/Bar/SearchBar';
 import Header from '../../components/Header/Header';
-import GeneralModal, {
-	type refPropType,
-} from '../../components/Modal/GeneralModal';
 
 import Marked from './Marked';
-import MarkedList from './MarkedList';
 
-import ForeignProfile from '../Profile/ForeignProfile';
-
-import { highTranslateY, fullTranslateY } from '../../utils/modalMaxShow';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const ShowProfileContext = createContext(() => { });
