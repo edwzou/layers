@@ -6,6 +6,13 @@ import { UserOutfit } from '../pages/OutfitEdit';
 
 export type StackNavigatorType = {
 	item?: UserClothing | UserOutfit;
+	matchItems?: {
+		outerwear: UserClothing,
+		tops: UserClothing,
+		bottoms: UserClothing,
+		shoes: UserClothing,
+	}
+	matchName?: (text: string) => void;
 };
 
 export type StackTypes = {
