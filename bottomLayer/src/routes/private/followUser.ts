@@ -1,30 +1,30 @@
-import express from 'express';
-import { clientFollow, responseCallbackFollow } from '../../utils/responseCallback';
-import { pool } from '../../utils/sqlImport';
-import { NotFoundError } from '../../utils/Errors/NotFoundError';
+import express from "express";
+import {
+  clientFollow,
+  responseCallbackFollow,
+} from "../../utils/responseCallback";
+import { pool } from "../../utils/sqlImport";
+import { once } from "node:events";
+import { QueryManager } from "../../utils/event-emitters/queryManager";
 const router = express.Router();
 
-
-
 // Endpoint for following a user, the url parameter is the user doing the following
-router.post('/follow/:userId', async (req: any, res: any) => {
-    const { userId } = req.params;
-    const { toFollowId } = req.body
-    console.log(userId, toFollowId)
+router.post("/follow/:followerId", async (req: any, res: any) => {
+  // The followedId is the person getting followed. Follower is the following.
+  const { followerId } = req.params;
+  const { followedId } = req.body;
+  console.log(followerId, followedId);
 
-    const client1 = pool.connect();
-    const client2 = pool.connect();
+  const client1 = pool.connect();
+  const client2 = pool.connect();
 
-    var res1 = -1;
-    var res2 = -1;
-    var res3 = -1;
-    const errors: string[] = []
-    const queries = [res1, res2, res3]
-
-    // Perform follow user logic
-    const follow = async (uid1: string, uid2: string): Promise<void> => {
-      try {
-        /*
+  // Perform follow user logic
+  const follow = async (
+    followerId: string,
+    followedId: string,
+  ): Promise<void> => {
+    try {
+      /*
         Following query user issues:
         1. The following user can be a non existing user, and return a rowcount of 1
         2. If the user is already following that user, returns rowcount 0
@@ -46,111 +46,101 @@ router.post('/follow/:userId', async (req: any, res: any) => {
         I believe these are all the cases
         */
 
-        const following = `
+      // Adds followed to the follower's followings array
+      const following = `
           UPDATE backend_schema.user
-          SET following = array_append(following, '${uid1}')
-          WHERE uid = '${uid2}'
-            AND '${uid1}' <> ALL (following)
+          SET following = array_append(following, '${followedId}')
+          WHERE uid = '${followerId}'
+            AND '${followedId}' <> ALL (following)
         `;
 
-        const follower = `
+      // Adds follower to the followed's followers array
+      const follower = `
         UPDATE backend_schema.user 
-          SET followers = array_append(followers, '${uid2}')
-          WHERE uid = '${uid1}'
-            AND '${uid2}' <> ALL (followers)
+          SET followers = array_append(followers, '${followerId}')
+          WHERE uid = '${followedId}'
+            AND '${followerId}' <> ALL (followers)
         `;
 
-        const user = pool.query(
+      const queryManager = new QueryManager(3);
+
+      const queryTrigger = once(queryManager, "proceed");
+
+      const followingQ = clientFollow(
+        followerId,
+        following,
+        client1,
+        queryManager,
+        "Following failure",
+      );
+      const followerQ = clientFollow(
+        followedId,
+        follower,
+        client2,
+        queryManager,
+        "Follower failure",
+      );
+
+      // Check if the Follower User Exists
+      const followerUser = await pool.query(
+        "SELECT * FROM backend_schema.user WHERE uid = $1",
+        [followerId],
+      );
+      if (followerUser.rows.length === 0) {
+        queryManager.failure(
+          "Follower User (the user doing the following) Not Found, uid: " +
+            followerId,
           "SELECT * FROM backend_schema.user WHERE uid = $1",
-          [uid1]
         );
-        const followingQ = clientFollow(uid2, following, client1, 1, queries)
-        const followerQ = clientFollow(uid1, follower, client2, 2, queries);
-        queries[0] = (await user).rows.length
-        if (queries[0] === 0) {
-          errors.push('User Not Found, uid: ' + uid1)
-        }
-        console.log("BReak1: ", queries);
-        // if followingQ is an error it is thrown and caught below so it should never be an error
-        (await followingQ) !== null && errors.push(await followingQ);
-        (await followerQ) !== null && errors.push(await followerQ);
-        console.log("errors1: ", errors);
-        if (errors.length > 0) {
-          if (errors.length == 3) {
-            if (errors[2].startsWith("No change in user while reverting initial query, uid: ")) {
-              throw new NotFoundError(
-                "The follwer user referenced in the follow request does not exist\nuid1: " +
-                  uid1 +
-                  "\n" +
-                  errors[2]
-              );
-            }
-              throw new NotFoundError(
-                "None of the users referenced in the follow request exist\nuid1: " +
-                  uid1 +
-                  "\nuid2: " +
-                  uid2
-              );
-          } else if (errors.length == 2) {
-            if (errors[0].startsWith('User Not Found, uid: ')) {
-              throw new NotFoundError('The follwer user referenced in the follow request does not exist\nuid1: ' + uid1)
-            } else if (
-              errors[0].startsWith(
-                "No change in user while reverting initial query, uid: "
-              )
-            ) {
-              throw new NotFoundError(
-                "The follwing user referenced in the follow request does not exist\nuid2: " +
-                  uid2 +
-                  "\n" +
-                  errors[0]
-              );
-            } else {
-              throw new Error(
-                "These two users already follow each other\nuid1: " +
-                  uid1 +
-                  "\nuid2: " +
-                  uid2
-              );
-            }
-          } else {
-            throw new NotFoundError(
-              "The follwing user referenced in the follow request does not exist\nuid2: " +
-                uid2
-            );
-          }
-        }
-        console.log("errors: ", errors)
-        responseCallbackFollow(null, uid1, uid2, res);
-      } catch (error) {
-        responseCallbackFollow(error, uid1, uid2, res)
-      } finally {
-        (await client1).release;
-        (await client2).release;
+      } else {
+        queryManager.complete(
+          "SELECT * FROM backend_schema.user WHERE uid = $1",
+        );
       }
+
+      const resolution = await queryTrigger;
+      if (resolution[1] < 0) {
+        await followingQ;
+        await followerQ;
+        queryManager.resolveErrorLog(followerId, followedId);
+      }
+
+      responseCallbackFollow(null, followerId, followedId, res);
+    } catch (error) {
+      responseCallbackFollow(error, followerId, followedId, res);
+    } finally {
+      (await client1).release;
+      (await client2).release;
     }
-   void follow(userId, toFollowId)
+  };
+  void follow(followerId, followedId);
 });
 
 // Endpoint for unfollowing a user, the url parameter is the user doing the unfollowing
-router.post('/unfollow/:userId', async (req: any, res: any) => {
+router.post("/unfollow/:userId", async (req: any, res: any) => {
   const { userId } = req.params;
   const { unFollowId } = req.body;
-    // Perform unfollow user logic
+  // Perform unfollow user logic
 
   const unfollow = async (uid1: string, uid2: string): Promise<void> => {
     try {
       // const thread1 = getUserCore(uid1);
       // const thread2 = getUserCore(uid2);
-      const following = pool.query(`
+      const following = pool.query(
+        `
       UPDATE backend_schema.user
         SET following = ARRAY_REMOVE(following, $1)
-        WHERE uid = $2`, [uid1, uid2]);
-      const followers = pool.query(`
+        WHERE uid = $2`,
+        [uid1, uid2],
+      );
+      const followers = pool.query(
+        `
       UPDATE backend_schema.user
         SET followers = ARRAY_REMOVE(followers, $1)
-        WHERE uid = $2`, [uid2, uid1]);
-      
+        WHERE uid = $2`,
+        [uid2, uid1],
+      );
+
       // const result1 = await thread1
       // const result2 = await thread2
       // const user1 = result1.rows[0]
@@ -159,10 +149,10 @@ router.post('/unfollow/:userId', async (req: any, res: any) => {
       await followers;
       // responseCallbackUnFollow(null, user1["username"], user2["username"], res)
     } catch (error) {
-      responseCallbackFollow(error, uid1, uid2, res)
+      responseCallbackFollow(error, uid1, uid2, res);
     }
-  }
-  void unfollow(userId, unFollowId)
+  };
+  void unfollow(userId, unFollowId);
 });
 
 module.exports = router;

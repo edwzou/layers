@@ -23,6 +23,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pg": "^8.11.2",
+    "postgres": "^3.3.5",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.0"
   },
