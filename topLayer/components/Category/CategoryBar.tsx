@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 
 import GlobalStyles from '../../constants/GlobalStyles';

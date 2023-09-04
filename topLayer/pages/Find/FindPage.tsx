@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React from 'react'
 
 import Find from './Find';
@@ -21,8 +21,6 @@ const FindPage = () => {
     const FindComponent = () => (<Find usersData={usersData} />)
     const MarkedListComponent = () => (<MarkedList usersData={usersData} />)
     const ForeignProfileComponent = () => (<ForeignProfile isPrivate={false} />)
-    const ItemViewPageComponent = () => (<ItemViewPage />)
-    const OutfitViewPageComponent = () => (<OutfitViewPage />)
 
     return (
         <NavigationContainer

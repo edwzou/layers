@@ -1,6 +1,5 @@
-import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
-import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
-import Icon from 'react-native-remix-icon';
+import React, { useRef, useState, useContext } from 'react';
+import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
