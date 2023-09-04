@@ -46,7 +46,7 @@ export const StackNavigation = {
 	Camera: 'Camera',
 	Settings: 'Settings',
 	MarkedList: 'MarkedList',
-	OutfitPreview: 'OutfitPreview',
+	OutfitPreview: 'Preview',
 	ForeignProfile: 'ForeignProfile'
 } as const;
 
