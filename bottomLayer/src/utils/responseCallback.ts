@@ -121,6 +121,7 @@ export const responseCallbackFollow = (
         " Failed to Follow " +
         followedId,
       error: error,
+      log: error.message,
     });
     return error;
   } else {
@@ -229,16 +230,22 @@ export const clientFollow = async (
     if (error instanceof Error) {
       if (error.name === UnknownError.name) {
         // this is only called on 0,1
-        await clientUndoFollowTransaction(
+        console.log("hit1");
+        return clientUndoFollowTransaction(
           uid,
           revertFollowQuery(query),
           clientOn,
         );
       } else if (error.name === NotFoundError.name) {
-        // console.log("hit")
+        console.log("hit2");
         return responseCallback(null, "No change in user, uid: " + uid);
       }
-      // console.log("hit2", typeof error, error instanceof NotFoundError, (error as Error).name);
+      console.log(
+        "hit3",
+        typeof error,
+        error instanceof NotFoundError,
+        (error as Error).name,
+      );
 
       queryEmitter.utterFailure(error.message, query);
       return responseCallback(error, null);
@@ -271,9 +278,10 @@ export const clientUndoFollowTransaction = async (
 };
 
 export const revertFollowQuery = (query: string): string => {
-  query.replace("array_append", "array_remove");
-  const indexOfAnd = query.indexOf("AND");
-  const reversion = query.substring(0, indexOfAnd);
+  const remove = query.replace("array_append", "array_remove");
+  const indexOfAnd = remove.indexOf("AND");
+  const reversion = remove.substring(0, indexOfAnd);
+  console.log("reversion: ", reversion);
   return reversion;
 };
 

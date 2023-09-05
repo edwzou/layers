@@ -4,36 +4,49 @@ import { NotFoundError } from "../../utils/Errors/NotFoundError";
 export class QueryManager extends EventEmitter {
   queries: number;
   failures: string[];
+  result: number = 0;
   constructor(queries: number) {
     super();
     this.queries = queries;
     this.failures = [];
   }
 
-  allComplete(result: number) {
-    this.emit("proceed", "All Queries Were Completed", result);
+  allComplete() {
+    this.emit("proceed", "All Queries Were Completed", this.result);
   }
 
   complete(query: string) {
     this.queries--;
     this.emit("Query Completed", query);
     if (this.queries === 0) {
-      this.allComplete(1);
+      this.allComplete();
     }
   }
 
   failure(failure: string, query: string) {
     this.queries--;
+    this.result--;
+    console.log("Query Failed. \nQuery: " + query + "\nFailure: " + failure);
     this.failures.push(failure);
     this.emit("Query Failure Caught", query, failure);
     if (this.queries === 0) {
-      this.allComplete(-1);
+      this.allComplete();
     }
   }
 
   utterFailure(failure: string, query: string) {
-    this.queries = -1;
-    this.emit("proceed", "Query Failure Uncaught", -2, query, failure);
+    this.queries--;
+    this.result -= -10;
+    console.log(
+      "Query Failed, Uncaught Failure. \nQuery: " +
+        query +
+        "\nFailure: " +
+        failure,
+    );
+    this.emit("Query Failure Uncaught", query, failure);
+    if (this.queries === 0) {
+      this.allComplete();
+    }
   }
 
   resolveErrorLog(followerId: string, followedId: string) {
