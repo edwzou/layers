@@ -10,10 +10,9 @@ const gc = new Storage({
     projectId: 'angelic-cat-393620'
 });
 
-console.log('__dirname:', __dirname);
-console.log('Key file path:', path.join(__dirname, 'angelic-cat-393620-9872b786fdb4.json'));
-
-gc.getBuckets().then(x => console.log(x));
+// console.log('__dirname:', __dirname);
+// console.log('Key file path:', path.join(__dirname, 'angelic-cat-393620-9872b786fdb4.json'));
+// gc.getBuckets().then(x => console.log(x));
 
 const layersBucket1 = gc.bucket('layers-bucket-1');
 
