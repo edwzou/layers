@@ -2,6 +2,7 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate, responseCallbackGet } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
+import { convertImage } from '../../s3/convert-image';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
@@ -35,6 +36,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
 
   const insertUser = async (): Promise<void> => {
     try {
+      const URL = await convertImage(profile_picture, username, false);
       await pool.query(`
       INSERT INTO backend_schema.user (
         first_name, last_name, email, username, password, private_option, followers, following, profile_picture
@@ -87,6 +89,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
+      const URL = await convertImage(profile_picture, username, false);
       const updateUser = await pool.query(`UPDATE backend_schema.user
         SET first_name = $1,
             last_name = $2,
