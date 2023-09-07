@@ -29,13 +29,7 @@ const Find = ({ usersData }: FindPropsType) => {
 	const [isComponentVisible, setComponentVisible] = useState(true);
 
 	const handlePress = () => {
-		navigation.navigate(StackNavigation.MarkedList, {
-			id: undefined,
-			initialRouteName: undefined,
-			children: null,
-			screenListeners: null,
-			screenOptions: null
-		})
+		navigation.navigate(StackNavigation.MarkedList, {})
 	};
 
 	const handleEmptyString = () => {

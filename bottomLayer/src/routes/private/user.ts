@@ -1,17 +1,25 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate, responseCallbackGet } from '../../utils/responseCallback';
+import {
+  responseCallbackDelete,
+  responseCallbackPost,
+  responseCallbackUpdate,
+  responseCallbackGet
+} from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
   const userId = req.user;
-
   const getUser = async (): Promise<void> => {
     try {
-      const user = await pool.query('SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1', [userId]);
+      const user = await pool.query(
+        'SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1',
+        [userId]
+      );
       const result = user.rows[0];
+
       responseCallbackGet(null, result, res, 'User');
     } catch (error) {
       responseCallbackGet(error, null, res);
@@ -21,7 +29,7 @@ router.get('/', (req: Request, res: Response): void => {
   void getUser();
 });
 // Endpoint for creating a specific user
-router.post('/', checkAuthenticated, (req: Request, res: Response) => {
+router.post('/', (req: Request, res: Response) => {
   const {
     first_name,
     last_name,
@@ -33,6 +41,8 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
     followers,
     following
   } = req.body;
+
+  console.log(req.body);
 
   const insertUser = async (): Promise<void> => {
     try {
@@ -48,7 +58,6 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
       responseCallbackPost(error, res);
     }
   };
-
   void insertUser();
 });
 
@@ -60,7 +69,10 @@ router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
 
   const deleteUser = async (): Promise<void> => {
     try {
-      const deleteUser = await pool.query('DELETE FROM backend_schema.user WHERE uid = $1', [userId]);
+      const deleteUser = await pool.query(
+        'DELETE FROM backend_schema.user WHERE uid = $1',
+        [userId]
+      );
       responseCallbackDelete(null, userId, res, 'User', deleteUser.rowCount);
     } catch (error) {
       responseCallbackDelete(error, userId, res, 'User');
@@ -96,12 +108,25 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
             email = $3,
             username = $4,
             password = $5,
-            private_option = $6,
+            private = $6,
             followers = $7,
             following = $8,
             profile_picture = $9
         WHERE uid = $10`,
-      [first_name, last_name, email, username, password, private_option, followers, following, URL, userId]);
+        [
+          first_name,
+          last_name,
+          email,
+          username,
+          password,
+          private_option,
+          followers,
+          following,
+          profile_picture,
+          userId
+        ]
+      );
+      // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
       responseCallbackUpdate(error, userId, res, 'User');

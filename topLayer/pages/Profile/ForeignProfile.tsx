@@ -1,12 +1,12 @@
-import React, { useRef, useState, SetStateAction, Dispatch } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
-import CategoryBar from '../../components/Bar/CategoryBar';
-import CategorySlide from '../../components/Category/CategorySlide';
+import CategoryBar from '../../components/Category/CategoryBar';
+import CategorySlides from '../../components/Category/CategorySlides';
 
 import {
     CategoryToIndex,
@@ -17,6 +17,7 @@ import {
 import GlobalStyles from '../../constants/GlobalStyles';
 import { clothingData } from '../../constants/testData';
 
+
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -24,12 +25,10 @@ import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitEdit'
 
 interface ForeignProfilePropsType {
-    setSelectedItem: Dispatch<SetStateAction<UserClothing>>;
-    setSelectedOutfit: Dispatch<SetStateAction<UserOutfit>>;
     isPrivate: boolean;
 }
 
-const ForeignProfile = ({ setSelectedItem, setSelectedOutfit, isPrivate }: ForeignProfilePropsType) => {
+const ForeignProfile = ({ isPrivate }: ForeignProfilePropsType) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
 
@@ -37,25 +36,16 @@ const ForeignProfile = ({ setSelectedItem, setSelectedOutfit, isPrivate }: Forei
 
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
 
-    const handleItemChange = (outfit: boolean, item: any) => {
-        console.log("handleItemChange")
-        if (outfit) {
-            setSelectedOutfit(item);
+    const handleItemChange = (item: UserClothing | UserOutfit) => {
+        if ('items' in item) {
             navigation.navigate(StackNavigation.OutfitView, {
-                id: undefined,
-                initialRouteName: undefined,
-                children: null,
-                screenListeners: null,
-                screenOptions: null
+                item: item,
+                editable: false,
             })
         } else {
-            setSelectedItem(item);
             navigation.navigate(StackNavigation.ItemView, {
-                id: undefined,
-                initialRouteName: undefined,
-                children: null,
-                screenListeners: null,
-                screenOptions: null
+                item: item,
+                editable: false,
             })
         }
     };
@@ -116,30 +106,17 @@ const ForeignProfile = ({ setSelectedItem, setSelectedOutfit, isPrivate }: Forei
                     </View>
                 ) : (
                     <View style={{ gap: 15, flex: 1 }}>
-                        <View>
-                            <CategoryBar
-                                selectedCategory={selectedCategory}
-                                onCategoryChange={handleCategoryChange}
-                            />
-                        </View>
-                        <View>
-                            <FlatList
-                                ref={flatListRef}
-                                data={clothingData}
-                                renderItem={({ item }) => (
-                                    <CategorySlide
-                                        clothingData={item}
-                                        onPress={handleItemChange}
-                                    />
-                                )}
-                                horizontal
-                                pagingEnabled
-                                snapToAlignment="center"
-                                showsHorizontalScrollIndicator={false}
-                                onViewableItemsChanged={handleViewableItemsChanged}
-                                viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
-                            />
-                        </View>
+                        <CategoryBar
+                            selectedCategory={selectedCategory}
+                            handleCategoryChange={handleCategoryChange}
+                        />
+                        <CategorySlides
+                            categorySlidesRef={flatListRef}
+                            clothingData={clothingData}
+                            selectedCategory={selectedCategory}
+                            handleItemChange={handleItemChange}
+                            handleViewableItemsChanged={handleViewableItemsChanged}
+                        />
                     </View>
                 )}
                 <View style={styles.bookmarkIconWrapper}>

@@ -1,11 +1,9 @@
 import { StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 
 import Find from './Find';
 import MarkedList from './MarkedList';
 import ForeignProfile from '../../pages/Profile/ForeignProfile';
-import ItemViewPage from '../../pages/ItemView/ItemViewPage';
-import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,19 +13,14 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 import { usersData } from '../../constants/testData';
 
-import { UserClothing } from '../../pages/Match';
-import { UserOutfit } from '../../pages/OutfitEdit';
+import ItemViewPage from '../../pages/ItemView/ItemViewPage';
+import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
 const FindPage = () => {
 
-    const [selectedItem, setSelectedItem] = useState<UserClothing>({} as UserClothing)
-    const [selectedOutfit, setSelectedOutfit] = useState<UserOutfit>({} as UserOutfit)
-
     const FindComponent = () => (<Find usersData={usersData} />)
     const MarkedListComponent = () => (<MarkedList usersData={usersData} />)
-    const ForeignProfileComponent = () => (<ForeignProfile setSelectedItem={setSelectedItem} setSelectedOutfit={setSelectedOutfit} isPrivate={false} />)
-    const ItemViewPageComponent = () => (<ItemViewPage selectedItem={selectedItem} />)
-    const OutfitViewPageComponent = () => (<OutfitViewPage selectedOutfit={selectedOutfit} />)
+    const ForeignProfileComponent = () => (<ForeignProfile isPrivate={false} />)
 
     return (
         <NavigationContainer
@@ -68,14 +61,14 @@ const FindPage = () => {
                         />
                         <Stack.Screen
                             name={StackNavigation.ItemView}
-                            component={ItemViewPageComponent}
+                            component={ItemViewPage}
                             options={{
                                 headerShown: false,
                             }}
                         />
                         <Stack.Screen
                             name={StackNavigation.OutfitView}
-                            component={OutfitViewPageComponent}
+                            component={OutfitViewPage}
                             options={{
                                 headerShown: false,
                             }}

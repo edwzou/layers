@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
+import Button from '../../components/Button/Button';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -118,7 +119,7 @@ const Settings = () => {
                 <Pressable
                     style={{ alignSelf: 'center' }}
                     onPress={() => {
-                        navigation.navigate(StackNavigation.Camera);
+                        navigation.navigate(StackNavigation.Camera, {});
                     }}
                 >
                     <ProfilePicture />

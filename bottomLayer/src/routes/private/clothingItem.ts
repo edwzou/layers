@@ -7,42 +7,48 @@ const router = express.Router();
 
 // Endpoint for creating a specific clothing item
 router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
-  const uid = req.user;
   const { image, category, title, brands, size, color } = req.body;
+  const uid = req.user;
 
   const insertClothingItem = async (): Promise<any> => {
     try {
       const URL = await convertImage(image, title, true);
       await pool.query(`INSERT INTO backend_schema.clothing_item (image, category, title, brands, size, color, uid)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)`, [URL, category, title, brands, size, color, uid]);
+      VALUES ($1, $2, $3, $4, $5, $6, $7)`, [image, category, title, brands, size, color, uid]);
 
       responseCallbackPost(null, res, 'Clothing Item');
     } catch (error) {
       responseCallbackPost(error, res);
     }
   };
-
   void insertClothingItem();
 });
 
 // Endpoint for deleting a specific outfit
 router.delete('/:ciid', checkAuthenticated, (req: Request, res: Response): void => {
   const { ciid } = req.params;
-
   const deleteItem = async (ciid: string): Promise<void> => {
     try {
       const deleteItem = await pool.query('DELETE FROM backend_schema.clothing_item WHERE ciid = $1', [ciid]);
-      responseCallbackDelete(null, ciid, res, 'Clothing Item', deleteItem.rowCount);
+
+      responseCallbackDelete(
+        null,
+        ciid,
+        res,
+        'Clothing Item',
+        deleteItem.rowCount
+      );
     } catch (error) {
       responseCallbackDelete(error, ciid, res, 'Clothing Item');
     }
   };
-
+  
   void deleteItem(ciid);
 });
 
 // Endpoint for updating a specific outfit
 router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
+  // Extract outfit data from the request body
   const { ciid } = req.params;
   const { image, category, title, brands, size, color } = req.body;
 
