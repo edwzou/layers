@@ -42,6 +42,7 @@ router.delete('/:ciid', checkAuthenticated, (req: Request, res: Response): void 
       responseCallbackDelete(error, ciid, res, 'Clothing Item');
     }
   };
+  
   void deleteItem(ciid);
 });
 

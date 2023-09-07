@@ -1,17 +1,19 @@
-import { RouteProp, ParamListBase } from '@react-navigation/native';
 import {
-	NativeStackNavigationEventMap,
-	NativeStackNavigationOptions,
 	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import { ReactNode } from 'react';
+import { UserClothing } from '../pages/Match';
+import { UserOutfit } from '../pages/OutfitEdit';
 
 export type StackNavigatorType = {
-	id: string | undefined;
-	initialRouteName: string | undefined;
-	children: ReactNode;
-	screenListeners: any;
-	screenOptions: any;
+	item?: UserClothing | UserOutfit;
+	editable?: boolean;
+	matchItems?: {
+		outerwear: UserClothing,
+		tops: UserClothing,
+		bottoms: UserClothing,
+		shoes: UserClothing,
+	}
+	matchName?: (text: string) => void;
 };
 
 export type StackTypes = {

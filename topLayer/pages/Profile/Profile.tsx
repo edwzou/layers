@@ -1,12 +1,11 @@
-import React, { useRef, useState, createContext, SetStateAction, Dispatch, useEffect, useContext } from 'react';
-import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
-import Icon from 'react-native-remix-icon';
+import React, { useRef, useState, useContext } from 'react';
+import { View, Pressable, StyleSheet, FlatList } from 'react-native';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
-import CategoryBar from '../../components/Bar/CategoryBar';
-import CategorySlide from '../../components/Category/CategorySlide';
+import CategoryBar from '../../components/Category/CategoryBar';
+import CategorySlides from '../../components/Category/CategorySlides';
 import Navbar from '../../components/Bar/Navbar';
 
 import {
@@ -25,37 +24,23 @@ import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitEdit'
 import { UserContext } from '../../utils/UserContext';
 
-interface ProfilePropsType {
-    setSelectedItem?: Dispatch<SetStateAction<UserClothing>>;
-    setSelectedOutfit?: Dispatch<SetStateAction<UserOutfit>>;
-}
-
-const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
+const Profile = () => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
 
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
     const { data } = useContext(UserContext);
-    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline);
 
-    const handleItemChange = (outfit: boolean, item: any) => {
-        if (outfit && setSelectedOutfit) {
-            setSelectedOutfit(item);
+    const handleItemChange = (item: UserClothing | UserOutfit) => {
+        if ('items' in item) {
             navigation.navigate(StackNavigation.OutfitView, {
-                id: undefined,
-                initialRouteName: undefined,
-                children: null,
-                screenListeners: null,
-                screenOptions: null
+                item: item,
+                editable: true,
             })
-        } else if (setSelectedItem) {
-            setSelectedItem(item);
+        } else {
             navigation.navigate(StackNavigation.ItemView, {
-                id: undefined,
-                initialRouteName: undefined,
-                children: null,
-                screenListeners: null,
-                screenOptions: null
+                item: item,
+                editable: true,
             })
         }
     };
@@ -82,23 +67,11 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
     }).current;
 
     const toggleFeedbackModal = () => {
-        navigation.navigate(StackNavigation.Feedback, {
-            id: undefined,
-            initialRouteName: undefined,
-            children: null,
-            screenListeners: null,
-            screenOptions: null
-        })
+        navigation.navigate(StackNavigation.Feedback, {})
     };
 
     const toggleSettingsModal = () => {
-        navigation.navigate(StackNavigation.Settings, {
-            id: undefined,
-            initialRouteName: undefined,
-            children: null,
-            screenListeners: null,
-            screenOptions: null
-        })
+        navigation.navigate(StackNavigation.Settings, {})
     }
 
     return (
@@ -119,30 +92,17 @@ const Profile = ({ setSelectedItem, setSelectedOutfit }: ProfilePropsType) => {
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>
-                    <View>
-                        <CategoryBar
-                            selectedCategory={selectedCategory}
-                            onCategoryChange={handleCategoryChange}
-                        />
-                    </View>
-                    <View>
-                        <FlatList
-                            ref={flatListRef}
-                            data={clothingData}
-                            renderItem={({ item }) => (
-                                <CategorySlide
-                                    clothingData={item}
-                                    onPress={handleItemChange}
-                                />
-                            )}
-                            horizontal
-                            pagingEnabled
-                            snapToAlignment="center"
-                            showsHorizontalScrollIndicator={false}
-                            onViewableItemsChanged={handleViewableItemsChanged}
-                            viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
-                        />
-                    </View>
+                    <CategoryBar
+                        selectedCategory={selectedCategory}
+                        handleCategoryChange={handleCategoryChange}
+                    />
+                    <CategorySlides
+                        categorySlidesRef={flatListRef}
+                        clothingData={clothingData}
+                        selectedCategory={selectedCategory}
+                        handleItemChange={handleItemChange}
+                        handleViewableItemsChanged={handleViewableItemsChanged}
+                    />
                 </View>
             </View >
         </>

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React from 'react'
 
 import OutfitView from './OutfitView'
@@ -12,16 +12,12 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 import { headerRight } from '../../components/Modal/HeaderRight';
 
-import { UserOutfit } from '../../pages/OutfitEdit';
+const OutfitViewPage = ({ route }: any) => {
 
-interface OutfitViewPagePropsType {
-    selectedOutfit: UserOutfit;
-}
+    const { item, editable } = route.params;
 
-const OutfitViewPage = ({ selectedOutfit }: OutfitViewPagePropsType) => {
-
-    const OutfitViewComponent = () => (<OutfitView outfit={selectedOutfit} />)
-    const OutfitEditComponent = () => (<OutfitEdit outfit={selectedOutfit} />)
+    const OutfitViewComponent = () => (<OutfitView outfit={item} />)
+    const OutfitEditComponent = () => (<OutfitEdit outfit={item} />)
 
     return (
         <NavigationContainer
@@ -39,13 +35,13 @@ const OutfitViewPage = ({ selectedOutfit }: OutfitViewPagePropsType) => {
                         name={StackNavigation.ItemView}
                         component={OutfitViewComponent}
                         options={({ navigation }) => ({
-                            headerTitle: selectedOutfit.title,
-                            headerRight: () => headerRight({
+                            headerTitle: item.title,
+                            headerRight: editable ? (() => headerRight({
                                 type: StepOverTypes.edit,
                                 handlePress: () => {
                                     navigation.navigate(StackNavigation.EditClothing);
                                 },
-                            }),
+                            })) : undefined,
                         })}
                     />
                     <Stack.Screen

@@ -54,13 +54,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
       <View style={styles.icons}>
         <Pressable
           onPress={() => {
-            RootNavigation.navigate(StackNavigation.Camera, {
-              id: undefined,
-              initialRouteName: undefined,
-              children: null,
-              screenListeners: null,
-              screenOptions: null
-            })
+            RootNavigation.navigate(StackNavigation.Camera, {})
           }}
         >
           <Icon

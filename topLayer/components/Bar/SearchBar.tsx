@@ -57,13 +57,7 @@ const SearchBar = ({
 	};
 
 	const handleProfilePress = () => {
-		navigation.navigate(StackNavigation.ForeignProfile, {
-			id: undefined,
-			initialRouteName: undefined,
-			children: null,
-			screenListeners: null,
-			screenOptions: null
-		})
+		navigation.navigate(StackNavigation.ForeignProfile, {})
 	};
 
 	return (

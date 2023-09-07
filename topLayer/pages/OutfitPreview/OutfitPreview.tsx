@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
 import ItemCell from '../../components/Cell/ItemCell';
@@ -11,21 +11,14 @@ import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserClothing } from '../../pages/Match';
 import { match } from '../../constants/GlobalStrings';
 
-interface OutfitPreviewPropsType {
-	outerwear: UserClothing;
-	tops: UserClothing;
-	bottoms: UserClothing;
-	shoes: UserClothing;
-	matchName: (text: string) => void;
-}
+import { MatchPageContext } from '../../pages/Match/MatchPage';
 
-const OutfitPreview = ({
-	outerwear,
-	tops,
-	bottoms,
-	shoes,
-	matchName,
-}: OutfitPreviewPropsType) => {
+const OutfitPreview = ({ route }: any) => {
+
+	const { matchItems, matchName } = route.params;
+
+	const { setMatch } = useContext(MatchPageContext);
+
 	const [text, setText] = useState('');
 	const [rawData, setRawData] = useState<UserClothing[]>([]);
 	const [data, setData] = useState<UserClothing[]>([]);
@@ -35,8 +28,12 @@ const OutfitPreview = ({
 	};
 
 	useEffect(() => {
-		setRawData([outerwear, tops, bottoms, shoes]);
-	}, [outerwear, tops, bottoms, shoes]);
+		setRawData([matchItems.outerwear, matchItems.tops, matchItems.bottoms, matchItems.shoes]);
+		setMatch({
+			previewData: matchItems,
+			matchName: matchName,
+		})
+	}, [matchItems.outerwear, matchItems.tops, matchItems.bottoms, matchItems.shoes]);
 
 	useEffect(() => {
 		setData(rawData.filter(Boolean));
