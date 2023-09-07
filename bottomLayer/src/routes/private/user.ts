@@ -7,7 +7,7 @@ import {
   responseCallbackGet
 } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
-import { uploadImage } from '../../utils/awsImport';
+import { convertImage } from '../../s3/convert-image';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
@@ -46,27 +46,13 @@ router.post('/', (req: Request, res: Response) => {
 
   const insertUser = async (): Promise<void> => {
     try {
-      await uploadImage(profile_picture, username);
-
-      // await pool.query(
-      //   `
-      // INSERT INTO backend_schema.user (
-      //   first_name, last_name, email, username, password, private_option, followers, following, profile_picture
-      //   ) VALUES (
-      //     $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      //   [
-      //     first_name,
-      //     last_name,
-      //     email,
-      //     username,
-      //     password,
-      //     private_option,
-      //     followers,
-      //     following,
-      //     '12345'
-      //   ]
-      // );
-
+      const URL = await convertImage(profile_picture, username, false);
+      await pool.query(`
+      INSERT INTO backend_schema.user (
+        first_name, last_name, email, username, password, private_option, followers, following, profile_picture
+        ) VALUES ( 
+          $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      [first_name, last_name, email, username, password, private_option, followers, following, URL]);
       responseCallbackPost(null, res, 'User');
     } catch (error) {
       responseCallbackPost(error, res);
@@ -115,8 +101,8 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-      const updateUser = await pool.query(
-        `UPDATE backend_schema.user
+      const URL = await convertImage(profile_picture, username, false);
+      const updateUser = await pool.query(`UPDATE backend_schema.user
         SET first_name = $1,
             last_name = $2,
             email = $3,
