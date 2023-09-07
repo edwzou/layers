@@ -51,7 +51,6 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
   // Extract outfit data from the request body
   const { ciid } = req.params;
   const { image, category, title, brands, size, color } = req.body;
-
   const updateItem = async (ciid: string): Promise<void> => {
     try {
       const URL = await convertImage(image, title, true);

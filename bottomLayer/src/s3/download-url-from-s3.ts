@@ -20,5 +20,5 @@
 //       throw error;
 //     }
 //   };
-  
+
 //   export { downloadURLFromS3 };
