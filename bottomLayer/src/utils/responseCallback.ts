@@ -1,6 +1,5 @@
 import { NotFoundError } from "./Errors/NotFoundError";
 import { type Response } from "express";
-// import { PoolClient } from "pg";
 import { UnknownError } from "./Errors/UnknownError";
 import { once } from "node:events";
 import { QueryManager } from "./event-emitters/queryManager";
