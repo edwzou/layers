@@ -2,7 +2,7 @@ import {
 	createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 import { UserClothing } from '../pages/Match';
-import { UserOutfit } from '../pages/OutfitEdit';
+import { UserOutfit } from '../pages/OutfitView';
 
 export type StackNavigatorType = {
 	item?: UserClothing | UserOutfit;

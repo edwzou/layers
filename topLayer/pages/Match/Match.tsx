@@ -10,7 +10,7 @@ import {
     ClothingTypes,
     StackNavigation,
 } from '../../constants/Enums';
-import { userClothing } from '../../constants/testData';
+import { clothingData } from '../../constants/testData';
 
 import {
     type UserClothing,
@@ -47,24 +47,24 @@ const Match = () => {
 
     useEffect(() => {
         const filterClothing = (type: string) => {
-            return userClothing.filter((value) => value.category.toString() === type);
+            return clothingData.slice(1).filter((value) => value.category.toString() === type);
         };
 
         setData((value) => ({
             ...value,
-            outerwear: filterClothing(ClothingTypes.outerwear),
+            outerwear: filterClothing(ClothingTypes.outerwear)[0].data,
         }));
         setData((value) => ({
             ...value,
-            tops: filterClothing(ClothingTypes.tops),
+            tops: filterClothing(ClothingTypes.tops)[0].data,
         }));
         setData((value) => ({
             ...value,
-            bottoms: filterClothing(ClothingTypes.bottoms),
+            bottoms: filterClothing(ClothingTypes.bottoms)[0].data,
         }));
         setData((value) => ({
             ...value,
-            shoes: filterClothing(ClothingTypes.shoes),
+            shoes: filterClothing(ClothingTypes.shoes)[0].data,
         }));
     }, []);
 

@@ -6,7 +6,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 import * as RootNavigation from '../../RootNavigation';
 
-import { NavigationContext } from '../../pages/Main/MainPage';
+import { MainPageContext } from '../../pages/Main/MainPage';
 import { StackNavigation } from '../../constants/Enums';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
@@ -17,7 +17,7 @@ interface NavbarPropsType {
 }
 
 const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
-  const navigationContext = useContext(NavigationContext);
+  const { navigationArray } = useContext(MainPageContext);
   const { data, updateData } = useContext(UserContext)
 
   const handleLogout = async () => {
@@ -30,7 +30,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
       <View style={styles.icons}>
         <Pressable
           onPress={() => {
-            navigationContext[1]();
+            navigationArray[1]();
           }}
         >
           <Icon
@@ -65,7 +65,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
         </Pressable>
         <Pressable
           onPress={() => {
-            navigationContext[2]();
+            navigationArray[2]();
           }}
         >
           <Icon

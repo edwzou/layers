@@ -51,7 +51,7 @@ const OutfitEdit = ({ outfit }: OutfitViewPropsType) => {
 			<StackedTextbox
 				label={outfitEdit.outfitName}
 				onFieldChange={onInputChange}
-				value={text}
+				value={outfit.title ? outfit.title : text}
 			/>
 			<FlatList
 				data={outfit.items}

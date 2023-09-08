@@ -15,14 +15,14 @@ import { StackNavigation } from '../../constants/Enums';
 
 interface SearchBarPropsType {
 	placeholder: string;
-	usersData: any[]; // !!! fix any type
+	foreignUsersData: any[]; // !!! fix any type
 	handleEmptyString?: () => void;
 	handleNonEmptyString?: () => void;
 }
 
 const SearchBar = ({
 	placeholder,
-	usersData,
+	foreignUsersData,
 	handleEmptyString,
 	handleNonEmptyString,
 }: SearchBarPropsType) => {
@@ -46,7 +46,7 @@ const SearchBar = ({
 		setSearchQuery(text);
 
 		/// !!! search doesn't account for full name
-		const filteredResults = usersData.filter(
+		const filteredResults = foreignUsersData.filter(
 			(user) =>
 				user.username.toLowerCase().includes(text.toLowerCase()) ||
 				user.first_name.toLowerCase().includes(text.toLowerCase()) ||

@@ -24,22 +24,43 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	const colorPickerRef = useRef<refPropType>(null);
 
 	const [currentColorTags, setColorTags] = useState(clothingItem.colors);
-	const [itemName, setItemName] = useState('');
+	const [itemName, setItemName] = useState(clothingItem.title ? clothingItem.title : '');
 
 	const [sizeOpen, setSizeOpen] = useState(false);
-	const [sizeValue, setSizeValue] = useState(null);
+	const [sizeValue, setSizeValue] = useState(clothingItem.size ? clothingItem.size : '');
 	const [sizes, setSizes] = useState([
-		{ label: 'Extra-extra small', value: 'xxs' },
-		{ label: 'Extra small', value: 'xs' },
-		{ label: 'Small', value: 's' },
-		{ label: 'Medium', value: 'm' },
-		{ label: 'Large', value: 'l' },
-		{ label: 'Extra large', value: 'xl' },
-		{ label: 'Extra-extra large', value: 'xxl' },
+		{
+			label: 'Extra-extra small',
+			value: 'xxs'
+		},
+		{
+			label: 'Extra small',
+			value: 'xs'
+		},
+		{
+			label: 'Small',
+			value: 's'
+		},
+		{
+			label: 'Medium',
+			value: 'm'
+		},
+		{
+			label: 'Large',
+			value: 'l'
+		},
+		{
+			label: 'Extra large',
+			value: 'xl'
+		},
+		{
+			label: 'Extra-extra large',
+			value: 'xxl'
+		},
 	]);
 
 	const [itemTypeOpen, setItemTypeOpen] = useState(false);
-	const [itemTypeValue, setItemTypeValue] = useState(null);
+	const [itemTypeValue, setItemTypeValue] = useState(clothingItem.category ? clothingItem.category : '');
 	const [itemType, setItemType] = useState([
 		{
 			label: capitalizeFirstLetter(ClothingTypes.outerwear),
@@ -77,7 +98,11 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 					gap: GlobalStyles.layout.gap,
 				}}
 			>
-				<StackedTextBox label="Item name" onFieldChange={setItemName} />
+				<StackedTextBox
+					label="Item name"
+					onFieldChange={setItemName}
+					value={itemName}
+				/>
 				<ItemCell image={clothingItem.image} canDelete={true} />
 				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 					<View style={{ width: ITEM_SIZE(2) }}>

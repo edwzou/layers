@@ -3,12 +3,6 @@ import image0 from '../assets/img0.png';
 import image2 from '../assets/img2.png';
 import image3 from '../assets/img3.png';
 import lincolnPfp from '../assets/lincoln.jpg';
-import pant1 from '../assets/testPants1.png';
-import shoe1 from '../assets/testShoe1.png';
-import top2 from '../assets/testTop2.png';
-import top3 from '../assets/testTop3.png';
-import pant3 from '../assets/testPants3.png';
-import shoe3 from '../assets/testShoe3.png';
 
 import { ClothingTypes, ColorTags } from './Enums';
 
@@ -108,7 +102,7 @@ export const clothingData = [
 				id: 'image0',
 				image: image0,
 				title: 'goose',
-				size: 'medium',
+				size: 's',
 				category: 'outerwear',
 				colors: [
 					ColorTags.Black,
@@ -119,8 +113,8 @@ export const clothingData = [
 			{
 				id: 'image0',
 				image: image0,
-				title: 'goose',
-				size: 'medium',
+				title: 'black jacket',
+				size: 'm',
 				category: 'outerwear',
 				colors: [
 					ColorTags.Black,
@@ -131,8 +125,8 @@ export const clothingData = [
 			{
 				id: 'image0',
 				image: image0,
-				title: 'goose',
-				size: 'medium',
+				title: 'yessir',
+				size: 'l',
 				category: 'outerwear',
 				colors: [
 					ColorTags.Black,
@@ -149,7 +143,7 @@ export const clothingData = [
 				id: 'image1',
 				image: image1,
 				title: 'my first burberry shirt',
-				size: 'medium',
+				size: 's',
 				category: 'tops',
 				colors: [
 					ColorTags.Beige,
@@ -161,7 +155,7 @@ export const clothingData = [
 				id: 'image1',
 				image: image1,
 				title: 'YES',
-				size: 'medium',
+				size: 'm',
 				category: 'tops',
 				colors: [
 					ColorTags.Beige,
@@ -173,7 +167,7 @@ export const clothingData = [
 				id: 'image1',
 				image: image1,
 				title: 'beige shirt',
-				size: 'medium',
+				size: 'l',
 				category: 'tops',
 				colors: [
 					ColorTags.Beige,
@@ -189,8 +183,8 @@ export const clothingData = [
 			{
 				id: 'image3',
 				image: image3,
-				title: 'pant',
-				size: 'medium',
+				title: 'my pants',
+				size: 's',
 				category: 'bottoms',
 				colors: [
 					ColorTags.Olive
@@ -199,8 +193,8 @@ export const clothingData = [
 			{
 				id: 'image4',
 				image: image3,
-				title: 'pant',
-				size: 'medium',
+				title: 'same copy',
+				size: 'm',
 				category: 'bottoms',
 				colors: [
 					ColorTags.Olive
@@ -209,58 +203,8 @@ export const clothingData = [
 			{
 				id: 'image5',
 				image: image3,
-				title: 'pant',
-				size: 'medium',
-				category: 'bottoms',
-				colors: [
-					ColorTags.Olive
-				]
-			},
-			{
-				id: 'image6',
-				image: image3,
-				title: 'pant',
-				size: 'medium',
-				category: 'bottoms',
-				colors: [
-					ColorTags.Olive
-				]
-			},
-			{
-				id: 'image7',
-				image: image3,
-				title: 'pant',
-				size: 'medium',
-				category: 'bottoms',
-				colors: [
-					ColorTags.Olive
-				]
-			},
-			{
-				id: 'image3',
-				image: image3,
-				title: 'pant',
-				size: 'medium',
-				category: 'bottoms',
-				colors: [
-					ColorTags.Olive
-				]
-			},
-			{
-				id: 'image4',
-				image: image3,
-				title: 'pant',
-				size: 'medium',
-				category: 'bottoms',
-				colors: [
-					ColorTags.Olive
-				]
-			},
-			{
-				id: 'image5',
-				image: image3,
-				title: 'pant',
-				size: 'medium',
+				title: 'beater',
+				size: 'l',
 				category: 'bottoms',
 				colors: [
 					ColorTags.Olive
@@ -275,7 +219,35 @@ export const clothingData = [
 				id: 'image2',
 				image: image2,
 				title: 'shoe',
-				size: 'medium',
+				size: 's',
+				category: 'shoes',
+				colors: [
+					ColorTags.Black,
+					ColorTags.Yellow,
+					ColorTags.Red,
+					ColorTags.Purple,
+					ColorTags.Blue,
+				]
+			},
+			{
+				id: 'image2',
+				image: image2,
+				title: 'jordans',
+				size: 'm',
+				category: 'shoes',
+				colors: [
+					ColorTags.Black,
+					ColorTags.Yellow,
+					ColorTags.Red,
+					ColorTags.Purple,
+					ColorTags.Blue,
+				]
+			},
+			{
+				id: 'image2',
+				image: image2,
+				title: 'black nike',
+				size: 'l',
 				category: 'shoes',
 				colors: [
 					ColorTags.Black,
@@ -289,180 +261,20 @@ export const clothingData = [
 	},
 ];
 
-export const outerwearData = [
-	{
-		id: 'image0',
-		image: image0,
-		title: 'burberry',
-	},
-	{
-		id: 'image0',
-		image: image0,
-		title: 'burberry',
-	},
-	{
-		id: 'image0',
-		image: image0,
-		title: 'burberry',
-	},
-];
+export const mockUserData = {
+	uid: '12345678-abcd-efgh-ijkl-mnopqrstuvwx',
+	firstName: 'Charlie',
+	lastName: 'Wu',
+	email: 'charliewu@gmail.com',
+	username: 'charlie_wu_',
+	password: 'Layers2023',
+	privateOption: 'f',
+	followers: [],
+	following: [],
+	profilePicture: '../../assets/marble-pfp.png',
+}
 
-export const topData = [
-	{
-		id: 'image1',
-		image: image1,
-		title: 'burberry',
-	},
-	{
-		id: 'image1',
-		image: image1,
-		title: 'burberry',
-	},
-	{
-		id: 'image1',
-		image: image1,
-		title: 'burberry',
-	},
-];
-
-export const outfitData = [
-	{
-		title: 'Friday night',
-		items: [
-			{
-				id: 'image0',
-				image: image0,
-				title: 'goose',
-			},
-			{
-				id: 'image1',
-				image: image1,
-				title: 'burberry',
-			},
-			{
-				id: 'image2',
-				image: image2,
-				title: 'shoe',
-			},
-			{
-				id: 'image3',
-				image: image3,
-				title: 'pant',
-			},
-		],
-		category: ClothingTypes.outfits,
-	},
-	{
-		title: 'Weekend casual baby!',
-		items: [
-			{
-				id: 'image0',
-				image: image0,
-				title: 'goose',
-				category: ClothingTypes.outerwear,
-			},
-			{
-				id: 'image1',
-				image: image1,
-				title: 'burberry',
-				category: ClothingTypes.tops,
-			},
-			{
-				id: 'image2',
-				image: image2,
-				title: 'shoe',
-				category: ClothingTypes.shoes,
-			},
-			{
-				id: 'image3',
-				image: image3,
-				title: 'pant',
-				category: ClothingTypes.bottoms,
-			},
-		],
-		category: ClothingTypes.outfits,
-	},
-	{
-		title:
-			"Seattle day 1 let's go get it! Seattle day 1 let's go get it! Seattle day 1 let's go get it! Seattle day 1 let's go get it! Seattle day 1 let's go get it! Seattle day 1 let's go get it!",
-		items: [
-			{
-				id: 'image0',
-				image: image0,
-				title: 'goose',
-			},
-			{
-				id: 'image1',
-				image: image1,
-				title: 'burberry',
-			},
-			{
-				id: 'image2',
-				image: image2,
-				title: 'shoe',
-			},
-			{
-				id: 'image3',
-				image: image3,
-				title: 'pant',
-			},
-		],
-		category: ClothingTypes.outfits,
-	},
-];
-
-export const bottomsData = [
-	{
-		id: 'image3',
-		image: image3,
-		title: 'pant',
-	},
-	{
-		id: 'image4',
-		image: image3,
-		title: 'pant',
-	},
-	{
-		id: 'image5',
-		image: image3,
-		title: 'pant',
-	},
-	{
-		id: 'image6',
-		image: image3,
-		title: 'pant',
-	},
-	{
-		id: 'image7',
-		image: image3,
-		title: 'pant',
-	},
-	{
-		id: 'image3',
-		image: image3,
-		title: 'pant',
-	},
-	{
-		id: 'image4',
-		image: image3,
-		title: 'pant',
-	},
-	{
-		id: 'image5',
-		image: image3,
-		title: 'pant',
-	},
-];
-
-export const shoesData = [
-	{
-		id: 'image2',
-		image: image2,
-		title: 'shoe',
-	},
-];
-
-export const usersData = [
+export const foreignUsersData = [
 	{
 		uid: 'a45ab439-0dce-448a-9126-43f32f8d56c8',
 		first_name: 'John',
@@ -500,57 +312,3 @@ export const usersData = [
 		profile_picture: lincolnPfp,
 	},
 ];
-
-export const userClothing = [
-	{
-		id: 0,
-		image: image1,
-		category: ClothingTypes.tops,
-	},
-	{
-		id: 1,
-		image: top2,
-		category: ClothingTypes.tops,
-	},
-	{
-		id: 2,
-		image: top3,
-		category: ClothingTypes.tops,
-	},
-	{
-		id: 0,
-		image: pant1,
-		category: ClothingTypes.bottoms,
-	},
-	{
-		id: 1,
-		image: image3,
-		category: ClothingTypes.bottoms,
-	},
-	{
-		id: 2,
-		image: pant3,
-		category: ClothingTypes.bottoms,
-	},
-	{
-		id: 0,
-		image: shoe1,
-		category: ClothingTypes.shoes,
-	},
-	{
-		id: 1,
-		image: image2,
-		category: ClothingTypes.shoes,
-	},
-	{
-		id: 2,
-		image: shoe3,
-		category: ClothingTypes.shoes,
-	},
-];
-
-export const colorTags = [
-	ColorTags.Black,
-	ColorTags.Red,
-	ColorTags.White,
-]

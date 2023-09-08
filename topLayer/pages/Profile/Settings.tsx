@@ -19,6 +19,7 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../utils/UserContext';
+import { MainPageContext } from '../../pages/Main/MainPage';
 
 interface FormValues {
     first_name: string;
@@ -35,6 +36,7 @@ const Settings = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const { data, updateData } = useContext(UserContext);
+    const { mockUserData } = useContext(MainPageContext);
 
     const {
         control,
@@ -43,13 +45,13 @@ const Settings = () => {
         formState: { dirtyFields, errors },
     } = useForm({
         defaultValues: {
-            first_name: '',
-            last_name: '',
-            username: '',
-            email: '',
-            password: '',
+            first_name: mockUserData.firstName,
+            last_name: mockUserData.lastName,
+            username: mockUserData.username,
+            email: mockUserData.email,
+            password: mockUserData.password,
             private: false,
-            profile_picture: image,
+            profile_picture: mockUserData.profilePicture,
         },
     });
 
@@ -122,7 +124,7 @@ const Settings = () => {
                         navigation.navigate(StackNavigation.Camera, {});
                     }}
                 >
-                    <ProfilePicture />
+                    <ProfilePicture image={require('../../assets/marble-pfp.png')} />
                 </Pressable>
                 <View
                     style={{

@@ -21,8 +21,10 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { UserClothing } from '../Match';
-import { UserOutfit } from '../OutfitEdit'
+import { UserOutfit } from '../OutfitView'
 import { UserContext } from '../../utils/UserContext';
+
+import { MainPageContext } from '../../pages/Main/MainPage';
 
 const Profile = () => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -30,6 +32,7 @@ const Profile = () => {
 
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
     const { data } = useContext(UserContext);
+    const { mockUserData } = useContext(MainPageContext);
 
     const handleItemChange = (item: UserClothing | UserOutfit) => {
         if ('items' in item) {
@@ -78,17 +81,19 @@ const Profile = () => {
         <>
             <Navbar toggleFeedbackModal={toggleFeedbackModal} />
             <View style={{ gap: 25, flex: 1 }}>
-                <View style={{ alignItems: 'center', gap: 7 }}>
+                <View style={styles.profilePicture}>
                     <Pressable
                         onPress={() => {
                             toggleSettingsModal()
                         }}
                     >
-                        <ProfilePicture />
+                        <ProfilePicture image={require('../../assets/marble-pfp.png')} />
                     </Pressable>
                     <View>
-                        <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
-                        <Username username={`@${data ? data.username : ''}`} />
+                        {/* <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
+                        <Username username={`@${data ? data.username : ''}`} /> */}
+                        <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
+                        <Username username={mockUserData.username} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>
@@ -115,7 +120,14 @@ const styles = StyleSheet.create({
         top: 0,
         right: GlobalStyles.layout.xGap,
     },
-
+    profilePicture: {
+        alignItems: 'center',
+        gap: 7,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+    }
 });
 
 export default Profile;
