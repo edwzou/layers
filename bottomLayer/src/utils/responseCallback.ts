@@ -1,17 +1,10 @@
-<<<<<<< HEAD
 import { NotFoundError } from "./Errors/NotFoundError";
 import { type Response } from "express";
-import { PoolClient } from "pg";
+// import { PoolClient } from "pg";
 import { UnknownError } from "./Errors/UnknownError";
 import { once } from "node:events";
 import { QueryManager } from "./event-emitters/queryManager";
-=======
-import { NotFoundError } from './Errors/NotFoundError';
-import { type Response } from 'express';
-import { pool } from './sqlImport';
 import { type PoolClient } from 'pg';
-import { UnknownError } from './Errors/UnknownError';
->>>>>>> main
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
 
@@ -32,6 +25,7 @@ export const responseCallback2 = (error: any, element: any): Callback<any> => {
   }
 };
 
+// All get calls to postgresql should fail if rowcount === 0
 export const responseCallbackGet = (
   error: any,
   element: any,
@@ -40,17 +34,10 @@ export const responseCallbackGet = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-<<<<<<< HEAD
     res.status(500).json({ message: "Internal Server Error", error: error });
     return error;
   } else if (element.length === 0) {
     res.status(400).json({ message: notFoundObject + " Not Found" });
-=======
-    res.status(500).json({ message: 'Internal Server Error', error });
-    return error;
-  } else if (element === null || element === undefined || element.length === 0) {
-    res.status(400).json({ message: notFoundObject + ' Not Found' });
->>>>>>> main
     return element;
   } else {
     res.status(200).json({ message: "Success", data: element });
@@ -65,11 +52,7 @@ export const responseCallbackPost = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-<<<<<<< HEAD
     res.status(500).json({ message: "Internal Server Error", error: error });
-=======
-    res.status(500).json({ message: 'Internal Server Error', error });
->>>>>>> main
     return error;
   } else {
     res.status(200).json({ message: "Successfully Created a " + target });
@@ -112,14 +95,10 @@ export const responseCallbackUpdate = (
     throw new NotFoundError(target + ' Not Found, id: ' + id);
   } else if (error != null) {
     console.log(error);
-<<<<<<< HEAD
     res.status(500).json({
       message: "Internal Server Error, Failed to Update " + target + ": " + id,
       error: error,
     });
-=======
-    res.status(500).json({ message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id, error });
->>>>>>> main
     return error;
   } else {
     res
@@ -131,20 +110,13 @@ export const responseCallbackUpdate = (
 
 export const responseCallbackFollow = (
   error: any,
-<<<<<<< HEAD
   followerId: string,
   followedId: string,
   res: Response,
-=======
-  uid1: string,
-  uid2: string,
-  res: Response
->>>>>>> main
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
     res.status(500).json({
-<<<<<<< HEAD
       message:
         "Internal Server Error: " +
         followerId +
@@ -152,21 +124,12 @@ export const responseCallbackFollow = (
         followedId,
       error: error,
       log: error.message,
-=======
-      // Where following and follower are the uids
-      message: 'Internal Server Error: ' + uid1 + ' Failed to Follow ' + uid2,
-      error
->>>>>>> main
     });
     return error;
   } else {
     res
       .status(200)
-<<<<<<< HEAD
       .json({ message: followerId + " Successfully Followed " + followedId });
-=======
-      .json({ message: uid1 + ' Successfully Followed ' + uid2 });
->>>>>>> main
     return error;
   }
 };
@@ -189,17 +152,9 @@ export const responseCallbackUnFollow = (
     });
     return error;
   } else {
-<<<<<<< HEAD
     res.status(200).json({
       message: username + " Successfully UnFollowed " + toUnFollowUsername,
     });
-=======
-    res
-      .status(200)
-      .json({
-        message: username + ' Successfully UnFollowed ' + toUnFollowUsername
-      });
->>>>>>> main
     return error;
   }
 };
@@ -224,21 +179,12 @@ export const getUserCore = async (
 ): Promise<any> => {
   try {
     const result = await client.query(
-<<<<<<< HEAD
-      "SELECT * FROM backend_schema.user WHERE uid = $1",
-      [userId],
-    );
-    const user = result.rows;
-    if (user.length === 0) {
-      throw new NotFoundError("User Not Found, uid: " + userId);
-=======
       'SELECT * FROM backend_schema.user WHERE uid = $1',
       [userId]
     );
     const user = result.rows;
     if (user.length === 0) {
       throw new NotFoundError('User Not Found, uid: ' + userId);
->>>>>>> main
     }
     return responseCallback(null, user);
   } catch (error) {
@@ -250,23 +196,15 @@ export const clientFollow = async (
   uid: string,
   query: string,
   client: Promise<PoolClient>,
-<<<<<<< HEAD
   queryEmitter: QueryManager,
   failure: string = "",
 ): Promise<any> => {
   const clientOn = await client;
   // console.log("Client1: ", clientOn);
   console.log("query1: ", query);
-=======
-  otherQueries: number[],
-  resolution: number = -1
-): Promise<any> => {
-  const clientOn = await client;
->>>>>>> main
   try {
     const queryTrigger = once(queryEmitter, "proceed");
     const result = await clientOn.query(query);
-<<<<<<< HEAD
 
     console.log("result: ", result);
     // console.log("set: ", otherQueries)
@@ -303,18 +241,6 @@ export const clientFollow = async (
       } else if (error.name === NotFoundError.name) {
         console.log("hit2");
         return responseCallback(null, "No change in user, uid: " + uid);
-=======
-    resolution = result.rowCount;
-    if (resolution === 0) {
-      throw new NotFoundError('User Not Found, uid: ' + uid);
-    }
-    for (let i = 0; i < otherQueries.length; i++) {
-      while (otherQueries[i] === -1) {
-        continue;
-      }
-      if (otherQueries[i] === 0) {
-        throw new UnknownError('The error is unknown in this method');
->>>>>>> main
       }
       console.log(
         "hit3",
@@ -326,7 +252,6 @@ export const clientFollow = async (
       queryEmitter.utterFailure(error.message, query);
       return responseCallback(error, null);
     }
-<<<<<<< HEAD
   }
 };
 
@@ -402,17 +327,3 @@ export const clientFollowTransaction2 = async (
     return responseCallback(error, null);
   }
 };
-=======
-    await clientOn.query('COMMIT');
-    return responseCallback(null, true);
-  } catch (error) {
-    await clientOn.query('ROLLBACK');
-    if (error instanceof UnknownError) {
-      return responseCallback(null, 'Unknown Error');
-    } else if (error instanceof NotFoundError) {
-      return responseCallback(null, 'NotFound Error');
-    }
-    return responseCallback(error, null);
-  }
-};
->>>>>>> main
