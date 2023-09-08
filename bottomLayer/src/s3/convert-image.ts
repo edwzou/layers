@@ -9,7 +9,7 @@ export async function convertImage(
   remove: boolean
 ): Promise<string> {
   try {
-    // const response = await axios.get(URI, { responseType: 'arraybuffer' });
+    const response = await axios.get(URI, { responseType: 'arraybuffer' });
     // let imageBuffer;
     // if (remove) {
     //   imageBuffer = await removeBackground(response.data); // remove background from the image
