@@ -92,46 +92,6 @@ router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
   void deleteUser();
 });
 
-// Endpoints for updating a specific user
-// router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
-//   const userId = req.user as string;
-
-//   if (userId == null) return;
-
-//   const {
-//     first_name,
-//     last_name,
-//     email,
-//     username,
-//     password,
-//     private_option,
-//     profile_picture,
-//     followers,
-//     following
-//   } = req.body;
-//   const updateUser = async (): Promise<void> => {
-//     try {
-//       const updateUser = await pool.query(`UPDATE backend_schema.user
-//         SET first_name = $1,
-//             last_name = $2,
-//             email = $3,
-//             username = $4,
-//             password = $5,
-//             private = $6,
-//             followers = $7,
-//             following = $8,
-//             profile_picture = $9
-//         WHERE uid = $10`,
-//       [first_name, last_name, email, username, password, private_option, followers, following, profile_picture, userId]);
-//       // responds with successful update even when no changes are made
-//       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
-//     } catch (error) {
-//       responseCallbackUpdate(error, userId, res, 'User');
-//     }
-//   };
-
-//   void updateUser();
-// });
 router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   const userId = req.user as string;
 
@@ -176,6 +136,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
           userId
         ]
       );
+      // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
       responseCallbackUpdate(error, userId, res, 'User');
