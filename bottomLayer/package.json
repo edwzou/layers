@@ -5,7 +5,8 @@
   "main": "endpoints.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon",
+    "dev": "npx nodemon",
+    "start": "ts-node ./server.ts",
     "format": "eslint --fix ."
   },
   "keywords": [],
