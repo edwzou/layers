@@ -1,38 +1,27 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { S3Client } from "@aws-sdk/client-s3";
+import dotenv from 'dotenv';
 
-const accessKeyId = process.env.AWS_ACCESS_KEY;
-const secretAccessKey = process.env.AWS_SECRET_KEY;
+// Load environment variables from .env file
+dotenv.config();
 
-if (accessKeyId == null || secretAccessKey == null) {
-  throw new Error('credentials not found');
-}
+// Check if AWS credentials are provided in the environment
+if (!process.env.AWS_BUCKET_NAME || !process.env.AWS_ACCESS_KEY || !process.env.AWS_SECRET_KEY || !process.env.AWS_BUCKET_REGION) {
+  throw new Error('One or more AWS environment variables are not defined.');
+};
 
-const client = new S3Client({
-  region: 'us-west-2',
+// Create an S3 client instance
+const s3Client = new S3Client({
+  region: process.env.AWS_BUCKET_REGION,
   credentials: {
-    accessKeyId,
-    secretAccessKey
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
   }
 });
 
-export const uploadImage = async (uri: string, key: string): Promise<any> => {
-  const bucketName = process.env.AWS_BUCKET_NAME;
-  if (bucketName == null) throw new Error('bucket not found');
-
-  const imageBuffer = Buffer.from(uri.split(',')[1], 'base64');
-
-  const command = new PutObjectCommand({
-    Bucket: bucketName,
-    Key: key,
-    Body: imageBuffer,
-    ContentEncoding: 'base64',
-    ContentType: 'image/jpeg'
-  });
-
-  try {
-    const response = await client.send(command);
-    console.log(response);
-  } catch (err) {
-    console.error(err);
-  }
+// Function to get the bucket name
+function getBucketName(): string {
+    return process.env.AWS_BUCKET_NAME || "";
 };
+
+// Export the S3 client instance and the getBucketName function
+export { s3Client as s3, getBucketName };
