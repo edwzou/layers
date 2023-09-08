@@ -7,7 +7,7 @@ import {
   responseCallbackGet
 } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
-import { convertImage } from '../../s3/convert-image';
+// import { convertImage } from '../../s3/convert-image';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
