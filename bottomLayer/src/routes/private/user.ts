@@ -150,7 +150,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-      // const URL = await convertImage(profile_picture, username, false);
+      const URL = await convertImage(profile_picture, username, false);
       const updateUser = await pool.query(
         `UPDATE backend_schema.user
         SET first_name = $1,
