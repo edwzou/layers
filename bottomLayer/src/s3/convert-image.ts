@@ -10,13 +10,13 @@ export async function convertImage(
 ): Promise<string> {
   try {
     const response = await axios.get(URI, { responseType: 'arraybuffer' });
-    // let imageBuffer;
+    let imageBuffer;
     // if (remove) {
     //   imageBuffer = await removeBackground(response.data); // remove background from the image
     // } else {
-    //   imageBuffer = response.data; // don't remove the background
+    imageBuffer = response.data; // don't remove the background
     // }
-    // await uploadURIToS3(imageBuffer, key);
+    await uploadURIToS3(imageBuffer, key);
     // const URL = downloadURLFromS3(key);
     // console.log('Convert success:', URL);
     // return URL;
