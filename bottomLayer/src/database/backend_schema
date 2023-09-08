@@ -27,7 +27,7 @@ CREATE TABLE backend_schema.user (
     email VARCHAR(100) NOT NULL UNIQUE,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    privateOption BOOL NOT NULL,
+    private_option BOOL NOT NULL,
     followers UUID[] NOT NULL,
     following UUID[] NOT NULL,
     profile_picture VARCHAR(255)
@@ -35,7 +35,6 @@ CREATE TABLE backend_schema.user (
 CREATE TABLE backend_schema.outfit (
     oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     title VARCHAR(50) NOT NULL, 
-    -- Need to limit clothing_items to only refer to ciid UUIDs
     clothing_items UUID[] NOT NULL,
     uid UUID NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -17,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
+import { UserContext } from '../../utils/UserContext';
 
 interface FormValues {
 	first_name: string;
@@ -24,21 +25,15 @@ interface FormValues {
 	username: string;
 	email: string;
 	password: string;
-	private: boolean;
+	private_option: boolean;
 	profile_picture: string;
 }
 
-interface SignUpPropsType {
-	settings: boolean;
-}
-
-const SignUp = ({
-	settings,
-}: SignUpPropsType) => {
+const SignUp = () => {
 	const [image, setImage] = useState('');
-	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+	const { updateData } = useContext(UserContext);
 
 	const {
 		control,
@@ -52,7 +47,7 @@ const SignUp = ({
 			username: '',
 			email: '',
 			password: '',
-			private: false,
+			private_option: false,
 			profile_picture: image,
 		},
 	});
@@ -78,29 +73,35 @@ const SignUp = ({
 		setValue('profile_picture', image);
 	}, [image]);
 
-	const onSubmit = async (data: FormValues | any) => {
+	const onSubmit = async (formData: FormValues | any) => {
 		try {
-			const response = await axios.post(`${baseUrl}/users`, {
-				first_name: data.first_name,
-				last_name: data.last_name,
-				username: data.username,
-				email: data.email,
-				password: data.password,
-				profile_picture: data.profile_picture,
+			const { data, status } = await axios.post(`${baseUrl}/signup`, {
+				first_name: formData.first_name,
+				last_name: formData.last_name,
+				username: formData.username,
+				email: formData.email,
+				password: formData.password,
+				profile_picture: formData.profile_picture,
 				following: [],
 				followers: [],
-				private: data.private,
+				private_option: formData.private_option,
+			}, {
+				headers: {
+					'Content-Type': 'application/json'
+				}
 			});
 
-			if (response.status === 200) {
-				alert(`You have created: ${JSON.stringify(response.data)}`);
-				setLoading(false);
+			if (status === 200) {
+				try {
+					updateData(data.data);
+				} catch (error) {
+					console.log(error);
+				}
 			} else {
-				throw new Error('An error has occurred');
+				throw new Error('Not Authorized.');
 			}
 		} catch (error) {
 			alert(error);
-			setLoading(false);
 		}
 	};
 
@@ -110,15 +111,15 @@ const SignUp = ({
 	];
 
 	return (
-		<View style={{ gap: 40 }}>
+		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
 			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.Camera);
+						navigation.navigate(StackNavigation.Camera, {});
 					}}
 				>
-					<ProfilePicture image={image} />
+					<ProfilePicture />
 				</Pressable>
 				<View
 					style={{
@@ -215,40 +216,14 @@ const SignUp = ({
 				)}
 			</View>
 			<View style={{ alignSelf: 'center' }}>
-				{settings
-					? <Button
-						text="Update"
-						onPress={handleSubmit(onSubmit)}
-						disabled={false}
-						bgColor={GlobalStyles.colorPalette.primary[500]}
-					/>
-					: <Button
-						text="Sign up"
-						onPress={handleSubmit(onSubmit)}
-						disabled={Object.keys(dirtyFields).length < 5}
-						bgColor={GlobalStyles.colorPalette.primary[500]}
-					/>}
+				<Button
+					text="Sign up"
+					onPress={handleSubmit(onSubmit)}
+					disabled={Object.keys(dirtyFields).length < 5}
+					bgColor={GlobalStyles.colorPalette.primary[500]}
+				/>
 			</View>
-			{/* <Modal visible={modalVisible}
-				animationType="slide"
-				transparent={true}
-				onRequestClose={() => {
-					setModalVisible(!modalVisible);
-				}}>
-				<View style={styles.modalView}>
-					<View style={styles.modalGroup}>
-						<Pressable style={styles.modalSelection} onPress={pickImage}><Text>Library</Text></Pressable>
-						<View style={{ backgroundColor: GlobalStyles.colorPalette.primary[500] + '20', width: '100%', height: 1 }} />
-						<Pressable style={styles.modalSelection} onPress={() => {
-							console.log("Implement Camera")
-
-							// !!! Implement Camera
-						}}><Text>Camera</Text></Pressable>
-					</View>
-					<Pressable style={styles.modalButtons} onPress={() => { setModalVisible(!modalVisible) }}><Text>Cancel</Text></Pressable>
-				</View>
-			</Modal> */}
-		</View>
+		</Pressable>
 	);
 };
 
@@ -264,7 +239,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 		alignItems: 'center',
 		gap: 5,
-		// backgroundColor: GlobalStyles.colorPalette.primary[400] + '40',
 		paddingBottom: 25,
 		shadowColor: '#000',
 		shadowOffset: {

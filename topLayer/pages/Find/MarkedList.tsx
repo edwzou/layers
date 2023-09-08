@@ -7,11 +7,20 @@ import ProfileCell from '../../components/Cell/ProfileCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from '../../utils/StackNavigation';
+
+import { StackNavigation } from '../../constants/Enums';
+
 interface MarkedListPropsType {
-	usersData: any[]; /// !!! fix any type
+	foreignUsersData: any[]; /// !!! fix any type
 }
 
-const MarkedList = ({ usersData }: MarkedListPropsType) => {
+const MarkedList = ({ foreignUsersData }: MarkedListPropsType) => {
+
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
 	const [isComponentVisible, setComponentVisible] = useState(true);
 
 	const handleEmptyString = () => {
@@ -22,18 +31,22 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
 		setComponentVisible((isComponentVisible) => false);
 	};
 
+	const handleProfilePress = () => {
+		navigation.navigate(StackNavigation.ForeignProfile, {})
+	};
+
 	return (
 		<View style={styles.container}>
 			<SearchBar
 				placeholder={find.searchMarked}
-				usersData={usersData}
+				foreignUsersData={foreignUsersData}
 				handleEmptyString={handleEmptyString}
 				handleNonEmptyString={handleNonEmptyString}
 			/>
 			{isComponentVisible && (
 				<FlatList
-					data={usersData}
-					renderItem={({ item }) => <ProfileCell user={item} />}
+					data={foreignUsersData}
+					renderItem={({ item }) => <ProfileCell user={item} handleProfilePress={handleProfilePress} />}
 				/>
 			)}
 		</View>

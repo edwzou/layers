@@ -9,7 +9,7 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserOutfit } from '.';
-import { outfitData } from '../../constants/testData';
+import { outfitEdit } from '../../constants/GlobalStrings'
 
 import Icon from 'react-native-remix-icon';
 
@@ -21,7 +21,11 @@ import Icon from 'react-native-remix-icon';
 //     matchName: (text: string) => void;
 // }
 
-const OutfitEdit = () => {
+interface OutfitViewPropsType {
+	outfit: UserOutfit;
+}
+
+const OutfitEdit = ({ outfit }: OutfitViewPropsType) => {
 	const [text, setText] = useState('');
 	const [rawData, setRawData] = useState<UserOutfit[]>([]);
 	const [data, setData] = useState<UserOutfit[]>([]);
@@ -45,12 +49,12 @@ const OutfitEdit = () => {
 	return (
 		<View style={styles.container}>
 			<StackedTextbox
-				label="Outfit name"
+				label={outfitEdit.outfitName}
 				onFieldChange={onInputChange}
-				value={text}
+				value={outfit.title ? outfit.title : text}
 			/>
 			<FlatList
-				data={outfitData[0].items}
+				data={outfit.items}
 				renderItem={({ item }) => {
 					return (
 						<View style={{ width: ITEM_SIZE(2) }}>

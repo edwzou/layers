@@ -65,6 +65,7 @@ const colorPalette = {
 };
 
 const layout = {
+	modalTopPadding: 3,
 	xGap: 16,
 	gap: 16,
 	highTranslateYBottomMargin: 120,
@@ -122,6 +123,7 @@ const utils = StyleSheet.create({
 
 const sizing = {
 	icon: {
+		large: 40,
 		regular: 30,
 		small: 20,
 		xSmall: 16,
@@ -154,6 +156,8 @@ const icons = {
 	flipCameraOutline: 'ri-camera-switch-line',
 	imageFill: 'ri-image-fill',
 	deleteBin2Line: 'delete-bin-2-line',
+	circleLogout: 'logout-circle-line',
+	privateOutline: 'ri-lock-line',
 };
 
 export default {

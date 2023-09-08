@@ -1,36 +1,80 @@
-import React, { useRef } from 'react';
-import { SafeAreaView } from 'react-native';
+import React from 'react';
 
-import Navbar from '../../components/Bar/Navbar';
-import GeneralModal, {
-	type refPropType,
-} from '../../components/Modal/GeneralModal';
-
-import { StepOverTypes, StackNavigation } from '../../constants/Enums';
-
-import { highTranslateY } from '../../utils/modalMaxShow';
+import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import { Stack } from '../../utils/StackNavigation';
 
 import Profile from './Profile';
-import FeedbackPage from '../../ModalContent/Feedback/FeedbackPage';
+import FeedbackPage from '../Feedback/FeedbackPage';
+import SettingsPage from './SettingsPage';
+import ItemViewPage from '../../pages/ItemView/ItemViewPage'
+import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
+import { headerRight } from '../../components/Modal/HeaderRight';
+import { NavigationContainer } from '@react-navigation/native';
+import GlobalStyles from '../../constants/GlobalStyles';
 
 const ProfilePage = () => {
-	const modalRef = useRef<refPropType>(null);
-
-	const toggleFeedbackModal = () => {
-		modalRef.current?.scrollTo(highTranslateY);
-	};
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
-			<Navbar toggleFeedbackModal={toggleFeedbackModal} />
-			<Profile isForeignProfile={false} />
-			<GeneralModal
-				title={StackNavigation.Feedback}
-				stepOver={{ type: StepOverTypes.send, handlePress: () => {} }}
-				content={<FeedbackPage />}
-				ref={modalRef}
-			/>
-		</SafeAreaView>
+		<NavigationContainer
+			independent={true}>
+			<Stack.Navigator>
+				<Stack.Screen
+					options={{
+						headerShown: false,
+					}}
+					name={StackNavigation.Profile}
+					component={Profile}
+				/>
+				<Stack.Group
+					screenOptions={{
+						presentation: 'modal',
+						headerTitleStyle: GlobalStyles.typography.subtitle,
+						headerStyle: {
+							backgroundColor: GlobalStyles.colorPalette.background,
+						},
+						headerShadowVisible: false,
+					}}>
+					<Stack.Screen
+						name={StackNavigation.Feedback}
+						component={FeedbackPage}
+						options={{
+							headerRight: () => headerRight({
+								type: StepOverTypes.send,
+								handlePress: () => {
+									console.log("Hello")
+								},
+							}),
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.Settings}
+						component={SettingsPage}
+						options={{
+							headerRight: () => headerRight({
+								type: StepOverTypes.update,
+								handlePress: () => {
+									console.log("Hello")
+								},
+							}),
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.ItemView}
+						component={ItemViewPage}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.OutfitView}
+						component={OutfitViewPage}
+						options={{
+							headerShown: false,
+						}}
+					/>
+				</Stack.Group>
+			</Stack.Navigator>
+		</NavigationContainer>
 	);
 };
 

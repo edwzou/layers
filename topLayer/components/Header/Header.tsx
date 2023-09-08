@@ -8,7 +8,7 @@ import Icon from 'react-native-remix-icon';
 import { stepOverHandler } from '.';
 import { NavigationBack } from '../../constants/Enums';
 
-import { NavigationContext } from '../../pages/Main/MainPage';
+import { MainPageContext } from '../../pages/Main/MainPage';
 
 interface HeaderPropType {
 	text: string;
@@ -26,7 +26,7 @@ const Header = ({
 	stepOver,
 }: HeaderPropType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const navigationContext = useContext(NavigationContext);
+	const { navigationArray } = useContext(MainPageContext);
 	return (
 		<SafeAreaView>
 			<View style={styles.header}>
@@ -51,7 +51,7 @@ const Header = ({
 				{leftArrow ? (
 					<Pressable
 						onPress={() => {
-							navigationContext[0]();
+							navigationArray[0]();
 						}}
 						style={{ position: 'absolute', left: 10, paddingRight: 20 }}
 					>
@@ -66,7 +66,7 @@ const Header = ({
 				{rightArrow ? (
 					<Pressable
 						onPress={() => {
-							navigationContext[0]();
+							navigationArray[0]();
 						}}
 						style={{ position: 'absolute', right: 10, paddingLeft: 20 }}
 					>

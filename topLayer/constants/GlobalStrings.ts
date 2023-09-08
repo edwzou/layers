@@ -15,3 +15,7 @@ export const match = {
 	preview: 'Preview',
 	matchName: 'Match name',
 } as const;
+
+export const outfitEdit = {
+	outfitName: 'Outfit name'
+} as const;

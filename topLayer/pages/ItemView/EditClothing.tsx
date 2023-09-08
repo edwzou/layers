@@ -1,50 +1,66 @@
-import { View, SafeAreaView, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, } from 'react-native';
 import React, { useState, useRef } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
-
-import { ClothingTypes, TagAction, ColorTags } from '../../constants/Enums';
-import ColorTag from '../../components/Tag/ColorTag';
-import BrandTag from '../../components/Tag/BrandTag';
+import { ClothingTypes, TagAction, } from '../../constants/Enums';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
-
 import { medTranslateY } from '../../utils/modalMaxShow';
-
-import ColorPicker from '../../pages/Edit/ColorPicker';
-
+import ColorPicker from '../../components/ColorManager/ColorPicker';
 import GeneralModal, {
 	type refPropType,
 } from '../../components/Modal/GeneralModal';
-
 import { capitalizeFirstLetter } from '../../utils/misc';
 import { ITEM_SIZE } from '../../utils/GapCalc';
-
 import GlobalStyles from '../../constants/GlobalStyles';
-import { colorTags } from '../../constants/testData';
-import pants from '../../assets/testPants1.png';
-import ColorTagsList from './ColorTagsList';
+import image0 from '../../assets/img0.png';
+import ColorTagsList from '../../components/ColorManager/ColorTagsList';
+import { UserClothing } from '../Match';
 
-const EditClothing = () => {
+interface EditClothingPropsType {
+	clothingItem: UserClothing;
+}
+
+const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	const colorPickerRef = useRef<refPropType>(null);
 
-	const [currentColorTags, setColorTags] = useState(colorTags);
-	const [itemName, setItemName] = useState('');
+	const [currentColorTags, setColorTags] = useState(clothingItem.colors);
+	const [itemName, setItemName] = useState(clothingItem.title ? clothingItem.title : '');
 
 	const [sizeOpen, setSizeOpen] = useState(false);
-	const [sizeValue, setSizeValue] = useState(null);
+	const [sizeValue, setSizeValue] = useState(clothingItem.size ? clothingItem.size : '');
 	const [sizes, setSizes] = useState([
-		{ label: 'Extra-extra small', value: 'xxs' },
-		{ label: 'Extra small', value: 'xs' },
-		{ label: 'Small', value: 's' },
-		{ label: 'Medium', value: 'm' },
-		{ label: 'Large', value: 'l' },
-		{ label: 'Extra large', value: 'xl' },
-		{ label: 'Extra-extra large', value: 'xxl' },
+		{
+			label: 'Extra-extra small',
+			value: 'xxs'
+		},
+		{
+			label: 'Extra small',
+			value: 'xs'
+		},
+		{
+			label: 'Small',
+			value: 's'
+		},
+		{
+			label: 'Medium',
+			value: 'm'
+		},
+		{
+			label: 'Large',
+			value: 'l'
+		},
+		{
+			label: 'Extra large',
+			value: 'xl'
+		},
+		{
+			label: 'Extra-extra large',
+			value: 'xxl'
+		},
 	]);
 
 	const [itemTypeOpen, setItemTypeOpen] = useState(false);
-	const [itemTypeValue, setItemTypeValue] = useState(null);
+	const [itemTypeValue, setItemTypeValue] = useState(clothingItem.category ? clothingItem.category : '');
 	const [itemType, setItemType] = useState([
 		{
 			label: capitalizeFirstLetter(ClothingTypes.outerwear),
@@ -82,8 +98,12 @@ const EditClothing = () => {
 					gap: GlobalStyles.layout.gap,
 				}}
 			>
-				<StackedTextBox label="Item name" onFieldChange={setItemName} />
-				<ItemCell image={pants} canDelete={true} />
+				<StackedTextBox
+					label="Item name"
+					onFieldChange={setItemName}
+					value={itemName}
+				/>
+				<ItemCell image={clothingItem.image} canDelete={true} />
 				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 					<View style={{ width: ITEM_SIZE(2) }}>
 						<Dropdown
@@ -109,7 +129,7 @@ const EditClothing = () => {
 					</View>
 				</View>
 			</View>
-			<ColorTagsList data={currentColorTags} onAddPress={() => { colorPickerRef.current?.scrollTo(medTranslateY) }}
+			<ColorTagsList data={currentColorTags} tagAction={TagAction.remove} onAddPress={() => { colorPickerRef.current?.scrollTo(medTranslateY) }}
 				onRemovePress={handleOnRemovePress} />
 			{/* <View
 					style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}
@@ -145,13 +165,5 @@ const EditClothing = () => {
 	);
 };
 
-const styles = StyleSheet.create({
-	colorPickerContainer: {
-		position: 'absolute',
-		width: '100%',
-		alignItems: 'center',
-		marginBottom: 10,
-	},
-});
 
 export default EditClothing;

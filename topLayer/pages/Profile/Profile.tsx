@@ -1,65 +1,56 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { View, Pressable, StyleSheet, FlatList } from 'react-native';
-import Icon from 'react-native-remix-icon';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
-import CategoryBar from '../../components/Bar/CategoryBar';
-import CategorySlide from '../../components/Category/CategorySlide';
+import CategoryBar from '../../components/Category/CategoryBar';
+import CategorySlides from '../../components/Category/CategorySlides';
+import Navbar from '../../components/Bar/Navbar';
 
 import {
-    ClothingTypes,
-    StepOverTypes,
     CategoryToIndex,
     IndexToCategory,
     StackNavigation,
+    ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { clothingData } from '../../constants/testData';
 
-import GeneralModal, {
-    type refPropType,
-} from '../../components/Modal/GeneralModal';
-import { highTranslateY } from '../../utils/modalMaxShow';
-import SignUpPage from '../SignUp/SignUpPage';
-import ItemPreview from '../../ModalContent/ItemPreview/ItemPreview'
-import OutfitView from '../../ModalContent/View/OutfitView';
-import OutfitEdit from '../../ModalContent/OutfitEdit/OutfitEdit';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import EditClothing from '../Edit/EditClothing';
+import { UserClothing } from '../Match';
+import { UserOutfit } from '../OutfitView'
+import { UserContext } from '../../utils/UserContext';
 
-interface ProfilePropsType {
-    isForeignProfile: boolean;
-}
+import { MainPageContext } from '../../pages/Main/MainPage';
 
-const Profile = ({ isForeignProfile }: ProfilePropsType) => {
+const Profile = () => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-    const settingsRef = useRef<refPropType>(null);
-    const itemPreviewRef = useRef<refPropType>(null);
-    const editClothingRef = useRef<refPropType>(null);
-    const OutfitViewRef = useRef<refPropType>(null);
-    const outfitEditRef = useRef<refPropType>(null);
     const flatListRef = useRef<FlatList>(null);
 
-    const [selectedCategory, setSelectedCategory] = useState(
-        ClothingTypes.outfits
-    );
-    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
+    const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
+    const { data } = useContext(UserContext);
+    const { mockUserData } = useContext(MainPageContext);
+
+    const handleItemChange = (item: UserClothing | UserOutfit) => {
+        if ('items' in item) {
+            navigation.navigate(StackNavigation.OutfitView, {
+                item: item,
+                editable: true,
+            })
+        } else {
+            navigation.navigate(StackNavigation.ItemView, {
+                item: item,
+                editable: true,
+            })
+        }
+    };
 
     const handleCategoryChange = (category: string) => {
         setSelectedCategory(category);
         handleIndexChange(CategoryToIndex[category]);
-    };
-
-    const handleIconPress = () => {
-        if (iconName === GlobalStyles.icons.bookmarkFill) {
-            setIconName(GlobalStyles.icons.bookmarkOutline);
-        } else {
-            setIconName(GlobalStyles.icons.bookmarkFill);
-        }
     };
 
     const handleIndexChange = (index: number) => {
@@ -78,120 +69,47 @@ const Profile = ({ isForeignProfile }: ProfilePropsType) => {
         }
     }).current;
 
-    // !!! Display edit outfit on click
-    // !!! Empty Match page to account for no clothing
+    const toggleFeedbackModal = () => {
+        navigation.navigate(StackNavigation.Feedback, {})
+    };
+
+    const toggleSettingsModal = () => {
+        navigation.navigate(StackNavigation.Settings, {})
+    }
 
     return (
         <>
+            <Navbar toggleFeedbackModal={toggleFeedbackModal} />
             <View style={{ gap: 25, flex: 1 }}>
-                <View style={{ alignItems: 'center', gap: 7 }}>
+                <View style={styles.profilePicture}>
                     <Pressable
                         onPress={() => {
-                            !isForeignProfile
-                                // ? navigation.navigate(StackNavigation.Camera)
-                                ? settingsRef.current?.scrollTo(highTranslateY)
-                                : undefined;
+                            toggleSettingsModal()
                         }}
                     >
-                        <ProfilePicture />
+                        <ProfilePicture image={require('../../assets/marble-pfp.png')} />
                     </Pressable>
                     <View>
-                        <FullName firstName={'Charlie'} lastName={'Wu'} />
-                        <Username username={'_charlie_wu'} />
+                        {/* <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
+                        <Username username={`@${data ? data.username : ''}`} /> */}
+                        <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
+                        <Username username={mockUserData.username} />
                     </View>
                 </View>
                 <View style={{ gap: 15, flex: 1 }}>
-                    <View>
-                        <CategoryBar
-                            selectedCategory={selectedCategory}
-                            onCategoryChange={handleCategoryChange}
-                        />
-                    </View>
-                    <View>
-                        <FlatList
-                            ref={flatListRef}
-                            data={clothingData}
-                            renderItem={({ item }) => (
-                                <CategorySlide
-                                    clothingData={item}
-                                    onPress={() => {
-                                        itemPreviewRef.current?.scrollTo(highTranslateY);
-                                    }}
-                                />
-                            )}
-                            horizontal
-                            pagingEnabled
-                            snapToAlignment="center"
-                            showsHorizontalScrollIndicator={false}
-                            onViewableItemsChanged={handleViewableItemsChanged}
-                            viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
-                        />
-                    </View>
+                    <CategoryBar
+                        selectedCategory={selectedCategory}
+                        handleCategoryChange={handleCategoryChange}
+                    />
+                    <CategorySlides
+                        categorySlidesRef={flatListRef}
+                        clothingData={clothingData}
+                        selectedCategory={selectedCategory}
+                        handleItemChange={handleItemChange}
+                        handleViewableItemsChanged={handleViewableItemsChanged}
+                    />
                 </View>
-            </View>
-            {isForeignProfile && (
-                <View style={styles.bookmarkIconWrapper}>
-                    <Pressable onPress={handleIconPress}>
-                        <Icon
-                            name={iconName}
-                            color={GlobalStyles.colorPalette.primary[900]}
-                            size={GlobalStyles.sizing.icon.regular}
-                        />
-                    </Pressable>
-                </View>
-            )}
-            <GeneralModal
-                ref={settingsRef}
-                content={<SignUpPage settings={true} />}
-                title="Settings"
-            />
-            <GeneralModal
-                ref={itemPreviewRef}
-                content={<ItemPreview />}
-                title="<SOME ITEM TITLE>"
-                stepOver={{
-                    type: StepOverTypes.edit,
-                    handlePress: () => {
-                        editClothingRef.current?.scrollTo(highTranslateY);
-                    },
-                }}
-            />
-            <GeneralModal
-                ref={editClothingRef}
-                content={<EditClothing />}
-                title="Edit"
-                stepOver={{
-                    type: StepOverTypes.done,
-                    handlePress: () => {
-
-                    },
-                }}
-            />
-            <GeneralModal
-                ref={OutfitViewRef}
-                content={<OutfitView />}
-                title="<SOME OUTFIT TITLE>"
-                stepOver={{
-                    type: StepOverTypes.edit,
-                    handlePress: () => {
-                        outfitEditRef.current?.scrollTo(highTranslateY);
-                    },
-                }}
-            />
-            <GeneralModal
-                ref={outfitEditRef}
-                content={<OutfitEdit />}
-                title="Edit"
-                back
-                stepOver={{
-                    type: StepOverTypes.done,
-                    handlePress: () => {
-                        console.log('some request');
-                        outfitEditRef.current?.scrollTo(0);
-                        OutfitViewRef.current?.scrollTo(0);
-                    },
-                }}
-            />
+            </View >
         </>
     );
 };
@@ -202,6 +120,14 @@ const styles = StyleSheet.create({
         top: 0,
         right: GlobalStyles.layout.xGap,
     },
+    profilePicture: {
+        alignItems: 'center',
+        gap: 7,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+    }
 });
 
 export default Profile;

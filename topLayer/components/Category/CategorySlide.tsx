@@ -11,10 +11,11 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 interface CategorySlidePropsType {
 	clothingData: any; //! !! fix any type
-	onPress: () => void;
+	handleItemChange: (item: any) => void;
 }
 
-const CategorySlide = ({ clothingData, onPress }: CategorySlidePropsType) => {
+const CategorySlide = ({ clothingData, handleItemChange }: CategorySlidePropsType) => {
+
 	return (
 		<View style={styles.container}>
 			{clothingData.category === ClothingTypes.outfits ? (
@@ -25,7 +26,7 @@ const CategorySlide = ({ clothingData, onPress }: CategorySlidePropsType) => {
 							title={item.title}
 							itemCount={item.items.length}
 							items={item.items}
-							onPress={onPress}
+							onPress={() => { handleItemChange(item) }}
 						/>
 					)}
 					showsVerticalScrollIndicator={false}
@@ -40,7 +41,7 @@ const CategorySlide = ({ clothingData, onPress }: CategorySlidePropsType) => {
 					data={clothingData.data}
 					renderItem={({ item }) => (
 						<View style={{ width: ITEM_SIZE(2) }}>
-							<ItemCell image={item.image} key={item.id} onPress={onPress} />
+							<ItemCell image={item.image} key={item.id} onPress={() => { handleItemChange(item) }} />
 						</View>
 					)}
 					numColumns={2}
@@ -63,3 +64,4 @@ const styles = StyleSheet.create({
 		marginHorizontal: GlobalStyles.layout.xGap,
 	},
 });
+

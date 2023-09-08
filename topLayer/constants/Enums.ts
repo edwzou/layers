@@ -11,6 +11,7 @@ export const StepOverTypes = {
 	done: 'Done',
 	send: 'Send',
 	next: 'Next',
+	update: 'Update',
 } as const;
 
 export interface ClothingCategoryTypes {
@@ -39,8 +40,14 @@ export const StackNavigation = {
 	Match: 'Match',
 	Feedback: 'Feedback',
 	Find: 'Find',
-	Edit: 'Edit',
+	ItemView: 'ItemView',
+	EditClothing: 'EditClothing',
+	OutfitView: 'OutfitView',
 	Camera: 'Camera',
+	Settings: 'Settings',
+	MarkedList: 'MarkedList',
+	OutfitPreview: 'Preview',
+	ForeignProfile: 'ForeignProfile'
 } as const;
 
 export const NavigationBack = {
@@ -94,5 +101,4 @@ export const ColorTags: Record<string, [string, string]> = {
   Black: ["Black", "#121212"],
   Grey: ["Grey", "#CDCDCD"],
   White: ["White", "#F2F2F2"],
-  Add: ["Add", "#000000"]
 };

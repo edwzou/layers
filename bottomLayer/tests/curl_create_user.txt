@@ -4,7 +4,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "username": "johndoe2",
   "email": "johndoe@example2.com",
   "password": "password",
-  "privateOption" : true,
+  "private_option" : true,
   "profile_picture": "profile-picture-url",
   "following": [],
   "followers": []
@@ -16,7 +16,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "username": "joebu",
   "email": "joebu@example.com",
   "password": "password",
-  "privateOption" : true,
+  "private_option" : true,
   "profile_picture": "profile-picture-url",
   "following": [],
   "followers": []

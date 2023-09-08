@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Icon from 'react-native-remix-icon';
@@ -8,9 +8,9 @@ interface DropdownType {
 	// !!! Fix Types
 	label: string;
 	open: boolean;
-	setOpen: (open: boolean) => void;
+	setOpen: Dispatch<SetStateAction<boolean>>;
 	value: string;
-	setValue: (value: string | null) => void;
+	setValue: Dispatch<SetStateAction<string>>;
 	items: Array<{ label: string; value: any }>;
 	setItems: any;
 }
@@ -64,6 +64,7 @@ const Dropdown = ({
 				dropDownContainerStyle={styles.dropdown}
 				style={styles.dropdown}
 				placeholder=""
+				dropDownDirection='TOP'
 			/>
 		</View>
 	);
