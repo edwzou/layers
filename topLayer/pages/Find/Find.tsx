@@ -19,10 +19,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export const ShowProfileContext = createContext(() => { });
 
 interface FindPropsType {
-	usersData: any[]; //!!! Fix any type
+	foreignUsersData: any[]; //!!! Fix any type
 }
 
-const Find = ({ usersData }: FindPropsType) => {
+const Find = ({ foreignUsersData }: FindPropsType) => {
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
@@ -46,17 +46,17 @@ const Find = ({ usersData }: FindPropsType) => {
 			<View style={styles.content}>
 				<SearchBar
 					placeholder={find.searchProfiles}
-					usersData={usersData}
+					foreignUsersData={foreignUsersData}
 					handleEmptyString={handleEmptyString}
 					handleNonEmptyString={handleNonEmptyString}
 				/>
 				{isComponentVisible && (
 					<Pressable onPress={handlePress}>
 						<Marked
-							number={usersData.length}
-							topPfp={usersData[0].profile_picture}
-							middlePfp={usersData[1].profile_picture}
-							bottomPfp={usersData[2].profile_picture}
+							number={foreignUsersData.length}
+							topPfp={foreignUsersData[0].profile_picture}
+							middlePfp={foreignUsersData[1].profile_picture}
+							bottomPfp={foreignUsersData[2].profile_picture}
 						/>
 					</Pressable>
 				)}

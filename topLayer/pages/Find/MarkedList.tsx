@@ -14,10 +14,10 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 
 interface MarkedListPropsType {
-	usersData: any[]; /// !!! fix any type
+	foreignUsersData: any[]; /// !!! fix any type
 }
 
-const MarkedList = ({ usersData }: MarkedListPropsType) => {
+const MarkedList = ({ foreignUsersData }: MarkedListPropsType) => {
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
@@ -39,13 +39,13 @@ const MarkedList = ({ usersData }: MarkedListPropsType) => {
 		<View style={styles.container}>
 			<SearchBar
 				placeholder={find.searchMarked}
-				usersData={usersData}
+				foreignUsersData={foreignUsersData}
 				handleEmptyString={handleEmptyString}
 				handleNonEmptyString={handleNonEmptyString}
 			/>
 			{isComponentVisible && (
 				<FlatList
-					data={usersData}
+					data={foreignUsersData}
 					renderItem={({ item }) => <ProfileCell user={item} handleProfilePress={handleProfilePress} />}
 				/>
 			)}

@@ -11,15 +11,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigation } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { usersData } from '../../constants/testData';
+import { foreignUsersData } from '../../constants/testData';
 
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
 const FindPage = () => {
 
-    const FindComponent = () => (<Find usersData={usersData} />)
-    const MarkedListComponent = () => (<MarkedList usersData={usersData} />)
+    const FindComponent = () => (<Find foreignUsersData={foreignUsersData} />)
+    const MarkedListComponent = () => (<MarkedList foreignUsersData={foreignUsersData} />)
     const ForeignProfileComponent = () => (<ForeignProfile isPrivate={false} />)
 
     return (
@@ -49,7 +49,7 @@ const FindPage = () => {
                             name={StackNavigation.MarkedList}
                             component={MarkedListComponent}
                             options={{
-                                headerTitle: `${usersData.length} Marked`
+                                headerTitle: `${foreignUsersData.length} Marked`
                             }}
                         />
                         <Stack.Screen

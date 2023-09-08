@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import React from 'react'
 
 import OutfitView from './OutfitView'
-import OutfitEdit from '../OutfitEdit/OutfitEdit';
+import OutfitEdit from './OutfitEdit';
 
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer } from '@react-navigation/native';

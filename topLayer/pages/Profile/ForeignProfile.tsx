@@ -22,7 +22,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { UserClothing } from '../Match';
-import { UserOutfit } from '../OutfitEdit'
+import { UserOutfit } from '../OutfitView'
 
 interface ForeignProfilePropsType {
     isPrivate: boolean;
