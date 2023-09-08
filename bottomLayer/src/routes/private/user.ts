@@ -1,11 +1,7 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-<<<<<<< HEAD
-import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate } from '../../utils/responseCallback';
-=======
 import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate, responseCallbackGet } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
->>>>>>> main
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
@@ -41,17 +37,11 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
     try {
       await pool.query(`
       INSERT INTO backend_schema.user (
-<<<<<<< HEAD
-        first_name, last_name, email, username, password, privateOption, followers, following, profile_picture
-        ) VALUES ( 
-          $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [first_name, last_name, email.toLowerCase(), username, password, privateOption, followers, following, profile_picture]);
-=======
+
         first_name, last_name, email, username, password, private_option, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [first_name, last_name, email, username, password, private_option, followers, following, profile_picture]);
->>>>>>> main
+      [first_name, last_name, email.toLowerCase(), username, password, private_option, followers, following, profile_picture]);
 
       responseCallbackPost(null, res, 'User');
     } catch (error) {
@@ -109,11 +99,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
             following = $8,
             profile_picture = $9
         WHERE uid = $10`,
-<<<<<<< HEAD
-      [first_name, last_name, email.toLowerCase(), username, password, privateOption, followers, following, profile_picture, userId]);
-=======
-      [first_name, last_name, email, username, password, private_option, followers, following, profile_picture, userId]);
->>>>>>> main
+      [first_name, last_name, email.toLowerCase(), username, password, private_option, followers, following, profile_picture, userId]);
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
