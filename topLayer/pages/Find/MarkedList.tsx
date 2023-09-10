@@ -12,9 +12,10 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 
 import { StackNavigation } from '../../constants/Enums';
+import { User } from '../../pages/Main';
 
 interface MarkedListPropsType {
-	foreignUsersData: any[]; /// !!! fix any type
+	foreignUsersData: User[];
 }
 
 const MarkedList = ({ foreignUsersData }: MarkedListPropsType) => {
@@ -31,8 +32,10 @@ const MarkedList = ({ foreignUsersData }: MarkedListPropsType) => {
 		setComponentVisible((isComponentVisible) => false);
 	};
 
-	const handleProfilePress = () => {
-		navigation.navigate(StackNavigation.ForeignProfile, {})
+	const handleProfilePress = (user: User) => {
+		navigation.navigate(StackNavigation.ForeignProfile, {
+			user: user,
+		})
 	};
 
 	return (
@@ -46,7 +49,7 @@ const MarkedList = ({ foreignUsersData }: MarkedListPropsType) => {
 			{isComponentVisible && (
 				<FlatList
 					data={foreignUsersData}
-					renderItem={({ item }) => <ProfileCell user={item} handleProfilePress={handleProfilePress} />}
+					renderItem={({ item }) => <ProfileCell user={item} handleProfilePress={() => handleProfilePress(item)} />}
 				/>
 			)}
 		</View>
