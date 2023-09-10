@@ -5,9 +5,10 @@ import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import { ShowProfileContext } from '../../pages/Find/Find';
+import { User } from '../../pages/Main';
 
 interface ProfileCellPropsType {
-	user: any; /// !!! fix any type
+	user: User;
 	handleProfilePress: () => void;
 }
 
@@ -25,11 +26,11 @@ const ProfileCell = ({ user, handleProfilePress }: ProfileCellPropsType) => {
 
 	return (
 		<Pressable style={styles.container} onPress={handleProfilePress}>
-			<Image source={user.profile_picture} style={styles.profilePicture} />
+			<Image source={user.profilePicture} style={styles.profilePicture} />
 			<View style={styles.textContainer}>
 				<Text style={styles.username}>{user.username}</Text>
 				<Text style={styles.fullName}>
-					{user.first_name} {user.last_name}
+					{user.firstName} {user.lastName}
 				</Text>
 			</View>
 			<Pressable onPress={handleIconPress}>

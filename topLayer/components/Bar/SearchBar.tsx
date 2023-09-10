@@ -13,6 +13,8 @@ import { type StackTypes } from '../../utils/StackNavigation';
 
 import { StackNavigation } from '../../constants/Enums';
 
+import { User } from '../../pages/Main';
+
 interface SearchBarPropsType {
 	placeholder: string;
 	foreignUsersData: any[]; // !!! fix any type
@@ -49,15 +51,17 @@ const SearchBar = ({
 		const filteredResults = foreignUsersData.filter(
 			(user) =>
 				user.username.toLowerCase().includes(text.toLowerCase()) ||
-				user.first_name.toLowerCase().includes(text.toLowerCase()) ||
-				user.last_name.toLowerCase().includes(text.toLowerCase())
+				user.firstName.toLowerCase().includes(text.toLowerCase()) ||
+				user.lastName.toLowerCase().includes(text.toLowerCase())
 		);
 
 		setSearchResults(text.trim() === '' ? [] : filteredResults);
 	};
 
-	const handleProfilePress = () => {
-		navigation.navigate(StackNavigation.ForeignProfile, {})
+	const handleProfilePress = (user: User) => {
+		navigation.navigate(StackNavigation.ForeignProfile, {
+			user: user,
+		})
 	};
 
 	return (
@@ -80,7 +84,7 @@ const SearchBar = ({
 
 			<FlatList
 				data={searchResults}
-				renderItem={({ item }) => <ProfileCell user={item} handleProfilePress={handleProfilePress} />}
+				renderItem={({ item }) => <ProfileCell user={item} handleProfilePress={() => handleProfilePress(item)} />}
 				keyExtractor={(item) => item.uid}
 			/>
 		</View>
