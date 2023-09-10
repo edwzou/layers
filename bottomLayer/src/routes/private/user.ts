@@ -47,13 +47,14 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
       await pool.query(
         `
       INSERT INTO backend_schema.user (
+
         first_name, last_name, email, username, password, private_option, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
         [
           first_name,
           last_name,
-          email,
+          email.toLowerCase(),
           username,
           password,
           private_option,
@@ -122,7 +123,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
         [
           first_name,
           last_name,
-          email,
+          email.toLowerCase(),
           username,
           password,
           private_option,
