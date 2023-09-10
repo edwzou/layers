@@ -92,6 +92,7 @@ router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
   void deleteUser();
 });
 
+// Endpoints for updating a specific user
 router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   const userId = req.user as string;
 

@@ -3,11 +3,7 @@ import { removeBackground } from './remove-background';
 import { uploadURIToS3 } from './upload-uri-to-s3';
 import { downloadURLFromS3 } from './download-url-from-s3';
 
-export async function convertImage(
-  URI: string,
-  key: string,
-  remove: boolean
-): Promise<string> {
+export async function convertImage(URI: string, key: string, remove: boolean) {
   try {
     const response = await axios.get(URI, { responseType: 'arraybuffer' });
     let imageBuffer;
@@ -17,10 +13,10 @@ export async function convertImage(
     imageBuffer = response.data; // don't remove the background
     // }
     await uploadURIToS3(imageBuffer, key);
-    // const URL = downloadURLFromS3(key);
-    // console.log('Convert success:', URL);
-    // return URL;
-    return URI;
+    const URL = await downloadURLFromS3(key);
+    console.log('Convert success:', URL);
+    return URL;
+    // return URI;
   } catch (error) {
     console.error('Error converting URI:', error);
     throw error;
