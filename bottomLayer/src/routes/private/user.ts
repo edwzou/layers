@@ -52,7 +52,18 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
         first_name, last_name, email, username, password, private_option, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [first_name, last_name, email.toLowerCase(), username, password, private_option, followers, following, profile_picture]);
+        [
+          first_name,
+          last_name,
+          email.toLowerCase(),
+          username,
+          password,
+          private_option,
+          followers,
+          following,
+          profile_picture
+        ]
+      );
 
       responseCallbackPost(null, res, 'User');
     } catch (error) {
@@ -109,12 +120,24 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
             email = $3,
             username = $4,
             password = $5,
-            privateOption = $6,
+            private_option = $6,
             followers = $7,
             following = $8,
             profile_picture = $9
         WHERE uid = $10`,
-      [first_name, last_name, email.toLowerCase(), username, password, private_option, followers, following, profile_picture, userId]);
+        [
+          first_name,
+          last_name,
+          email.toLowerCase(),
+          username,
+          password,
+          private_option,
+          followers,
+          following,
+          profile_picture,
+          userId
+        ]
+      );
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, userId, res, 'User', updateUser.rowCount);
     } catch (error) {
