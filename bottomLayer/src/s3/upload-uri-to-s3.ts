@@ -18,6 +18,6 @@ async function uploadURIToS3(imageContent: Buffer, fileName: string) {
     console.error('Error uploading to S3:', error);
     throw error;
   }
-}
+};
 
 export { uploadURIToS3 };
