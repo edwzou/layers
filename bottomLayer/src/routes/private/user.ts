@@ -41,6 +41,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
     followers,
     following
   } = req.body;
+  convertImage(profile_picture, username, false);
 
   const insertUser = async (): Promise<void> => {
     try {

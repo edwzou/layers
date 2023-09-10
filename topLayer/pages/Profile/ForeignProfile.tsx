@@ -15,7 +15,7 @@ import {
     ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { clothingData } from '../../constants/testData';
+import { mockItemsData } from '../../constants/testData';
 
 
 import { useNavigation } from '@react-navigation/native';
@@ -24,11 +24,10 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitView'
 
-interface ForeignProfilePropsType {
-    isPrivate: boolean;
-}
+const ForeignProfile = ({ route }: any) => {
 
-const ForeignProfile = ({ isPrivate }: ForeignProfilePropsType) => {
+    const { user } = route.params;
+
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
 
@@ -72,7 +71,7 @@ const ForeignProfile = ({ isPrivate }: ForeignProfilePropsType) => {
     const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
         if (viewableItems.length > 0) {
             const visibleItem = viewableItems[0];
-            const index = clothingData.findIndex(
+            const index = mockItemsData.findIndex(
                 (item) => item.category === visibleItem.item.category
             );
             setSelectedCategory(IndexToCategory[index]);
@@ -86,16 +85,16 @@ const ForeignProfile = ({ isPrivate }: ForeignProfilePropsType) => {
         <>
             <View style={{ paddingVertical: 20 }} />
             <View style={{ gap: 25, flex: 1 }}>
-                <View style={{ alignItems: 'center', gap: 7 }}>
-                    <ProfilePicture />
+                <View style={styles.profilePicture}>
+                    <ProfilePicture image={user.profilePicture} />
                     <View>
                         {/* <FullName firstName={data.first_name} lastName={data.last_name} />
                         <Username username={`@${data.username}`} /> */}
-                        <FullName firstName={"Joe"} lastName={"Bu"} />
-                        <Username username={"joegbu"} />
+                        <FullName firstName={user.firstName} lastName={user.lastName} />
+                        <Username username={user.username} />
                     </View>
                 </View>
-                {isPrivate ? (
+                {user.privateOption === 't' ? (
                     <View style={{ alignItems: 'center', flex: 1, top: 150, gap: 5 }}>
                         <Icon
                             name={GlobalStyles.icons.privateOutline}
@@ -112,7 +111,7 @@ const ForeignProfile = ({ isPrivate }: ForeignProfilePropsType) => {
                         />
                         <CategorySlides
                             categorySlidesRef={flatListRef}
-                            clothingData={clothingData}
+                            clothingData={mockItemsData}
                             selectedCategory={selectedCategory}
                             handleItemChange={handleItemChange}
                             handleViewableItemsChanged={handleViewableItemsChanged}
@@ -139,7 +138,14 @@ const styles = StyleSheet.create({
         top: 0,
         right: GlobalStyles.layout.xGap,
     },
-
+    profilePicture: {
+        alignItems: 'center',
+        gap: 7,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+    }
 });
 
 export default ForeignProfile;

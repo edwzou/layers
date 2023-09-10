@@ -124,7 +124,7 @@ const Settings = () => {
                         navigation.navigate(StackNavigation.Camera, {});
                     }}
                 >
-                    <ProfilePicture image={require('../../assets/marble-pfp.png')} />
+                    <ProfilePicture image={mockUserData.profilePicture} />
                 </Pressable>
                 <View
                     style={{

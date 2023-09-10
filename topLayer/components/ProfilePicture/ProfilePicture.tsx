@@ -6,7 +6,7 @@ import { UserContext } from '../../utils/UserContext';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
 interface ProfilePicturePropsType {
-	image: ImageSourcePropType,
+	image: Image,
 }
 
 const ProfilePicture = ({ image }: ProfilePicturePropsType) => {

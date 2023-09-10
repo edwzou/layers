@@ -15,11 +15,12 @@ import Header from '../../components/Header/Header';
 import Marked from './Marked';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { User } from '../../pages/Main';
 
 export const ShowProfileContext = createContext(() => { });
 
 interface FindPropsType {
-	foreignUsersData: any[]; //!!! Fix any type
+	foreignUsersData: User[];
 }
 
 const Find = ({ foreignUsersData }: FindPropsType) => {
@@ -53,10 +54,7 @@ const Find = ({ foreignUsersData }: FindPropsType) => {
 				{isComponentVisible && (
 					<Pressable onPress={handlePress}>
 						<Marked
-							number={foreignUsersData.length}
-							topPfp={foreignUsersData[0].profile_picture}
-							middlePfp={foreignUsersData[1].profile_picture}
-							bottomPfp={foreignUsersData[2].profile_picture}
+							users={foreignUsersData}
 						/>
 					</Pressable>
 				)}
