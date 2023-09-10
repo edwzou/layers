@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "@cityofzion/neon-js": "^4.9.0",
-    "advisory-lock": "^2.0.0",
     "@google-cloud/storage": "^7.1.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
