@@ -7,11 +7,11 @@ export async function convertImage(URI: string, key: string, remove: boolean) {
   try {
     const response = await axios.get(URI, { responseType: 'arraybuffer' });
     let imageBuffer;
-    // if (remove) {
-    //   imageBuffer = await removeBackground(response.data); // remove background from the image
-    // } else {
-    imageBuffer = response.data; // don't remove the background
-    // }
+    if (remove) {
+      imageBuffer = await removeBackground(response.data); // remove background from the image
+    } else {
+      imageBuffer = response.data; // don't remove the background
+    }
     await uploadURIToS3(imageBuffer, key);
     const URL = await downloadURLFromS3(key);
     console.log('Convert success:', URL);
