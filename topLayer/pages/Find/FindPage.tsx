@@ -20,7 +20,6 @@ const FindPage = () => {
 
     const FindComponent = () => (<Find foreignUsersData={foreignUsersData} />)
     const MarkedListComponent = () => (<MarkedList foreignUsersData={foreignUsersData} />)
-    const ForeignProfileComponent = () => (<ForeignProfile isPrivate={false} />)
 
     return (
         <NavigationContainer
@@ -54,7 +53,7 @@ const FindPage = () => {
                         />
                         <Stack.Screen
                             name={StackNavigation.ForeignProfile}
-                            component={ForeignProfileComponent}
+                            component={ForeignProfile}
                             options={{
                                 headerShown: false,
                             }}

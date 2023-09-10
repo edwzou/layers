@@ -5,7 +5,8 @@
   "main": "endpoints.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon",
+    "dev": "npx nodemon",
+    "start": "ts-node ./server.ts",
     "format": "eslint --fix ."
   },
   "keywords": [],
@@ -14,6 +15,7 @@
   "dependencies": {
     "@cityofzion/neon-js": "^4.9.0",
     "advisory-lock": "^2.0.0",
+    "@google-cloud/storage": "^7.1.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",

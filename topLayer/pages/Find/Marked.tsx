@@ -1,28 +1,26 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
+import { User } from '../../pages/Main';
 
 interface MarkedPropsType {
-	number: number;
-	topPfp?: any;
-	middlePfp?: any;
-	bottomPfp?: any;
+	users: User[];
 }
 
-const Marked = ({ number, topPfp, middlePfp, bottomPfp }: MarkedPropsType) => {
+const Marked = ({ users }: MarkedPropsType) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.textArea}>
 				<Text style={GlobalStyles.typography.body}>
-					{number} {find.marked}
+					{users.length} {find.marked}
 				</Text>
 				<Text style={styles.label}>{find.viewYourMarkedProfiles}</Text>
 			</View>
 			<View style={styles.profilePicturesContainer}>
-				<Image source={topPfp} style={styles.profilePicture} />
-				<Image source={middlePfp} style={styles.profilePicture} />
-				<Image source={bottomPfp} style={styles.profilePicture} />
+				{users[0] && <Image source={users[0].profilePicture} style={styles.profilePicture} />}
+				{users[1] && <Image source={users[1].profilePicture} style={styles.profilePicture} />}
+				{users[2] && <Image source={users[2].profilePicture} style={styles.profilePicture} />}
 			</View>
 		</View>
 	);

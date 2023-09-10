@@ -15,7 +15,7 @@ import {
     ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { clothingData } from '../../constants/testData';
+import { mockItemsData } from '../../constants/testData';
 
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -62,7 +62,7 @@ const Profile = () => {
     const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
         if (viewableItems.length > 0) {
             const visibleItem = viewableItems[0];
-            const index = clothingData.findIndex(
+            const index = mockItemsData.findIndex(
                 (item) => item.category === visibleItem.item.category
             );
             setSelectedCategory(IndexToCategory[index]);
@@ -87,7 +87,7 @@ const Profile = () => {
                             toggleSettingsModal()
                         }}
                     >
-                        <ProfilePicture image={require('../../assets/marble-pfp.png')} />
+                        <ProfilePicture image={mockUserData.profilePicture} />
                     </Pressable>
                     <View>
                         {/* <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
@@ -103,7 +103,7 @@ const Profile = () => {
                     />
                     <CategorySlides
                         categorySlidesRef={flatListRef}
-                        clothingData={clothingData}
+                        clothingData={mockItemsData}
                         selectedCategory={selectedCategory}
                         handleItemChange={handleItemChange}
                         handleViewableItemsChanged={handleViewableItemsChanged}
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         gap: 7,
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.05,
+        shadowOpacity: 0.1,
         shadowRadius: 10,
     }
 });

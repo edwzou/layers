@@ -10,7 +10,7 @@ import {
     ClothingTypes,
     StackNavigation,
 } from '../../constants/Enums';
-import { clothingData } from '../../constants/testData';
+import { mockItemsData } from '../../constants/testData';
 
 import {
     type UserClothing,
@@ -47,7 +47,7 @@ const Match = () => {
 
     useEffect(() => {
         const filterClothing = (type: string) => {
-            return clothingData.slice(1).filter((value) => value.category.toString() === type);
+            return mockItemsData.slice(1).filter((value) => value.category.toString() === type);
         };
 
         setData((value) => ({

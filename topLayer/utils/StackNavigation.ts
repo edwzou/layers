@@ -4,7 +4,10 @@ import {
 import { UserClothing } from '../pages/Match';
 import { UserOutfit } from '../pages/OutfitView';
 
+import { User } from '../pages/Main';
+
 export type StackNavigatorType = {
+	user?: User;
 	item?: UserClothing | UserOutfit;
 	editable?: boolean;
 	matchItems?: {

@@ -11,16 +11,16 @@ import { mockUserData } from '../../constants/testData';
 export const MainPageContext = createContext({
     navigationArray: [() => { }],
     mockUserData: {
-        uid: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        username: '',
-        password: '',
-        privateOption: '',
-        followers: [],
-        following: [],
-        profilePicture: '',
+        uid: mockUserData.uid,
+        firstName: mockUserData.firstName,
+        lastName: mockUserData.lastName,
+        email: mockUserData.email,
+        username: mockUserData.username,
+        password: mockUserData.password,
+        privateOption: mockUserData.privateOption,
+        followers: mockUserData.followers,
+        following: mockUserData.following,
+        profilePicture: mockUserData.profilePicture,
     },
 });
 

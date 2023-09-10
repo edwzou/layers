@@ -2,11 +2,15 @@ import image1 from '../assets/img1.png';
 import image0 from '../assets/img0.png';
 import image2 from '../assets/img2.png';
 import image3 from '../assets/img3.png';
-import lincolnPfp from '../assets/lincoln.jpg';
 
 import { ClothingTypes, ColorTags } from './Enums';
+import pfp1 from '../assets/pfp1.jpg'
+import pfp2 from '../assets/pfp2.jpg'
+import pfp3 from '../assets/pfp3.jpg'
+import pfp4 from '../assets/pfp4.jpg'
+import { User } from '../pages/Main';
 
-export const clothingData = [
+export const mockItemsData = [
 	{
 		category: 'outfits',
 		data: [
@@ -261,54 +265,54 @@ export const clothingData = [
 	},
 ];
 
-export const mockUserData = {
-	uid: '12345678-abcd-efgh-ijkl-mnopqrstuvwx',
-	firstName: 'Charlie',
-	lastName: 'Wu',
-	email: 'charliewu@gmail.com',
-	username: 'charlie_wu_',
+export const mockUserData: User = {
+	uid: '00000000-abcd-efgh-ijkl-mnopqrstuvwx',
+	firstName: 'Luis',
+	lastName: 'Ramos',
+	email: 'luisramos@gmail.com',
+	username: 'luis_ramos_',
 	password: 'Layers2023',
 	privateOption: 'f',
 	followers: [],
 	following: [],
-	profilePicture: '../../assets/marble-pfp.png',
+	profilePicture: pfp1,
 }
 
-export const foreignUsersData = [
+export const foreignUsersData: User[] = [
 	{
-		uid: 'a45ab439-0dce-448a-9126-43f32f8d56c8',
-		first_name: 'John',
-		last_name: 'Doe',
-		email: 'joebu@example.com',
-		username: 'joebu',
-		password: 'password',
-		private: true,
-		followers: {},
-		following: {},
-		profile_picture: lincolnPfp,
+		uid: '00000001-abcd-efgh-ijkl-mnopqrstuvwx',
+		firstName: 'Elu',
+		lastName: 'Deere',
+		email: 'eludeere@gmail.com',
+		username: 'elu.deere',
+		password: 'Layers2023',
+		privateOption: 't',
+		followers: [],
+		following: [],
+		profilePicture: pfp4,
 	},
 	{
-		uid: '150794ee-7d24-4dfd-9250-fa4bb87dbd26',
-		first_name: 'John',
-		last_name: 'Doe',
-		email: 'johndoe@example.com',
-		username: 'johndoe',
-		password: 'password',
-		private: true,
-		followers: {},
-		following: {},
-		profile_picture: lincolnPfp,
+		uid: '00000002-abcd-efgh-ijkl-mnopqrstuvwx',
+		firstName: 'Maya',
+		lastName: 'Smith',
+		email: 'mayasmith@gmail.com',
+		username: 'mayas23',
+		password: 'Layers2023',
+		privateOption: 'f',
+		followers: [],
+		following: [],
+		profilePicture: pfp3,
 	},
 	{
-		uid: 'bb53791c-da9c-4b90-98d1-3380a8ed89cc',
-		first_name: 'John',
-		last_name: 'Doe',
-		email: 'johandoe@example.com',
-		username: 'joahndoe',
-		password: 'password',
-		private: true,
-		followers: {},
-		following: {},
-		profile_picture: lincolnPfp,
+		uid: '00000003-abcd-efgh-ijkl-mnopqrstuvwx',
+		firstName: 'Noah',
+		lastName: 'Barry',
+		email: 'noahbarry@gmail.com',
+		username: 'noahbarry',
+		password: 'Layers2023',
+		privateOption: 'f',
+		followers: [],
+		following: [],
+		profilePicture: pfp2,
 	},
 ];

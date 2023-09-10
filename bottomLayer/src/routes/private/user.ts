@@ -1,14 +1,23 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { responseCallbackDelete, responseCallbackPost, responseCallbackUpdate, responseCallbackGet } from '../../utils/responseCallback';
+import {
+  responseCallbackDelete,
+  responseCallbackPost,
+  responseCallbackUpdate,
+  responseCallbackGet
+} from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
+import { convertImage } from '../../s3/convert-image';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
   const userId = req.user;
   const getUser = async (): Promise<void> => {
     try {
-      const user = await pool.query('SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1', [userId]);
+      const user = await pool.query(
+        'SELECT uid, first_name, last_name, email, username, profile_picture FROM backend_schema.user WHERE uid = $1',
+        [userId]
+      );
       const result = user.rows[0];
 
       responseCallbackGet(null, result, res, 'User');
@@ -32,10 +41,12 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
     followers,
     following
   } = req.body;
+  convertImage(profile_picture, username, false);
 
   const insertUser = async (): Promise<void> => {
     try {
-      await pool.query(`
+      await pool.query(
+        `
       INSERT INTO backend_schema.user (
 
         first_name, last_name, email, username, password, private_option, followers, following, profile_picture
@@ -59,7 +70,10 @@ router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
 
   const deleteUser = async (): Promise<void> => {
     try {
-      const deleteUser = await pool.query('DELETE FROM backend_schema.user WHERE uid = $1', [userId]);
+      const deleteUser = await pool.query(
+        'DELETE FROM backend_schema.user WHERE uid = $1',
+        [userId]
+      );
       responseCallbackDelete(null, userId, res, 'User', deleteUser.rowCount);
     } catch (error) {
       responseCallbackDelete(error, userId, res, 'User');
@@ -88,7 +102,8 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-      const updateUser = await pool.query(`UPDATE backend_schema.user
+      const updateUser = await pool.query(
+        `UPDATE backend_schema.user
         SET first_name = $1,
             last_name = $2,
             email = $3,
