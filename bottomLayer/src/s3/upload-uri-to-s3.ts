@@ -9,7 +9,7 @@ async function uploadURIToS3(imageContent: Buffer, fileName: string) {
       Body: imageContent,
       ContentType: 'image/jpeg'
     };
-  
+
     const command = new PutObjectCommand(params);
     const result = await s3.send(command);
     console.log('Upload successful:', result);
@@ -18,6 +18,6 @@ async function uploadURIToS3(imageContent: Buffer, fileName: string) {
     console.error('Error uploading to S3:', error);
     throw error;
   }
-};
+}
 
 export { uploadURIToS3 };
