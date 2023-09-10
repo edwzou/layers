@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const gc = new Storage({
-    keyFilename: path.join(__dirname, 'angelic-cat-393620-9872b786fdb4.json'),
-    projectId: 'angelic-cat-393620'
+  keyFilename: path.join(__dirname, 'angelic-cat-393620-9872b786fdb4.json'),
+  projectId: 'angelic-cat-393620'
 });
 
 // console.log('__dirname:', __dirname);
