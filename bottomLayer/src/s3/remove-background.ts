@@ -40,6 +40,6 @@ async function removeBackground(imageData: Buffer): Promise<Buffer> {
     console.log('Error removing background:', error);
     throw error;
   }
-}
+};
 
 export { removeBackground };
