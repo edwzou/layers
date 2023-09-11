@@ -15,7 +15,6 @@ import {
     ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { mockItemsData } from '../../constants/testData';
 
 
 import { useNavigation } from '@react-navigation/native';
@@ -23,6 +22,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitView'
+import { UserItems } from 'pages/Main';
 
 const ForeignProfile = ({ route }: any) => {
 
@@ -33,7 +33,7 @@ const ForeignProfile = ({ route }: any) => {
 
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
 
-    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkOutline); //! !! Use user state from backend
+    const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkFill); //! !! Use user state from backend
 
     const handleItemChange = (item: UserClothing | UserOutfit) => {
         if ('items' in item) {
@@ -71,8 +71,8 @@ const ForeignProfile = ({ route }: any) => {
     const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
         if (viewableItems.length > 0) {
             const visibleItem = viewableItems[0];
-            const index = mockItemsData.findIndex(
-                (item) => item.category === visibleItem.item.category
+            const index = user.items.findIndex(
+                (item: UserItems) => item.category === visibleItem.item.category
             );
             setSelectedCategory(IndexToCategory[index]);
         }
@@ -84,7 +84,7 @@ const ForeignProfile = ({ route }: any) => {
     return (
         <>
             <View style={{ paddingVertical: 20 }} />
-            <View style={{ gap: 25, flex: 1 }}>
+            <View style={{ flex: 1 }}>
                 <View style={styles.profilePicture}>
                     <ProfilePicture image={user.profilePicture} />
                     <View>
@@ -104,14 +104,15 @@ const ForeignProfile = ({ route }: any) => {
                         <Text style={[GlobalStyles.typography.subtitle, { color: GlobalStyles.colorPalette.primary[300] }]}>Private</Text>
                     </View>
                 ) : (
-                    <View style={{ gap: 15, flex: 1 }}>
+                    <View style={{ top: 25, gap: 20 }}>
                         <CategoryBar
                             selectedCategory={selectedCategory}
                             handleCategoryChange={handleCategoryChange}
                         />
+
                         <CategorySlides
                             categorySlidesRef={flatListRef}
-                            clothingData={mockItemsData}
+                            clothingData={user.items}
                             selectedCategory={selectedCategory}
                             handleItemChange={handleItemChange}
                             handleViewableItemsChanged={handleViewableItemsChanged}

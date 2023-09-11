@@ -101,4 +101,5 @@ export const ColorTags: Record<string, [string, string]> = {
   Black: ["Black", "#121212"],
   Grey: ["Grey", "#CDCDCD"],
   White: ["White", "#F2F2F2"],
+  Cream: ["Cream", "#FFFBEB"],
 };

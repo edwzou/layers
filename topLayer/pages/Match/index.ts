@@ -1,5 +1,5 @@
 export interface UserClothing {
-	id: number;
+	id: string;
 	image: string;
 	category: string;
 	title: string;

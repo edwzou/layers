@@ -13,6 +13,7 @@ export interface User {
 	followers: string[],
 	following: string[],
 	profilePicture: Image,
+	items: UserItems[],
 }
 
 export interface UserItems {

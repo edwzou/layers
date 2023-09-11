@@ -12,7 +12,6 @@ import GeneralModal, {
 import { capitalizeFirstLetter } from '../../utils/misc';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
-import image0 from '../../assets/img0.png';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
 import { UserClothing } from '../Match';
 
