@@ -204,6 +204,7 @@ export default function CameraComponent({ data }: CameraPropType) {
 		});
 		if (result.canceled) return;
 		data(result.assets[0].uri);
+		navigation.goBack();
 	};
 
 	return (

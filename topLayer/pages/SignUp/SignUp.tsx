@@ -52,44 +52,31 @@ const SignUp = () => {
 		},
 	});
 
-	const pickImage = async () => {
-		const result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			base64: true,
-			aspect: [1, 1],
-			quality: 0,
-		});
-
-		if (!result.canceled) {
-			if (!result.assets) return;
-
-			setImage(`${base64Prefix}${result.assets[0].base64}`);
-			setModalVisible(!modalVisible);
-		}
-	};
-
 	useEffect(() => {
 		setValue('profile_picture', image);
 	}, [image]);
 
 	const onSubmit = async (formData: FormValues | any) => {
 		try {
-			const { data, status } = await axios.post(`${baseUrl}/signup`, {
-				first_name: formData.first_name,
-				last_name: formData.last_name,
-				username: formData.username,
-				email: formData.email,
-				password: formData.password,
-				profile_picture: formData.profile_picture,
-				following: [],
-				followers: [],
-				private_option: formData.private_option,
-			}, {
-				headers: {
-					'Content-Type': 'application/json'
+			const { data, status } = await axios.post(
+				`${baseUrl}/signup`,
+				{
+					first_name: formData.first_name,
+					last_name: formData.last_name,
+					username: formData.username,
+					email: formData.email,
+					password: formData.password,
+					profile_picture: formData.profile_picture,
+					following: [],
+					followers: [],
+					private_option: formData.private_option,
+				},
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
 				}
-			});
+			);
 
 			if (status === 200) {
 				try {
@@ -110,16 +97,22 @@ const SignUp = () => {
 		{ value: 'Private', boolean: true },
 	];
 
+	useEffect(() => {
+		console.log('test' + image);
+	}, [image]);
+
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
 			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.Camera, {});
+						navigation.navigate(StackNavigation.Camera, {
+							setImage: setImage,
+						});
 					}}
 				>
-					<ProfilePicture />
+					<ProfilePicture imageSrc={image} />
 				</Pressable>
 				<View
 					style={{
