@@ -42,7 +42,7 @@ export default function CategoryBar({ selectedCategory, handleCategoryChange }: 
         <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ alignItems: 'center' }}
+            contentContainerStyle={{ alignItems: 'center', paddingHorizontal: 16 }}
         >
             {containerCell(ClothingTypes.outfits)}
             {containerCell(ClothingTypes.outerwear)}

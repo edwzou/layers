@@ -29,7 +29,7 @@ const Tag = ({
 							styles.container,
 							GlobalStyles.utils.tagShadow,
 							{
-								shadowColor: label === "White" ? GlobalStyles.colorPalette.primary[300] : bgColor || GlobalStyles.colorPalette.primary[500],
+								shadowColor: label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[300] : bgColor || GlobalStyles.colorPalette.primary[500],
 								backgroundColor:
 									bgColor || GlobalStyles.colorPalette.primary[500],
 								justifyContent: type.action === TagAction.remove ? 'space-between' : 'center',
@@ -38,7 +38,7 @@ const Tag = ({
 					>
 						<Text style={{ marginRight: type.action === TagAction.remove ? 2.5 : 0 }}>
 							<Text style={{
-								color: label === "White" ? GlobalStyles.colorPalette.primary[900]
+								color: label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[900]
 									: GlobalStyles.colorPalette.primary[100], ...GlobalStyles.typography.body
 							}}>
 								{label}
@@ -48,7 +48,7 @@ const Tag = ({
 						{type.action === TagAction.remove ? (
 							<Icon
 								name={GlobalStyles.icons.closeOutline}
-								color={label === "White" ? GlobalStyles.colorPalette.primary[900]
+								color={label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[900]
 									: GlobalStyles.colorPalette.primary[100]}
 								size={GlobalStyles.sizing.icon.xSmall}
 							/>
