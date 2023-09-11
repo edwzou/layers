@@ -9,7 +9,7 @@ async function uploadURIToS3(imageContent: Buffer, fileName: string) {
       Body: imageContent,
       ContentType: 'image/jpeg'
     };
-  
+
     const command = new PutObjectCommand(params);
     const result = await s3.send(command);
     console.log('Upload successful:', result);

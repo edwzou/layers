@@ -25,9 +25,9 @@ router.get('/', (req: Request, res: Response): void => {
       responseCallbackGet(error, null, res);
     }
   };
-
   void getUser();
 });
+
 // Endpoint for creating a specific user
 router.post('/', checkAuthenticated, (req: Request, res: Response) => {
   const {
@@ -41,26 +41,26 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
     followers,
     following
   } = req.body;
-  convertImage(profile_picture, username, false);
-
   const insertUser = async (): Promise<void> => {
     try {
+      const URL = await convertImage(profile_picture, username, false);
       await pool.query(
         `
       INSERT INTO backend_schema.user (
+
         first_name, last_name, email, username, password, private_option, followers, following, profile_picture
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
         [
           first_name,
           last_name,
-          email,
+          email.toLowerCase(),
           username,
           password,
           private_option,
           followers,
           following,
-          profile_picture
+          URL
         ]
       );
 
@@ -75,9 +75,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
 // Endpoint for deleting a specific user
 router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
   const userId = req.user as string;
-
   if (userId == null) return;
-
   const deleteUser = async (): Promise<void> => {
     try {
       const deleteUser = await pool.query(
@@ -89,16 +87,13 @@ router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
       responseCallbackDelete(error, userId, res, 'User');
     }
   };
-
   void deleteUser();
 });
 
 // Endpoints for updating a specific user
 router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   const userId = req.user as string;
-
   if (userId == null) return;
-
   const {
     first_name,
     last_name,
@@ -112,6 +107,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
+      const URL = await convertImage(profile_picture, username, false);
       const updateUser = await pool.query(
         `UPDATE backend_schema.user
         SET first_name = $1,
@@ -119,7 +115,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
             email = $3,
             username = $4,
             password = $5,
-            private = $6,
+            private_option = $6,
             followers = $7,
             following = $8,
             profile_picture = $9
@@ -127,13 +123,13 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
         [
           first_name,
           last_name,
-          email,
+          email.toLowerCase(),
           username,
           password,
           private_option,
           followers,
           following,
-          profile_picture,
+          URL,
           userId
         ]
       );
@@ -143,7 +139,6 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
       responseCallbackUpdate(error, userId, res, 'User');
     }
   };
-
   void updateUser();
 });
 
