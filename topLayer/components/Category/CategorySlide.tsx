@@ -32,7 +32,7 @@ const CategorySlide = ({ clothingData, handleItemChange }: CategorySlidePropsTyp
 					showsVerticalScrollIndicator={false}
 					contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
 					ListFooterComponent={
-						<View style={{ padding: screenHeight * 0.05 }} />
+						<View style={{ padding: screenHeight * 0.15 }} />
 					}
 				/>
 			) : (
@@ -49,7 +49,7 @@ const CategorySlide = ({ clothingData, handleItemChange }: CategorySlidePropsTyp
 					columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 					showsVerticalScrollIndicator={false}
 					ListFooterComponent={
-						<View style={{ padding: screenHeight * 0.05 }} />
+						<View style={{ padding: screenHeight * 0.15 }} />
 					}
 				/>
 			)}

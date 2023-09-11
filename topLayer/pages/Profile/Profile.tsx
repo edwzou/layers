@@ -80,7 +80,7 @@ const Profile = () => {
     return (
         <>
             <Navbar toggleFeedbackModal={toggleFeedbackModal} />
-            <View style={{ gap: 25, flex: 1 }}>
+            <View style={{ flex: 1 }}>
                 <View style={styles.profilePicture}>
                     <Pressable
                         onPress={() => {
@@ -96,7 +96,7 @@ const Profile = () => {
                         <Username username={mockUserData.username} />
                     </View>
                 </View>
-                <View style={{ gap: 15, flex: 1 }}>
+                <View style={{ top: 25, gap: 20 }}>
                     <CategoryBar
                         selectedCategory={selectedCategory}
                         handleCategoryChange={handleCategoryChange}
