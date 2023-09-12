@@ -10,7 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {
-	highTranslateY,
+	lowTranslateY,
 	screenHeight,
 	screenWidth,
 } from '../../utils/modalMaxShow';
@@ -25,7 +25,7 @@ export interface refPropType {
 
 const GeneralModal = forwardRef(
 	(
-		{ title, stepOver, height = highTranslateY, content, dim = true }: ModalPropTypes,
+		{ title, stepOver, height = lowTranslateY, content, dim = true }: ModalPropTypes,
 		ref
 	) => {
 		const active = useSharedValue(false);
@@ -41,7 +41,7 @@ const GeneralModal = forwardRef(
 			'worklet';
 
 			active.value = destination !== 0;
-			translateY.value = withSpring(destination, { damping: 50 });
+			translateY.value = withSpring(destination, { damping: 20 });
 		}, []);
 
 		useImperativeHandle(ref, () => ({ scrollTo, isActive }), [
@@ -58,9 +58,9 @@ const GeneralModal = forwardRef(
 				translateY.value = Math.max(translateY.value, height);
 			})
 			.onEnd(() => {
-				if (translateY.value > -screenHeight / 1.25) {
+				if (translateY.value > -screenHeight / 3.5) {
 					scrollTo(0);
-				} else if (translateY.value <= -screenHeight / 1.25) {
+				} else if (translateY.value <= -screenHeight / 3.5) {
 					scrollTo(height);
 				}
 			});
@@ -93,7 +93,7 @@ const GeneralModal = forwardRef(
 					style={[
 						{
 							...StyleSheet.absoluteFillObject,
-							backgroundColor: dim ? GlobalStyles.colorPalette.primary[500] + '50' : 'transparent',
+							backgroundColor: dim ? GlobalStyles.colorPalette.primary[500] + '20' : 'transparent',
 						},
 						backdropStyle,
 					]}
@@ -117,16 +117,19 @@ const GeneralModal = forwardRef(
 const styles = StyleSheet.create({
 	container: {
 		height: screenHeight,
-		paddingTop: 30,
+		paddingTop: 15,
 		width: screenWidth,
-		backgroundColor: GlobalStyles.colorPalette.background,
+		backgroundColor: GlobalStyles.colorPalette.card[200],
 		position: 'absolute',
 		top: screenHeight,
-		gap: 20,
-		borderTopRightRadius: 30,
-		borderTopLeftRadius: 30,
+		gap: 5,
+		...GlobalStyles.utils.mediumRadius,
 		zIndex: 10,
 		flex: 1,
+		shadowColor: 'black',
+		shadowOffset: { width: 0, height: -4 },
+		shadowOpacity: 0.05,
+		shadowRadius: 5,
 	},
 	header: {
 		display: 'flex',

@@ -19,70 +19,56 @@ const Tag = ({
 	onPress,
 }: TagPropsType) => {
 	return (
-		// This Text wrapper allows for the container to have min-content property
-		<Text>
-			{type.action === TagAction.remove || type.action === TagAction.static || type.action === TagAction.push ? (
-				<Pressable onPress={type.action === TagAction.remove || type.action === TagAction.push ? onPress :
-					undefined}>
-					<View
-						style={[
-							styles.container,
-							GlobalStyles.utils.tagShadow,
-							{
-								shadowColor: label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[300] : bgColor || GlobalStyles.colorPalette.primary[500],
-								backgroundColor:
-									bgColor || GlobalStyles.colorPalette.primary[500],
-								justifyContent: type.action === TagAction.remove ? 'space-between' : 'center',
-							},
-						]}
-					>
-						<Text style={{ marginRight: type.action === TagAction.remove ? 2.5 : 0 }}>
-							<Text style={{
-								color: label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[900]
-									: GlobalStyles.colorPalette.primary[100], ...GlobalStyles.typography.body
-							}}>
-								{label}
-							</Text>
-
-						</Text>
-						{type.action === TagAction.remove ? (
-							<Icon
-								name={GlobalStyles.icons.closeOutline}
-								color={label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[900]
-									: GlobalStyles.colorPalette.primary[100]}
-								size={GlobalStyles.sizing.icon.xSmall}
-							/>
-						) : null}
-					</View>
-				</Pressable>
-			) : (
-				<Pressable
-					onPress={onPress}
-					style={{ marginRight: 2.5 }}
+		type.action === TagAction.remove || type.action === TagAction.static || type.action === TagAction.push ? (
+			<Pressable onPress={type.action === TagAction.remove || type.action === TagAction.push ? onPress : undefined}>
+				<View
+					style={[
+						styles.container,
+						GlobalStyles.utils.tagShadow,
+						{
+							shadowColor: label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[300] : bgColor || GlobalStyles.colorPalette.primary[500],
+							backgroundColor: bgColor || GlobalStyles.colorPalette.primary[500],
+							justifyContent: type.action === TagAction.remove ? 'space-between' : 'center',
+						},
+					]}
 				>
-					<View
-						style={[
-							styles.container,
-							{
-								backgroundColor: GlobalStyles.colorPalette.primary[200],
-								justifyContent: 'space-between',
-							},
-						]}
-					>
+					<Text style={{ marginRight: type.action === TagAction.remove ? 2.5 : 0, color: (label === "White" || label === "Cream") ? GlobalStyles.colorPalette.primary[900] : GlobalStyles.colorPalette.primary[100], ...GlobalStyles.typography.body }}>
+						{type.action !== TagAction.push ? label : ' '}
+					</Text>
+					{type.action === TagAction.remove ? (
 						<Icon
-							name={GlobalStyles.icons.addOutline}
-							color={GlobalStyles.colorPalette.primary[300]}
+							name={GlobalStyles.icons.closeOutline}
+							color={label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[900] : GlobalStyles.colorPalette.primary[100]}
 							size={GlobalStyles.sizing.icon.xSmall}
 						/>
-						<Text>
-							<Text style={{ color: GlobalStyles.colorPalette.primary[300], ...GlobalStyles.typography.body, }}>
-								{capitalizeFirstLetter(type.category)}
-							</Text>
-						</Text>
-					</View>
-				</Pressable>
-			)}
-		</Text>
+					) : null}
+				</View>
+			</Pressable>
+		) : (
+			<Pressable
+				onPress={onPress}
+				style={{ marginRight: 2.5 }}
+			>
+				<View
+					style={[
+						styles.container,
+						{
+							backgroundColor: GlobalStyles.colorPalette.primary[200],
+							justifyContent: 'space-between',
+						},
+					]}
+				>
+					<Icon
+						name={GlobalStyles.icons.addOutline}
+						color={GlobalStyles.colorPalette.primary[300]}
+						size={GlobalStyles.sizing.icon.xSmall}
+					/>
+					<Text style={{ color: GlobalStyles.colorPalette.primary[300], marginLeft: 2.5, ...GlobalStyles.typography.body }}>
+						{type.category}
+					</Text>
+				</View>
+			</Pressable>
+		)
 	);
 };
 
@@ -90,10 +76,10 @@ export default Tag;
 
 const styles = StyleSheet.create({
 	container: {
-		paddingHorizontal: 10,
+		paddingHorizontal: 12.5,
 		paddingVertical: 5,
 		alignItems: 'center',
-		borderRadius: 1000,
+		...GlobalStyles.utils.fullRadius,
 		flexDirection: 'row',
 	},
 });

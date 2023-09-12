@@ -7,6 +7,7 @@ import {
 } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
+import { upload } from '../../utils/multer';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
