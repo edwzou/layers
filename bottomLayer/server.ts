@@ -17,7 +17,9 @@ const LocalStrategy = require('passport-local').Strategy;
 const FileStore = require('session-file-store')(session);
 require('dotenv').config();
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb' }));
+
 app.use(
   session({
     genid: (req: any) => {
@@ -50,7 +52,6 @@ passport.use(
   new LocalStrategy(
     { usernameField: 'email', passwordField: 'password' },
     async (email: string, password: string, done: any) => {
-      console.log(email, password);
       try {
         const result = await pool.query(
           'SELECT * FROM backend_schema.user WHERE email = $1',
@@ -81,6 +82,7 @@ passport.use(
     }
   )
 );
+
 app.use('/', routerBase);
 app.use('/api', routerPublic);
 app.use('/api/private', routerPrivate);

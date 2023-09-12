@@ -100,6 +100,6 @@ export const ColorTags: Record<string, [string, string]> = {
   Navy: ["Navy", "#3869B2"],
   Black: ["Black", "#121212"],
   Grey: ["Grey", "#CDCDCD"],
-  White: ["White", "#F2F2F2"],
+  White: ["White", "#FFFFF7"],
   Cream: ["Cream", "#FFFBEB"],
 };
