@@ -203,7 +203,8 @@ export default function CameraComponent({ data }: CameraPropType) {
 			quality: 0,
 		});
 		if (result.canceled) return;
-		data(result.assets[0].uri);
+		data(result.assets[0].base64);
+		navigation.goBack();
 	};
 
 	return (
