@@ -11,10 +11,11 @@ interface ColorPickerPropsType {
 const ColorPicker = ({ onNewColorPress }: ColorPickerPropsType) => {
     const colors = [
         ColorTags.Blue, ColorTags.Teal, ColorTags.Mint, ColorTags.Green, ColorTags.Olive, ColorTags.Yellow, ColorTags.Beige, ColorTags.Brown,
-        ColorTags.Orange, ColorTags.Red, ColorTags.Maroon, ColorTags.Pink, ColorTags.Purple, ColorTags.Navy, ColorTags.Black, ColorTags.Grey, ColorTags.White
+        ColorTags.Orange, ColorTags.Red, ColorTags.Maroon, ColorTags.Pink, ColorTags.Purple, ColorTags.Navy, ColorTags.Black, ColorTags.Grey, ColorTags.Cream,
+        ColorTags.White
     ];
 
-    const tagWidth = 80; // Adjust this value according to your desired tag size
+    const tagWidth = 60; // Adjust this value according to your desired tag size
 
     const [tagsPerRow, setTagsPerRow] = useState(4); // Initial number of tags per row
     const screenWidth = Dimensions.get('window').width;

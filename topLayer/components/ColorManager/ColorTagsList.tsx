@@ -1,8 +1,8 @@
-import { StyleSheet, FlatList, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { ColorTags, TagAction } from '../../constants/Enums'
-import ColorTag from '../../components/Tag/ColorTag'
+import { ColorTags, TagAction } from '../../constants/Enums';
+import ColorTag from '../../components/Tag/ColorTag';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 interface ColorTagsListPropsType {
@@ -14,44 +14,42 @@ interface ColorTagsListPropsType {
 
 const ColorTagsList = ({ data, tagAction, onAddPress, onRemovePress }: ColorTagsListPropsType) => {
     return (
-        <FlatList
-            data={data}
-            contentContainerStyle={{
-                paddingVertical: 20,
-                paddingHorizontal: GlobalStyles.layout.xGap,
-            }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-                <ColorTag
-                    action={tagAction}
-                    color={item}
-                    onPress={onRemovePress ? () => onRemovePress(item) : undefined}
-                />
-
+        <View style={styles.container}>
+            {data.map((item, index) => (
+                <View style={styles.item} key={index}>
+                    <ColorTag
+                        action={tagAction}
+                        color={item}
+                        onPress={onRemovePress ? () => onRemovePress(item) : undefined}
+                    />
+                </View>
+            ))}
+            {tagAction !== TagAction.static && (
+                <View style={styles.item}>
+                    <ColorTag
+                        action={TagAction.add}
+                        onPress={onAddPress}
+                    />
+                </View>
             )}
-            keyExtractor={(item) => item[0]}
-            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-            ListFooterComponent={() => (
-                tagAction !== TagAction.static ?
-                    data.length > 0 ? (
-                        <View style={{ marginLeft: 10 }}>
-                            <ColorTag
-                                action={TagAction.add}
-                                onPress={onAddPress}
-                            />
-                        </View>
-                    ) : (
-                        <ColorTag
-                            action={TagAction.add}
-                            onPress={onAddPress}
-                        />
-                    ) : null
-            )}
-        />
+        </View>
     )
 }
 
-export default ColorTagsList
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        paddingVertical: 20,
+        paddingHorizontal: GlobalStyles.layout.xGap,
+        marginLeft: -5,    // half of the space
+        marginRight: -5,   // half of the space
+    },
+    item: {
+        marginLeft: 5,     // half of the space
+        marginRight: 5,    // half of the space
+        marginBottom: 10
+    }
+});
 
-const styles = StyleSheet.create({})
+export default ColorTagsList;
