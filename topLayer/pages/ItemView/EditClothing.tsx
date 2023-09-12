@@ -4,7 +4,7 @@ import { ClothingTypes, TagAction, } from '../../constants/Enums';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
-import { medTranslateY } from '../../utils/modalMaxShow';
+import { lowTranslateY } from '../../utils/modalMaxShow';
 import ColorPicker from '../../components/ColorManager/ColorPicker';
 import GeneralModal, {
 	type refPropType,
@@ -85,9 +85,12 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	};
 
 	const handleOnNewColorPress = (colorToAdd: [string, string]) => {
-		setColorTags([...currentColorTags, colorToAdd]);
-		colorPickerRef.current?.scrollTo(0)
+		if (!currentColorTags.some(color => color[1] === colorToAdd[1])) {
+			setColorTags([...currentColorTags, colorToAdd]);
+		}
+		colorPickerRef.current?.scrollTo(0);
 	};
+
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -128,7 +131,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 					</View>
 				</View>
 			</View>
-			<ColorTagsList data={currentColorTags} tagAction={TagAction.remove} onAddPress={() => { colorPickerRef.current?.scrollTo(medTranslateY) }}
+			<ColorTagsList data={currentColorTags} tagAction={TagAction.remove} onAddPress={() => { colorPickerRef.current?.scrollTo(lowTranslateY) }}
 				onRemovePress={handleOnRemovePress} />
 			{/* <View
 					style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}
