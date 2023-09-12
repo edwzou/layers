@@ -1,6 +1,10 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { getUserCore, responseCallbackGet, responseCallbackGetAll } from '../../utils/responseCallback';
+import {
+  getUserCore,
+  responseCallbackGet,
+  responseCallbackGetAll
+} from '../../utils/responseCallback';
 const router = express.Router();
 
 // Endpoint for retrieving a specific clothing item
@@ -9,7 +13,10 @@ router.get('/:itemId', (req: Request, res: Response): void => {
 
   const getClothingById = async (itemId: string): Promise<any> => {
     try {
-      const item = await pool.query('SELECT * FROM backend_schema.clothing_item WHERE ciid = $1', [itemId]);
+      const item = await pool.query(
+        'SELECT * FROM backend_schema.clothing_item WHERE ciid = $1',
+        [itemId]
+      );
       const result = item.rows;
 
       responseCallbackGet(null, result, res, 'Clothing Item');
@@ -29,7 +36,10 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
 
   const getAllClothing = async (userId: string): Promise<any> => {
     try {
-      const run = pool.query('SELECT * FROM backend_schema.clothing_item WHERE uid = $1', [userId]);
+      const run = pool.query(
+        'SELECT * FROM backend_schema.clothing_item WHERE uid = $1',
+        [userId]
+      );
       await getUserCore(userId, await client);
       const result = await run;
       const items = result.rows;
