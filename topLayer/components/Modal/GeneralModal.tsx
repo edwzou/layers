@@ -10,7 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {
-	highTranslateY,
+	lowTranslateY,
 	screenHeight,
 	screenWidth,
 } from '../../utils/modalMaxShow';
@@ -25,7 +25,7 @@ export interface refPropType {
 
 const GeneralModal = forwardRef(
 	(
-		{ title, stepOver, height = highTranslateY, content, dim = true }: ModalPropTypes,
+		{ title, stepOver, height = lowTranslateY, content, dim = true }: ModalPropTypes,
 		ref
 	) => {
 		const active = useSharedValue(false);
@@ -93,7 +93,7 @@ const GeneralModal = forwardRef(
 					style={[
 						{
 							...StyleSheet.absoluteFillObject,
-							backgroundColor: dim ? GlobalStyles.colorPalette.primary[500] + '50' : 'transparent',
+							backgroundColor: dim ? GlobalStyles.colorPalette.primary[500] + '20' : 'transparent',
 						},
 						backdropStyle,
 					]}
@@ -117,16 +117,20 @@ const GeneralModal = forwardRef(
 const styles = StyleSheet.create({
 	container: {
 		height: screenHeight,
-		paddingTop: 30,
+		paddingTop: 15,
 		width: screenWidth,
-		backgroundColor: GlobalStyles.colorPalette.background,
+		backgroundColor: GlobalStyles.colorPalette.card[100],
 		position: 'absolute',
 		top: screenHeight,
-		gap: 20,
-		borderTopRightRadius: 30,
-		borderTopLeftRadius: 30,
+		gap: 5,
+		borderTopRightRadius: 15,
+		borderTopLeftRadius: 15,
 		zIndex: 10,
 		flex: 1,
+		shadowColor: 'black',
+		shadowOffset: { width: 0, height: -4 },
+		shadowOpacity: 0.06,
+		shadowRadius: 10,
 	},
 	header: {
 		display: 'flex',
