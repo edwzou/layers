@@ -15,7 +15,6 @@ router.post('/follow/:followerId', async (req: any, res: any) => {
   // The followedId is the person getting followed. Follower is the following.
   const { followerId } = req.params;
   const { followedId } = req.body;
-  console.log(followerId, followedId);
 
   const client1 = pool.connect();
   const client2 = pool.connect();
@@ -123,7 +122,6 @@ router.post('/follow/:followerId', async (req: any, res: any) => {
 router.post('/unfollow/:unfollowerId', async (req: any, res: any) => {
   const { unfollowerId } = req.params;
   const { unfollowedId } = req.body;
-  console.log(unfollowerId, unfollowedId);
 
   const client1 = pool.connect();
   const client2 = pool.connect();

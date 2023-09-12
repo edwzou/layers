@@ -97,11 +97,6 @@ export class QueryManager extends EventEmitter {
             unfollowedId
         );
       } else if (this.failures.length === 2) {
-        console.log(
-          this.failures,
-          this.failures[0].length,
-          this.failures[1].length
-        );
         if (this.failures[0].length > 19 || this.failures[1].length > 19) {
           throw new NotFoundError(
             'The UnFollower User (the user doing the unfollowing) Referenced in the Unfollow Request does not Exist\nunfollowerId: ' +

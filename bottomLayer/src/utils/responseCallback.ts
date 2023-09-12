@@ -15,15 +15,6 @@ export const responseCallback = (error: any, element: any): Callback<any> => {
   }
 };
 
-export const responseCallback2 = (error: any, element: any): Callback<any> => {
-  if (error != null) {
-    console.log('Error: ', error);
-    throw error;
-  } else {
-    return element;
-  }
-};
-
 // All get calls to postgresql should fail if rowcount === 0
 export const responseCallbackGet = (
   error: any,
@@ -200,13 +191,10 @@ export const clientUnFollow = async (
   failure: string = ''
 ): Promise<any> => {
   const clientOn = await client;
-  // console.log("Client1: ", clientOn);
-  console.log('query1: ', query);
   try {
     const queryTrigger = once(queryEmitter, 'proceed');
     const result = await clientOn.query(query);
 
-    console.log('result: ', result);
     if (result.rowCount === 0) {
       queryEmitter.failure(failure, query);
       throw new NotFoundError('No change in user, uid: ' + uid);
@@ -229,22 +217,13 @@ export const clientUnFollow = async (
     if (error instanceof Error) {
       if (error.name === UnknownError.name) {
         // this is only called on 0,1
-        console.log('hit1');
         return responseCallback(
           null,
           'Error is unknown to this query, query:\n' + query
         );
       } else if (error.name === NotFoundError.name) {
-        console.log('hit2');
         return responseCallback(null, 'No change in user, uid: ' + uid);
       }
-      console.log(
-        'hit3',
-        typeof error,
-        error instanceof NotFoundError,
-        error.name
-      );
-
       queryEmitter.utterFailure(error.message, query);
       return responseCallback(error, null);
     }
@@ -333,47 +312,5 @@ export const revertFollowQuery = (query: string): string => {
   const remove = query.replace('array_append', 'array_remove');
   const indexOfAnd = remove.indexOf('AND');
   const reversion = remove.substring(0, indexOfAnd);
-  console.log('reversion: ', reversion);
   return reversion;
-};
-
-export const clientFollowTransaction2 = async (
-  uid: string,
-  query: string,
-  client: Promise<PoolClient>,
-  index: number,
-  otherQueries: number[]
-): Promise<any> => {
-  const clientOn = await client;
-  // console.log("Client2: ", clientOn);
-  console.log('query2: ', query);
-  try {
-    await clientOn.query('BEGIN');
-    console.log('running2');
-    const result = await clientOn.query(query);
-    otherQueries[index] = result.rowCount;
-    console.log('set2: ', otherQueries);
-    if (otherQueries[index] === 0) {
-      throw new NotFoundError('No change in user, uid: ' + uid);
-    }
-    for (let i = 0; i < otherQueries.length; i++) {
-      while (otherQueries[i] === -1) {
-        // console.log("queries: ", otherQueries)
-        continue;
-      }
-      if (otherQueries[i] === 0) {
-        throw new UnknownError('The error is unknown in this method');
-      }
-    }
-    await clientOn.query('COMMIT');
-    return responseCallback(null, true);
-  } catch (error) {
-    await clientOn.query('ROLLBACK');
-    if (error instanceof UnknownError) {
-      return responseCallback(null, 'Unknown Error');
-    } else if (error instanceof NotFoundError) {
-      return responseCallback(null, 'No change in user, uid: ' + uid);
-    }
-    return responseCallback(error, null);
-  }
 };
