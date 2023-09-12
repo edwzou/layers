@@ -21,12 +21,11 @@ const ItemView = ({ clothingItem }: ItemViewPropsType) => {
 
                     <ItemCell image={clothingItem.image} disablePress />
                 </View>
-                <View style={styles.categoryContainer}>
-                    <Text style={styles.subheader}>Colors</Text>
-                    <ColorTagsList data={clothingItem.colors} tagAction={TagAction.static} />
-                </View>
+                <Text style={styles.subheader}>Colors</Text>
             </ View>
-            {/* <View style={styles.categoryContainer}>
+            <View style={{ marginTop: -10 }}>
+                <ColorTagsList data={clothingItem.colors} tagAction={TagAction.static} />
+                {/* <View style={styles.categoryContainer}>
                     <Text style={styles.subheader}>Brands</Text>
                     <View style={styles.tagsContainer}>
                         <BrandTag
@@ -39,6 +38,7 @@ const ItemView = ({ clothingItem }: ItemViewPropsType) => {
                         />
                     </View>
                 </View> */}
+            </View>
         </ScrollView>
     );
 };

@@ -20,6 +20,6 @@ async function convertImage(URI: string, key: string, remove: boolean) {
     console.error('Error converting URI:', error);
     throw error;
   }
-}
+};
 
 export { convertImage };

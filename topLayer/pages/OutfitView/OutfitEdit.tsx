@@ -67,17 +67,17 @@ const OutfitEdit = ({ outfit }: OutfitViewPropsType) => {
 				columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 				style={{ height: screenHeight - 350, padding: 6 }}
 			/>
-			<View style={styles.deleteButtonContainer}>
-				<Pressable onPress={handlePress}>
-					<View style={styles.deleteButton}>
-						<Icon
-							name={GlobalStyles.icons.closeOutline}
-							color={GlobalStyles.colorPalette.primary[300]}
-							size={GlobalStyles.sizing.icon.regular}
-						/>
-					</View>
-				</Pressable>
-			</View>
+			<Pressable onPress={handlePress} style={{
+				position: 'absolute',
+				bottom: GlobalStyles.layout.highTranslateYBottomMargin,
+				alignSelf: 'center',
+			}}>
+				<Icon
+					name={GlobalStyles.icons.deleteBin2Line}
+					color={GlobalStyles.colorPalette.danger[500]}
+					size={GlobalStyles.sizing.icon.regular}
+				/>
+			</Pressable>
 		</View>
 	);
 };
@@ -87,19 +87,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: GlobalStyles.layout.xGap - 6, // Gives extra room for the item cell delete button to render
 		gap: GlobalStyles.layout.gap,
 		flex: 1,
-	},
-	deleteButtonContainer: {
-		position: 'absolute',
-		bottom: GlobalStyles.layout.gap * 2.5,
-		alignSelf: 'center',
-	},
-	deleteButton: {
-		width: 40,
-		height: 40,
-		...GlobalStyles.utils.fullRadius,
-		backgroundColor: GlobalStyles.colorPalette.primary[200],
-		alignItems: 'center',
-		justifyContent: 'center',
 	},
 });
 

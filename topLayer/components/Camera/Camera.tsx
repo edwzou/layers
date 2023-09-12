@@ -203,8 +203,7 @@ export default function CameraComponent({ data }: CameraPropType) {
 			quality: 0,
 		});
 		if (result.canceled) return;
-		data(result.assets[0].base64);
-		navigation.goBack();
+		data(result.assets[0].uri);
 	};
 
 	return (
@@ -297,12 +296,12 @@ const styles = StyleSheet.create({
 	button: {
 		padding: 10,
 		backgroundColor: GlobalStyles.colorPalette.primary[500] + '80',
-		...GlobalStyles.utils.fullRadius,
+		borderRadius: 100,
 	},
 	buttonInverse: {
 		padding: 10,
 		backgroundColor: GlobalStyles.colorPalette.background,
-		...GlobalStyles.utils.fullRadius,
+		borderRadius: 100,
 	},
 	bottomContainer: {
 		width: screenWidth,

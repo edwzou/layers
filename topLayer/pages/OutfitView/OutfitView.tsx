@@ -4,7 +4,7 @@ import ItemCell from '../../components/Cell/ItemCell';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 import { FlatList } from 'react-native-gesture-handler';
-import ColorTagsList from '../../components/ColorManager/ColorTagsList';
+import ColorTag from '../../components/Tag/ColorTag';
 import { TagAction, ColorTags } from '../../constants/Enums';
 import BrandTag from '../../components/Tag/BrandTag';
 
@@ -15,11 +15,6 @@ interface OutfitViewPropsType {
 }
 
 const OutfitView = ({ outfit }: OutfitViewPropsType) => {
-
-	const allColors = outfit.items.flatMap(item => item.colors);
-	const uniqueColorsNames = Array.from(new Set(allColors.map(color => color[0])));
-	const uniqueColors = uniqueColorsNames.map(name => ColorTags[name]);
-
 	return (
 		<FlatList
 			data={outfit.items.slice(1)}
@@ -40,10 +35,20 @@ const OutfitView = ({ outfit }: OutfitViewPropsType) => {
 				<View style={{ gap: 20, }}>
 					<View style={[styles.categoryContainer, { top: 4, }]}>
 						<Text style={styles.subheader}>Colors</Text>
-						<ColorTagsList
-							data={uniqueColors}
-							tagAction={TagAction.static}
-						/>
+						<View style={styles.tagsContainer}>
+							<ColorTag
+								action={TagAction.static}
+								color={ColorTags.Red}
+							/>
+							<ColorTag
+								action={TagAction.static}
+								color={ColorTags.Orange}
+							/>
+							<ColorTag
+								action={TagAction.static}
+								color={ColorTags.Yellow}
+							/>
+						</View>
 					</View>
 					{/* <View style={styles.categoryContainer}>
 						<Text style={styles.subheader}>Brands</Text>

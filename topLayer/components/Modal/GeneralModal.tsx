@@ -41,7 +41,7 @@ const GeneralModal = forwardRef(
 			'worklet';
 
 			active.value = destination !== 0;
-			translateY.value = withSpring(destination, { damping: 20 });
+			translateY.value = withSpring(destination, { damping: 50 });
 		}, []);
 
 		useImperativeHandle(ref, () => ({ scrollTo, isActive }), [
@@ -58,9 +58,9 @@ const GeneralModal = forwardRef(
 				translateY.value = Math.max(translateY.value, height);
 			})
 			.onEnd(() => {
-				if (translateY.value > -screenHeight / 3.5) {
+				if (translateY.value > -screenHeight / 1.25) {
 					scrollTo(0);
-				} else if (translateY.value <= -screenHeight / 3.5) {
+				} else if (translateY.value <= -screenHeight / 1.25) {
 					scrollTo(height);
 				}
 			});
@@ -119,17 +119,18 @@ const styles = StyleSheet.create({
 		height: screenHeight,
 		paddingTop: 15,
 		width: screenWidth,
-		backgroundColor: GlobalStyles.colorPalette.card[200],
+		backgroundColor: GlobalStyles.colorPalette.card[100],
 		position: 'absolute',
 		top: screenHeight,
 		gap: 5,
-		...GlobalStyles.utils.mediumRadius,
+		borderTopRightRadius: 15,
+		borderTopLeftRadius: 15,
 		zIndex: 10,
 		flex: 1,
 		shadowColor: 'black',
 		shadowOffset: { width: 0, height: -4 },
-		shadowOpacity: 0.05,
-		shadowRadius: 5,
+		shadowOpacity: 0.06,
+		shadowRadius: 10,
 	},
 	header: {
 		display: 'flex',

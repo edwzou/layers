@@ -119,9 +119,6 @@ const utils = StyleSheet.create({
 	mediumRadius: {
 		borderRadius: 20,
 	},
-	fullRadius: {
-		borderRadius: 100,
-	}
 });
 
 const sizing = {

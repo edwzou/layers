@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		backgroundColor: GlobalStyles.colorPalette.primary[500],
-		...GlobalStyles.utils.fullRadius,
+		borderRadius: 100,
 		paddingVertical: 4,
 		paddingHorizontal: 10,
 		shadowColor: GlobalStyles.colorPalette.primary[500],
