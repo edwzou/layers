@@ -1,19 +1,20 @@
-import express from "express";
+import express from 'express';
 import {
   clientFollow,
+  clientUnFollow,
   responseCallbackFollow,
-} from "../../utils/responseCallback";
-import { pool } from "../../utils/sqlImport";
-import { once } from "node:events";
-import { QueryManager } from "../../utils/event-emitters/queryManager";
+  responseCallbackUnFollow
+} from '../../utils/responseCallback';
+import { pool } from '../../utils/sqlImport';
+import { once } from 'node:events';
+import { QueryManager } from '../../utils/event-emitters/queryManager';
 const router = express.Router();
 
 // Endpoint for following a user, the url parameter is the user doing the following
-router.post("/follow/:followerId", async (req: any, res: any) => {
+router.post('/follow/:followerId', async (req: any, res: any) => {
   // The followedId is the person getting followed. Follower is the following.
   const { followerId } = req.params;
   const { followedId } = req.body;
-  console.log(followerId, followedId);
 
   const client1 = pool.connect();
   const client2 = pool.connect();
@@ -21,9 +22,8 @@ router.post("/follow/:followerId", async (req: any, res: any) => {
   // Perform follow user logic
   const follow = async (
     followerId: string,
-    followedId: string,
+    followedId: string
   ): Promise<void> => {
-
     try {
       /*
         Following query user issues:
@@ -65,51 +65,52 @@ router.post("/follow/:followerId", async (req: any, res: any) => {
 
       const queryManager = new QueryManager(3);
 
-      const queryTrigger = once(queryManager, "proceed");
+      const queryTrigger = once(queryManager, 'proceed');
 
       const followingQ = clientFollow(
         followerId,
         following,
         client1,
         queryManager,
-        "Following failure",
+        'Following failure'
       );
       const followerQ = clientFollow(
         followedId,
         follower,
         client2,
         queryManager,
-        "Follower failure",
+        'Follower failure'
       );
 
       // Check if the Follower User Exists
       const followerUser = await pool.query(
-        "SELECT * FROM backend_schema.user WHERE uid = $1",
-        [followerId],
+        'SELECT * FROM backend_schema.user WHERE uid = $1',
+        [followerId]
       );
       if (followerUser.rows.length === 0) {
         queryManager.failure(
-          "Follower User (the user doing the following) Not Found, uid: " +
+          'Follower User (the user doing the following) Not Found, uid: ' +
             followerId,
-          "SELECT * FROM backend_schema.user WHERE uid = $1",
+          'SELECT * FROM backend_schema.user WHERE uid = $1'
         );
       } else {
         queryManager.complete(
-          "SELECT * FROM backend_schema.user WHERE uid = $1",
+          'SELECT * FROM backend_schema.user WHERE uid = $1'
         );
       }
 
       const resolution = await queryTrigger;
       if (resolution[1] < 0) {
+        // this is waiting for either followingQ and followerQ to revert changes
         await followingQ;
         await followerQ;
-        queryManager.resolveErrorLog(followerId, followedId);
+        queryManager.resolveFollowErrorLog(followerId, followedId);
       }
 
       responseCallbackFollow(null, followerId, followedId, res);
     } catch (error) {
       responseCallbackFollow(error, followerId, followedId, res);
-      } finally {
+    } finally {
       (await client1).release;
       (await client2).release;
     }
@@ -118,42 +119,93 @@ router.post("/follow/:followerId", async (req: any, res: any) => {
 });
 
 // Endpoint for unfollowing a user, the url parameter is the user doing the unfollowing
-router.post("/unfollow/:userId", async (req: any, res: any) => {
-  const { userId } = req.params;
-  const { unFollowId } = req.body;
-  // Perform unfollow user logic
+router.post('/unfollow/:unfollowerId', async (req: any, res: any) => {
+  const { unfollowerId } = req.params;
+  const { unfollowedId } = req.body;
 
-  const unfollow = async (uid1: string, uid2: string): Promise<void> => {
+  const client1 = pool.connect();
+  const client2 = pool.connect();
+
+  const unfollow = async (
+    unfollowerId: string,
+    unfollowedId: string
+  ): Promise<void> => {
     try {
-      // const thread1 = getUserCore(uid1);
-      // const thread2 = getUserCore(uid2);
-      const following = pool.query(
-        `
-      UPDATE backend_schema.user
-        SET following = ARRAY_REMOVE(following, $1)
-        WHERE uid = $2`,
-        [uid1, uid2],
+      /*
+        Unfollow query user issues:
+        Should be almost identical to follow query user issues,
+        except instead of adding to an array we remove instead
+
+        Reverting the unfollow request is not needed
+        As if a user doesn't exist which causes the caught errors to arise.
+        Removing a non-existent User from an array would do nothing.
+      */
+
+      // Removes unfollowed from the unfollower's followings array
+      const unfollowing = `
+          UPDATE backend_schema.user
+          SET following = array_remove(following, '${unfollowedId}')
+          WHERE uid = '${unfollowerId}'
+            AND '${unfollowedId}' = ANY(following)
+        `;
+
+      // Removes unfollower from the unfollowed's followers array
+      const unfollower = `
+        UPDATE backend_schema.user 
+          SET followers = array_remove(followers, '${unfollowerId}')
+          WHERE uid = '${unfollowedId}'
+            AND '${unfollowerId}' = ANY(followers)
+        `;
+
+      const queryManager = new QueryManager(3);
+      const queryTrigger = once(queryManager, 'proceed');
+
+      clientUnFollow(
+        unfollowerId,
+        unfollowing,
+        client1,
+        queryManager,
+        'UnFollowing failure'
       );
-      const followers = pool.query(
-        `
-      UPDATE backend_schema.user
-        SET followers = ARRAY_REMOVE(followers, $1)
-        WHERE uid = $2`,
-        [uid2, uid1],
+      clientUnFollow(
+        unfollowedId,
+        unfollower,
+        client2,
+        queryManager,
+        'UnFollower failure'
       );
 
-      // const result1 = await thread1
-      // const result2 = await thread2
-      // const user1 = result1.rows[0]
-      // const user2 = result2.rows[0];
-      await following;
-      await followers;
-      // responseCallbackUnFollow(null, user1["username"], user2["username"], res)
+      // Check if the Unfollower User Exists
+      const unfollowerUser = await pool.query(
+        'SELECT * FROM backend_schema.user WHERE uid = $1',
+        [unfollowerId]
+      );
+      if (unfollowerUser.rows.length === 0) {
+        queryManager.failure(
+          'UnFollower User (the user doing the unfollowing) Not Found, uid: ' +
+            unfollowerId,
+          'SELECT * FROM backend_schema.user WHERE uid = $1'
+        );
+      } else {
+        queryManager.complete(
+          'SELECT * FROM backend_schema.user WHERE uid = $1'
+        );
+      }
+
+      const resolution = await queryTrigger;
+      if (resolution[1] < 0) {
+        queryManager.resolveUnFollowErrorLog(unfollowerId, unfollowedId);
+      }
+
+      responseCallbackUnFollow(null, unfollowerId, unfollowedId, res);
     } catch (error) {
-      responseCallbackFollow(error, uid1, uid2, res);
+      responseCallbackUnFollow(error, unfollowerId, unfollowedId, res);
+    } finally {
+      (await client1).release;
+      (await client2).release;
     }
   };
-  void unfollow(userId, unFollowId);
+  void unfollow(unfollowerId, unfollowedId);
 });
 
 module.exports = router;

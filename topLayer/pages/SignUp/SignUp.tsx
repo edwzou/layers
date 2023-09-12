@@ -18,6 +18,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { UserContext } from '../../utils/UserContext';
+import { base64Image } from '../../utils/img64';
 
 interface FormValues {
 	first_name: string;
@@ -52,43 +53,33 @@ const SignUp = () => {
 		},
 	});
 
-	const pickImage = async () => {
-		const result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			base64: true,
-			aspect: [1, 1],
-			quality: 0,
-		});
-
-		if (!result.canceled) {
-			if (!result.assets) return;
-
-			setImage(`${base64Prefix}${result.assets[0].base64}`);
-			setModalVisible(!modalVisible);
-		}
-	};
-
 	useEffect(() => {
 		setValue('profile_picture', image);
 	}, [image]);
 
-	const onSubmit = async (formData: FormValues | any) => {
+	const onSubmit = async (values: FormValues | any) => {
 		try {
-			const { data, status } = await axios.post(`${baseUrl}/signup`, {
-				first_name: formData.first_name,
-				last_name: formData.last_name,
-				username: formData.username,
-				email: formData.email,
-				password: formData.password,
-				profile_picture: formData.profile_picture,
+			const formData = new FormData();
+			const formValues: any = {
+				first_name: values.first_name,
+				last_name: values.last_name,
+				username: values.username,
+				email: values.email,
+				password: values.password,
+				profile_picture: values.profile_picture,
 				following: [],
 				followers: [],
-				private_option: formData.private_option,
-			}, {
+				private_option: values.private_option,
+			};
+
+			Object.keys(formValues).forEach((key) =>
+				formData.append(key, formValues[key])
+			);
+
+			const { data, status } = await axios.post(`${baseUrl}/signup`, formData, {
 				headers: {
-					'Content-Type': 'application/json'
-				}
+					'Content-Type': 'multipart/form-data',
+				},
 			});
 
 			if (status === 200) {
@@ -110,16 +101,22 @@ const SignUp = () => {
 		{ value: 'Private', boolean: true },
 	];
 
+	useEffect(() => {
+		console.log('test' + image);
+	}, [image]);
+
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
 			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.Camera, {});
+						navigation.navigate(StackNavigation.Camera, {
+							setImage: setImage,
+						});
 					}}
 				>
-					<ProfilePicture />
+					<ProfilePicture imageSrc={image} />
 				</Pressable>
 				<View
 					style={{
