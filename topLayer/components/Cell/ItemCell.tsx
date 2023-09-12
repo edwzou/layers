@@ -32,17 +32,17 @@ const ItemCell = ({
 	disablePress = false,
 	imageStyle,
 	onPress,
-	canDelete,
+	// canDelete,
 }: ItemCellPropsType) => {
 
-	const handleDeletePress = () => {
-		console.log('delete button pressed');
-	};
+	// const handleDeletePress = () => {
+	// 	console.log('delete button pressed');
+	// };
 
 	return (
 		<Pressable disabled={disablePress} style={[styles.container]} onPress={onPress}>
 			<Image source={image} style={[styles.image, imageStyle]} resizeMode="contain" />
-			{canDelete && (
+			{/* {canDelete && (
 				<View style={styles.deleteButtonContainer}>
 					<Pressable onPress={handleDeletePress}>
 						<View style={styles.deleteButton}>
@@ -54,7 +54,7 @@ const ItemCell = ({
 						</View>
 					</Pressable>
 				</View>
-			)}
+			)} */}
 		</Pressable>
 	);
 };
@@ -74,17 +74,17 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: '100%',
 	},
-	deleteButtonContainer: {
-		position: 'absolute',
-		top: -6,
-		right: -6,
-	},
-	deleteButton: {
-		width: 21,
-		height: 21,
-		borderRadius: 100,
-		backgroundColor: GlobalStyles.colorPalette.primary[300],
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
+	// deleteButtonContainer: {
+	// 	position: 'absolute',
+	// 	top: -6,
+	// 	right: -6,
+	// },
+	// deleteButton: {
+	// 	width: 21,
+	// 	height: 21,
+	// 	...GlobalStyles.utils.fullRadius,
+	// 	backgroundColor: GlobalStyles.colorPalette.primary[300],
+	// 	alignItems: 'center',
+	// 	justifyContent: 'center',
+	// },
 });
