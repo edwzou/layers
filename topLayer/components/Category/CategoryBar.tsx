@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     },
     currentTitle: {
         backgroundColor: GlobalStyles.colorPalette.primary[500],
-        borderRadius: 100,
+        ...GlobalStyles.utils.fullRadius,
         paddingHorizontal: 10,
         marginHorizontal: 5,
         paddingVertical: 4,

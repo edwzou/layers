@@ -128,7 +128,7 @@ const Match = () => {
                 onPress={handlePress}
                 style={{
                     position: 'absolute',
-                    bottom: GlobalStyles.layout.gap * 2,
+                    bottom: GlobalStyles.layout.gap * 2.5,
                     alignSelf: 'center',
                 }}
                 bgColor={GlobalStyles.colorPalette.primary[500]}
