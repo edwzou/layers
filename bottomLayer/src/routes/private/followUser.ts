@@ -1,8 +1,7 @@
-import express, { response, type Request, type Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import {
   clientFollow,
   clientUnFollow,
-  responseCallback,
   responseCallbackConnect,
   responseCallbackFollow,
   responseCallbackUnFollow
