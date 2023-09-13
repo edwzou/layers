@@ -105,7 +105,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 					onFieldChange={setItemName}
 					value={itemName}
 				/>
-				<ItemCell image={clothingItem.image} canDelete={true} />
+				<ItemCell image={clothingItem.image} />
 				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 					<View style={{ width: ITEM_SIZE(2) }}>
 						<Dropdown
@@ -130,9 +130,9 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						/>
 					</View>
 				</View>
+				<ColorTagsList data={currentColorTags} tagAction={TagAction.remove} onAddPress={() => { colorPickerRef.current?.scrollTo(lowTranslateY) }}
+					onRemovePress={handleOnRemovePress} />
 			</View>
-			<ColorTagsList data={currentColorTags} tagAction={TagAction.remove} onAddPress={() => { colorPickerRef.current?.scrollTo(lowTranslateY) }}
-				onRemovePress={handleOnRemovePress} />
 			{/* <View
 					style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}
 				>

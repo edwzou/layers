@@ -296,12 +296,12 @@ const styles = StyleSheet.create({
 	button: {
 		padding: 10,
 		backgroundColor: GlobalStyles.colorPalette.primary[500] + '80',
-		borderRadius: 100,
+		...GlobalStyles.utils.fullRadius,
 	},
 	buttonInverse: {
 		padding: 10,
 		backgroundColor: GlobalStyles.colorPalette.background,
-		borderRadius: 100,
+		...GlobalStyles.utils.fullRadius,
 	},
 	bottomContainer: {
 		width: screenWidth,

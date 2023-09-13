@@ -17,5 +17,6 @@ export const match = {
 } as const;
 
 export const outfitEdit = {
-	outfitName: 'Outfit name'
+	outfitName: 'Outfit name',
+	remove: 'Remove'
 } as const;

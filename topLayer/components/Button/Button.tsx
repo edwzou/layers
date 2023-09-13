@@ -21,7 +21,7 @@ const Button = ({
 		<Pressable
 			style={[
 				styles.button,
-				GlobalStyles.utils.smallRadius,
+				GlobalStyles.utils.fullRadius,
 				GlobalStyles.utils.tagShadow,
 				style != null ? style : null,
 				{
@@ -31,6 +31,9 @@ const Button = ({
 					shadowColor: disabled
 						? GlobalStyles.colorPalette.primary[200]
 						: bgColor,
+					shadowOpacity: 0.23,
+					shadowRadius: 5,
+					shadowOffset: { width: 0, height: 0 },
 				},
 			]}
 			onPress={onPress}
