@@ -35,6 +35,26 @@ export const responseCallbackGet = (
   }
 };
 
+export const responseCallbackConnect = (
+  error: any,
+  res: Response
+): Callback<any> => {
+  if (error != null) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Internal Server Error: Failed To Connect To Pool',
+      error: error,
+      log: error.message
+    });
+    return error;
+  } else {
+    res.status(200).json({
+      message: 'Successfully Connected to Pool'
+    });
+    return error;
+  }
+};
+
 export const responseCallbackPost = (
   error: any,
   res: Response,
@@ -46,6 +66,20 @@ export const responseCallbackPost = (
     return error;
   } else {
     res.status(200).json({ message: 'Successfully Created a ' + target });
+    return error;
+  }
+};
+
+export const responseCallbackSignUp = (
+  error: any,
+  res: Response
+): Callback<any> => {
+  if (error != null) {
+    console.log(error);
+    res.status(500).json({ message: 'Internal Server Error', error: error });
+    return error;
+  } else {
+    res.status(200).json({ message: 'Successfully Signed Up' });
     return error;
   }
 };

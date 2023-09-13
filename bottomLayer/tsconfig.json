@@ -1,19 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es5",                          
-    "module": "commonjs",                    
-    "lib": ["es6"],                     
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es6"],
     "allowJs": true,
-    "outDir": "build",                          
+    "outDir": "build",
     "rootDir": "./",
-    "strict": true,         
+    "strict": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ], 
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   }
 }

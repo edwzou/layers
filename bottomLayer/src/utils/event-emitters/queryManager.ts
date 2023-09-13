@@ -73,7 +73,7 @@ export class QueryManager extends EventEmitter {
           throw new NotFoundError(
             'The Follower User (the user doing the following) \nfollowerId: ' +
               followerId +
-              'already follows \nfollowedId: ' +
+              ' already follows \nfollowedId: ' +
               followedId
           );
         }
@@ -88,6 +88,7 @@ export class QueryManager extends EventEmitter {
 
   // Summurize the failures for unfollow endpoint
   resolveUnFollowErrorLog(unfollowerId: string, unfollowedId: string) {
+    console.log('Failures: ', this.failures);
     if (this.failures.length > 0) {
       if (this.failures.length === 3) {
         throw new NotFoundError(
@@ -104,15 +105,15 @@ export class QueryManager extends EventEmitter {
           );
         } else {
           throw new NotFoundError(
-            'The Unfollower User (the user doing the unfollowing) \nunfollowerId: ' +
-              unfollowerId +
-              'does not follow \nunfollowedId: ' +
+            'The Unfollowed User (the user being unfollowed) Referenced in the Unfollow Request does not exist\nunfollowedId: ' +
               unfollowedId
           );
         }
       } else {
         throw new NotFoundError(
-          'The Unfollowed User (the user being unfollowed) Referenced in the Unfollow Request does not exist\nunfollowedId: ' +
+          'The Unfollower User (the user doing the unfollowing) \nunfollowerId: ' +
+            unfollowerId +
+            ' does not follow \nunfollowedId: ' +
             unfollowedId
         );
       }
