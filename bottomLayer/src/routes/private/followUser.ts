@@ -152,9 +152,6 @@ router.post('/unfollow/:unfollowerId', (req: Request, res: Response): void => {
         Reverting the unfollow request is not needed
         As if a user doesn't exist which causes the caught errors to arise.
         Removing a non-existent User from an array would do nothing.
-
-        One issue with this method is, when unfollowing two existing users it will always return successfully
-        even if the two user don't follow each other
       */
 
         // Removes unfollowed from the unfollower's followings array
