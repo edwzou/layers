@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 12.5,
 		paddingVertical: 5,
 		alignItems: 'center',
-		borderRadius: 1000,
+		...GlobalStyles.utils.fullRadius,
 		flexDirection: 'row',
 	},
 });
