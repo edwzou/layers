@@ -2,7 +2,7 @@ import express from 'express';
 import { type Request, type Response } from 'express';
 import passport from 'passport';
 import { pool } from '../utils/sqlImport';
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 const router = express.Router();
 
 router.post(
