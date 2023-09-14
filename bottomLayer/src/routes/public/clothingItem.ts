@@ -54,4 +54,4 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
   void getAllClothing(userId);
 });
 
-module.exports = router;
+export { router as default, router as clothingRoute };

@@ -1,6 +1,10 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
-import { getUserCore, responseCallbackGet, responseCallbackGetAll } from '../../utils/responseCallback';
+import {
+  getUserCore,
+  responseCallbackGet,
+  responseCallbackGetAll
+} from '../../utils/responseCallback';
 
 const router = express.Router();
 
@@ -10,7 +14,10 @@ router.get('/:outfitId', (req: Request, res: Response): void => {
 
   const getOutfitById = async (outfitId: string): Promise<any> => {
     try {
-      const outfit = await pool.query('SELECT * FROM backend_schema.outfit WHERE oid = $1', [outfitId]);
+      const outfit = await pool.query(
+        'SELECT * FROM backend_schema.outfit WHERE oid = $1',
+        [outfitId]
+      );
       const result = outfit.rows;
 
       responseCallbackGet(null, result, res, 'Outfits');
@@ -50,4 +57,4 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
   void getAllOutfits(userId);
 });
 
-module.exports = router;
+export { router as default, router as outfitRoute };

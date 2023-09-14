@@ -1,5 +1,8 @@
 import { getBucketName, s3 } from '../utils/awsImport';
-import { PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3';
+import {
+  PutObjectCommand,
+  type PutObjectCommandInput
+} from '@aws-sdk/client-s3';
 
 async function uploadBufferToS3(imageContent: Buffer, fileName: string) {
   try {

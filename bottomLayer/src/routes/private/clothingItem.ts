@@ -95,4 +95,4 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
   void updateItem(ciid);
 });
 
-module.exports = router;
+export { router as default, router as privateClothingRoute };
