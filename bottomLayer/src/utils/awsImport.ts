@@ -19,7 +19,6 @@ if (
   process.env.AWS_SECRET_KEY === undefined ||
   process.env.AWS_SECRET_KEY === ''
 ) {
-  // if (process.env.AWS_BUCKET_REGION === null || process.env.AWS_BUCKET_REGION === undefined) {
   throw new Error('One or more AWS environment variables are not defined.');
 }
 
