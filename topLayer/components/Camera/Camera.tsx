@@ -139,7 +139,7 @@ export default function CameraComponent({ data }: CameraPropType) {
 
 	if (photo != null) {
 		const savePhoto = () => {
-			data(photo.uri);
+			data(photo.base64);
 			MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
 				setPhoto(undefined);
 			});
@@ -203,7 +203,7 @@ export default function CameraComponent({ data }: CameraPropType) {
 			quality: 0,
 		});
 		if (result.canceled) return;
-		data(result.assets[0].uri);
+		data(result.assets[0].base64);
 	};
 
 	return (

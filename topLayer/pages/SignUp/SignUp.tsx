@@ -73,23 +73,27 @@ const SignUp = () => {
 		setValue('profile_picture', image);
 	}, [image]);
 
-	const onSubmit = async (formData: FormValues | any) => {
+	const onSubmit = async (values: FormValues | any) => {
+		const formData = new FormData();
+
+		const formValues: Record<string, any> = {
+			first_name: values.first_name,
+			last_name: values.last_name,
+			username: values.username,
+			email: values.email,
+			password: values.password,
+			profile_picture: values.profile_picture,
+			following: [],
+			followers: [],
+			private_option: values.private_option,
+		};
+
+		Object.keys(formValues).forEach((key) => {
+			formData.append(key, formValues[key]);
+		});
+
 		try {
-			const { data, status } = await axios.post(`${baseUrl}/signup`, {
-				first_name: formData.first_name,
-				last_name: formData.last_name,
-				username: formData.username,
-				email: formData.email,
-				password: formData.password,
-				profile_picture: formData.profile_picture,
-				following: [],
-				followers: [],
-				private_option: formData.private_option,
-			}, {
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
+			const { data, status } = await axios.post(`${baseUrl}/signup`, formData);
 
 			if (status === 200) {
 				try {
@@ -116,10 +120,13 @@ const SignUp = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.Camera, {});
+						navigation.navigate(StackNavigation.Camera, {
+							setImage: setImage,
+						});
+						console.log('IMG' + image.slice(10));
 					}}
 				>
-					<ProfilePicture />
+					<ProfilePicture image={image} base64 />
 				</Pressable>
 				<View
 					style={{

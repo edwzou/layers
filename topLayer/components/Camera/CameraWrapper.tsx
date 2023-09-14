@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import CameraComponent from './Camera';
 
-const CameraWrapper = () => {
+const CameraWrapper = ({ route }: any) => {
 	const [data, setData] = useState<string>('');
+	const { setImage } = route.params;
 
-	console.log(data); //! !! Currently returns a URI, change depending on what Cloud Storage Needs
+	setImage(data);
 	return <CameraComponent data={setData} />;
 };
 
