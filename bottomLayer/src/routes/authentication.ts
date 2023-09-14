@@ -2,7 +2,7 @@ import express from 'express';
 import { type Request, type Response } from 'express';
 import passport from 'passport';
 import { pool } from '../utils/sqlImport';
-const bcrypt = require('bcrypt');
+import { hash } from 'bcrypt';
 const router = express.Router();
 
 router.post(
@@ -28,7 +28,7 @@ router.post(
       following,
       profile_picture
     } = req.body;
-    const hashedPass = await bcrypt.hash(password, 10);
+    const hashedPass = await hash(password, 10);
     const user = await pool.query(
       `
   INSERT INTO backend_schema.user (
