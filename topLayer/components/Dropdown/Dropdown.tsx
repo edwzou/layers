@@ -25,7 +25,13 @@ const Dropdown = ({
 	setItems,
 }: DropdownType) => {
 	return (
-		<View style={styles.container}>
+		<View style={[
+			styles.container,
+			open ? [{
+				shadowColor: GlobalStyles.colorPalette.primary[500],
+
+			}, GlobalStyles.utils.dropdownShadow] : undefined
+		]}>
 			<Text
 				style={[
 					{
