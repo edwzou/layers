@@ -104,12 +104,11 @@ const ForeignProfile = ({ route }: any) => {
                         <Text style={[GlobalStyles.typography.subtitle, { color: GlobalStyles.colorPalette.primary[300] }]}>Private</Text>
                     </View>
                 ) : (
-                    <View style={{ top: 25, gap: 20 }}>
+                    <View style={{ top: 5 }}>
                         <CategoryBar
                             selectedCategory={selectedCategory}
                             handleCategoryChange={handleCategoryChange}
                         />
-
                         <CategorySlides
                             categorySlidesRef={flatListRef}
                             clothingData={user.items}
@@ -143,9 +142,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 7,
         shadowColor: 'black',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        ...GlobalStyles.utils.pfpShadow,
     }
 });
 

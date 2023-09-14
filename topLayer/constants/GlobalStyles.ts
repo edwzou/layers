@@ -102,16 +102,30 @@ const utils = StyleSheet.create({
 	font: {
 		fontFamily: 'Helvetica',
 	},
-	shadow: {
-		shadowColor: colorPalette.primary[300],
-		shadowOffset: { width: -4, height: 5 },
-		shadowRadius: 10,
-		shadowOpacity: 0.2,
-	},
 	tagShadow: {
-		shadowOffset: { width: 0, height: 5 },
-		shadowRadius: 10,
+		shadowOffset: { width: 0, height: 0 },
+		shadowOpacity: 0.38,
+		shadowRadius: 7,
+	},
+	buttonShadow: {
+		shadowOffset: { width: 0, height: 6 },
+		shadowOpacity: 0.4,
+		shadowRadius: 15,
+	},
+	deleteShadow: {
+		shadowOffset: { width: 0, height: 6 },
 		shadowOpacity: 0.2,
+		shadowRadius: 10,
+	},
+	modalShadow: {
+		shadowOffset: { width: 0, height: -4 },
+		shadowOpacity: 0.1,
+		shadowRadius: 15,
+	},
+	pfpShadow: {
+		shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.15,
+        shadowRadius: 10,
 	},
 	smallRadius: {
 		borderRadius: 10,
@@ -121,6 +135,22 @@ const utils = StyleSheet.create({
 	},
 	fullRadius: {
 		borderRadius: 100,
+	},
+	tagShape: {
+		flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 30,
+		borderRadius: 100,
+		paddingHorizontal: 12,
+	},
+	buttonShape: {
+		flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 33,
+		borderRadius: 10,
+		paddingHorizontal: layout.xGap,
 	}
 });
 
@@ -135,6 +165,10 @@ const sizing = {
 		regular: 90,
 		small: 40,
 	},
+	tagHeight: utils.tagShape.height,
+	bottomSpacing: {
+		height: 100
+	}
 };
 
 const icons = {
