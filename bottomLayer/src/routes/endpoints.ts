@@ -1,19 +1,16 @@
-const express = require('express');
+import express from 'express';
+import authRoute from '../routes/authentication';
+import userRoute from '../routes/public/user';
+import outfitRoute from '../routes/public/outfit';
+import clothingRoute from '../routes/public/clothingItem';
+import privateUserRoute from '../routes/private/user';
+import privateOutfitRoute from '../routes/private/outfit';
+import privateClothingRoute from '../routes/private/clothingItem';
+import privateFollowUserRoute from '../routes/private/followUser';
+import privateSearchRoute from '../routes/private/search';
 const routerBase = express.Router();
 const routerPublic = express.Router();
 const routerPrivate = express.Router();
-
-const authRoute = require('../routes/authentication.ts');
-
-const userRoute = require('../routes/public/user.ts');
-const outfitRoute = require('../routes/public/outfit.ts');
-const clothingRoute = require('../routes/public/clothingItem.ts');
-
-const privateUserRoute = require('../routes/private/user.ts');
-const privateFollowUserRoute = require('../routes/private/followUser.ts');
-const privateOutfitRoute = require('../routes/private/outfit.ts');
-const privateClothingRoute = require('../routes/private/clothingItem.ts');
-const privateSearchRoute = require('../routes/private/search.ts');
 
 routerBase.use('/', authRoute);
 

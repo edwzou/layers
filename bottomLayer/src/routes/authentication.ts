@@ -2,7 +2,7 @@ import express from 'express';
 import { type Request, type Response } from 'express';
 import passport from 'passport';
 import { pool } from '../utils/sqlImport';
-import bcrypt from 'bcrypt';
+const bcrypt = require('bcrypt');
 const router = express.Router();
 
 router.post(
@@ -70,4 +70,4 @@ router.get('/logout', (req: Request, res: Response, next: any) => {
   });
 });
 
-module.exports = router;
+export { router as default, router as authRoute };

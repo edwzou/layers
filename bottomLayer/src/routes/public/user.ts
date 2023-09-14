@@ -9,7 +9,10 @@ router.get('/:userId', (req: Request, res: Response): void => {
 
   const getUser = async (userId: string): Promise<void> => {
     try {
-      const user = await pool.query('SELECT * FROM backend_schema.user WHERE uid = $1', [userId]);
+      const user = await pool.query(
+        'SELECT * FROM backend_schema.user WHERE uid = $1',
+        [userId]
+      );
       const result = user.rows;
 
       responseCallbackGet(null, result, res, 'User');
@@ -21,4 +24,4 @@ router.get('/:userId', (req: Request, res: Response): void => {
   void getUser(userId);
 });
 
-module.exports = router;
+export { router as default, router as userRoute };

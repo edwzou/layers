@@ -6,16 +6,16 @@ import {
 import { pool } from './src/utils/sqlImport';
 import session from 'express-session';
 import passport from 'passport';
-import express from 'express';
-import bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
-import dotenv from 'dotenv';
 
+const express = require('express');
 const app = express();
 
+const bcrypt = require('bcrypt');
+
+const { v4: uuidv4 } = require('uuid');
 const LocalStrategy = require('passport-local').Strategy;
 const FileStore = require('session-file-store')(session);
-dotenv.config();
+require('dotenv').config();
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb' }));

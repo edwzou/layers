@@ -225,4 +225,4 @@ router.post('/unfollow/:unfollowerId', (req: Request, res: Response): void => {
   void unfollow(unfollowerId, unfollowedId);
 });
 
-module.exports = router;
+export { router as default, router as privateFollowUserRoute };

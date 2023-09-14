@@ -81,4 +81,4 @@ router.put('/:oid', checkAuthenticated, (req: Request, res: Response): void => {
   void updateOutfit(oid);
 });
 
-module.exports = router;
+export { router as default, router as privateOutfitRoute };
