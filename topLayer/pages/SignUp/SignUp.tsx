@@ -234,21 +234,6 @@ const styles = StyleSheet.create({
 	camera: {
 		flex: 1,
 	},
-	modalView: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		alignItems: 'center',
-		gap: 5,
-		paddingBottom: 25,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 4,
-		elevation: 5,
-	},
 	modalGroup: {
 		backgroundColor: GlobalStyles.colorPalette.primary[100],
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,

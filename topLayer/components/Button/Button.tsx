@@ -21,8 +21,6 @@ const Button = ({
 		<Pressable
 			style={[
 				styles.button,
-				GlobalStyles.utils.fullRadius,
-				GlobalStyles.utils.tagShadow,
 				style != null ? style : null,
 				{
 					backgroundColor: disabled
@@ -31,10 +29,9 @@ const Button = ({
 					shadowColor: disabled
 						? GlobalStyles.colorPalette.primary[200]
 						: bgColor,
-					shadowOpacity: 0.23,
-					shadowRadius: 5,
-					shadowOffset: { width: 0, height: 0 },
+
 				},
+				GlobalStyles.utils.buttonShadow,
 			]}
 			onPress={onPress}
 			disabled={disabled}
@@ -59,10 +56,8 @@ export default Button;
 
 const styles = StyleSheet.create({
 	button: {
-		paddingHorizontal: GlobalStyles.layout.xGap,
-		paddingVertical: 5,
-		justifyContent: 'center',
-		alignItems: 'center',
+		...GlobalStyles.utils.buttonShape,
+		...GlobalStyles.utils.buttonShadow
 	},
 	text: {
 		...GlobalStyles.typography.body,

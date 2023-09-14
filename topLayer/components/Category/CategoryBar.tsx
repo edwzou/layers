@@ -42,7 +42,7 @@ export default function CategoryBar({ selectedCategory, handleCategoryChange }: 
         <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ alignItems: 'center', paddingHorizontal: 16 }}
+            contentContainerStyle={{ alignItems: 'center', paddingHorizontal: 16, paddingVertical: 20, }}
         >
             {containerCell(ClothingTypes.outfits)}
             {containerCell(ClothingTypes.outerwear)}
@@ -55,7 +55,8 @@ export default function CategoryBar({ selectedCategory, handleCategoryChange }: 
 
 const styles = StyleSheet.create({
     titleContainer: {
-        paddingHorizontal: 15,
+        marginHorizontal: 5,
+        ...GlobalStyles.utils.tagShape,
     },
     title: {
         ...GlobalStyles.typography.body,
@@ -63,14 +64,10 @@ const styles = StyleSheet.create({
     },
     currentTitle: {
         backgroundColor: GlobalStyles.colorPalette.primary[500],
-        ...GlobalStyles.utils.fullRadius,
-        paddingHorizontal: 10,
         marginHorizontal: 5,
-        paddingVertical: 4,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        ...GlobalStyles.utils.tagShape,
+        ...GlobalStyles.utils.tagShadow,
+        shadowColor: GlobalStyles.colorPalette.primary[400]
     },
     currentTitleText: {
         color: GlobalStyles.colorPalette.background,
