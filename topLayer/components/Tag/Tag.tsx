@@ -26,9 +26,10 @@ const Tag = ({
 						styles.container,
 						GlobalStyles.utils.tagShadow,
 						{
-							shadowColor: label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[300] : bgColor || GlobalStyles.colorPalette.primary[500],
+							shadowColor: label === "White" || label === "Cream" ? GlobalStyles.colorPalette.primary[200] : bgColor || GlobalStyles.colorPalette.primary[500],
 							backgroundColor: bgColor || GlobalStyles.colorPalette.primary[500],
 							justifyContent: type.action === TagAction.remove ? 'space-between' : 'center',
+							width: type.action !== TagAction.push ? undefined : GlobalStyles.sizing.tagHeight,
 						},
 					]}
 				>
@@ -76,10 +77,6 @@ export default Tag;
 
 const styles = StyleSheet.create({
 	container: {
-		paddingHorizontal: 12.5,
-		paddingVertical: 5,
-		alignItems: 'center',
-		...GlobalStyles.utils.fullRadius,
-		flexDirection: 'row',
+		...GlobalStyles.utils.tagShape,
 	},
 });

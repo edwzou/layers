@@ -96,7 +96,7 @@ const Profile = () => {
                         <Username username={mockUserData.username} />
                     </View>
                 </View>
-                <View style={{ top: 25, gap: 20 }}>
+                <View style={{ top: 5 }}>
                     <CategoryBar
                         selectedCategory={selectedCategory}
                         handleCategoryChange={handleCategoryChange}
@@ -124,9 +124,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 7,
         shadowColor: 'black',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        ...GlobalStyles.utils.pfpShadow,
     }
 });
 

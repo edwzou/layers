@@ -61,7 +61,7 @@ const OutfitView = ({ outfit }: OutfitViewPropsType) => {
 						</View>
 					</View> */}
 					{/* !!! Very hacky solution, try to fix this */}
-					<View style={{ height: 100 }} />
+					<View style={GlobalStyles.sizing.bottomSpacing} />
 				</View>
 			}
 		/>

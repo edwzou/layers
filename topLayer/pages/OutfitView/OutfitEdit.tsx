@@ -100,6 +100,8 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		alignItems: 'center',
 		justifyContent: 'center',
+		shadowColor: 'black',
+		...GlobalStyles.utils.deleteShadow,
 	},
 });
 

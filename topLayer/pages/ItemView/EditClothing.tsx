@@ -1,4 +1,4 @@
-import { View, StyleSheet, } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import React, { useState, useRef } from 'react';
 import { ClothingTypes, TagAction, } from '../../constants/Enums';
 import Dropdown from '../../components/Dropdown/Dropdown';
@@ -14,6 +14,9 @@ import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
 import { UserClothing } from '../Match';
+
+import Icon from 'react-native-remix-icon';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface EditClothingPropsType {
 	clothingItem: UserClothing;
@@ -91,47 +94,64 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		colorPickerRef.current?.scrollTo(0);
 	};
 
+	const handlePress = () => {
+		console.log('DELETE BUTTON');
+	};
 
 	return (
 		<View style={{ flex: 1 }}>
-			<View
-				style={{
-					marginHorizontal: GlobalStyles.layout.xGap,
-					gap: GlobalStyles.layout.gap,
-				}}
-			>
-				<StackedTextBox
-					label="Item name"
-					onFieldChange={setItemName}
-					value={itemName}
-				/>
-				<ItemCell image={clothingItem.image} />
-				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-					<View style={{ width: ITEM_SIZE(2) }}>
-						<Dropdown
-							label="Item type"
-							open={itemTypeOpen}
-							setOpen={setItemTypeOpen}
-							setItems={setItemType}
-							setValue={setItemTypeValue}
-							items={itemType}
-							value={itemTypeValue}
-						/>
+			<ScrollView>
+				<View
+					style={{
+						marginHorizontal: GlobalStyles.layout.xGap,
+						gap: GlobalStyles.layout.gap,
+					}}
+				>
+					<StackedTextBox
+						label="Item name"
+						onFieldChange={setItemName}
+						value={itemName}
+					/>
+					<ItemCell image={clothingItem.image} />
+					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+						<View style={{ width: ITEM_SIZE(2) }}>
+							<Dropdown
+								label="Item type"
+								open={itemTypeOpen}
+								setOpen={setItemTypeOpen}
+								setItems={setItemType}
+								setValue={setItemTypeValue}
+								items={itemType}
+								value={itemTypeValue}
+							/>
+						</View>
+						<View style={{ width: ITEM_SIZE(2) }}>
+							<Dropdown
+								label="Size"
+								open={sizeOpen}
+								setOpen={setSizeOpen}
+								setItems={setSizes}
+								setValue={setSizeValue}
+								items={sizes}
+								value={sizeValue}
+							/>
+						</View>
 					</View>
-					<View style={{ width: ITEM_SIZE(2) }}>
-						<Dropdown
-							label="Size"
-							open={sizeOpen}
-							setOpen={setSizeOpen}
-							setItems={setSizes}
-							setValue={setSizeValue}
-							items={sizes}
-							value={sizeValue}
-						/>
-					</View>
+					<ColorTagsList data={currentColorTags} tagAction={TagAction.remove} onAddPress={() => { colorPickerRef.current?.scrollTo(lowTranslateY) }}
+						onRemovePress={handleOnRemovePress} />
 				</View>
-				<ColorTagsList data={currentColorTags} tagAction={TagAction.remove} onAddPress={() => { colorPickerRef.current?.scrollTo(lowTranslateY) }}
-					onRemovePress={handleOnRemovePress} />
+				<View style={GlobalStyles.sizing.bottomSpacing} />
+			</ScrollView>
+			<View style={styles.deleteButtonContainer}>
+				<Pressable onPress={handlePress}>
+					<View style={styles.deleteButton}>
+						<Icon
+							name={GlobalStyles.icons.closeOutline}
+							color={GlobalStyles.colorPalette.primary[300]}
+							size={GlobalStyles.sizing.icon.regular}
+						/>
+					</View>
+				</Pressable>
 			</View>
 			{/* <View
 					style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}
@@ -167,5 +187,22 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	);
 };
 
+const styles = StyleSheet.create({
+	deleteButtonContainer: {
+		position: 'absolute',
+		bottom: GlobalStyles.layout.gap * 2.5,
+		alignSelf: 'center',
+	},
+	deleteButton: {
+		width: 40,
+		height: 40,
+		...GlobalStyles.utils.fullRadius,
+		backgroundColor: GlobalStyles.colorPalette.primary[200],
+		alignItems: 'center',
+		justifyContent: 'center',
+		shadowColor: 'black',
+		...GlobalStyles.utils.deleteShadow,
+	},
+});
 
 export default EditClothing;

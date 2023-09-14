@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { screenHeight } from '../../utils/modalMaxShow';
 import Slider from './Slider';
 import { type UserClothing, type UserClothingPadding } from '.';
 import { ScrollView } from 'react-native-gesture-handler';
+import GlobalStyles from '../../constants/GlobalStyles';
 
 interface SelectorPropsType {
 	outerwear: UserClothing[];
@@ -82,7 +82,7 @@ const Selector = ({
 					selectedIndex={selectedIndex}
 				/>
 			) : null}
-			<View style={{ padding: screenHeight * 0.02 }} />
+			<View style={GlobalStyles.sizing.bottomSpacing} />
 		</ScrollView>
 	);
 };
