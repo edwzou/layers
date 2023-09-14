@@ -30,36 +30,96 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 
 	const [sizeOpen, setSizeOpen] = useState(false);
 	const [sizeValue, setSizeValue] = useState(clothingItem.size ? clothingItem.size : '');
-	const [sizes, setSizes] = useState([
-		{
-			label: 'Extra-extra small',
-			value: 'xxs'
-		},
-		{
-			label: 'Extra small',
-			value: 'xs'
-		},
-		{
-			label: 'Small',
-			value: 's'
-		},
-		{
-			label: 'Medium',
-			value: 'm'
-		},
-		{
-			label: 'Large',
-			value: 'l'
-		},
-		{
-			label: 'Extra large',
-			value: 'xl'
-		},
-		{
-			label: 'Extra-extra large',
-			value: 'xxl'
-		},
-	]);
+	const [sizes, setSizes] = useState(() => {
+		if (clothingItem.category === ClothingTypes.outerwear || clothingItem.category === ClothingTypes.tops) {
+			return [{
+				label: 'XXS',
+				value: 'xxs'
+			},
+			{
+				label: 'XS',
+				value: 'xs'
+			},
+			{
+				label: 'S',
+				value: 's'
+			},
+			{
+				label: 'M',
+				value: 'm'
+			},
+			{
+				label: 'L',
+				value: 'l'
+			},
+			{
+				label: 'XL',
+				value: 'xl'
+			},
+			{
+				label: 'XXL',
+				value: 'xxl'
+			},];
+		} else if (clothingItem.category === ClothingTypes.bottoms) {
+			return [{
+				label: 'US 28',
+				value: 'xxs'
+			},
+			{
+				label: 'US 30',
+				value: 'xs'
+			},
+			{
+				label: 'US 32',
+				value: 's'
+			},
+			{
+				label: 'US 34',
+				value: 'm'
+			},
+			{
+				label: 'US 36',
+				value: 'l'
+			},
+			{
+				label: 'US 38',
+				value: 'xl'
+			},
+			{
+				label: 'US 40',
+				value: 'xxl'
+			},];
+		} else {
+			return [{
+				label: 'US 7',
+				value: 'xxs'
+			},
+			{
+				label: 'US 8',
+				value: 'xs'
+			},
+			{
+				label: 'US 9',
+				value: 's'
+			},
+			{
+				label: 'US 10',
+				value: 'm'
+			},
+			{
+				label: 'US 11',
+				value: 'l'
+			},
+			{
+				label: 'US 12',
+				value: 'xl'
+			},
+			{
+				label: 'US 13',
+				value: 'xxl'
+			},];
+		}
+	});
 
 	const [itemTypeOpen, setItemTypeOpen] = useState(false);
 	const [itemTypeValue, setItemTypeValue] = useState(clothingItem.category ? clothingItem.category : '');
@@ -200,7 +260,7 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		alignItems: 'center',
 		justifyContent: 'center',
-		shadowColor: 'black',
+		shadowColor: GlobalStyles.colorPalette.primary[300],
 		...GlobalStyles.utils.deleteShadow,
 	},
 });
