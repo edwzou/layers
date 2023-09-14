@@ -2,9 +2,9 @@ import express from 'express';
 import { type Request, type Response } from 'express';
 import passport from 'passport';
 import { pool } from '../utils/sqlImport';
-import { hash } from 'bcrypt';
 import { upload } from '../utils/multer';
 import { convertImage } from '../s3/convert-image';
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.post(
     } = req.body;
 
     const createUser = async (): Promise<void> => {
-      const hashedPass = await hash(password, 10);
+      const hashedPass = await bcrypt.hash(password, 10);
       const URL = await convertImage(profile_picture, username, false);
       const user = await pool.query(
         `
