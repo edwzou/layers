@@ -14,7 +14,7 @@ async function downloadURLFromS3(objectKey: string): Promise<string> {
       expiresIn: 600
     });
     const urlParts = new URL(signedUrl); // Split the signed URL into its components
-    //if it's more than 255 the URL will be rejected by neon database
+    // if it's more than 255 the URL will be rejected by neon database
     const shorterUrl = `${urlParts.origin}${urlParts.pathname}`; // Compose a shorter version of the URL with minimal query parameters
     console.log('Download sucessful:', shorterUrl);
     return shorterUrl;

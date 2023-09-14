@@ -142,4 +142,4 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   void updateUser();
 });
 
-module.exports = router;
+export { router as default, router as privateUserRoute };

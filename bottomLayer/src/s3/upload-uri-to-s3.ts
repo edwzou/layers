@@ -1,5 +1,8 @@
 import { getBucketName, s3 } from '../utils/awsImport';
-import { PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3';
+import {
+  PutObjectCommand,
+  type PutObjectCommandInput
+} from '@aws-sdk/client-s3';
 
 async function uploadURIToS3(imageContent: Buffer, fileName: string) {
   try {
@@ -18,6 +21,6 @@ async function uploadURIToS3(imageContent: Buffer, fileName: string) {
     console.error('Error uploading to S3:', error);
     throw error;
   }
-};
+}
 
 export { uploadURIToS3 };
