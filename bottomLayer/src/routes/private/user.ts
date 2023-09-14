@@ -30,6 +30,8 @@ router.get('/', (req: Request, res: Response): void => {
 
 // Endpoint for creating a specific user
 router.post('/', checkAuthenticated, (req: Request, res: Response) => {
+  const userId = req.user as string;
+  if (userId == null) return;
   const {
     first_name,
     last_name,
@@ -43,7 +45,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
   } = req.body;
   const insertUser = async (): Promise<void> => {
     try {
-      const URL = await convertImage(profile_picture, username, false);
+      const URL = await convertImage(profile_picture, userId, false);
       await pool.query(
         `
       INSERT INTO backend_schema.user (
@@ -107,7 +109,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-      const URL = await convertImage(profile_picture, username, false);
+      const URL = await convertImage(profile_picture, userId, false);
       const updateUser = await pool.query(
         `UPDATE backend_schema.user
         SET first_name = $1,
