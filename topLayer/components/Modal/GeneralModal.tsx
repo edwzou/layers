@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
 		//...GlobalStyles.utils.mediumRadius,
 		zIndex: 10,
 		flex: 1,
-		shadowColor: 'black',
+		shadowColor: GlobalStyles.colorPalette.primary[500],
 		...GlobalStyles.utils.modalShadow,
 	},
 	header: {
