@@ -2,7 +2,7 @@ import { NotFoundError } from './Errors/NotFoundError';
 import { type Response } from 'express';
 import { UnknownError } from './Errors/UnknownError';
 import { once } from 'node:events';
-import { QueryManager } from './event-emitters/queryManager';
+import { type QueryManager } from './event-emitters/queryManager';
 import { type PoolClient } from 'pg';
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
@@ -24,7 +24,7 @@ export const responseCallbackGet = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error', error: error });
+    res.status(500).json({ message: 'Internal Server Error', err: error });
     return error;
   } else if (element.length === 0) {
     res.status(400).json({ message: notFoundObject + ' Not Found' });
@@ -43,7 +43,7 @@ export const responseCallbackConnect = (
     console.log(error);
     res.status(500).json({
       message: 'Internal Server Error: Failed To Connect To Pool',
-      error: error,
+      err: error,
       log: error.message
     });
     return error;
@@ -62,7 +62,7 @@ export const responseCallbackPost = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error', error: error });
+    res.status(500).json({ message: 'Internal Server Error', err: error });
     return error;
   } else {
     res.status(200).json({ message: 'Successfully Created a ' + target });
@@ -76,7 +76,7 @@ export const responseCallbackSignUp = (
 ): Callback<any> => {
   if (error != null) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error', error: error });
+    res.status(500).json({ message: 'Internal Server Error', err: error });
     return error;
   } else {
     res.status(200).json({ message: 'Successfully Signed Up' });
@@ -121,7 +121,7 @@ export const responseCallbackUpdate = (
     console.log(error);
     res.status(500).json({
       message: 'Internal Server Error, Failed to Update ' + target + ': ' + id,
-      error: error
+      err: error
     });
     return error;
   } else {
@@ -146,7 +146,7 @@ export const responseCallbackFollow = (
         followerId +
         ' Failed to Follow ' +
         followedId,
-      error: error,
+      err: error,
       log: error.message
     });
     return error;
@@ -172,7 +172,7 @@ export const responseCallbackUnFollow = (
         unfollowerId +
         ' Failed to UnFollow ' +
         unfollowedId,
-      error: error,
+      err: error,
       log: error.message
     });
     return error;

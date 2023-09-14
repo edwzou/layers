@@ -1,8 +1,7 @@
-import express, { response, type Request, type Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import {
   clientFollow,
   clientUnFollow,
-  responseCallback,
   responseCallbackConnect,
   responseCallbackFollow,
   responseCallbackUnFollow
@@ -226,4 +225,4 @@ router.post('/unfollow/:unfollowerId', (req: Request, res: Response): void => {
   void unfollow(unfollowerId, unfollowedId);
 });
 
-module.exports = router;
+export { router as default, router as privateFollowUserRoute };

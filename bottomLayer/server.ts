@@ -6,15 +6,16 @@ import {
 import { pool } from './src/utils/sqlImport';
 import session from 'express-session';
 import passport from 'passport';
+import express from 'express';
+import { compare } from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
+import { Strategy } from 'passport-local';
+import ConnectFileStore from 'session-file-store';
 
-const express = require('express');
 const app = express();
 
-const bcrypt = require('bcrypt');
-
-const { v4: uuidv4 } = require('uuid');
-const LocalStrategy = require('passport-local').Strategy;
-const FileStore = require('session-file-store')(session);
+const LocalStrategy = Strategy;
+const FileStore = ConnectFileStore(session);
 require('dotenv').config();
 
 app.use(express.json({ limit: '10mb' }));
@@ -22,7 +23,7 @@ app.use(express.urlencoded({ limit: '10mb' }));
 
 app.use(
   session({
-    genid: (req: any) => {
+    genid: () => {
       return uuidv4();
     },
     store: new FileStore(), // !!! send this to database for production
@@ -63,7 +64,7 @@ passport.use(
         }
 
         const hashedPassword = result.rows[0].password;
-        const passwordMatches: boolean = await bcrypt.compare(
+        const passwordMatches: boolean = await compare(
           password,
           hashedPassword
         );
