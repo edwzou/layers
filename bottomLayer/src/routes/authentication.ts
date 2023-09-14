@@ -3,6 +3,9 @@ import { type Request, type Response } from 'express';
 import passport from 'passport';
 import { pool } from '../utils/sqlImport';
 import { hash } from 'bcrypt';
+import { upload } from '../utils/multer';
+import { convertImage } from '../s3/convert-image';
+
 const router = express.Router();
 
 router.post(
@@ -13,10 +16,10 @@ router.post(
   })
 );
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post(
   '/signup',
-  async (req: Request, res: Response, next: any) => {
+  upload.single('profile_picture'),
+  (req: Request, res: Response, next: any) => {
     const {
       first_name,
       last_name,
@@ -28,31 +31,37 @@ router.post(
       following,
       profile_picture
     } = req.body;
-    const hashedPass = await hash(password, 10);
-    const user = await pool.query(
-      `
+
+    const createUser = async (): Promise<void> => {
+      const hashedPass = await hash(password, 10);
+      const URL = await convertImage(profile_picture, username, false);
+      const user = await pool.query(
+        `
   INSERT INTO backend_schema.user (
     first_name, last_name, email, username, password, private_option, followers, following, pp_url
     ) VALUES (
       $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [
-        first_name,
-        last_name,
-        email,
-        username,
-        hashedPass,
-        private_option,
-        followers,
-        following,
-        profile_picture
-      ]
-    );
+        [
+          first_name,
+          last_name,
+          email.toLowerCase(),
+          username,
+          hashedPass,
+          private_option,
+          JSON.parse(followers),
+          JSON.parse(following),
+          URL
+        ]
+      );
 
-    if (user.rowCount > 0) {
-      next();
-    } else {
-      res.status(500).send('User not created');
-    }
+      if (user.rowCount > 0) {
+        next();
+      } else {
+        res.status(500).send('User not created');
+      }
+    };
+
+    void createUser();
   },
   passport.authenticate('login', {
     failureMessage: true,
