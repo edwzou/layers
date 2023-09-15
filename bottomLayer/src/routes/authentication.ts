@@ -5,7 +5,7 @@ import { pool } from '../utils/sqlImport';
 // import { upload } from '../utils/multer.ts';
 import { convertImage } from '../s3/convert-image';
 const bcrypt = require('bcrypt');
-const upload = require('../utils/multer');
+const { upload } = require('../utils/multer');
 
 const router = express.Router();
 
