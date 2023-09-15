@@ -1,9 +1,10 @@
 import { NotFoundError } from './Errors/NotFoundError';
-import { type Response } from 'express';
+import { NextFunction, type Response } from 'express';
 import { UnknownError } from './Errors/UnknownError';
 import { once } from 'node:events';
 import { type QueryManager } from './event-emitters/queryManager';
 import { type PoolClient } from 'pg';
+import { InvalidCredentialsError } from './Errors/InvalidCredentials';
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
 
@@ -32,6 +33,29 @@ export const responseCallbackGet = (
   } else {
     res.status(200).json({ message: 'Success', data: element });
     return element;
+  }
+};
+
+export const responseCallbackLogin = (
+  error: any,
+  email: string,
+  res: Response
+): Callback<any> => {
+  if (error != null) {
+    console.log(error);
+    if (error.name === NotFoundError.name) {
+      res.status(400).json({ message: 'User Not Found', err: error });
+    } else if (error.name === InvalidCredentialsError.name) {
+      res.status(400).json({ message: 'Invalid Credentials', err: error });
+    } else {
+      res.status(500).json({ message: 'Internal Server Error', err: error });
+    }
+    return error;
+  } else {
+    res
+      .status(200)
+      .json({ message: 'Successfully Logged In As Email: ' + email });
+    return responseCallback(null, email);
   }
 };
 

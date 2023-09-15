@@ -16,7 +16,7 @@ router.post(
 
 router.post(
   '/signup',
-  (req: Request, res: Response) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const {
       first_name,
       last_name,
@@ -53,12 +53,15 @@ router.post(
           ]
         );
         responseCallbackSignUp(null, res);
+        next();
       } catch (error) {
         responseCallbackSignUp(error, res);
       }
     };
     void signup();
   },
+  // Can optimize this as it currently call 2 queries to complete
+  // Signup -> Login
   passport.authenticate('login', {
     failureMessage: true,
     successRedirect: '/api/private/users'
