@@ -2,10 +2,9 @@ import express from 'express';
 import { type Request, type Response } from 'express';
 import passport from 'passport';
 import { pool } from '../utils/sqlImport';
-// import { upload } from '../utils/multer.ts';
+import { upload } from '../utils/multer';
 import { convertImage } from '../s3/convert-image';
 const bcrypt = require('bcrypt');
-const { upload } = require('../utils/multer');
 
 const router = express.Router();
 
@@ -28,8 +27,6 @@ router.post(
       username,
       password,
       private_option,
-      followers,
-      following,
       profile_picture
     } = req.body;
 
@@ -49,8 +46,8 @@ router.post(
           username,
           hashedPass,
           private_option,
-          JSON.parse(followers),
-          JSON.parse(following),
+          [],
+          [],
           URL
         ]
       );

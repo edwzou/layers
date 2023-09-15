@@ -83,8 +83,6 @@ const SignUp = () => {
 			email: values.email,
 			password: values.password,
 			profile_picture: values.profile_picture,
-			following: [],
-			followers: [],
 			private_option: values.private_option,
 		};
 
@@ -123,7 +121,6 @@ const SignUp = () => {
 						navigation.navigate(StackNavigation.Camera, {
 							setImage: setImage,
 						});
-						console.log('IMG' + image.slice(10));
 					}}
 				>
 					<ProfilePicture image={image} base64 />
