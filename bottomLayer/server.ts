@@ -61,35 +61,24 @@ passport.use(
           [email.toLowerCase()]
         );
 
-        console.log('after result: ' + JSON.stringify(result));
-
         if (result.rowCount === 0) {
           console.log('in user check');
           return done(null, false, { message: 'user not found' });
         }
-        console.log('after user check');
 
         const hashedPassword = result.rows[0].password;
-
-        console.log(hashedPassword, password);
 
         const passwordMatches: boolean = await compare(
           password,
           hashedPassword
         );
 
-        console.log('match' + passwordMatches);
-
         if (!passwordMatches) {
           console.log('Invalid Credentials');
           return done(null, false, { message: 'invalid credentials' });
         }
 
-        console.log('before user');
-
         const user = result.rows[0].uid;
-
-        console.log('after user: ' + user);
 
         return done(null, user);
       } catch (err) {
