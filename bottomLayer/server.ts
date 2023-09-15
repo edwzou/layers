@@ -55,11 +55,13 @@ passport.use(
   new LocalStrategy(
     { usernameField: 'email', passwordField: 'password' },
     async (email: string, password: string, done: any) => {
+      console.log('in login');
       try {
         const result = await pool.query(
           'SELECT * FROM backend_schema.user WHERE email = $1',
           [email]
         );
+        console.log('testlogin');
 
         if (result.rowCount === 0) {
           return done(null, false, { message: 'user not found' });

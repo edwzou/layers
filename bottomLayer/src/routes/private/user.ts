@@ -11,7 +11,7 @@ import { convertImage } from '../../s3/convert-image';
 import { upload } from '../../utils/multer';
 const router = express.Router();
 
-router.get('/', (req: Request, res: Response): void => {
+router.get('/', checkAuthenticated, (req: Request, res: Response): void => {
   const userId = req.user;
   const getUser = async (): Promise<void> => {
     try {
