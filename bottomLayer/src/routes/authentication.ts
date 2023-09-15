@@ -2,9 +2,10 @@ import express from 'express';
 import { type Request, type Response } from 'express';
 import passport from 'passport';
 import { pool } from '../utils/sqlImport';
-import { upload } from '../utils/multer';
+// import { upload } from '../utils/multer.ts';
 import { convertImage } from '../s3/convert-image';
 const bcrypt = require('bcrypt');
+const upload = require('../utils/multer');
 
 const router = express.Router();
 

@@ -8,3 +8,5 @@ export const upload = multer({
   storage,
   limits: { fileSize: maxFileSize, fieldSize: maxFieldSize }
 });
+
+module.exports = { upload };
