@@ -57,6 +57,7 @@ passport.use(
     async (email: string, password: string, done: any) => {
       try {
         console.log('before result');
+        console.log(email, password);
         const result = await pool.query(
           'SELECT * FROM backend_schema.user WHERE email = $1',
           [email]
