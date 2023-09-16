@@ -2,8 +2,16 @@ import express from 'express';
 import { type Request, type Response, type NextFunction } from 'express';
 import passport from 'passport';
 import { pool } from '../utils/sqlImport';
-import { hash } from 'bcrypt';
 
+import { convertImage } from '../s3/convert-image';
+import {
+  responseCallbackSignUp,
+  responseCallbackLogin
+} from '../utils/responseCallback';
+import { hash, compare } from 'bcrypt';
+import { type IVerifyOptions, Strategy as LocalStrategy } from 'passport-local';
+import { NotFoundError } from '../utils/Errors/NotFoundError';
+import { InvalidCredentialsError } from '../utils/Errors/InvalidCredentials';
 const router = express.Router();
 
 router.post(
@@ -77,5 +85,64 @@ router.get('/logout', (req: Request, res: Response, next: NextFunction) => {
     }
   });
 });
+
+export const login = new LocalStrategy(
+  {
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+  },
+  (
+    req: Request,
+    email: string,
+    password: string,
+    done: (
+      error: any,
+      user?: Express.User | false,
+      options?: IVerifyOptions
+    ) => void
+  ) => {
+    const res = req.res;
+    const login = async (): Promise<void> => {
+      try {
+        const result = await pool.query(
+          'SELECT * FROM backend_schema.user WHERE email = $1',
+          [email]
+        );
+
+        if (result.rowCount === 0) {
+          throw new NotFoundError('User Not Found, email: ' + email);
+        }
+
+        const hashedPassword = result.rows[0].password;
+        const passwordMatches: boolean = await compare(
+          password,
+          hashedPassword
+        );
+
+        if (!passwordMatches) {
+          throw new InvalidCredentialsError(
+            'Invalid Credential, Fault: Password'
+          );
+        }
+
+        if (res !== undefined) {
+          responseCallbackLogin(null, email, res);
+        } else {
+          console.log('res is undefined');
+          done(null, email);
+        }
+      } catch (err) {
+        if (res !== undefined) {
+          responseCallbackLogin(err, '', res);
+        } else {
+          console.log('res is undefined');
+          done(err);
+        }
+      }
+    };
+    void login();
+  }
+);
 
 export { router as default, router as authRoute };
