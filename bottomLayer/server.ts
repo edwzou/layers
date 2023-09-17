@@ -8,7 +8,7 @@ import passport from 'passport';
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import ConnectFileStore from 'session-file-store';
-import { login } from './src/routes/authentication';
+import { loginStrate } from './src/routes/authentication';
 
 const app = express();
 
@@ -45,7 +45,7 @@ passport.deserializeUser((user: Express.User, done) => {
   done(null, user);
 });
 
-passport.use('login', login);
+passport.use('login', loginStrate);
 
 app.use('/', routerBase);
 app.use('/api', routerPublic);

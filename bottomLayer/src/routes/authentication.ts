@@ -10,17 +10,43 @@ import {
 } from '../utils/responseCallback';
 import { hash, compare } from 'bcrypt';
 import { type IVerifyOptions, Strategy as LocalStrategy } from 'passport-local';
-import { NotFoundError } from '../utils/Errors/NotFoundError';
-import { InvalidCredentialsError } from '../utils/Errors/InvalidCredentials';
+
 const router = express.Router();
 
-router.post(
-  '/login',
-  passport.authenticate('login', {
-    failureMessage: true,
-    successRedirect: '/api/private/users'
-  })
-);
+const login = (req: Request, res: Response, next: NextFunction): any => {
+  passport.authenticate('login', (err: any, user: any, info: any) => {
+    if (err !== null && err !== undefined) {
+      return responseCallbackLogin(err, '', res);
+    }
+    if (info !== null && info !== undefined) {
+      return responseCallbackLogin(null, '', res, info.message);
+    }
+    if (user === null && user === undefined) {
+      return responseCallbackLogin(
+        null,
+        '',
+        res,
+        'Unknown User Error, User Not Defined'
+      );
+    }
+    req.logIn(user, { session: true }, (err) => {
+      if (err !== null && err !== undefined) {
+        return responseCallbackLogin(err, '', res);
+      }
+      const userFields = (({
+        uid,
+        first_name,
+        last_name,
+        email,
+        username
+      }) => ({ uid, first_name, last_name, email, username }))(user);
+      responseCallbackLogin(null, userFields, res);
+      next();
+    });
+  })(req, res, next);
+};
+
+router.post('/login', login);
 
 router.post(
   '/signup',
@@ -86,14 +112,12 @@ router.get('/logout', (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-export const login = new LocalStrategy(
+export const loginStrate = new LocalStrategy(
   {
     usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true
+    passwordField: 'password'
   },
   (
-    req: Request,
     email: string,
     password: string,
     done: (
@@ -102,7 +126,6 @@ export const login = new LocalStrategy(
       options?: IVerifyOptions
     ) => void
   ) => {
-    const res = req.res;
     const login = async (): Promise<void> => {
       try {
         const result = await pool.query(
@@ -111,7 +134,8 @@ export const login = new LocalStrategy(
         );
 
         if (result.rowCount === 0) {
-          throw new NotFoundError('User Not Found, email: ' + email);
+          done(null, false, { message: 'Invalid Credential, Fault: Email' });
+          return;
         }
 
         const hashedPassword = result.rows[0].password;
@@ -121,24 +145,14 @@ export const login = new LocalStrategy(
         );
 
         if (!passwordMatches) {
-          throw new InvalidCredentialsError(
-            'Invalid Credential, Fault: Password'
-          );
+          done(null, false, { message: 'Invalid Credential, Fault: Password' });
+          return;
         }
 
-        if (res !== undefined) {
-          responseCallbackLogin(null, email, res);
-        } else {
-          console.log('res is undefined');
-          done(null, email);
-        }
+        done(null, result.rows[0]);
       } catch (err) {
-        if (res !== undefined) {
-          responseCallbackLogin(err, '', res);
-        } else {
-          console.log('res is undefined');
-          done(err);
-        }
+        console.log(err);
+        done(err);
       }
     };
     void login();

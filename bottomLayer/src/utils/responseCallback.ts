@@ -38,24 +38,23 @@ export const responseCallbackGet = (
 
 export const responseCallbackLogin = (
   error: any,
-  email: string,
-  res: Response
+  user: any,
+  // { uid: any; first_name: any; last_name: any; email: any; username: any; }
+  res: Response,
+  info: string = ''
 ): Callback<any> => {
   if (error != null) {
-    console.log(error);
-    if (error.name === NotFoundError.name) {
-      res.status(400).json({ message: 'User Not Found', err: error });
-    } else if (error.name === InvalidCredentialsError.name) {
-      res.status(400).json({ message: 'Invalid Credentials', err: error });
-    } else {
-      res.status(500).json({ message: 'Internal Server Error', err: error });
-    }
+    res.status(500).json({ message: 'Internal Server Error', err: error });
+    return error;
+  } else if (info !== '') {
+    res.status(500).json({ message: 'Invalid Credentials Error' });
     return error;
   } else {
-    res
-      .status(200)
-      .json({ message: 'Successfully Logged In As Email: ' + email });
-    return responseCallback(null, email);
+    res.status(200).json({
+      message: 'Successfully Logged In UID: ' + String(user.uid),
+      data: user
+    });
+    return responseCallback(null, user);
   }
 };
 
@@ -75,6 +74,7 @@ export const responseCallbackConnect = (
     res.status(200).json({
       message: 'Successfully Connected to Pool'
     });
+
     return error;
   }
 };
