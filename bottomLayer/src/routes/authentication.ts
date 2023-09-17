@@ -178,71 +178,44 @@ const login = (req: Request, res: Response, next: NextFunction): any => {
   })(req, res, next);
 };
 
+const signup = (req: Request, res: Response, next: NextFunction): any => {
+  passport.authenticate('signup', (err: any, user: any, info: any) => {
+    if (err !== null && err !== undefined) {
+      return responseCallbackSignUp(err, '', res);
+    }
+    if (info !== null && info !== undefined) {
+      return responseCallbackSignUp(null, '', res, info.message);
+    }
+    if (user === null && user === undefined) {
+      return responseCallbackSignUp(
+        null,
+        '',
+        res,
+        'Unknown User Error, User Not Defined'
+      );
+    }
+    req.logIn(user, { session: true }, (err) => {
+      if (err !== null && err !== undefined) {
+        return responseCallbackSignUp(err, '', res);
+      }
+      const userFields = (({
+        uid,
+        first_name,
+        last_name,
+        email,
+        username
+      }) => ({ uid, first_name, last_name, email, username }))(user);
+      responseCallbackSignUp(null, userFields, res);
+      next();
+    });
+  })(req, res, next);
+};
+
 passport.use('login', loginStrate);
 router.post('/login', login);
 
 passport.use('signup', signupStrate);
-router.post(
-  '/signup',
-  passport.authenticate('signup', {
-    failureMessage: true,
-    successRedirect: '/api/private/users'
-  })
-);
-
-// router.post(
-//   '/signup',
-//   (req: Request, res: Response, next: NextFunction) => {
-//     const {
-//       first_name,
-//       last_name,
-//       email,
-//       username,
-//       password,
-//       private_option,
-//       followers,
-//       following,
-//       profile_picture
-//     } = req.body;
-//
-//     const signup = async (): Promise<void> => {
-//       try {
-//         // Can optimize the following awaits to call run them at the same time
-//         const hashedPass = await hash(password, 10);
-//         const URL = await convertImage(profile_picture, username, false);
-//         await pool.query(
-//           `
-//         INSERT INTO backend_schema.user (
-//           first_name, last_name, email, username, password, private_option, followers, following, pp_url
-//           ) VALUES (
-//             $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-//           [
-//             first_name,
-//             last_name,
-//             email.toLowerCase(),
-//             username,
-//             hashedPass,
-//             private_option,
-//             followers,
-//             following,
-//             URL
-//           ]
-//         );
-//         responseCallbackSignUp(null, res);
-//         next();
-//       } catch (error) {
-//         responseCallbackSignUp(error, res);
-//       }
-//     };
-//     void signup();
-//   },
-//   // Can optimize this as it currently call 2 queries to complete
-//   // Signup -> Login
-//   passport.authenticate('login', {
-//     failureMessage: true,
-//     successRedirect: '/api/private/users'
-//   })
-// );
+router.post('/signup', signup);
 
 router.get('/logout', (req: Request, res: Response, next: NextFunction) => {
   req.logOut((err: Error) => {

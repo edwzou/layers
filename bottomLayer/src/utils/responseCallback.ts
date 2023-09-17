@@ -1,10 +1,9 @@
 import { NotFoundError } from './Errors/NotFoundError';
-import { NextFunction, type Response } from 'express';
+import { type Response } from 'express';
 import { UnknownError } from './Errors/UnknownError';
 import { once } from 'node:events';
 import { type QueryManager } from './event-emitters/queryManager';
 import { type PoolClient } from 'pg';
-import { InvalidCredentialsError } from './Errors/InvalidCredentials';
 
 type Callback<T> = (error: Error | null, result: T | null) => void;
 
@@ -58,6 +57,28 @@ export const responseCallbackLogin = (
   }
 };
 
+export const responseCallbackSignUp = (
+  error: any,
+  user: any,
+  // { uid: any; first_name: any; last_name: any; email: any; username: any; }
+  res: Response,
+  info: string = ''
+): Callback<any> => {
+  if (error != null) {
+    res.status(500).json({ message: 'Internal Server Error', err: error });
+    return error;
+  } else if (info !== '') {
+    res.status(500).json({ message: 'Invalid Credentials Error' });
+    return error;
+  } else {
+    res.status(200).json({
+      message: 'Successfully Signed Up UID: ' + String(user.uid),
+      data: user
+    });
+    return responseCallback(null, user);
+  }
+};
+
 export const responseCallbackConnect = (
   error: any,
   res: Response
@@ -90,20 +111,6 @@ export const responseCallbackPost = (
     return error;
   } else {
     res.status(200).json({ message: 'Successfully Created a ' + target });
-    return error;
-  }
-};
-
-export const responseCallbackSignUp = (
-  error: any,
-  res: Response
-): Callback<any> => {
-  if (error != null) {
-    console.log(error);
-    res.status(500).json({ message: 'Internal Server Error', err: error });
-    return error;
-  } else {
-    res.status(200).json({ message: 'Successfully Signed Up' });
     return error;
   }
 };
