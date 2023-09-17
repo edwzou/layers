@@ -4,7 +4,7 @@ import {
   type PutObjectCommandInput
 } from '@aws-sdk/client-s3';
 
-async function uploadURIToS3(imageContent: Buffer, fileName: string) {
+async function uploadBufferToS3(imageContent: Buffer, fileName: string) {
   try {
     const params: PutObjectCommandInput = {
       Bucket: getBucketName(),
@@ -23,4 +23,4 @@ async function uploadURIToS3(imageContent: Buffer, fileName: string) {
   }
 }
 
-export { uploadURIToS3 };
+export { uploadBufferToS3 };
