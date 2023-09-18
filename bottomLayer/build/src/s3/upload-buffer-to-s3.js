@@ -9,26 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.convertImage = void 0;
-const remove_background_1 = require("./remove-background");
-const upload_buffer_to_s3_1 = require("./upload-buffer-to-s3");
-function convertImage(base64, key, remove) {
+exports.uploadBufferToS3 = void 0;
+const awsImport_1 = require("../utils/awsImport");
+const client_s3_1 = require("@aws-sdk/client-s3");
+function uploadBufferToS3(imageContent, fileName) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let imageBuffer = Buffer.from(base64, 'base64'); // Convert base64 to buffer
-            if (remove) {
-                imageBuffer = yield (0, remove_background_1.removeBackground)(imageBuffer); // Remove background from the image buffer and replace the original buffer
-            }
-            const upload = yield (0, upload_buffer_to_s3_1.uploadBufferToS3)(imageBuffer, key); // Upload the processed/original image buffer to S3
-            if (upload.$metadata.httpStatusCode !== 200) {
-                throw new Error('Upload failed');
-            }
-            return key;
+            const params = {
+                Bucket: (0, awsImport_1.getBucketName)(),
+                Key: fileName,
+                Body: imageContent,
+                ContentType: 'image/jpeg'
+            };
+            const command = new client_s3_1.PutObjectCommand(params);
+            const result = yield awsImport_1.s3.send(command);
+            console.log('Upload successful:', result);
+            return result;
         }
         catch (error) {
-            console.error('Error converting base64:', error);
+            console.error('Error uploading to S3:', error);
             throw error;
         }
     });
 }
-exports.convertImage = convertImage;
+exports.uploadBufferToS3 = uploadBufferToS3;

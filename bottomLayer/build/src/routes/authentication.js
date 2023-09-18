@@ -8,74 +8,58 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var passport_1 = __importDefault(require("passport"));
-var sqlImport_1 = require("../utils/sqlImport");
-var bcrypt = require('bcrypt');
-var router = express_1.default.Router();
+exports.authRoute = exports.default = void 0;
+const express_1 = __importDefault(require("express"));
+const passport_1 = __importDefault(require("passport"));
+const sqlImport_1 = require("../utils/sqlImport");
+const multer_1 = require("../utils/multer");
+const convert_image_1 = require("../s3/convert-image");
+const bcrypt = require('bcrypt');
+const router = express_1.default.Router();
+exports.default = router;
+exports.authRoute = router;
 router.post('/login', passport_1.default.authenticate('login', {
     failureMessage: true,
     successRedirect: '/api/private/users'
 }));
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.post('/signup', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, first_name, last_name, email, username, password, private_option, followers, following, profile_picture, hashedPass, user;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.body, first_name = _a.first_name, last_name = _a.last_name, email = _a.email, username = _a.username, password = _a.password, private_option = _a.private_option, followers = _a.followers, following = _a.following, profile_picture = _a.profile_picture;
-                return [4 /*yield*/, bcrypt.hash(password, 10)];
-            case 1:
-                hashedPass = _b.sent();
-                return [4 /*yield*/, sqlImport_1.pool.query("\n  INSERT INTO backend_schema.user (\n    first_name, last_name, email, username, password, private_option, followers, following, profile_picture\n    ) VALUES (\n      $1, $2, $3, $4, $5, $6, $7, $8, $9)", [first_name, last_name, email, username, hashedPass, private_option, followers, following, profile_picture])];
-            case 2:
-                user = _b.sent();
-                if (user.rowCount > 0) {
-                    next();
-                }
-                else {
-                    res.status(500).send('User not created');
-                }
-                return [2 /*return*/];
+router.post('/signup', multer_1.upload.single('profile_picture'), (req, res, next) => {
+    const { first_name, last_name, email, username, password, private_option, profile_picture } = req.body;
+    const createUser = () => __awaiter(void 0, void 0, void 0, function* () {
+        const hashedPass = yield bcrypt.hash(password, 10);
+        const URL = yield (0, convert_image_1.convertImage)(profile_picture, username, false);
+        const user = yield sqlImport_1.pool.query(`
+  INSERT INTO backend_schema.user (
+    first_name, last_name, email, username, password, private_option, followers, following, pp_url
+    ) VALUES (
+      $1, $2, $3, $4, $5, $6, $7, $8, $9)`, [
+            first_name,
+            last_name,
+            email.toLowerCase(),
+            username,
+            hashedPass,
+            private_option,
+            [],
+            [],
+            URL
+        ]);
+        if (user.rowCount > 0) {
+            next();
+        }
+        else {
+            res.status(500).send('User not created');
         }
     });
-}); }, passport_1.default.authenticate('login', {
+    void createUser();
+}, passport_1.default.authenticate('login', {
     failureMessage: true,
     successRedirect: '/api/private/users'
 }));
-router.get('/logout', function (req, res, next) {
-    req.logOut(function (err) {
+router.get('/logout', (req, res, next) => {
+    req.logOut((err) => {
         // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
         if (err) {
             return next(err);
@@ -83,4 +67,3 @@ router.get('/logout', function (req, res, next) {
         res.send('Logged Out');
     });
 });
-module.exports = router;
