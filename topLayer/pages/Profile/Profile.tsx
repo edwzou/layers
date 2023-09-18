@@ -32,7 +32,7 @@ const Profile = () => {
 		ClothingTypes.outfits
 	);
 	const { data } = useContext(UserContext);
-	console.log(data);
+	const { first_name, last_name, username, pp_url } = data;
 
 	const handleItemChange = (item: UserClothing | UserOutfit) => {
 		if ('items' in item) {
@@ -87,14 +87,11 @@ const Profile = () => {
 							toggleSettingsModal();
 						}}
 					>
-						<ProfilePicture image={data.profilePicture} />
+						<ProfilePicture image={pp_url} />
 					</Pressable>
 					<View>
-						<FullName
-							firstName={data ? data.first_name : ''}
-							lastName={data ? data.last_name : ''}
-						/>
-						<Username username={`@${data ? data.username : ''}`} />
+						<FullName firstName={first_name} lastName={last_name} />
+						<Username username={`@${username}`} />
 					</View>
 				</View>
 				<View style={{ top: 5 }}>

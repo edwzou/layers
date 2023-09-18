@@ -42,7 +42,8 @@ const Settings = () => {
 		await axios(`${baseUrl}/logout`);
 		updateData(null);
 	};
-
+	const { first_name, last_name, username, email, private_option, pp_url } =
+		data;
 	const {
 		control,
 		handleSubmit,
@@ -50,13 +51,13 @@ const Settings = () => {
 		formState: { dirtyFields, errors },
 	} = useForm({
 		defaultValues: {
-			first_name: mockUserData.firstName,
-			last_name: mockUserData.lastName,
-			username: mockUserData.username,
-			email: mockUserData.email,
-			password: mockUserData.password,
-			private: false,
-			profile_picture: mockUserData.profilePicture,
+			first_name: first_name,
+			last_name: last_name,
+			username: username,
+			email: email,
+			password: '',
+			private: private_option,
+			profile_picture: pp_url,
 		},
 	});
 
@@ -130,10 +131,12 @@ const Settings = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.Camera, {});
+						navigation.navigate(StackNavigation.Camera, {
+							setImage: setImage,
+						});
 					}}
 				>
-					<ProfilePicture image={mockUserData.profilePicture} />
+					<ProfilePicture image={pp_url} />
 				</Pressable>
 				<View
 					style={{
