@@ -69,6 +69,7 @@ const layout = {
 	xGap: 16,
 	gap: 16,
 	highTranslateYBottomMargin: 120,
+	pageStateTopMargin: 180,
 };
 
 const typography = StyleSheet.create({
@@ -104,27 +105,32 @@ const utils = StyleSheet.create({
 	},
 	tagShadow: {
 		shadowOffset: { width: 0, height: 0 },
-		shadowOpacity: 0.38,
+		shadowOpacity: 0.33,
 		shadowRadius: 7,
 	},
 	buttonShadow: {
-		shadowOffset: { width: 0, height: 6 },
+		shadowOffset: { width: 0, height: 4 },
 		shadowOpacity: 0.4,
 		shadowRadius: 15,
 	},
 	deleteShadow: {
-		shadowOffset: { width: 0, height: 6 },
-		shadowOpacity: 0.2,
-		shadowRadius: 10,
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.6,
+		shadowRadius: 5,
+	},
+	dropdownShadow: {
+		shadowOffset: { width: 0, height: 0 },
+		shadowOpacity: 0.13,
+		shadowRadius: 15,
 	},
 	modalShadow: {
-		shadowOffset: { width: 0, height: -4 },
-		shadowOpacity: 0.1,
+		shadowOffset: { width: 0, height: 0 },
+		shadowOpacity: 0.13,
 		shadowRadius: 15,
 	},
 	pfpShadow: {
-		shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.15,
+		shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.10,
         shadowRadius: 10,
 	},
 	smallRadius: {
@@ -195,6 +201,7 @@ const icons = {
 	deleteBin2Line: 'delete-bin-2-line',
 	circleLogout: 'logout-circle-line',
 	privateOutline: 'ri-lock-line',
+	bubbleOutline: 'ri-bubble-chart-line',
 };
 
 export default {

@@ -3,6 +3,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import ColorTag from '../Tag/ColorTag';
 import { TagAction, ColorTags } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
+import { screenWidth } from '../../utils/modalMaxShow';
 
 interface ColorPickerPropsType {
     onNewColorPress: (colorToAdd: [string, string]) => void;
@@ -59,8 +60,8 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         justifyContent: 'center',
-        gap: 10,
-        marginVertical: 5,
+        gap: screenWidth / 20,
+        marginVertical: (screenWidth / 20) / 2,
     },
 });
 
