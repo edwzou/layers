@@ -8,8 +8,6 @@ import {
 import React, { useContext } from 'react';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { UserContext } from '../../utils/UserContext';
-import { MainPageContext } from '../../pages/Main/MainPage';
 
 interface ProfilePicturePropsType {
 	image?: string;
@@ -17,14 +15,11 @@ interface ProfilePicturePropsType {
 }
 
 const ProfilePicture = ({ image, base64 = false }: ProfilePicturePropsType) => {
-	let imageData = image;
-	if (base64) {
-		imageData = `data:image/jpg;base64,${image}`;
-	}
+	const imgString = base64 ? `data:image/jpg;base64,${image}` : image;
 	return (
 		<Text>
 			{image ? (
-				<Image style={styles.profilePicture} source={{ uri: imageData }} />
+				<Image style={styles.profilePicture} source={{ uri: imgString }} />
 			) : (
 				<View style={styles.profilePicture}>
 					<Icon

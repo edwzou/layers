@@ -9,6 +9,7 @@ import {
 import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
 import { upload } from '../../utils/multer';
+import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 const router = express.Router();
 
 router.get('/', checkAuthenticated, (req: Request, res: Response): void => {
@@ -20,6 +21,8 @@ router.get('/', checkAuthenticated, (req: Request, res: Response): void => {
         [userId]
       );
       const result = user.rows[0];
+      const imgRef = result.pp_url;
+      result.pp_url = await downloadURLFromS3(imgRef);
 
       responseCallbackGet(null, result, res, 'User');
     } catch (error) {
@@ -48,7 +51,7 @@ router.post(
     } = req.body;
     const insertUser = async (): Promise<void> => {
       try {
-        const URL = await convertImage(profile_picture, username, false);
+        const imgRef = await convertImage(profile_picture, username, false);
         await pool.query(
           `
       INSERT INTO backend_schema.user (
@@ -65,7 +68,7 @@ router.post(
             private_option,
             JSON.parse(followers),
             JSON.parse(following),
-            URL
+            imgRef
           ]
         );
 

@@ -5,6 +5,7 @@ import {
   responseCallbackGet,
   responseCallbackGetAll
 } from '../../utils/responseCallback';
+import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 const router = express.Router();
 
 // Endpoint for retrieving a specific clothing item
@@ -17,7 +18,9 @@ router.get('/:itemId', (req: Request, res: Response): void => {
         'SELECT * FROM backend_schema.clothing_item WHERE ciid = $1',
         [itemId]
       );
-      const result = item.rows;
+      const result = item.rows[0];
+      const imgRef = result.image_url;
+      result.image_url = downloadURLFromS3(imgRef);
 
       responseCallbackGet(null, result, res, 'Clothing Item');
     } catch (error) {
