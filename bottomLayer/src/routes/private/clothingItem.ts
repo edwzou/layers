@@ -8,6 +8,7 @@ import {
 import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
 import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
+import { v4 as uuidv4 } from 'uuid';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -16,7 +17,9 @@ router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
   const uid = req.user;
   const insertClothingItem = async (): Promise<any> => {
     try {
-      const URL = await convertImage(image, title, true);
+      const URL = await convertImage(image, title, false); // remember to switch back to true
+      const uuid = uuidv4();
+      console.log(uuid);
       await pool.query(
         `INSERT INTO backend_schema.clothing_item (image_url, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
@@ -68,7 +71,7 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-      const URL = await convertImage(image, title, true);
+      const URL = await convertImage(image, title, false); // remember to switch back to true
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item
