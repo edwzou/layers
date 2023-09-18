@@ -474,47 +474,6 @@ export const mockItemsData3: UserItems[] = [
 	{
 		category: 'outfits',
 		data: [
-			{
-				title: 'Everyday casual',
-				items: [
-					{
-						id: 'outerwear2',
-						image: outerwear2,
-						category: ClothingTypes.outerwear,
-						title: 'Cargo jacket',
-						size: 'm',
-						colors: [ColorTags.Brown],
-					},
-					{
-						id: 'tops4',
-						image: tops4,
-						category: ClothingTypes.tops,
-						title: 'Relaxed long',
-						size: 'm',
-						colors: [ColorTags.Olive],
-					},
-					{
-						id: 'bottoms3',
-						image: bottoms3,
-						category: ClothingTypes.bottoms,
-						title: 'Semi-formal',
-						size: 'm',
-						colors: [ColorTags.Beige],
-					},
-					{
-						id: 'shoes1',
-						image: shoes1,
-						category: ClothingTypes.shoes,
-						title: 'Nike lows',
-						size: 'm',
-						colors: [
-							ColorTags.Black,
-							ColorTags.White
-						],
-					},
-				],
-				category: ClothingTypes.outfits,
-			},
 		],
 	},
 	{

@@ -95,7 +95,7 @@ const ForeignProfile = ({ route }: any) => {
                     </View>
                 </View>
                 {user.privateOption === 't' ? (
-                    <View style={{ alignItems: 'center', flex: 1, top: 150, gap: 5 }}>
+                    <View style={{ alignItems: 'center', flex: 1, top: GlobalStyles.layout.pageStateTopMargin, gap: 5 }}>
                         <Icon
                             name={GlobalStyles.icons.privateOutline}
                             color={GlobalStyles.colorPalette.primary[300]}
