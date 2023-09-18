@@ -7,6 +7,7 @@ import {
 } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
+import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -38,6 +39,7 @@ router.delete(
     const { ciid } = req.params;
     const deleteItem = async (ciid: string): Promise<void> => {
       try {
+        await deleteObjectFromS3(ciid);
         const deleteItem = await pool.query(
           'DELETE FROM backend_schema.clothing_item WHERE ciid = $1',
           [ciid]
