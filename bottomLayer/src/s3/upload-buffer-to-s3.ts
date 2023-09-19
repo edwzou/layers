@@ -13,8 +13,7 @@ async function uploadBufferToS3(imageContent: Buffer, fileName: string) {
       ContentType: 'image/jpeg'
     };
 
-    const command = new PutObjectCommand(params);
-    const result = await s3.send(command);
+    const result = await s3.send(new PutObjectCommand(params));
     console.log('Upload successful:', result);
     return result;
   } catch (error) {
