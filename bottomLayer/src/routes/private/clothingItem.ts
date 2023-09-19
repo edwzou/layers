@@ -17,13 +17,12 @@ router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
   const uid = req.user;
   const insertClothingItem = async (): Promise<any> => {
     try {
-      const URL = await convertImage(image, title, false); // remember to switch back to true
-      const uuid = uuidv4();
-      console.log(uuid);
+      const ciid = uuidv4();
+      const URL = await convertImage(image, ciid, true);
       await pool.query(
-        `INSERT INTO backend_schema.clothing_item (image_url, category, title, brands, size, color, uid)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [URL, category, title, brands, size, color, uid]
+        `INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [ciid, URL, category, title, brands, size, color, uid]
       );
 
       responseCallbackPost(null, res, 'Clothing Item');
@@ -71,7 +70,7 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-      const URL = await convertImage(image, title, false); // remember to switch back to true
+      const URL = await convertImage(image, ciid, true);
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item
