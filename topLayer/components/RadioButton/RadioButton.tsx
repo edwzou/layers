@@ -10,9 +10,17 @@ interface RadioButtonPropsType {
 }
 
 const RadioButton = ({ privateData, onSelect }: RadioButtonPropsType) => {
-	const { data, updateData } = useContext(UserContext);
-	const { private_option } = data;
-	const savedOption = private_option ? 'Private' : 'Public';
+	const { data } = useContext(UserContext);
+
+	let option = false as {};
+
+	if (data) {
+		const { private_option } = data;
+		console.log(private_option);
+		option = private_option ? private_option : false;
+	}
+
+	const savedOption = option ? 'Private' : 'Public';
 
 	const [userOption, setUserOption] = useState(savedOption ?? 'Public');
 
@@ -23,7 +31,7 @@ const RadioButton = ({ privateData, onSelect }: RadioButtonPropsType) => {
 					<Pressable
 						onPress={() => {
 							setUserOption(item.value);
-							onSelect('privacy', item.boolean);
+							onSelect('private_option', item.boolean);
 						}}
 						style={[
 							item.value === userOption ? styles.selected : null,
