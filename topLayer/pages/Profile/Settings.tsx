@@ -222,11 +222,13 @@ const Settings = () => {
 				/>
 				<RadioButton data={privacyOptions} onSelect={setValue} />
 			</View>
-			<Button
-				onPress={handleLogout}
-				text={'Sign out'}
-				bgColor={GlobalStyles.colorPalette.primary[500]}
-			/>
+			<View style={{ alignItems: 'center' }}>
+				<Button
+					onPress={handleLogout}
+					text={'Sign out'}
+					bgColor={GlobalStyles.colorPalette.primary[500]}
+				/>
+			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
 					<Text style={styles.error}>Please enter a valid email.</Text>
