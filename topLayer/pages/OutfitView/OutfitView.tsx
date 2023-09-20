@@ -7,6 +7,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
 import { TagAction, ColorTags } from '../../constants/Enums';
 import BrandTag from '../../components/Tag/BrandTag';
+import { screenHeight } from '../../utils/modalMaxShow';
 
 import { UserOutfit } from '.'
 
@@ -61,7 +62,7 @@ const OutfitView = ({ outfit }: OutfitViewPropsType) => {
 						</View>
 					</View> */}
 					{/* !!! Very hacky solution, try to fix this */}
-					<View style={GlobalStyles.sizing.bottomSpacing} />
+					<View style={{ padding: screenHeight * 0.05 }} />
 				</View>
 			}
 		/>

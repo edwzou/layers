@@ -34,19 +34,21 @@ export default function OutfitCard({
 					</View>
 				</Text>
 			</View>
-			<FlatList
-				data={items.slice(0, 4)}
-				renderItem={({ item }) => (
-					<View style={styles.itemContainer}>
-						<ItemCell
-							image={item.image}
-							disablePress={true}
-							imageStyle={{ width: '85%', height: '85%' }}
-						/>
-					</View>
-				)}
-				numColumns={2}
-			/>
+			<View style={styles.itemsContainer}>
+				<FlatList
+					data={items.slice(0, 4)}
+					renderItem={({ item }) => (
+						<View style={styles.itemContainer}>
+							<ItemCell
+								image={item.image}
+								disablePress={true}
+								imageStyle={{ width: '85%', height: '85%' }}
+							/>
+						</View>
+					)}
+					numColumns={2}
+				/>
+			</View>
 		</Pressable>
 	);
 }
@@ -82,7 +84,14 @@ const styles = StyleSheet.create({
 		...GlobalStyles.typography.body,
 	},
 	itemContainer: {
-		width: ITEM_SIZE(4.5),
-		margin: 5,
+		width: ((((screenWidth - GlobalStyles.layout.xGap * 2) / 1.8) - 40) / 2) - 5,
+		margin: 5
+	},
+	itemsContainer: {
+		flexDirection: 'column',
+		justifyContent: 'flex-start',
+		alignItems: 'flex-start',
+		height: (((screenWidth - GlobalStyles.layout.xGap * 2) / 1.8) - 40) + 10,
+		aspectRatio: 1,
 	},
 });

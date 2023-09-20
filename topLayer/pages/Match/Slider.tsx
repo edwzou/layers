@@ -9,6 +9,11 @@ import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 
+import Icon from 'react-native-remix-icon';
+
+import img from '../../assets/icon.png'
+import { ClothingCategoryTypes } from 'constants/Enums';
+
 const SNAP_ITEM_SIZE = ITEM_SIZE() * 1.25; // Cell gap
 const SPACING = 0;
 const EMPTY_ITEM_SIZE = (screenWidth - ITEM_SIZE()) / 2;
@@ -17,9 +22,20 @@ const CURRENT_ITEM_SCALE = 5; // Height of the Slider
 interface SliderPropsType {
 	data: Array<UserClothing | Record<string, number>> | null;
 	selectedIndex: (category: string, index: number) => void;
+	category: string;
 }
 
-const Selector = ({ data, selectedIndex }: SliderPropsType) => {
+const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
+
+	const emptyItem: UserClothing = {
+		id: '',
+		image: '',
+		category: category,
+		title: '',
+		size: '',
+		colors: [['', '']],
+	}
+
 	const scrollX = useRef(new Animated.Value(0)).current;
 
 	const currentIndex = useRef<number>(0);
@@ -27,7 +43,7 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
 
 	const handleOnViewableItemsChanged = useCallback(({ viewableItems }: any) => {
 		const itemsInView = viewableItems.filter(
-			({ item }: any) => item.image && item.category
+			({ item }: any) => (item.image && item.category) || item.id === ''
 		);
 
 		if (itemsInView.length === 0) {
@@ -37,7 +53,6 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
 		currentIndex.current = itemsInView[0].index;
 
 		const rawItemIndex = currentIndex.current - 1;
-		const category = itemsInView[0].item.category;
 
 		selectedIndex(category, rawItemIndex);
 	}, []);
@@ -52,9 +67,9 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
 		<View>
 			<FlatList
 				ref={flatListRef}
-				data={data}
+				data={data && [...data.slice(0, data.length - 1), emptyItem, ...data.slice(data.length - 1, data.length)]}
 				renderItem={({ item, index }) => {
-					if (!item.image || !item.category) {
+					if ((!item.image || !item.category) && item.id !== '') {
 						return <View style={{ width: EMPTY_ITEM_SIZE }} />;
 					}
 
@@ -73,9 +88,21 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
 					return (
 						<View style={{ width: SNAP_ITEM_SIZE }}>
 							<Animated.View
-								style={[{ transform: [{ scale }] }, styles.itemContent]}
+								style={[
+									{
+										transform: [{ scale }],
+										backgroundColor: item.id === '' ? GlobalStyles.colorPalette.background : GlobalStyles.colorPalette.card[200]
+
+									},
+									styles.itemContent]}
 							>
-								<ItemCell image={item.image} disablePress />
+								{item.id !== '' ? <ItemCell image={item.image} disablePress /> :
+									<Icon
+										name={GlobalStyles.icons.forbidOutline}
+										color={GlobalStyles.colorPalette.primary[300]}
+										size={GlobalStyles.sizing.icon.xLarge}
+									/>
+								}
 							</Animated.View>
 						</View>
 					);
@@ -104,7 +131,7 @@ const Selector = ({ data, selectedIndex }: SliderPropsType) => {
 	);
 };
 
-export default Selector;
+export default Slider;
 
 const styles = StyleSheet.create({
 	flatListContent: {
@@ -114,7 +141,6 @@ const styles = StyleSheet.create({
 	itemContent: {
 		marginHorizontal: SPACING,
 		alignItems: 'center',
-		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		justifyContent: 'center',
 		alignContent: 'center',
 		width: '100%',
