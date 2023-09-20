@@ -36,7 +36,6 @@ const Settings = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { data, updateData } = useContext(UserContext);
-	const { mockUserData } = useContext(MainPageContext);
 
 	const handleLogout = async () => {
 		await axios(`${baseUrl}/logout`);
@@ -220,7 +219,7 @@ const Settings = () => {
 					)}
 					name="password"
 				/>
-				<RadioButton data={privacyOptions} onSelect={setValue} />
+				<RadioButton privateData={privacyOptions} onSelect={setValue} />
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				<Button

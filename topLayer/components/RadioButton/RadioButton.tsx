@@ -1,19 +1,24 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { ITEM_SIZE } from '../../utils/GapCalc';
+import { UserContext } from '../../utils/UserContext';
 
 interface RadioButtonPropsType {
-	data: any;
+	privateData: any;
 	onSelect: any;
 }
 
-const RadioButton = ({ data, onSelect }: RadioButtonPropsType) => {
-	const [userOption, setUserOption] = useState('Public');
+const RadioButton = ({ privateData, onSelect }: RadioButtonPropsType) => {
+	const { data, updateData } = useContext(UserContext);
+	const { private_option } = data;
+	const savedOption = private_option ? 'Private' : 'Public';
+
+	const [userOption, setUserOption] = useState(savedOption ?? 'Public');
 
 	return (
 		<View style={{ flexDirection: 'row', gap: GlobalStyles.layout.gap }}>
-			{data.map((item: any) => {
+			{privateData.map((item: any) => {
 				return (
 					<Pressable
 						onPress={() => {
