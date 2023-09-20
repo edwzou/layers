@@ -101,8 +101,8 @@ const signupStrate = new LocalStrategy(
             username,
             hashedPass,
             private_option,
-            followers,
-            following,
+            [],
+            [],
             imgRef
           ]
         );
@@ -120,15 +120,15 @@ const signupStrate = new LocalStrategy(
 
         const uid = result.rows[0].uid;
         const user = {
-          uid: uid,
-          first_name: first_name,
-          last_name: last_name,
+          uid,
+          first_name,
+          last_name,
           email: emailLower,
-          username: username,
+          username,
           password: hashedPass,
-          private_option: private_option,
-          followers: followers,
-          following: following,
+          private_option,
+          followers: [],
+          following: [],
           profile_picture: URL
         };
 
