@@ -160,7 +160,8 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<ScrollView>
+			<ScrollView
+				contentContainerStyle={GlobalStyles.sizing.bottomSpacingPadding}>
 				<View
 					style={{
 						marginHorizontal: GlobalStyles.layout.xGap,
@@ -200,7 +201,6 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 					<ColorTagsList data={currentColorTags} tagAction={TagAction.remove} onAddPress={() => { colorPickerRef.current?.scrollTo(lowTranslateY) }}
 						onRemovePress={handleOnRemovePress} />
 				</View>
-				<View style={GlobalStyles.sizing.bottomSpacing} />
 			</ScrollView>
 			<View style={styles.deleteButtonContainer}>
 				<Pressable onPress={handlePress}>
