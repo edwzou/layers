@@ -162,6 +162,7 @@ const utils = StyleSheet.create({
 
 const sizing = {
 	icon: {
+		xLarge: 44,
 		large: 40,
 		regular: 30,
 		small: 20,
@@ -172,8 +173,8 @@ const sizing = {
 		small: 40,
 	},
 	tagHeight: utils.tagShape.height,
-	bottomSpacing: {
-		height: 100
+	bottomSpacingPadding: {
+		paddingBottom: 100
 	}
 };
 
@@ -202,6 +203,7 @@ const icons = {
 	circleLogout: 'logout-circle-line',
 	privateOutline: 'ri-lock-line',
 	bubbleOutline: 'ri-bubble-chart-line',
+	forbidOutline: 'ri-forbid-line',
 };
 
 export default {
