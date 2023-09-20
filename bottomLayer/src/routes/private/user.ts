@@ -8,6 +8,7 @@ import {
 } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
+import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
@@ -30,6 +31,8 @@ router.get('/', (req: Request, res: Response): void => {
 
 // Endpoint for creating a specific user
 router.post('/', checkAuthenticated, (req: Request, res: Response) => {
+  const userId = req.user as string;
+  if (userId == null) return;
   const {
     first_name,
     last_name,
@@ -43,7 +46,7 @@ router.post('/', checkAuthenticated, (req: Request, res: Response) => {
   } = req.body;
   const insertUser = async (): Promise<void> => {
     try {
-      const URL = await convertImage(profile_picture, username, false);
+      const URL = await convertImage(profile_picture, userId, false);
       await pool.query(
         `
       INSERT INTO backend_schema.user (
@@ -78,6 +81,7 @@ router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
   if (userId == null) return;
   const deleteUser = async (): Promise<void> => {
     try {
+      await deleteObjectFromS3(userId);
       const deleteUser = await pool.query(
         'DELETE FROM backend_schema.user WHERE uid = $1',
         [userId]
@@ -107,7 +111,7 @@ router.put('/', checkAuthenticated, (req: Request, res: Response): void => {
   } = req.body;
   const updateUser = async (): Promise<void> => {
     try {
-      const URL = await convertImage(profile_picture, username, false);
+      const URL = await convertImage(profile_picture, userId, false);
       const updateUser = await pool.query(
         `UPDATE backend_schema.user
         SET first_name = $1,
