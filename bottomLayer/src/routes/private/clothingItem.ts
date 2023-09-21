@@ -7,6 +7,8 @@ import {
 } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
+import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
+import { v4 as uuidv4 } from 'uuid';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -15,11 +17,12 @@ router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
   const uid = req.user;
   const insertClothingItem = async (): Promise<any> => {
     try {
-      const imgRef = await convertImage(image, title, false); // remember to set it as true
+      const ciid = uuidv4();
+      const imgRef = await convertImage(image, ciid, true);
       await pool.query(
-        `INSERT INTO backend_schema.clothing_item (image_url, category, title, brands, size, color, uid)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [imgRef, category, title, brands, size, color, uid]
+        `INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [ciid, imgRef, category, title, brands, size, color, uid]
       );
 
       responseCallbackPost(null, res, 'Clothing Item');
@@ -38,6 +41,7 @@ router.delete(
     const { ciid } = req.params;
     const deleteItem = async (ciid: string): Promise<void> => {
       try {
+        await deleteObjectFromS3(ciid);
         const deleteItem = await pool.query(
           'DELETE FROM backend_schema.clothing_item WHERE ciid = $1',
           [ciid]
@@ -66,7 +70,7 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-      const imgRef = await convertImage(image, title, true);
+      const imgRef = await convertImage(image, ciid, true);
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item

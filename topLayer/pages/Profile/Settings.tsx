@@ -36,7 +36,6 @@ const Settings = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { data, updateData } = useContext(UserContext);
-	const { mockUserData } = useContext(MainPageContext);
 
 	const handleLogout = async () => {
 		await axios(`${baseUrl}/logout`);
@@ -220,13 +219,15 @@ const Settings = () => {
 					)}
 					name="password"
 				/>
-				<RadioButton data={privacyOptions} onSelect={setValue} />
+				<RadioButton privateData={privacyOptions} onSelect={setValue} />
 			</View>
-			<Button
-				onPress={handleLogout}
-				text={'Sign out'}
-				bgColor={GlobalStyles.colorPalette.primary[500]}
-			/>
+			<View style={{ alignItems: 'center' }}>
+				<Button
+					onPress={handleLogout}
+					text={'Sign out'}
+					bgColor={GlobalStyles.colorPalette.primary[500]}
+				/>
+			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
 					<Text style={styles.error}>Please enter a valid email.</Text>

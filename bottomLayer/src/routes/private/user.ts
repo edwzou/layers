@@ -17,7 +17,7 @@ router.get('/', checkAuthenticated, (req: Request, res: Response): void => {
   const getUser = async (): Promise<void> => {
     try {
       const user = await pool.query(
-        'SELECT uid, first_name, last_name, email, username, pp_url FROM backend_schema.user WHERE uid = $1',
+        'SELECT uid, first_name, last_name, email, username, private_option, followers, following, pp_url FROM backend_schema.user WHERE uid = $1',
         [userId]
       );
       const result = user.rows[0];
@@ -55,7 +55,6 @@ router.post(
         await pool.query(
           `
       INSERT INTO backend_schema.user (
-
         first_name, last_name, email, username, password, private_option, followers, following, pp_url
         ) VALUES ( 
           $1, $2, $3, $4, $5, $6, $7, $8, $9)`,

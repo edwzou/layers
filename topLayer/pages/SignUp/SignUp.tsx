@@ -52,23 +52,6 @@ const SignUp = () => {
 		},
 	});
 
-	const pickImage = async () => {
-		const result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			base64: true,
-			aspect: [1, 1],
-			quality: 0,
-		});
-
-		if (!result.canceled) {
-			if (!result.assets) return;
-
-			setImage(`${base64Prefix}${result.assets[0].base64}`);
-			setModalVisible(!modalVisible);
-		}
-	};
-
 	useEffect(() => {
 		setValue('profile_picture', image);
 	}, [image]);
@@ -207,7 +190,7 @@ const SignUp = () => {
 					)}
 					name="password"
 				/>
-				<RadioButton data={privacyOptions} onSelect={setValue} />
+				<RadioButton privateData={privacyOptions} onSelect={setValue} />
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (

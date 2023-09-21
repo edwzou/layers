@@ -4,6 +4,7 @@ import Slider from './Slider';
 import { type UserClothing, type UserClothingPadding } from '.';
 import { ScrollView } from 'react-native-gesture-handler';
 import GlobalStyles from '../../constants/GlobalStyles';
+import { ClothingTypes } from '../../constants/Enums';
 
 interface SelectorPropsType {
 	outerwear: UserClothing[];
@@ -56,33 +57,36 @@ const Selector = ({
 	return (
 		<ScrollView
 			showsVerticalScrollIndicator={false}
-			contentContainerStyle={{ paddingBottom: 50 }}
+			contentContainerStyle={GlobalStyles.sizing.bottomSpacingPadding}
 		>
 			{outerwear !== null && outerwear.length > 0 ? (
 				<Slider
 					data={dataWithPlaceholders.outerwear}
 					selectedIndex={selectedIndex}
+					category={ClothingTypes.outerwear}
 				/>
 			) : null}
 			{tops !== null && tops.length > 0 ? (
 				<Slider
 					data={dataWithPlaceholders.tops}
 					selectedIndex={selectedIndex}
+					category={ClothingTypes.tops}
 				/>
 			) : null}
 			{bottoms !== null && bottoms.length > 0 ? (
 				<Slider
 					data={dataWithPlaceholders.bottoms}
 					selectedIndex={selectedIndex}
+					category={ClothingTypes.bottoms}
 				/>
 			) : null}
 			{shoes !== null && shoes.length > 0 ? (
 				<Slider
 					data={dataWithPlaceholders.shoes}
 					selectedIndex={selectedIndex}
+					category={ClothingTypes.shoes}
 				/>
 			) : null}
-			<View style={GlobalStyles.sizing.bottomSpacing} />
 		</ScrollView>
 	);
 };
