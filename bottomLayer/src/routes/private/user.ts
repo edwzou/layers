@@ -120,7 +120,7 @@ router.put(
     } = req.body;
     const updateUser = async (): Promise<void> => {
       try {
-        const URL = await convertImage(profile_picture, username, false);
+        const imgRef = await convertImage(profile_picture, username, false);
         const updateUser = await pool.query(
           `UPDATE backend_schema.user
         SET first_name = $1,
@@ -142,7 +142,7 @@ router.put(
             private_option,
             JSON.parse(followers),
             JSON.parse(following),
-            URL,
+            imgRef,
             userId
           ]
         );

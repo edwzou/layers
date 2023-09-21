@@ -19,8 +19,10 @@ router.get('/:itemId', (req: Request, res: Response): void => {
         [itemId]
       );
       const result = item.rows[0];
+      console.log(result)
       const imgRef = result.image_url;
-      result.image_url = downloadURLFromS3(imgRef);
+      result.image_url = await downloadURLFromS3(imgRef);
+      console.log(result);
 
       responseCallbackGet(null, result, res, 'Clothing Item');
     } catch (error) {
@@ -46,6 +48,11 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
       await getUserCore(userId, await client);
       const result = await run;
       const items = result.rows;
+      for (const item of items) { // ASYNC THIS JOE
+        const imgRef = item.image_url;
+        item.image_url = await downloadURLFromS3(imgRef);
+      }
+
       responseCallbackGetAll(items, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);

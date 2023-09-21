@@ -15,11 +15,11 @@ router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
   const uid = req.user;
   const insertClothingItem = async (): Promise<any> => {
     try {
-      const URL = await convertImage(image, title, true);
+      const imgRef = await convertImage(image, title, false); // remember to set it as true
       await pool.query(
         `INSERT INTO backend_schema.clothing_item (image_url, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [URL, category, title, brands, size, color, uid]
+        [imgRef, category, title, brands, size, color, uid]
       );
 
       responseCallbackPost(null, res, 'Clothing Item');
@@ -66,7 +66,7 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-      const URL = await convertImage(image, title, true);
+      const imgRef = await convertImage(image, title, true);
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item
@@ -78,7 +78,7 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
           color = $6
       WHERE ciid = $7
       `,
-        [URL, category, title, brands, size, color, ciid]
+        [imgRef, category, title, brands, size, color, ciid]
       );
       // responds with successful update even when no changes are made
       responseCallbackUpdate(
