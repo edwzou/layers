@@ -1,4 +1,4 @@
-import { StyleSheet, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, View, SafeAreaView } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';

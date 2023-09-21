@@ -1,5 +1,11 @@
 import React, { useRef, useState, useContext } from 'react';
-import { View, Pressable, StyleSheet, FlatList } from 'react-native';
+import {
+	View,
+	Pressable,
+	StyleSheet,
+	FlatList,
+	SafeAreaView,
+} from 'react-native';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';

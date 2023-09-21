@@ -1,10 +1,4 @@
-import {
-	Image,
-	StyleSheet,
-	Text,
-	View,
-	ImageSourcePropType,
-} from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import React, { useContext } from 'react';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
