@@ -11,10 +11,10 @@ export type StackNavigatorType = {
 	item?: UserClothing | UserOutfit;
 	editable?: boolean;
 	matchItems?: {
-		outerwear: UserClothing,
-		tops: UserClothing,
-		bottoms: UserClothing,
-		shoes: UserClothing,
+		outerwear?: UserClothing,
+		tops?: UserClothing,
+		bottoms?: UserClothing,
+		shoes?: UserClothing,
 	}
 	matchName?: (text: string) => void;
 };

@@ -8,6 +8,7 @@ import {
 } from '../../utils/responseCallback';
 import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
+import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response): void => {
@@ -80,6 +81,7 @@ router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
   if (userId == null) return;
   const deleteUser = async (): Promise<void> => {
     try {
+      await deleteObjectFromS3(userId);
       const deleteUser = await pool.query(
         'DELETE FROM backend_schema.user WHERE uid = $1',
         [userId]
