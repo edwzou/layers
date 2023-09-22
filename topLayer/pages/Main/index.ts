@@ -4,16 +4,15 @@ import { UserOutfit } from "../../pages/OutfitView";
 
 export interface User {
 	uid: string,
-	firstName: string,
-	lastName: string,
+	first_name: string,
+	last_name: string,
 	email: string,
 	username: string,
 	password: string,
-	privateOption: string,
+	private_option: boolean,
 	followers: string[],
 	following: string[],
-	profilePicture: Image,
-	items: UserItems[],
+	pp_url: string,
 }
 
 export interface UserItems {

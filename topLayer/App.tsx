@@ -18,10 +18,11 @@ import CameraWrapper from './components/Camera/CameraWrapper';
 import { UserContext } from './utils/UserContext';
 import axios from 'axios';
 import { baseUrl } from './utils/apiUtils';
+import { User } from './pages/Main';
 
 export default function App() {
 
-  const [user, setUser] = useState<Record<string, unknown> | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const userContextValue = {
     data: user,
@@ -57,7 +58,7 @@ export default function App() {
               }}
 
             >
-              {/* {!user ? (
+              {!user ? (
                 <>
                   <Stack.Screen
                     name={StackNavigation.Login}
@@ -68,14 +69,14 @@ export default function App() {
                     component={SignUpPage}
                   />
                 </>
-              ) : ( */}
-              <>
-                <Stack.Screen
-                  name={StackNavigation.Main}
-                  component={MainPage}
-                />
-              </>
-              {/* )} */}
+              ) : (
+                <>
+                  <Stack.Screen
+                    name={StackNavigation.Main}
+                    component={MainPage}
+                  />
+                </>
+              )}
               <Stack.Screen
                 name={StackNavigation.Camera}
                 component={CameraWrapper}
