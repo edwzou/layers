@@ -70,7 +70,11 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
+<<<<<<< HEAD
+      const imgRef = await convertImage(image, title, true);
+=======
       const URL = await convertImage(image, ciid, true);
+>>>>>>> 359ebc306ded4bc92cc34c5c027ac50fc0014667
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item
@@ -82,7 +86,7 @@ router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
           color = $6
       WHERE ciid = $7
       `,
-        [URL, category, title, brands, size, color, ciid]
+        [imgRef, category, title, brands, size, color, ciid]
       );
       // responds with successful update even when no changes are made
       responseCallbackUpdate(

@@ -2,7 +2,6 @@ import express from 'express';
 import { type Request, type Response, type NextFunction } from 'express';
 import passport from 'passport';
 import { pool } from '../utils/sqlImport';
-
 import { convertImage } from '../s3/convert-image';
 import {
   responseCallbackSignUp,
@@ -79,8 +78,6 @@ const signupStrate = new LocalStrategy(
       username,
       password,
       private_option,
-      followers,
-      following,
       profile_picture
     } = req.body;
 
@@ -88,7 +85,7 @@ const signupStrate = new LocalStrategy(
       try {
         // Can optimize the following awaits to call run them at the same time
         const hashedPass = await hash(password, 10);
-        const URL = await convertImage(profile_picture, username, false);
+        const imgRef = await convertImage(profile_picture, username, false);
         const emailLower = email.toLowerCase();
         const result = await pool.query(
           `
@@ -104,9 +101,9 @@ const signupStrate = new LocalStrategy(
             username,
             hashedPass,
             private_option,
-            followers,
-            following,
-            URL
+            [],
+            [],
+            imgRef
           ]
         );
         if (
@@ -123,15 +120,15 @@ const signupStrate = new LocalStrategy(
 
         const uid = result.rows[0].uid;
         const user = {
-          uid: uid,
-          first_name: first_name,
-          last_name: last_name,
+          uid,
+          first_name,
+          last_name,
           email: emailLower,
-          username: username,
+          username,
           password: hashedPass,
-          private_option: private_option,
-          followers: followers,
-          following: following,
+          private_option,
+          followers: [],
+          following: [],
           profile_picture: URL
         };
 

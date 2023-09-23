@@ -12,10 +12,12 @@ import ConnectFileStore from 'session-file-store';
 const app = express();
 
 const FileStore = ConnectFileStore(session);
+const timeout = require('connect-timeout');
 require('dotenv').config();
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb' }));
+app.use(timeout(300000));
 
 app.use(
   session({

@@ -8,38 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clientFollowTransaction = exports.getUserCore = exports.responseCallbackGetAll = exports.responseCallbackUnFollow = exports.responseCallbackFollow = exports.responseCallbackUpdate = exports.responseCallbackDelete = exports.responseCallbackPost = exports.responseCallbackGet = exports.responseCallback = void 0;
-var NotFoundError_1 = require("./Errors/NotFoundError");
-var UnknownError_1 = require("./Errors/UnknownError");
-var responseCallback = function (error, element) {
+exports.revertFollowQuery = exports.clientUndoFollowTransaction = exports.clientFollow = exports.clientUnFollow = exports.getUserCore = exports.responseCallbackGetAll = exports.responseCallbackUnFollow = exports.responseCallbackFollow = exports.responseCallbackUpdate = exports.responseCallbackDelete = exports.responseCallbackSignUp = exports.responseCallbackPost = exports.responseCallbackConnect = exports.responseCallbackGet = exports.responseCallback = void 0;
+const NotFoundError_1 = require("./Errors/NotFoundError");
+const UnknownError_1 = require("./Errors/UnknownError");
+const node_events_1 = require("node:events");
+const responseCallback = (error, element) => {
     if (error != null) {
         throw error;
     }
@@ -48,14 +22,14 @@ var responseCallback = function (error, element) {
     }
 };
 exports.responseCallback = responseCallback;
-var responseCallbackGet = function (error, element, res, notFoundObject) {
-    if (notFoundObject === void 0) { notFoundObject = ''; }
+// All get calls to postgresql should fail if rowcount === 0
+const responseCallbackGet = (error, element, res, notFoundObject = '') => {
     if (error != null) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error', error: error });
+        res.status(500).json({ message: 'Internal Server Error', err: error });
         return error;
     }
-    else if (element === null || element === undefined || element.length === 0) {
+    else if (element.length === 0) {
         res.status(400).json({ message: notFoundObject + ' Not Found' });
         return element;
     }
@@ -65,11 +39,28 @@ var responseCallbackGet = function (error, element, res, notFoundObject) {
     }
 };
 exports.responseCallbackGet = responseCallbackGet;
-var responseCallbackPost = function (error, res, target) {
-    if (target === void 0) { target = ''; }
+const responseCallbackConnect = (error, res) => {
     if (error != null) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error', error: error });
+        res.status(500).json({
+            message: 'Internal Server Error: Failed To Connect To Pool',
+            err: error,
+            log: error.message
+        });
+        return error;
+    }
+    else {
+        res.status(200).json({
+            message: 'Successfully Connected to Pool'
+        });
+        return error;
+    }
+};
+exports.responseCallbackConnect = responseCallbackConnect;
+const responseCallbackPost = (error, res, target = '') => {
+    if (error != null) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal Server Error', err: error });
         return error;
     }
     else {
@@ -78,9 +69,19 @@ var responseCallbackPost = function (error, res, target) {
     }
 };
 exports.responseCallbackPost = responseCallbackPost;
-var responseCallbackDelete = function (error, id, res, target, rowCount) {
-    if (target === void 0) { target = ''; }
-    if (rowCount === void 0) { rowCount = 1; }
+const responseCallbackSignUp = (error, res) => {
+    if (error != null) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal Server Error', err: error });
+        return error;
+    }
+    else {
+        res.status(200).json({ message: 'Successfully Signed Up' });
+        return error;
+    }
+};
+exports.responseCallbackSignUp = responseCallbackSignUp;
+const responseCallbackDelete = (error, id, res, target = '', rowCount = 1) => {
     if (rowCount === 0) {
         throw new NotFoundError_1.NotFoundError(target + ' Not Found, id: ' + id);
     }
@@ -88,7 +89,7 @@ var responseCallbackDelete = function (error, id, res, target, rowCount) {
         console.log(error);
         res.status(500).json({
             message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id,
-            error: error
+            error
         });
         return error;
     }
@@ -100,15 +101,16 @@ var responseCallbackDelete = function (error, id, res, target, rowCount) {
     }
 };
 exports.responseCallbackDelete = responseCallbackDelete;
-var responseCallbackUpdate = function (error, id, res, target, rowCount) {
-    if (target === void 0) { target = ''; }
-    if (rowCount === void 0) { rowCount = 1; }
+const responseCallbackUpdate = (error, id, res, target = '', rowCount = 1) => {
     if (rowCount === 0) {
         throw new NotFoundError_1.NotFoundError(target + ' Not Found, id: ' + id);
     }
     else if (error != null) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id, error: error });
+        res.status(500).json({
+            message: 'Internal Server Error, Failed to Update ' + target + ': ' + id,
+            err: error
+        });
         return error;
     }
     else {
@@ -119,48 +121,49 @@ var responseCallbackUpdate = function (error, id, res, target, rowCount) {
     }
 };
 exports.responseCallbackUpdate = responseCallbackUpdate;
-var responseCallbackFollow = function (error, uid1, uid2, res) {
-    if (error != null) {
-        console.log(error);
-        res.status(500).json({
-            // Where following and follower are the uids
-            message: 'Internal Server Error: ' + uid1 + ' Failed to Follow ' + uid2,
-            error: error
-        });
-        return error;
-    }
-    else {
-        res
-            .status(200)
-            .json({ message: uid1 + ' Successfully Followed ' + uid2 });
-        return error;
-    }
-};
-exports.responseCallbackFollow = responseCallbackFollow;
-var responseCallbackUnFollow = function (error, username, toUnFollowUsername, res) {
+const responseCallbackFollow = (error, followerId, followedId, res) => {
     if (error != null) {
         console.log(error);
         res.status(500).json({
             message: 'Internal Server Error: ' +
-                username +
-                ' Failed to unFollow ' +
-                toUnFollowUsername,
-            error: error
+                followerId +
+                ' Failed to Follow ' +
+                followedId,
+            err: error,
+            log: error.message
         });
         return error;
     }
     else {
         res
             .status(200)
-            .json({
-            message: username + ' Successfully UnFollowed ' + toUnFollowUsername
+            .json({ message: followerId + ' Successfully Followed ' + followedId });
+        return error;
+    }
+};
+exports.responseCallbackFollow = responseCallbackFollow;
+const responseCallbackUnFollow = (error, unfollowerId, unfollowedId, res) => {
+    if (error != null) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Internal Server Error: ' +
+                unfollowerId +
+                ' Failed to UnFollow ' +
+                unfollowedId,
+            err: error,
+            log: error.message
+        });
+        return error;
+    }
+    else {
+        res.status(200).json({
+            message: unfollowerId + ' Successfully UnFollowed ' + unfollowedId
         });
         return error;
     }
 };
 exports.responseCallbackUnFollow = responseCallbackUnFollow;
-var responseCallbackGetAll = function (element, res, notFoundObject) {
-    if (notFoundObject === void 0) { notFoundObject = ''; }
+const responseCallbackGetAll = (element, res, notFoundObject = '') => {
     if (element === null || element === undefined || element.length === 0) {
         res.status(400).json({ message: 'This User has no ' + notFoundObject });
         return element;
@@ -171,77 +174,118 @@ var responseCallbackGetAll = function (element, res, notFoundObject) {
     }
 };
 exports.responseCallbackGetAll = responseCallbackGetAll;
-var getUserCore = function (userId, client) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, user, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query('SELECT * FROM backend_schema.user WHERE uid = $1', [userId])];
-            case 1:
-                result = _a.sent();
-                user = result.rows;
-                if (user.length === 0) {
-                    throw new NotFoundError_1.NotFoundError('User Not Found, uid: ' + userId);
-                }
-                return [2 /*return*/, (0, exports.responseCallback)(null, user)];
-            case 2:
-                error_1 = _a.sent();
-                return [2 /*return*/, (0, exports.responseCallback)(error_1, null)];
-            case 3: return [2 /*return*/];
+const getUserCore = (userId, client) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield client.query('SELECT * FROM backend_schema.user WHERE uid = $1', [userId]);
+        const user = result.rows;
+        if (user.length === 0) {
+            throw new NotFoundError_1.NotFoundError('User Not Found, uid: ' + userId);
         }
-    });
-}); };
+        return (0, exports.responseCallback)(null, user);
+    }
+    catch (error) {
+        return (0, exports.responseCallback)(error, null);
+    }
+});
 exports.getUserCore = getUserCore;
-var clientFollowTransaction = function (uid, query, client, otherQueries, resolution) {
-    if (resolution === void 0) { resolution = -1; }
-    return __awaiter(void 0, void 0, void 0, function () {
-        var clientOn, result, i, error_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, client];
-                case 1:
-                    clientOn = _a.sent();
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, 6, , 8]);
-                    return [4 /*yield*/, clientOn.query('BEGIN')];
-                case 3:
-                    _a.sent();
-                    return [4 /*yield*/, clientOn.query(query)];
-                case 4:
-                    result = _a.sent();
-                    resolution = result.rowCount;
-                    if (resolution === 0) {
-                        throw new NotFoundError_1.NotFoundError('User Not Found, uid: ' + uid);
-                    }
-                    for (i = 0; i < otherQueries.length; i++) {
-                        while (otherQueries[i] === -1) {
-                            continue;
-                        }
-                        if (otherQueries[i] === 0) {
-                            throw new UnknownError_1.UnknownError('The error is unknown in this method');
-                        }
-                    }
-                    return [4 /*yield*/, clientOn.query('COMMIT')];
-                case 5:
-                    _a.sent();
-                    return [2 /*return*/, (0, exports.responseCallback)(null, true)];
-                case 6:
-                    error_2 = _a.sent();
-                    return [4 /*yield*/, clientOn.query('ROLLBACK')];
-                case 7:
-                    _a.sent();
-                    if (error_2 instanceof UnknownError_1.UnknownError) {
-                        return [2 /*return*/, (0, exports.responseCallback)(null, 'Unknown Error')];
-                    }
-                    else if (error_2 instanceof NotFoundError_1.NotFoundError) {
-                        return [2 /*return*/, (0, exports.responseCallback)(null, 'NotFound Error')];
-                    }
-                    return [2 /*return*/, (0, exports.responseCallback)(error_2, null)];
-                case 8: return [2 /*return*/];
+const clientUnFollow = (uid, query, client, queryEmitter, failure = '') => __awaiter(void 0, void 0, void 0, function* () {
+    const clientOn = yield client;
+    try {
+        const queryTrigger = (0, node_events_1.once)(queryEmitter, 'proceed');
+        const result = yield clientOn.query(query);
+        if (result.rowCount === 0) {
+            queryEmitter.failure(failure, query);
+            throw new NotFoundError_1.NotFoundError('No change in user, uid: ' + uid);
+        }
+        else {
+            queryEmitter.complete(query);
+        }
+        const resolution = yield queryTrigger;
+        // One optimization is to move the following code before the query is even called
+        // So as to skip the query if a failure is triggered before the query is sent.
+        // If we were to throw an error from the emitter, then we wouldn't be sure what happens to the query sent afterwards.
+        // Given that the failure will most likely occur while the query is running
+        // Also since the queries are all sent together at relatively the same time, it is highly unlikely the query will fail
+        // before the other queries are sent
+        if (resolution[1] < 0) {
+            throw new UnknownError_1.UnknownError('The error is unknown in this method.');
+        }
+        return (0, exports.responseCallback)(null, null);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            if (error.name === UnknownError_1.UnknownError.name) {
+                // this is only called on 0,1
+                return (0, exports.responseCallback)(null, 'Error is unknown to this query, query:\n' + query);
             }
-        });
-    });
+            else if (error.name === NotFoundError_1.NotFoundError.name) {
+                return (0, exports.responseCallback)(null, 'No change in user, uid: ' + uid);
+            }
+            queryEmitter.utterFailure(error.message, query);
+            return (0, exports.responseCallback)(error, null);
+        }
+    }
+});
+exports.clientUnFollow = clientUnFollow;
+const clientFollow = (uid, query, client, queryEmitter, failure = '') => __awaiter(void 0, void 0, void 0, function* () {
+    const clientOn = yield client;
+    try {
+        const queryTrigger = (0, node_events_1.once)(queryEmitter, 'proceed');
+        const result = yield clientOn.query(query);
+        if (result.rowCount === 0) {
+            queryEmitter.failure(failure, query);
+            throw new NotFoundError_1.NotFoundError('No change in user, uid: ' + uid);
+        }
+        else {
+            queryEmitter.complete(query);
+        }
+        const resolution = yield queryTrigger;
+        // One optimization is to move the following code before the query is even called
+        // So as to skip the query if a failure is triggered before the query is sent.
+        // If we were to throw an error from the emitter, then we wouldn't be sure what happens to the query sent afterwards.
+        // Given that the failure will most likely occur while the query is running
+        // Also since the queries are all sent together at relatively the same time, it is highly unlikely the query will fail
+        // before the other queries are sent
+        if (resolution[1] < 0) {
+            throw new UnknownError_1.UnknownError('The error is unknown in this method, need to revert its changes.');
+        }
+        return (0, exports.responseCallback)(null, null);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            if (error.name === UnknownError_1.UnknownError.name) {
+                // this is only called on 0,1
+                return yield (0, exports.clientUndoFollowTransaction)(uid, (0, exports.revertFollowQuery)(query), clientOn);
+            }
+            else if (error.name === NotFoundError_1.NotFoundError.name) {
+                return (0, exports.responseCallback)(null, 'No change in user, uid: ' + uid);
+            }
+            queryEmitter.utterFailure(error.message, query);
+            return (0, exports.responseCallback)(error, null);
+        }
+    }
+});
+exports.clientFollow = clientFollow;
+const clientUndoFollowTransaction = (uid, query, client) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield client.query('BEGIN');
+        const result = yield client.query(query);
+        if (result.rowCount === 0) {
+            throw new Error('No change in user while reverting initial query, uid: ' + uid);
+        }
+        yield client.query('COMMIT');
+        return (0, exports.responseCallback)(null, 'Follow request reverted for uid: ' + uid + '\n with query: ' + query);
+    }
+    catch (error) {
+        yield client.query('ROLLBACK');
+        return (0, exports.responseCallback)(null, 'No change in user while reverting initial query, uid: ' + uid);
+    }
+});
+exports.clientUndoFollowTransaction = clientUndoFollowTransaction;
+const revertFollowQuery = (query) => {
+    const remove = query.replace('array_append', 'array_remove');
+    const indexOfAnd = remove.indexOf('AND');
+    const reversion = remove.substring(0, indexOfAnd);
+    return reversion;
 };
-exports.clientFollowTransaction = clientFollowTransaction;
+exports.revertFollowQuery = revertFollowQuery;

@@ -1,29 +1,28 @@
+
 import { Image, StyleSheet, Text, View, ImageSourcePropType } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { UserContext } from '../../utils/UserContext';
-import { MainPageContext } from '../../pages/Main/MainPage';
 
 interface ProfilePicturePropsType {
-	imageUrl: string,
+	imageUrl?: string,
+  base64?: boolean
 }
 
-const ProfilePicture = ({ imageUrl }: ProfilePicturePropsType) => {
+const ProfilePicture = ({ imageUrl, base64 = false }: ProfilePicturePropsType) => {
 	// const { data } = useContext(UserContext);
 	// const image = data ? data.profile_picture : null;
 
 	// useEffect(() => {
 	// 	console.log(imageUrl)
 	// }, [])
+        
+  const imgString = base64 ? `data:image/jpg;base64,${imageUrl}` : imageUrl;
 
 	return (
 		<Text>
-			{imageUrl !== '' ? (
-				<Image
-					style={styles.profilePicture}
-					source={{ uri: imageUrl }}
-				/>
+			{imageUrl ? (
+				<Image style={styles.profilePicture} source={{ uri: imgString }} />
 			) : (
 				// {image ? (
 				// 	<Image
