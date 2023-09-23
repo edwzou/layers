@@ -25,6 +25,7 @@ import { UserOutfit } from '../OutfitView'
 import { UserContext } from '../../utils/UserContext';
 
 import { MainPageContext } from '../../pages/Main/MainPage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Profile = () => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -79,7 +80,9 @@ const Profile = () => {
 
     return (
         <>
-            <Navbar toggleFeedbackModal={toggleFeedbackModal} />
+            <SafeAreaView>
+                <Navbar toggleFeedbackModal={toggleFeedbackModal} />
+            </SafeAreaView>
             <View style={{ flex: 1 }}>
                 <View style={styles.profilePicture}>
                     <Pressable
@@ -87,13 +90,13 @@ const Profile = () => {
                             toggleSettingsModal()
                         }}
                     >
-                        <ProfilePicture image={mockUserData.profilePicture} />
+                        <ProfilePicture imageUrl={data ? data.pp_url : ''} />
                     </Pressable>
                     <View>
-                        {/* <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
-                        <Username username={`@${data ? data.username : ''}`} /> */}
-                        <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
-                        <Username username={mockUserData.username} />
+                        <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
+                        <Username username={data ? data.username : ''} />
+                        {/* <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
+                        <Username username={mockUserData.username} /> */}
                     </View>
                 </View>
                 <View style={{ top: 5 }}>
