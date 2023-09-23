@@ -19,7 +19,6 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../utils/UserContext';
-import { MainPageContext } from '../../pages/Main/MainPage';
 
 interface FormValues {
 	first_name: string;
@@ -36,7 +35,6 @@ const Settings = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { data, updateData } = useContext(UserContext);
-	const { mockUserData } = useContext(MainPageContext);
 
 	const handleLogout = async () => {
 		await axios(`${baseUrl}/logout`);
@@ -61,26 +59,13 @@ const Settings = () => {
 		},
 	});
 
-	const pickImage = async () => {
-		const result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			base64: true,
-			aspect: [1, 1],
-			quality: 0,
-		});
-
-		if (!result.canceled) {
-			if (!result.assets) return;
-
-			setImage(`${base64Prefix}${result.assets[0].base64}`);
-			setModalVisible(!modalVisible);
-		}
-	};
-
 	useEffect(() => {
 		setValue('profile_picture', image);
 	}, [image]);
+
+	useEffect(() => {
+		console.log(pp_url);
+	}, []);
 
 	const onSubmit = async (data: FormValues | any) => {
 		try {
@@ -220,13 +205,15 @@ const Settings = () => {
 					)}
 					name="password"
 				/>
-				<RadioButton data={privacyOptions} onSelect={setValue} />
+				<RadioButton privateData={privacyOptions} onSelect={setValue} />
 			</View>
-			<Button
-				onPress={handleLogout}
-				text={'Sign out'}
-				bgColor={GlobalStyles.colorPalette.primary[500]}
-			/>
+			<View style={{ alignItems: 'center' }}>
+				<Button
+					onPress={handleLogout}
+					text={'Sign out'}
+					bgColor={GlobalStyles.colorPalette.primary[500]}
+				/>
+			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
 					<Text style={styles.error}>Please enter a valid email.</Text>

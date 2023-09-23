@@ -5,15 +5,15 @@ import { UserOutfit } from '../pages/OutfitView';
 import { User } from '../pages/Main';
 
 export type StackNavigatorType = {
-	user?: User;
+	userID?: string;
 	item?: UserClothing | UserOutfit;
 	editable?: boolean;
 	matchItems?: {
-		outerwear: UserClothing;
-		tops: UserClothing;
-		bottoms: UserClothing;
-		shoes: UserClothing;
-	};
+		outerwear?: UserClothing,
+		tops?: UserClothing,
+		bottoms?: UserClothing,
+		shoes?: UserClothing,
+	}
 	matchName?: (text: string) => void;
 	setImage?: (base64: string) => void;
 };

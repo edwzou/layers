@@ -1,16 +1,17 @@
-import React, { useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useState } from 'react';
 import { View, StyleSheet, Pressable, SafeAreaView } from 'react-native';
 
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import * as RootNavigation from '../../RootNavigation';
-
 import { MainPageContext } from '../../pages/Main/MainPage';
-import { StackNavigation } from '../../constants/Enums';
-import axios from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
 import { UserContext } from '../../utils/UserContext';
+
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from '../../utils/StackNavigation';
+import { StackNavigation } from '../../constants/Enums';
+import { navigate } from '../../RootNavigation';
 
 interface NavbarPropsType {
 	toggleFeedbackModal: () => void;
@@ -19,6 +20,8 @@ interface NavbarPropsType {
 const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
 	const { navigationArray } = useContext(MainPageContext);
 	const { data, updateData } = useContext(UserContext);
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+	const [image, setImage] = useState('');
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -49,7 +52,9 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
 			<View style={styles.icons}>
 				<Pressable
 					onPress={() => {
-						RootNavigation.navigate(StackNavigation.Camera, {});
+						navigate(StackNavigation.Camera, {
+							setImage: setImage,
+						});
 					}}
 				>
 					<Icon

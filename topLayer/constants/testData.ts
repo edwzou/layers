@@ -141,16 +141,6 @@ export const mockItemsData: UserItems[] = [
 					"Relaxed fit designed for roadtrips!",
 				items: [
 					{
-						id: 'outerwear5',
-						image: outerwear5,
-						title: 'Relaxed fit',
-						size: 'l',
-						category: 'outerwear',
-						colors: [
-							ColorTags.Cream,
-						]
-					},
-					{
 						id: 'tops2',
 						image: tops2,
 						title: 'Keith Haring\'s Love tee',

@@ -12,6 +12,7 @@ import React, {
 	useCallback,
 	useRef,
 	useState,
+	useEffect,
 } from 'react';
 import {
 	Camera,
@@ -70,6 +71,10 @@ export default function CameraComponent({ data }: CameraPropType) {
 		base64: true,
 		exif: false,
 	};
+
+	useEffect(() => {
+		console.log(screenHeight, screenWidth);
+	}, []);
 
 	const flipCamera = () => {
 		setOrientation((current) =>

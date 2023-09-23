@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -16,7 +16,6 @@ import {
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -24,9 +23,33 @@ import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitView'
 import { UserItems } from 'pages/Main';
 
+import axios from 'axios';
+import { baseUrl } from '../../utils/apiUtils';
+import { User } from '../../pages/Main';
+
 const ForeignProfile = ({ route }: any) => {
 
-    const { user } = route.params;
+    const { userID } = route.params;
+
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        const getUser = async () => {
+            const { data, status } = await axios.get(`${baseUrl}/api/users/${userID}`)
+
+            if (status === 200) {
+                console.log('Successfully fetched foreign user Profile')
+                console.log('privacy: ' + data.data[0].private_option)
+                return setUser(data.data[0])
+            } else {
+                console.log('Failed to fetch foreign user Profile')
+            }
+
+            return setUser(null);
+        };
+
+        void getUser();
+    }, [])
 
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
@@ -71,7 +94,7 @@ const ForeignProfile = ({ route }: any) => {
     const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
         if (viewableItems.length > 0) {
             const visibleItem = viewableItems[0];
-            const index = user.items.findIndex(
+            const index = userID.items.findIndex(
                 (item: UserItems) => item.category === visibleItem.item.category
             );
             setSelectedCategory(IndexToCategory[index]);
@@ -86,38 +109,41 @@ const ForeignProfile = ({ route }: any) => {
             <View style={{ paddingVertical: 20 }} />
             <View style={{ flex: 1 }}>
                 <View style={styles.profilePicture}>
-                    <ProfilePicture image={user.profilePicture} />
+                    <ProfilePicture imageUrl={user ? user.pp_url : ''} />
                     <View>
                         {/* <FullName firstName={data.first_name} lastName={data.last_name} />
                         <Username username={`@${data.username}`} /> */}
-                        <FullName firstName={user.firstName} lastName={user.lastName} />
-                        <Username username={user.username} />
+                        <FullName firstName={user ? user.first_name : ''} lastName={user ? user.last_name : ''} />
+                        <Username username={user ? user.username : ''} />
                     </View>
                 </View>
-                {user.privateOption === 't' ? (
-                    <View style={{ alignItems: 'center', flex: 1, top: GlobalStyles.layout.pageStateTopMargin, gap: 5 }}>
-                        <Icon
-                            name={GlobalStyles.icons.privateOutline}
-                            color={GlobalStyles.colorPalette.primary[300]}
-                            size={GlobalStyles.sizing.icon.large}
-                        />
-                        <Text style={[GlobalStyles.typography.subtitle, { color: GlobalStyles.colorPalette.primary[300] }]}>Private</Text>
-                    </View>
-                ) : (
-                    <View style={{ top: 5 }}>
-                        <CategoryBar
-                            selectedCategory={selectedCategory}
-                            handleCategoryChange={handleCategoryChange}
-                        />
-                        <CategorySlides
-                            categorySlidesRef={flatListRef}
-                            clothingData={user.items}
-                            selectedCategory={selectedCategory}
-                            handleItemChange={handleItemChange}
-                            handleViewableItemsChanged={handleViewableItemsChanged}
-                        />
-                    </View>
-                )}
+                {
+                    user && user.private_option ? (
+                        <View style={{ alignItems: 'center', flex: 1, top: GlobalStyles.layout.pageStateTopMargin, gap: 5 }}>
+                            <Icon
+                                name={GlobalStyles.icons.privateOutline}
+                                color={GlobalStyles.colorPalette.primary[300]}
+                                size={GlobalStyles.sizing.icon.large}
+                            />
+                            <Text style={[GlobalStyles.typography.subtitle, { color: GlobalStyles.colorPalette.primary[300] }]}>Private</Text>
+                        </View>
+                    ) : (
+                        <View style={{ top: 5 }}>
+                            <CategoryBar
+                                selectedCategory={selectedCategory}
+                                handleCategoryChange={handleCategoryChange}
+                            />
+                            <CategorySlides
+                                categorySlidesRef={flatListRef}
+                                clothingData={[]} /// !!! ENTER IN REAL DATA
+                                selectedCategory={selectedCategory}
+                                handleItemChange={handleItemChange}
+                                handleViewableItemsChanged={handleViewableItemsChanged}
+                            />
+                        </View>
+                    )
+                }
+
                 <View style={styles.bookmarkIconWrapper}>
                     <Pressable onPress={handleIconPress}>
                         <Icon
