@@ -5,7 +5,7 @@ import { UserOutfit } from '../pages/OutfitView';
 import { User } from '../pages/Main';
 
 export type StackNavigatorType = {
-	user?: User;
+	userID?: string;
 	item?: UserClothing | UserOutfit;
 	editable?: boolean;
 	matchItems?: {

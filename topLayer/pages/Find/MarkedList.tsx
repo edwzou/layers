@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 
 import SearchBar from '../../components/Bar/SearchBar';
@@ -12,13 +12,12 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 
 import { StackNavigation } from '../../constants/Enums';
-import { User } from '../../pages/Main';
 
 interface MarkedListPropsType {
-	foreignUsersData: User[];
+	foreignUserIDs: string[];
 }
 
-const MarkedList = ({ foreignUsersData }: MarkedListPropsType) => {
+const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
@@ -32,9 +31,9 @@ const MarkedList = ({ foreignUsersData }: MarkedListPropsType) => {
 		setComponentVisible((isComponentVisible) => false);
 	};
 
-	const handleProfilePress = (user: User) => {
+	const handleProfilePress = (userID: string) => {
 		navigation.navigate(StackNavigation.ForeignProfile, {
-			user: user,
+			userID: userID,
 		})
 	};
 
@@ -42,14 +41,14 @@ const MarkedList = ({ foreignUsersData }: MarkedListPropsType) => {
 		<View style={styles.container}>
 			<SearchBar
 				placeholder={find.searchMarked}
-				foreignUsersData={foreignUsersData}
+				foreignUsersData={foreignUserIDs}
 				handleEmptyString={handleEmptyString}
 				handleNonEmptyString={handleNonEmptyString}
 			/>
 			{isComponentVisible && (
 				<FlatList
-					data={foreignUsersData}
-					renderItem={({ item }) => <ProfileCell user={item} handleProfilePress={() => handleProfilePress(item)} />}
+					data={foreignUserIDs}
+					renderItem={({ item }) => <ProfileCell userID={item} handleProfilePress={() => handleProfilePress(item)} />}
 				/>
 			)}
 		</View>

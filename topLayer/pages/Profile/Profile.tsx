@@ -29,6 +29,8 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitView';
 import { UserContext } from '../../utils/UserContext';
+import { MainPageContext } from '../../pages/Main/MainPage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Profile = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -83,39 +85,43 @@ const Profile = () => {
 		navigation.navigate(StackNavigation.Settings, {});
 	};
 
-	return (
-		<>
-			<Navbar toggleFeedbackModal={toggleFeedbackModal} />
-			<View style={{ flex: 1 }}>
-				<View style={styles.profilePicture}>
-					<Pressable
-						onPress={() => {
-							toggleSettingsModal();
-						}}
-					>
-						<ProfilePicture image={pp_url} />
-					</Pressable>
-					<View>
-						<FullName firstName={first_name} lastName={last_name} />
-						<Username username={`@${username}`} />
-					</View>
-				</View>
-				<View style={{ top: 5 }}>
-					<CategoryBar
-						selectedCategory={selectedCategory}
-						handleCategoryChange={handleCategoryChange}
-					/>
-					<CategorySlides
-						categorySlidesRef={flatListRef}
-						clothingData={mockItemsData}
-						selectedCategory={selectedCategory}
-						handleItemChange={handleItemChange}
-						handleViewableItemsChanged={handleViewableItemsChanged}
-					/>
-				</View>
-			</View>
-		</>
-	);
+    return (
+        <>
+            <SafeAreaView>
+                <Navbar toggleFeedbackModal={toggleFeedbackModal} />
+            </SafeAreaView>
+            <View style={{ flex: 1 }}>
+                <View style={styles.profilePicture}>
+                    <Pressable
+                        onPress={() => {
+                            toggleSettingsModal()
+                        }}
+                    >
+                        <ProfilePicture imageUrl={data ? data.pp_url : ''} />
+                    </Pressable>
+                    <View>
+                        <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
+                        <Username username={data ? data.username : ''} />
+                        {/* <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
+                        <Username username={mockUserData.username} /> */}
+                    </View>
+                </View>
+                <View style={{ top: 5 }}>
+                    <CategoryBar
+                        selectedCategory={selectedCategory}
+                        handleCategoryChange={handleCategoryChange}
+                    />
+                    <CategorySlides
+                        categorySlidesRef={flatListRef}
+                        clothingData={mockItemsData}
+                        selectedCategory={selectedCategory}
+                        handleItemChange={handleItemChange}
+                        handleViewableItemsChanged={handleViewableItemsChanged}
+                    />
+                </View>
+            </View >
+        </>
+    );
 };
 
 const styles = StyleSheet.create({
