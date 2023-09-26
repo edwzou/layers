@@ -2,7 +2,6 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import {
   responseCallbackDelete,
-  responseCallbackPost,
   responseCallbackUpdate,
   responseCallbackGet
 } from '../../utils/responseCallback';
@@ -11,6 +10,8 @@ import { upload } from '../../utils/multer';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 const router = express.Router();
 
+// Endpooint for getting the current user
+// Need this private get endpoint because the user may have private data that cannot be shared
 router.get('/', (req: Request, res: Response): void => {
   const userId = req.user;
   const getUser = async (): Promise<void> => {
