@@ -6,6 +6,9 @@ async function convertImage(
   key: string,
   remove: boolean
 ): Promise<string> {
+  if (base64 === '') {
+    return '';
+  }
   try {
     let imageBuffer = Buffer.from(base64, 'base64'); // Convert base64 to buffer
 

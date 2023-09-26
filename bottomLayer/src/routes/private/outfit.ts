@@ -1,4 +1,3 @@
-import { checkAuthenticated } from '../../middleware/auth';
 import {
   responseCallbackDelete,
   responseCallbackPost,
@@ -9,7 +8,7 @@ import express, { type Request, type Response } from 'express';
 const router = express.Router();
 
 // Endpoint for creating a new outfit
-router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
+router.post('/', (req: Request, res: Response): void => {
   const { title, clothing_items } = req.body;
   const uid = req.user;
 
@@ -30,35 +29,31 @@ router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
 });
 
 // Endpoint for deleting a specific outfit
-router.delete(
-  '/:outfitId',
-  checkAuthenticated,
-  (req: Request, res: Response): void => {
-    const { outfitId } = req.params;
-    const deleteOutfit = async (outfitId: string): Promise<void> => {
-      try {
-        const deleteOutfit = await pool.query(
-          'DELETE FROM backend_schema.outfit WHERE oid = $1',
-          [outfitId]
-        );
-        responseCallbackDelete(
-          null,
-          outfitId,
-          res,
-          'Outfit',
-          deleteOutfit.rowCount
-        );
-      } catch (error) {
-        responseCallbackDelete(error, outfitId, res, 'Outfit');
-      }
-    };
+router.delete('/:outfitId', (req: Request, res: Response): void => {
+  const { outfitId } = req.params;
+  const deleteOutfit = async (outfitId: string): Promise<void> => {
+    try {
+      const deleteOutfit = await pool.query(
+        'DELETE FROM backend_schema.outfit WHERE oid = $1',
+        [outfitId]
+      );
+      responseCallbackDelete(
+        null,
+        outfitId,
+        res,
+        'Outfit',
+        deleteOutfit.rowCount
+      );
+    } catch (error) {
+      responseCallbackDelete(error, outfitId, res, 'Outfit');
+    }
+  };
 
-    void deleteOutfit(outfitId);
-  }
-);
+  void deleteOutfit(outfitId);
+});
 
 // Endpoint for updating a specific outfit
-router.put('/:oid', checkAuthenticated, (req: Request, res: Response): void => {
+router.put('/:oid', (req: Request, res: Response): void => {
   // Extract outfit data from the request body
   const { oid } = req.params;
   const { title, clothing_items } = req.body;
