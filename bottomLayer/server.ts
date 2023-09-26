@@ -1,7 +1,8 @@
 import {
   routerBase,
   routerPublic,
-  routerPrivate
+  routerPrivate,
+  routerDev
 } from './src/routes/endpoints';
 import session from 'express-session';
 import passport from 'passport';
@@ -49,6 +50,7 @@ passport.deserializeUser((user: any, done) => {
 app.use('/', routerBase);
 app.use('/api', routerPublic);
 app.use('/api/private', routerPrivate);
+app.use('/api/dev', routerDev);
 
 app.listen(process.env.PORT, () => {
   if (process.env.PORT == null) {

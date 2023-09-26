@@ -5,14 +5,13 @@ import {
   responseCallbackPost,
   responseCallbackUpdate
 } from '../../utils/responseCallback';
-import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
 import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
 import { v4 as uuidv4 } from 'uuid';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
-router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
+router.post('/', (req: Request, res: Response): void => {
   const { image, category, title, brands, size, color } = req.body;
   const uid = req.user;
   const insertClothingItem = async (): Promise<any> => {
@@ -34,47 +33,39 @@ router.post('/', checkAuthenticated, (req: Request, res: Response): void => {
 });
 
 // Endpoint for deleting a specific outfit
-router.delete(
-  '/:ciid',
-  checkAuthenticated,
-  (req: Request, res: Response): void => {
-    const { ciid } = req.params;
-    const deleteItem = async (ciid: string): Promise<void> => {
-      try {
-        await deleteObjectFromS3(ciid);
-        const deleteItem = await pool.query(
-          'DELETE FROM backend_schema.clothing_item WHERE ciid = $1',
-          [ciid]
-        );
+router.delete('/:ciid', (req: Request, res: Response): void => {
+  const { ciid } = req.params;
+  const deleteItem = async (ciid: string): Promise<void> => {
+    try {
+      await deleteObjectFromS3(ciid);
+      const deleteItem = await pool.query(
+        'DELETE FROM backend_schema.clothing_item WHERE ciid = $1',
+        [ciid]
+      );
 
-        responseCallbackDelete(
-          null,
-          ciid,
-          res,
-          'Clothing Item',
-          deleteItem.rowCount
-        );
-      } catch (error) {
-        responseCallbackDelete(error, ciid, res, 'Clothing Item');
-      }
-    };
-    void deleteItem(ciid);
-  }
-);
+      responseCallbackDelete(
+        null,
+        ciid,
+        res,
+        'Clothing Item',
+        deleteItem.rowCount
+      );
+    } catch (error) {
+      responseCallbackDelete(error, ciid, res, 'Clothing Item');
+    }
+  };
+  void deleteItem(ciid);
+});
 
 // Endpoint for updating a specific outfit
-router.put('/:ciid', checkAuthenticated, (req: any, res: any): void => {
+router.put('/:ciid', (req: any, res: any): void => {
   // Extract outfit data from the request body
   const { ciid } = req.params;
   const { image, category, title, brands, size, color } = req.body;
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-<<<<<<< HEAD
       const imgRef = await convertImage(image, title, true);
-=======
-      const URL = await convertImage(image, ciid, true);
->>>>>>> 359ebc306ded4bc92cc34c5c027ac50fc0014667
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item

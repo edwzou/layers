@@ -12,9 +12,9 @@ import { QueryManager } from '../../utils/event-emitters/queryManager';
 const router = express.Router();
 
 // Endpoint for following a user, the url parameter is the user doing the following
-router.post('/follow/:followerId', (req: Request, res: Response): void => {
-  // The followedId is the person getting followed. Follower is the following.
-  const { followerId } = req.params;
+router.post('/follow', (req: Request, res: Response): void => {
+  // The followedId is the person getting followed. Follower is the one doing the following.
+  const followerId = req.user as string;
   const { followedId } = req.body;
   if (followerId === followedId) {
     throw new Error('User is trying to follow themself, uid: ' + followerId);
@@ -126,8 +126,9 @@ router.post('/follow/:followerId', (req: Request, res: Response): void => {
 });
 
 // Endpoint for unfollowing a user, the url parameter is the user doing the unfollowing
-router.post('/unfollow/:unfollowerId', (req: Request, res: Response): void => {
-  const { unfollowerId } = req.params;
+router.post('/unfollow', (req: Request, res: Response): void => {
+  // The unfollowedId is the person getting unfollowed. Unfollower is the one doing the unfollowing.
+  const unfollowerId = req.user as string;
   const { unfollowedId } = req.body;
   if (unfollowerId === unfollowedId) {
     throw new Error(

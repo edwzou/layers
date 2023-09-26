@@ -2,17 +2,17 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import {
   responseCallbackDelete,
-  responseCallbackPost,
   responseCallbackUpdate,
   responseCallbackGet
 } from '../../utils/responseCallback';
-import { checkAuthenticated } from '../../middleware/auth';
 import { convertImage } from '../../s3/convert-image';
 import { upload } from '../../utils/multer';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 const router = express.Router();
 
-router.get('/', checkAuthenticated, (req: Request, res: Response): void => {
+// Endpooint for getting the current user
+// Need this private get endpoint because the user may have private data that cannot be shared
+router.get('/', (req: Request, res: Response): void => {
   const userId = req.user;
   const getUser = async (): Promise<void> => {
     try {
@@ -32,56 +32,8 @@ router.get('/', checkAuthenticated, (req: Request, res: Response): void => {
   void getUser();
 });
 
-// Endpoint for creating a specific user
-router.post(
-  '/',
-  checkAuthenticated,
-  upload.single('profile_picture'),
-  (req: Request, res: Response) => {
-    const {
-      first_name,
-      last_name,
-      email,
-      username,
-      password,
-      private_option,
-      profile_picture,
-      followers,
-      following
-    } = req.body;
-    const insertUser = async (): Promise<void> => {
-      try {
-        const imgRef = await convertImage(profile_picture, username, false);
-        await pool.query(
-          `
-      INSERT INTO backend_schema.user (
-        first_name, last_name, email, username, password, private_option, followers, following, pp_url
-        ) VALUES ( 
-          $1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-          [
-            first_name,
-            last_name,
-            email.toLowerCase(),
-            username,
-            password,
-            private_option,
-            JSON.parse(followers),
-            JSON.parse(following),
-            imgRef
-          ]
-        );
-
-        responseCallbackPost(null, res, 'User');
-      } catch (error) {
-        responseCallbackPost(error, res);
-      }
-    };
-    void insertUser();
-  }
-);
-
 // Endpoint for deleting a specific user
-router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
+router.delete('/', (req: Request, res: Response): void => {
   const userId = req.user as string;
   if (userId == null) return;
   const deleteUser = async (): Promise<void> => {
@@ -101,7 +53,6 @@ router.delete('/', checkAuthenticated, (req: Request, res: Response): void => {
 // Endpoints for updating a specific user
 router.put(
   '/',
-  checkAuthenticated,
   upload.single('profile_picture'),
   (req: Request, res: Response): void => {
     const userId = req.user as string;
