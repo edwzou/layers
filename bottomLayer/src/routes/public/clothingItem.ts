@@ -54,7 +54,7 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
       const asyncManager = new AsyncManager(items.length);
       const asyncTrigger = once(asyncManager, 'proceed');
       for (const item of items) {
-        void urlDownloadHandler(item.image_url, item.uid, asyncManager);
+        void urlDownloadHandler(item.image_url, item, asyncManager);
       }
 
       const resolution = await asyncTrigger;

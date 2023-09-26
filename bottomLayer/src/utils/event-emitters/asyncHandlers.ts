@@ -4,20 +4,21 @@ import { type AsyncManager } from './asyncManager';
 // Note doesn't log the imageRef
 export const urlDownloadHandler = async (
   imgRef: string,
-  userRef: string,
+  objRef: any,
   asyncEmitter: AsyncManager,
   failure: string = 'Failure Downloading URL from S3: '
 ): Promise<void> => {
   try {
     const result = await downloadURLFromS3(imgRef);
-    imgRef = result;
+    console.log('result: ', result);
+    objRef.image_url = result;
 
-    asyncEmitter.complete(userRef);
+    asyncEmitter.complete(objRef.uid);
   } catch (error: unknown) {
     if (error instanceof Error) {
       asyncEmitter.failure(
         failure + error.message + '\n with image: ' + imgRef,
-        userRef
+        objRef.uid
       );
     }
   }
