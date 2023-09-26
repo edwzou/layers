@@ -1,4 +1,4 @@
-import { StyleSheet, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, View, SafeAreaView } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -18,9 +18,11 @@ import CameraWrapper from './components/Camera/CameraWrapper';
 import { UserContext } from './utils/UserContext';
 import axios from 'axios';
 import { baseUrl } from './utils/apiUtils';
+import { User } from './pages/Main';
 
 export default function App() {
-	const [user, setUser] = useState<Record<string, unknown> | null>(null);
+
+	const [user, setUser] = useState<User | null>(null);
 
 	const userContextValue = {
 		data: user,

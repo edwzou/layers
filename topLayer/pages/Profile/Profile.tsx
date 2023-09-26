@@ -1,5 +1,10 @@
 import React, { useRef, useState, useContext } from 'react';
-import { View, Pressable, StyleSheet, FlatList } from 'react-native';
+import {
+	View,
+	Pressable,
+	StyleSheet,
+	FlatList,
+} from 'react-native';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
@@ -23,6 +28,8 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitView';
 import { UserContext } from '../../utils/UserContext';
+import { MainPageContext } from '../../pages/Main/MainPage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Profile = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -79,19 +86,23 @@ const Profile = () => {
 
 	return (
 		<>
-			<Navbar toggleFeedbackModal={toggleFeedbackModal} />
+			<SafeAreaView>
+				<Navbar toggleFeedbackModal={toggleFeedbackModal} />
+			</SafeAreaView>
 			<View style={{ flex: 1 }}>
 				<View style={styles.profilePicture}>
 					<Pressable
 						onPress={() => {
-							toggleSettingsModal();
+							toggleSettingsModal()
 						}}
 					>
-						<ProfilePicture image={pp_url} />
+						<ProfilePicture imageUrl={data ? data.pp_url : ''} />
 					</Pressable>
 					<View>
-						<FullName firstName={first_name} lastName={last_name} />
-						<Username username={`@${username}`} />
+						<FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
+						<Username username={data ? data.username : ''} />
+						{/* <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
+                        <Username username={mockUserData.username} /> */}
 					</View>
 				</View>
 				<View style={{ top: 5 }}>
@@ -107,7 +118,7 @@ const Profile = () => {
 						handleViewableItemsChanged={handleViewableItemsChanged}
 					/>
 				</View>
-			</View>
+			</View >
 		</>
 	);
 };

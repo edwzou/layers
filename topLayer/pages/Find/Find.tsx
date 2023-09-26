@@ -20,10 +20,10 @@ import { User } from '../../pages/Main';
 export const ShowProfileContext = createContext(() => { });
 
 interface FindPropsType {
-	foreignUsersData: User[];
+	foreignUserIDs: string[];
 }
 
-const Find = ({ foreignUsersData }: FindPropsType) => {
+const Find = ({ foreignUserIDs }: FindPropsType) => {
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
@@ -47,14 +47,14 @@ const Find = ({ foreignUsersData }: FindPropsType) => {
 			<View style={styles.content}>
 				<SearchBar
 					placeholder={find.searchProfiles}
-					foreignUsersData={foreignUsersData}
+					foreignUsersData={foreignUserIDs}
 					handleEmptyString={handleEmptyString}
 					handleNonEmptyString={handleNonEmptyString}
 				/>
 				{isComponentVisible && (
 					<Pressable onPress={handlePress}>
 						<Marked
-							users={foreignUsersData}
+							foreignUserIDs={foreignUserIDs}
 						/>
 					</Pressable>
 				)}

@@ -22,7 +22,6 @@ router.get('/:itemId', (req: Request, res: Response): void => {
         [itemId]
       );
       const result = item.rows[0];
-      console.log(result);
       const imgRef = result.image_url;
       result.image_url = await downloadURLFromS3(imgRef);
       console.log(result);

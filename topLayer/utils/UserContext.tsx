@@ -1,7 +1,8 @@
+import { User } from "../pages/Main";
 import { createContext } from "react";
 
 type UserContextType = {
-    data: Record<string, unknown> | null,
+    data: User | null
     updateData: (user: any) => void
 }
 

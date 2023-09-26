@@ -5,23 +5,23 @@ import { find } from '../../constants/GlobalStrings';
 import { User } from '../../pages/Main';
 
 interface MarkedPropsType {
-	users: User[];
+	foreignUserIDs: string[];
 }
 
-const Marked = ({ users }: MarkedPropsType) => {
+const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.textArea}>
 				<Text style={GlobalStyles.typography.body}>
-					{users.length} {find.marked}
+					{foreignUserIDs.length} {find.marked}
 				</Text>
 				<Text style={styles.label}>{find.viewYourMarkedProfiles}</Text>
 			</View>
-			<View style={styles.profilePicturesContainer}>
-				{users[0] && <Image source={users[0].profilePicture} style={styles.profilePicture} />}
-				{users[1] && <Image source={users[1].profilePicture} style={styles.profilePicture} />}
-				{users[2] && <Image source={users[2].profilePicture} style={styles.profilePicture} />}
-			</View>
+			{/* <View style={styles.profilePicturesContainer}>
+				{foreignUserIDs[0] && <Image source={foreignUserIDs[0].profilePicture} style={styles.profilePicture} />}
+				{foreignUserIDs[1] && <Image source={foreignUserIDs[1].profilePicture} style={styles.profilePicture} />}
+				{foreignUserIDs[2] && <Image source={foreignUserIDs[2].profilePicture} style={styles.profilePicture} />}
+			</View> */}
 		</View>
 	);
 };

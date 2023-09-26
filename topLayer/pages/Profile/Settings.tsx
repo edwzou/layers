@@ -19,7 +19,6 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../utils/UserContext';
-import { MainPageContext } from '../../pages/Main/MainPage';
 
 interface FormValues {
 	first_name: string;
@@ -60,26 +59,13 @@ const Settings = () => {
 		},
 	});
 
-	const pickImage = async () => {
-		const result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			base64: true,
-			aspect: [1, 1],
-			quality: 0,
-		});
-
-		if (!result.canceled) {
-			if (!result.assets) return;
-
-			setImage(`${base64Prefix}${result.assets[0].base64}`);
-			setModalVisible(!modalVisible);
-		}
-	};
-
 	useEffect(() => {
 		setValue('profile_picture', image);
 	}, [image]);
+
+	useEffect(() => {
+		console.log(pp_url);
+	}, []);
 
 	const onSubmit = async (data: FormValues | any) => {
 		try {
