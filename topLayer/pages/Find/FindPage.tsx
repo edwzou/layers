@@ -54,9 +54,7 @@ const FindPage = () => {
                             name={StackNavigation.MarkedList}
                             component={MarkedListComponent}
                             options={{
-                                headerTitle: `0 Marked`
-                                // headerTitle: `${data ? data.following.length : 0} Marked`
-                                // temporary fix for undefined data.following value when account is newly created
+                                headerTitle: `${data ? (data.following ? data.following.length : 0) : 0} Marked`
                             }}
                         />
                         <Stack.Screen

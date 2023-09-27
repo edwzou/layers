@@ -110,13 +110,13 @@ const utils = StyleSheet.create({
 	},
 	buttonShadow: {
 		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.4,
-		shadowRadius: 15,
+		shadowOpacity: 0.2,
+		shadowRadius: 8,
 	},
 	deleteShadow: {
 		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.6,
-		shadowRadius: 5,
+		shadowOpacity: 0.4,
+		shadowRadius: 4,
 	},
 	dropdownShadow: {
 		shadowOffset: { width: 0, height: 0 },

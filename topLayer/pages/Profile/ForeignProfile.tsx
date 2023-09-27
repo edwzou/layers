@@ -39,8 +39,8 @@ const ForeignProfile = ({ route }: any) => {
 
             if (status === 200) {
                 console.log('Successfully fetched foreign user Profile')
-                console.log('privacy: ' + data.data[0].private_option)
-                return setUser(data.data[0])
+                console.log('Foreign user: ' + data.data)
+                return setUser(data.data)
             } else {
                 console.log('Failed to fetch foreign user Profile')
             }
@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 7,
         shadowColor: 'black',
-        ...GlobalStyles.utils.pfpShadow,
     }
 });
 
