@@ -36,6 +36,7 @@ export default function App() {
 			const { data, status } = await axios.get(`${baseUrl}/api/private/users`);
 
 			if (status === 200) {
+				console.log(data)
 				return setUser(data.data);
 			}
 

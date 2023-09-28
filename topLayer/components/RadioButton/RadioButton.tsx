@@ -16,7 +16,6 @@ const RadioButton = ({ privateData, onSelect }: RadioButtonPropsType) => {
 
 	if (data) {
 		const { private_option } = data;
-		console.log('Private option: ' + private_option);
 		option = private_option ? private_option : false;
 	}
 

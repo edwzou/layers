@@ -63,10 +63,6 @@ const Settings = () => {
 		setValue('profile_picture', image);
 	}, [image]);
 
-	useEffect(() => {
-		console.log(pp_url);
-	}, []);
-
 	const onSubmit = async (data: FormValues | any) => {
 		try {
 			const response = await axios.post(

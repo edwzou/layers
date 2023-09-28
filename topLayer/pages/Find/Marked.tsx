@@ -16,7 +16,6 @@ const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 	const [users, setUsers] = useState<User[]>([]);
 
 	const getUser = async (userId: string) => {
-		console.log('userId: ' + userId)
 		try {
 			const { data, status } = await axios.get(`${baseUrl}/api/users/${userId}`);
 

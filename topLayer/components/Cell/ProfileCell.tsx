@@ -24,7 +24,6 @@ const ProfileCell = ({ userID, handleProfilePress }: ProfileCellPropsType) => {
 
 			if (status === 200) {
 				console.log('Successfully fetched foreign user ProfileCell');
-				console.log('User Data:' + data.data);
 				setUser(data.data);
 			} else {
 				console.log('Failed to fetch foreign user ProfileCell');
