@@ -13,7 +13,7 @@ const router = express.Router();
 // Endpooint for getting the current user
 // Need this private get endpoint because the user may have private data that cannot be shared
 router.get('/', (req: Request, res: Response): void => {
-  const userId = req.user;
+  const userId = req.user as string;
   const getUser = async (): Promise<void> => {
     try {
       const user = await pool.query(
@@ -22,7 +22,7 @@ router.get('/', (req: Request, res: Response): void => {
       );
       const result = user.rows[0];
       const imgRef = result.pp_url;
-      result.pp_url = await downloadURLFromS3(imgRef);
+      result.pp_url = downloadURLFromS3(imgRef);
 
       responseCallbackGet(null, result, res, 'User');
     } catch (error) {

@@ -35,5 +35,9 @@ function getBucketName(): string {
   return process.env.AWS_BUCKET_NAME ?? '';
 }
 
+function getRegion(): string {
+  return process.env.AWS_BUCKET_REGION ?? '';
+}
+
 // Export the S3 client instance and the getBucketName function
-export { s3Client as s3, getBucketName };
+export { s3Client as s3, getBucketName, getRegion };
