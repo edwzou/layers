@@ -1,13 +1,11 @@
-import {
-	createNativeStackNavigator,
-} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UserClothing } from '../pages/Match';
 import { UserOutfit } from '../pages/OutfitView';
 
 import { User } from '../pages/Main';
 
 export type StackNavigatorType = {
-	user?: User;
+	userID?: string;
 	item?: UserClothing | UserOutfit;
 	editable?: boolean;
 	matchItems?: {
@@ -17,6 +15,7 @@ export type StackNavigatorType = {
 		shoes?: UserClothing,
 	}
 	matchName?: (text: string) => void;
+	setImage?: (base64: string) => void;
 };
 
 export type StackTypes = {

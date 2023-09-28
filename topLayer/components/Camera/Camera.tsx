@@ -12,6 +12,7 @@ import React, {
 	useCallback,
 	useRef,
 	useState,
+	useEffect,
 } from 'react';
 import {
 	Camera,
@@ -70,6 +71,10 @@ export default function CameraComponent({ data }: CameraPropType) {
 		base64: true,
 		exif: false,
 	};
+
+	useEffect(() => {
+		console.log(screenHeight, screenWidth);
+	}, []);
 
 	const flipCamera = () => {
 		setOrientation((current) =>
@@ -139,7 +144,8 @@ export default function CameraComponent({ data }: CameraPropType) {
 
 	if (photo != null) {
 		const savePhoto = () => {
-			data(photo.uri);
+			data(photo.base64);
+			navigation.goBack();
 			MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
 				setPhoto(undefined);
 			});
@@ -203,7 +209,8 @@ export default function CameraComponent({ data }: CameraPropType) {
 			quality: 0,
 		});
 		if (result.canceled) return;
-		data(result.assets[0].uri);
+		data(result.assets[0].base64);
+		navigation.goBack();
 	};
 
 	return (

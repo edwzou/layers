@@ -1,7 +1,8 @@
 import {
   routerBase,
   routerPublic,
-  routerPrivate
+  routerPrivate,
+  routerDev
 } from './src/routes/endpoints';
 import session from 'express-session';
 import passport from 'passport';
@@ -12,10 +13,12 @@ import ConnectFileStore from 'session-file-store';
 const app = express();
 
 const FileStore = ConnectFileStore(session);
+const timeout = require('connect-timeout');
 require('dotenv').config();
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb' }));
+app.use(timeout(300000));
 
 app.use(
   session({
@@ -47,6 +50,7 @@ passport.deserializeUser((user: any, done) => {
 app.use('/', routerBase);
 app.use('/api', routerPublic);
 app.use('/api/private', routerPrivate);
+app.use('/api/dev', routerDev);
 
 app.listen(process.env.PORT, () => {
   if (process.env.PORT == null) {

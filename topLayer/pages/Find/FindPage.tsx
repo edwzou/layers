@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import Find from './Find';
 import MarkedList from './MarkedList';
@@ -16,10 +16,16 @@ import { foreignUsersData } from '../../constants/testData';
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
+import { UserContext } from '../../utils/UserContext';
+
+import axios from 'axios';
+
 const FindPage = () => {
 
-    const FindComponent = () => (<Find foreignUsersData={foreignUsersData} />)
-    const MarkedListComponent = () => (<MarkedList foreignUsersData={foreignUsersData} />)
+    const { data } = useContext(UserContext);
+
+    const FindComponent = () => (<Find foreignUserIDs={data ? data.following : []} />)
+    const MarkedListComponent = () => (<MarkedList foreignUserIDs={data ? data.following : []} />)
 
     return (
         <NavigationContainer
@@ -48,7 +54,9 @@ const FindPage = () => {
                             name={StackNavigation.MarkedList}
                             component={MarkedListComponent}
                             options={{
-                                headerTitle: `${foreignUsersData.length} Marked`
+                                headerTitle: `0 Marked`
+                                // headerTitle: `${data ? data.following.length : 0} Marked`
+                                // temporary fix for undefined data.following value when account is newly created
                             }}
                         />
                         <Stack.Screen

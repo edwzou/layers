@@ -52,44 +52,29 @@ const SignUp = () => {
 		},
 	});
 
-	const pickImage = async () => {
-		const result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			base64: true,
-			aspect: [1, 1],
-			quality: 0,
-		});
-
-		if (!result.canceled) {
-			if (!result.assets) return;
-
-			setImage(`${base64Prefix}${result.assets[0].base64}`);
-			setModalVisible(!modalVisible);
-		}
-	};
-
 	useEffect(() => {
 		setValue('profile_picture', image);
 	}, [image]);
 
-	const onSubmit = async (formData: FormValues | any) => {
+	const onSubmit = async (values: FormValues | any) => {
+		const formData = new FormData();
+
+		const formValues: Record<string, any> = {
+			first_name: values.first_name,
+			last_name: values.last_name,
+			username: values.username,
+			email: values.email,
+			password: values.password,
+			profile_picture: values.profile_picture,
+			private_option: values.private_option,
+		};
+
+		Object.keys(formValues).forEach((key) => {
+			formData.append(key, formValues[key]);
+		});
+
 		try {
-			const { data, status } = await axios.post(`${baseUrl}/signup`, {
-				first_name: formData.first_name,
-				last_name: formData.last_name,
-				username: formData.username,
-				email: formData.email,
-				password: formData.password,
-				profile_picture: formData.profile_picture,
-				following: [],
-				followers: [],
-				private_option: formData.private_option,
-			}, {
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
+			const { data, status } = await axios.post(`${baseUrl}/signup`, formData);
 
 			if (status === 200) {
 				try {
@@ -116,10 +101,12 @@ const SignUp = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.Camera, {});
+						navigation.navigate(StackNavigation.Camera, {
+							setImage: setImage,
+						});
 					}}
 				>
-					<ProfilePicture />
+					<ProfilePicture image={image} base64 />
 				</Pressable>
 				<View
 					style={{
@@ -203,7 +190,7 @@ const SignUp = () => {
 					)}
 					name="password"
 				/>
-				<RadioButton data={privacyOptions} onSelect={setValue} />
+				<RadioButton privateData={privacyOptions} onSelect={setValue} />
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
