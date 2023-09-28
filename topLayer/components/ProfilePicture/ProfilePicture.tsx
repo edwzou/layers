@@ -34,16 +34,17 @@ const ProfilePicture = ({ imageUrl, base64 = false, shadow = true, size = Global
 
 	const renderProfilePicture = () => {
 		if (isValidImage === true) {
-			return <Image style={[
-				styles.profilePicture,
-				shadow && GlobalStyles.utils.pfpShadow,
-				{
-					width: size,
-					height: size,
-					borderRadius: size / 2,
-				}
-			]}
-				source={{ uri: imageUrl }} />;
+			return <View style={shadow && GlobalStyles.utils.pfpShadow}>
+				<Image style={[
+					styles.profilePicture,
+					{
+						width: size,
+						height: size,
+						borderRadius: size / 2,
+					}
+				]}
+					source={{ uri: imageUrl }} />
+			</View>;
 		} else {
 			// If imageUrl is not provided or the image is not valid, render the default option
 			return (

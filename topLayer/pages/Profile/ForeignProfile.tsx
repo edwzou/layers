@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
     profilePicture: {
         alignItems: 'center',
         gap: 7,
-        shadowColor: 'black',
     }
 });
 
