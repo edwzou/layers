@@ -22,7 +22,7 @@ router.get('/', (req: Request, res: Response): void => {
       );
       const result = user.rows[0];
       const imgRef = result.pp_url;
-      result.pp_url = await downloadURLFromS3(imgRef);
+      result.pp_url = downloadURLFromS3(imgRef);
 
       responseCallbackGet(null, result, res, 'User');
     } catch (error) {
