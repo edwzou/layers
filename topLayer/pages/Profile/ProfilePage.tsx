@@ -11,6 +11,7 @@ import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { headerRight } from '../../components/Modal/HeaderRight';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfilePage = () => {
 

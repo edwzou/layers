@@ -1,14 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 import { User } from '../../pages/Main';
+import axios from 'axios';
+import { baseUrl } from '../../utils/apiUtils';
+import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 interface MarkedPropsType {
 	foreignUserIDs: string[];
 }
 
 const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
+
+	const [users, setUsers] = useState<User[]>([]);
+
+	const getUser = async (userId: string) => {
+		try {
+			const { data, status } = await axios.get(`${baseUrl}/api/users/${userId}`);
+
+			if (status === 200) {
+				return data.data;
+			}
+		} catch (error) {
+			console.error('Error getting user', error);
+		}
+		return null;
+	};
+
+	useEffect(() => {
+		const getUsers = async () => {
+			if (foreignUserIDs.length === 0) {
+				console.log('No user IDs available');
+				return;
+			}
+
+			try {
+				const top3Users = await Promise.all(foreignUserIDs.slice(0, 3).map(userId => getUser(userId)));
+				setUsers(top3Users)
+			} catch (error) {
+				console.error('Error getting users', error);
+			}
+		};
+
+		void getUsers();
+	}, []);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.textArea}>
@@ -17,11 +54,23 @@ const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 				</Text>
 				<Text style={styles.label}>{find.viewYourMarkedProfiles}</Text>
 			</View>
-			{/* <View style={styles.profilePicturesContainer}>
-				{foreignUserIDs[0] && <Image source={foreignUserIDs[0].profilePicture} style={styles.profilePicture} />}
-				{foreignUserIDs[1] && <Image source={foreignUserIDs[1].profilePicture} style={styles.profilePicture} />}
-				{foreignUserIDs[2] && <Image source={foreignUserIDs[2].profilePicture} style={styles.profilePicture} />}
-			</View> */}
+			<View style={styles.profilePicturesContainer}>
+				{users[0] &&
+					<View style={styles.profilePicture}>
+						<ProfilePicture imageUrl={users[0].pp_url} size={GlobalStyles.sizing.pfp.small} />
+					</View>
+				}
+				{users[1] &&
+					<View style={styles.profilePicture}>
+						<ProfilePicture imageUrl={users[1].pp_url} size={GlobalStyles.sizing.pfp.small} />
+					</View>
+				}
+				{users[2] &&
+					<View style={styles.profilePicture}>
+						<ProfilePicture imageUrl={users[2].pp_url} size={GlobalStyles.sizing.pfp.small} />
+					</View>
+				}
+			</View>
 		</View>
 	);
 };
@@ -29,7 +78,7 @@ const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 const styles = StyleSheet.create({
 	container: {
 		padding: 20,
-		backgroundColor: GlobalStyles.colorPalette.primary[200],
+		backgroundColor: GlobalStyles.colorPalette.card[100],
 		borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
 		flexDirection: 'row',
 		alignItems: 'center',

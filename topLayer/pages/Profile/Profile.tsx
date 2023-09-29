@@ -85,41 +85,37 @@ const Profile = () => {
 	};
 
 	return (
-		<>
-			<SafeAreaView>
-				<Navbar toggleFeedbackModal={toggleFeedbackModal} />
-			</SafeAreaView>
-			<View style={{ flex: 1 }}>
-				<View style={styles.profilePicture}>
-					<Pressable
-						onPress={() => {
-							toggleSettingsModal()
-						}}
-					>
-						<ProfilePicture imageUrl={data ? data.pp_url : ''} />
-					</Pressable>
-					<View>
-						<FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
-						<Username username={data ? data.username : ''} />
-						{/* <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
+		<SafeAreaView style={{ flex: 1 }}>
+			<Navbar toggleFeedbackModal={toggleFeedbackModal} />
+			<View style={styles.profilePicture}>
+				<Pressable
+					onPress={() => {
+						toggleSettingsModal()
+					}}
+				>
+					<ProfilePicture imageUrl={data ? data.pp_url : ''} />
+				</Pressable>
+				<View>
+					<FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
+					<Username username={data ? data.username : ''} />
+					{/* <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
                         <Username username={mockUserData.username} /> */}
-					</View>
 				</View>
-				<View style={{ top: 5 }}>
-					<CategoryBar
-						selectedCategory={selectedCategory}
-						handleCategoryChange={handleCategoryChange}
-					/>
-					<CategorySlides
-						categorySlidesRef={flatListRef}
-						clothingData={mockItemsData}
-						selectedCategory={selectedCategory}
-						handleItemChange={handleItemChange}
-						handleViewableItemsChanged={handleViewableItemsChanged}
-					/>
-				</View>
-			</View >
-		</>
+			</View>
+			<View style={{ top: 5 }}>
+				<CategoryBar
+					selectedCategory={selectedCategory}
+					handleCategoryChange={handleCategoryChange}
+				/>
+				<CategorySlides
+					categorySlidesRef={flatListRef}
+					clothingData={mockItemsData}
+					selectedCategory={selectedCategory}
+					handleItemChange={handleItemChange}
+					handleViewableItemsChanged={handleViewableItemsChanged}
+				/>
+			</View>
+		</SafeAreaView >
 	);
 };
 
@@ -133,7 +129,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		gap: 7,
 		shadowColor: 'black',
-		...GlobalStyles.utils.pfpShadow,
 	},
 });
 
