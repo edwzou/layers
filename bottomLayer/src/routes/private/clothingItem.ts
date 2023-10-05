@@ -113,7 +113,7 @@ router.get('/:itemId', (req: Request, res: Response): void => {
       );
       const result = item.rows[0];
       const imgRef = result.image_url;
-      result.image_url = await downloadURLFromS3(imgRef);
+      result.image_url = downloadURLFromS3(imgRef);
 
       responseCallbackGet(null, result, res, 'Clothing Item');
     } catch (error) {
@@ -141,7 +141,7 @@ router.get('/', (req: Request, res: Response): void => {
       const items = result.rows;
       for (const item of items) {
         const imgRef = item.image_url;
-        item.image_url = await downloadURLFromS3(imgRef);
+        item.image_url = downloadURLFromS3(imgRef);
       }
 
       responseCallbackGetAll(items, res, 'Clothing Items');
