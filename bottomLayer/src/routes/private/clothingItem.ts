@@ -28,7 +28,6 @@ router.post('/', (req: Request, res: Response): void => {
         [ciid, URL, category, title, brands, size, color, uid]
       );
 
-      console.log('Color: ', color);
       responseCallbackPost(null, res, 'Clothing Item');
     } catch (error) {
       responseCallbackPost(error, res);
