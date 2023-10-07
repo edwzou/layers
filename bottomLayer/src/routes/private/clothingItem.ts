@@ -21,13 +21,14 @@ router.post('/', (req: Request, res: Response): void => {
   const insertClothingItem = async (): Promise<any> => {
     try {
       const ciid = uuidv4();
-      const URL = await convertImage(image, ciid, true);
+      const URL = await convertImage(image, ciid, false);
       await pool.query(
         `INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         [ciid, URL, category, title, brands, size, color, uid]
       );
 
+      console.log('Color: ', color);
       responseCallbackPost(null, res, 'Clothing Item');
     } catch (error) {
       responseCallbackPost(error, res);
@@ -71,7 +72,7 @@ router.put('/:ciid', (req: any, res: any): void => {
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-      const imgRef = await convertImage(image, title, true);
+      const imgRef = await convertImage(image, title, false);
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item
@@ -108,7 +109,7 @@ router.get('/:itemId', (req: Request, res: Response): void => {
   const getClothingById = async (itemId: string): Promise<any> => {
     try {
       const item = await pool.query(
-        'SELECT * FROM backend_schema.clothing_item WHERE ciid = $1 AND uid = $2',
+        'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE ciid = $1 AND uid = $2',
         [itemId, uid]
       );
       const result = item.rows[0];
@@ -133,7 +134,7 @@ router.get('/', (req: Request, res: Response): void => {
   const getAllClothing = async (uid: string): Promise<any> => {
     try {
       const run = pool.query(
-        'SELECT * FROM backend_schema.clothing_item WHERE uid = $1',
+        'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE uid = $1',
         [uid]
       );
       await getUserCore(uid, await client);
