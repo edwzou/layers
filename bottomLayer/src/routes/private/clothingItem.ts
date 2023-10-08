@@ -12,6 +12,7 @@ import { convertImage } from '../../s3/convert-image';
 import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
 import { v4 as uuidv4 } from 'uuid';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
+import { itemCategories } from '../../utils/constants/itemCategories';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -127,6 +128,7 @@ router.get('/:itemId', (req: Request, res: Response): void => {
 // Endpoint for retrieving all a logged in users clothing items
 router.get('/', (req: Request, res: Response): void => {
   const uid = req.user as string;
+  const { parse } = req.body;
 
   const client = pool.connect();
 
@@ -139,12 +141,25 @@ router.get('/', (req: Request, res: Response): void => {
       await getUserCore(uid, await client);
       const result = await run;
       const items = result.rows;
-      for (const item of items) {
-        const imgRef = item.image_url;
-        item.image_url = downloadURLFromS3(imgRef);
+      if (parse === 'categories') {
+        const categories: Record<string, any> = {};
+        Object.values(itemCategories).forEach((value) => {
+          categories[value] = [];
+        });
+        for (const item of items) {
+          const imgRef = item.image_url;
+          item.image_url = downloadURLFromS3(imgRef);
+          const temp = item.category;
+          categories[temp].push(item);
+        }
+        responseCallbackGetAll(categories, res, 'Clothing Items');
+      } else {
+        for (const item of items) {
+          const imgRef = item.image_url;
+          item.image_url = downloadURLFromS3(imgRef);
+        }
+        responseCallbackGetAll(items, res, 'Clothing Items');
       }
-
-      responseCallbackGetAll(items, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);
     } finally {
