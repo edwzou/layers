@@ -10,7 +10,6 @@ export const urlDownloadHandler = async (
 ): Promise<void> => {
   try {
     const result = await downloadURLFromS3(imgRef);
-    console.log('result: ', result);
     objRef.image_url = result;
 
     asyncEmitter.complete(objRef.uid);

@@ -24,7 +24,6 @@ router.get('/:itemId', (req: Request, res: Response): void => {
       const result = item.rows[0];
       const imgRef = result.image_url;
       result.image_url = await downloadURLFromS3(imgRef);
-      console.log(result);
 
       responseCallbackGet(null, result, res, 'Clothing Item');
     } catch (error) {

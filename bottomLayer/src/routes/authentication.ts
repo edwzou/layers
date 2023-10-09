@@ -9,7 +9,7 @@ import {
 } from '../utils/responseCallback';
 import { hash, compare } from 'bcrypt';
 import { type IVerifyOptions, Strategy as LocalStrategy } from 'passport-local';
-import { AsyncManager } from '../utils/event-emitters/asyncManager';
+import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 
@@ -85,7 +85,8 @@ const signupStrate = new LocalStrategy(
     const signup = async (): Promise<void> => {
       try {
         // Can optimize the following awaits to call run them at the same time
-        const async1 = convertImage(profile_picture, username, false);
+        const uid = uuidv4();
+        const async1 = convertImage(profile_picture, uid, false);
         const async2 = hash(password, 10);
         const emailLower = email.toLowerCase();
         const hashedPass = await async2;
@@ -93,11 +94,12 @@ const signupStrate = new LocalStrategy(
         const result = await pool.query(
           `
         INSERT INTO backend_schema.user (
-          first_name, last_name, email, username, password, private_option, followers, following, pp_url
+          uid, first_name, last_name, email, username, password, private_option, followers, following, pp_url
           ) VALUES (
-            $1, $2, $3, $4, $5, $6, $7, $8, $9)
-          RETURNING uid`,
+            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+          `,
           [
+            uid,
             first_name,
             last_name,
             emailLower,
@@ -109,19 +111,7 @@ const signupStrate = new LocalStrategy(
             imgRef
           ]
         );
-        if (
-          result.rowCount === 0 ||
-          result.rows[0].uid === undefined ||
-          result.rows[0].uid === null ||
-          result.rows[0].uid === ''
-        ) {
-          done(null, false, {
-            message: 'Unknown Failure, No Return From Query'
-          });
-          return;
-        }
 
-        const uid = result.rows[0].uid;
         const user = {
           uid,
           first_name,
@@ -132,7 +122,7 @@ const signupStrate = new LocalStrategy(
           private_option,
           followers: [],
           following: [],
-          profile_picture: URL
+          profile_picture: imgRef
         };
 
         done(null, user);
