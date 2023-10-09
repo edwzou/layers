@@ -141,25 +141,36 @@ router.get('/', (req: Request, res: Response): void => {
       await getUserCore(uid, await client);
       const result = await run;
       const items = result.rows;
-      if (parse === 'categories') {
-        const categories: Record<string, any> = {};
-        Object.values(itemCategories).forEach((value) => {
-          categories[value] = [];
-        });
-        for (const item of items) {
-          const imgRef = item.image_url;
-          item.image_url = downloadURLFromS3(imgRef);
-          const temp = item.category;
-          categories[temp].push(item);
-        }
-        responseCallbackGetAll(categories, res, 'Clothing Items');
-      } else {
-        for (const item of items) {
-          const imgRef = item.image_url;
-          item.image_url = downloadURLFromS3(imgRef);
-        }
-        responseCallbackGetAll(items, res, 'Clothing Items');
+      for (const item of items) {
+        const imgRef = item.image_url;
+        item.image_url = downloadURLFromS3(imgRef);
       }
+      responseCallbackGetAll(items, res, 'Clothing Items');
+    } catch (error) {
+      responseCallbackGet(error, null, res);
+    } finally {
+      (await client).release();
+    }
+  };
+  const getAllClothingCate = async (uid: string): Promise<any> => {
+    try {
+      const run = pool.query(
+        'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE uid = $1',
+        [uid]
+      );
+      await getUserCore(uid, await client);
+      const result = await run;
+      const items = result.rows;
+      const categories: Record<string, any> = {};
+      Object.values(itemCategories).forEach((value) => {
+        categories[value] = [];
+      });
+      for (const item of items) {
+        const imgRef = item.image_url;
+        item.image_url = downloadURLFromS3(imgRef);
+        categories[item.category].push(item);
+      }
+      responseCallbackGetAll(categories, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);
     } finally {
@@ -167,7 +178,11 @@ router.get('/', (req: Request, res: Response): void => {
     }
   };
 
-  void getAllClothing(uid);
+  if (parse === 'categories') {
+    void getAllClothingCate(uid);
+  } else {
+    void getAllClothing(uid);
+  }
 });
 
 export { router as default, router as privateClothingRoute };

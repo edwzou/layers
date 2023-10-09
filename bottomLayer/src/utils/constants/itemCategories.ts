@@ -1,6 +1,6 @@
 export enum itemCategories {
   Outerwear = 'outerwear',
   Tops = 'tops',
-  Bottoms = 'Shirts',
+  Bottoms = 'bottoms',
   Shoes = 'shoes'
 }
