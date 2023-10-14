@@ -39,7 +39,7 @@ const Profile = () => {
 		ClothingTypes.outfits
 	);
 	const { data } = useContext(UserContext);
-	const { first_name, last_name, username, pp_url } = data;
+	// const { first_name, last_name, username, pp_url } = data;
 
 	const handleItemChange = (item: UserClothing | UserOutfit) => {
 		if ('items' in item) {

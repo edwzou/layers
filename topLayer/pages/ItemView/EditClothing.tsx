@@ -25,7 +25,7 @@ interface EditClothingPropsType {
 const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	const colorPickerRef = useRef<refPropType>(null);
 
-	const [currentColorTags, setColorTags] = useState(clothingItem.colors);
+	const [currentColorTags, setColorTags] = useState(clothingItem.color);
 	const [itemName, setItemName] = useState(clothingItem.title ? clothingItem.title : '');
 
 	const [sizeOpen, setSizeOpen] = useState(false);
@@ -142,13 +142,13 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		},
 	]);
 
-	const handleOnRemovePress = (colorToDelete: [string, string]) => {
-		const updatedColorTags = currentColorTags.filter((color) => color !== colorToDelete);
+	const handleOnRemovePress = (colorToDelete: string) => {
+		const updatedColorTags = currentColorTags.filter((color: string) => color !== colorToDelete);
 		setColorTags(updatedColorTags);
 	};
 
-	const handleOnNewColorPress = (colorToAdd: [string, string]) => {
-		if (!currentColorTags.some(color => color[1] === colorToAdd[1])) {
+	const handleOnNewColorPress = (colorToAdd: string) => {
+		if (!currentColorTags.some((color: string) => color === colorToAdd)) {
 			setColorTags([...currentColorTags, colorToAdd]);
 		}
 		colorPickerRef.current?.scrollTo(0);
@@ -173,7 +173,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						onFieldChange={setItemName}
 						value={itemName}
 					/>
-					<ItemCell image={clothingItem.image} />
+					<ItemCell imageUrl={clothingItem.image_url} />
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 						<View style={{ width: ITEM_SIZE(2) }}>
 							<Dropdown

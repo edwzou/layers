@@ -10,7 +10,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import Icon from 'react-native-remix-icon';
 
 interface ItemCellPropsType {
-	image: any; // !!! Replace 'any' with 'string'
+	imageUrl: string; // !!! Replace 'any' with 'string'
 	disablePress?: boolean;
 	imageStyle?: ImageStyle;
 	onPress?: () => void;
@@ -28,7 +28,7 @@ interface ItemCellPropsType {
  * @returns {ReactElement}
  */
 const ItemCell = ({
-	image,
+	imageUrl,
 	disablePress = false,
 	imageStyle,
 	onPress,
@@ -41,7 +41,7 @@ const ItemCell = ({
 
 	return (
 		<Pressable disabled={disablePress} style={[styles.container]} onPress={onPress}>
-			<Image source={image} style={[styles.image, imageStyle]} resizeMode="contain" />
+			<Image source={{ uri: imageUrl }} style={[styles.image, imageStyle]} resizeMode="contain" />
 			{/* {canDelete && (
 				<View style={styles.deleteButtonContainer}>
 					<Pressable onPress={handleDeletePress}>

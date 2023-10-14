@@ -1,5 +1,5 @@
 import { StyleSheet, View, FlatList, Text } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Icon from 'react-native-remix-icon';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -16,6 +16,10 @@ interface CategorySlidePropsType {
 }
 
 const CategorySlide = ({ clothingData, handleItemChange }: CategorySlidePropsType) => {
+
+	useEffect(() => {
+		console.log(clothingData.data[0] && clothingData.data[0].image_url)
+	}, []);
 
 	return (
 		<View style={styles.container}>
@@ -44,7 +48,7 @@ const CategorySlide = ({ clothingData, handleItemChange }: CategorySlidePropsTyp
 							data={clothingData.data}
 							renderItem={({ item }) => (
 								<View style={{ width: ITEM_SIZE(2) }}>
-									<ItemCell image={item.image} key={item.id} onPress={() => { handleItemChange(item) }} />
+									<ItemCell imageUrl={item.image_url} key={item.cid} onPress={() => { handleItemChange(item) }} />
 								</View>
 							)}
 							numColumns={2}

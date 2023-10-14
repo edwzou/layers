@@ -19,11 +19,11 @@ const ItemView = ({ clothingItem }: ItemViewPropsType) => {
             <View style={styles.container}>
                 <View style={{ flex: 1 }}>
 
-                    <ItemCell image={clothingItem.image} disablePress />
+                    <ItemCell imageUrl={clothingItem.image_url} disablePress />
                 </View>
                 <View style={styles.categoryContainer}>
                     <Text style={styles.subheader}>Colors</Text>
-                    <ColorTagsList data={clothingItem.colors} tagAction={TagAction.static} />
+                    <ColorTagsList data={clothingItem.color} tagAction={TagAction.static} />
                 </View>
             </ View>
             {/* <View style={styles.categoryContainer}>

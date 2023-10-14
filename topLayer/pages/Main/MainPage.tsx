@@ -6,22 +6,22 @@ import ProfilePage from '../Profile/ProfilePage';
 import MatchPage from '../Match/MatchPage';
 import FindPage from '../Find/FindPage';
 
-import { mockUserData } from '../../constants/testData';
+// import { mockUserData } from '../../constants/testData';
 
 export const MainPageContext = createContext({
     navigationArray: [() => { }],
-    mockUserData: {
-        uid: mockUserData.uid,
-        firstName: mockUserData.firstName,
-        lastName: mockUserData.lastName,
-        email: mockUserData.email,
-        username: mockUserData.username,
-        password: mockUserData.password,
-        privateOption: mockUserData.privateOption,
-        followers: mockUserData.followers,
-        following: mockUserData.following,
-        profilePicture: mockUserData.profilePicture,
-    },
+    // mockUserData: {
+    //     uid: mockUserData.uid,
+    //     firstName: mockUserData.firstName,
+    //     lastName: mockUserData.lastName,
+    //     email: mockUserData.email,
+    //     username: mockUserData.username,
+    //     password: mockUserData.password,
+    //     privateOption: mockUserData.privateOption,
+    //     followers: mockUserData.followers,
+    //     following: mockUserData.following,
+    //     profilePicture: mockUserData.profilePicture,
+    // },
 });
 
 const MainPage: React.FC = () => {
@@ -40,7 +40,7 @@ const MainPage: React.FC = () => {
         <MainPageContext.Provider
             value={{
                 navigationArray: [navigateToProfile, navigateToMatch, navigateToFind],
-                mockUserData: mockUserData,
+                // mockUserData: mockUserData,
             }}
         >
             <PagerView style={styles.pager} ref={ref} initialPage={1}>

@@ -1,7 +1,12 @@
-import { UserClothing } from "../Match";
+export interface UserOutfits {
+	category: string,
+    data: UserOutfit[],
+}
 
 export interface UserOutfit {
-	title: string;
-	items:  UserClothing[];
-	category: any; /// !!! change any type
+	oid: string,
+	title: string,
+	clothing_items: string[],
+	uid: string,
+	created_at: string
 }

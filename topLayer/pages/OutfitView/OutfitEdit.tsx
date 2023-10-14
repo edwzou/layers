@@ -58,7 +58,7 @@ const OutfitEdit = ({ outfit }: OutfitViewPropsType) => {
 				renderItem={({ item }) => {
 					return (
 						<View style={{ width: ITEM_SIZE(2) }}>
-							<ItemCell image={item.image} disablePress={false} key={item.id} />
+							<ItemCell imageUrl={item.image_url} disablePress={false} key={item.ciid} />
 						</View>
 					);
 				}}
