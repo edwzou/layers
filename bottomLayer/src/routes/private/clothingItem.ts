@@ -12,6 +12,7 @@ import { convertImage } from '../../s3/convert-image';
 import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
 import { v4 as uuidv4 } from 'uuid';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
+import { itemCategories } from '../../utils/constants/itemCategories';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -21,7 +22,7 @@ router.post('/', (req: Request, res: Response): void => {
   const insertClothingItem = async (): Promise<any> => {
     try {
       const ciid = uuidv4();
-      const URL = await convertImage(image, ciid, true);
+      const URL = await convertImage(image, ciid, false);
       await pool.query(
         `INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
@@ -71,7 +72,7 @@ router.put('/:ciid', (req: any, res: any): void => {
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-      const imgRef = await convertImage(image, title, true);
+      const imgRef = await convertImage(image, title, false);
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item
@@ -108,7 +109,7 @@ router.get('/:itemId', (req: Request, res: Response): void => {
   const getClothingById = async (itemId: string): Promise<any> => {
     try {
       const item = await pool.query(
-        'SELECT * FROM backend_schema.clothing_item WHERE ciid = $1 AND uid = $2',
+        'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE ciid = $1 AND uid = $2',
         [itemId, uid]
       );
       const result = item.rows[0];
@@ -127,13 +128,14 @@ router.get('/:itemId', (req: Request, res: Response): void => {
 // Endpoint for retrieving all a logged in users clothing items
 router.get('/', (req: Request, res: Response): void => {
   const uid = req.user as string;
+  const { parse } = req.body;
 
   const client = pool.connect();
 
   const getAllClothing = async (uid: string): Promise<any> => {
     try {
       const run = pool.query(
-        'SELECT * FROM backend_schema.clothing_item WHERE uid = $1',
+        'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE uid = $1',
         [uid]
       );
       await getUserCore(uid, await client);
@@ -143,7 +145,6 @@ router.get('/', (req: Request, res: Response): void => {
         const imgRef = item.image_url;
         item.image_url = downloadURLFromS3(imgRef);
       }
-
       responseCallbackGetAll(items, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);
@@ -151,8 +152,37 @@ router.get('/', (req: Request, res: Response): void => {
       (await client).release();
     }
   };
+  const getAllClothingCate = async (uid: string): Promise<any> => {
+    try {
+      const run = pool.query(
+        'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE uid = $1',
+        [uid]
+      );
+      await getUserCore(uid, await client);
+      const result = await run;
+      const items = result.rows;
+      const categories: Record<string, any> = {};
+      Object.values(itemCategories).forEach((value) => {
+        categories[value] = [];
+      });
+      for (const item of items) {
+        const imgRef = item.image_url;
+        item.image_url = downloadURLFromS3(imgRef);
+        categories[item.category].push(item);
+      }
+      responseCallbackGetAll(categories, res, 'Clothing Items');
+    } catch (error) {
+      responseCallbackGet(error, null, res);
+    } finally {
+      (await client).release();
+    }
+  };
 
-  void getAllClothing(uid);
+  if (parse === 'categories') {
+    void getAllClothingCate(uid);
+  } else {
+    void getAllClothing(uid);
+  }
 });
 
 export { router as default, router as privateClothingRoute };
