@@ -39,18 +39,18 @@ export const mockItemsData: (UserItems | UserOutfits)[] = [
 	{
 		category: 'outfits',
 		data: [
-			// {
-			// 	oid: "a11bdae9-9ecb-48f4-8ac2-802809034a0f",
-			// 	title: "Weekend Casual",
-			// 	clothing_items: [
-			// 		"069ef97a-6c32-4588-a7ba-38885a869718",
-			// 		"ddee59f2-acc7-46d5-bf1f-4255d990932b",
-			// 		"0b6224eb-799e-4f71-a27a-1dcb6a801a96",
-			// 		"3e56dedf-9e82-4ca4-94a8-c4d694e484a5"
-			// 	],
-			// 	uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
-			// 	created_at: "2023-10-14T14:15:07.986Z"
-			// }
+			{
+				oid: "a11bdae9-9ecb-48f4-8ac2-802809034a0f",
+				title: "Weekend Casual",
+				clothing_items: [
+					"069ef97a-6c32-4588-a7ba-38885a869718",
+					"ddee59f2-acc7-46d5-bf1f-4255d990932b",
+					"0b6224eb-799e-4f71-a27a-1dcb6a801a96",
+					"3e56dedf-9e82-4ca4-94a8-c4d694e484a5"
+				],
+				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
+				created_at: "2023-10-14T14:15:07.986Z"
+			}
 		]
 	},
 	{

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -7,40 +7,59 @@ import ItemCell from '../Cell/ItemCell';
 import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { type UserClothing } from '../../pages/Match';
+import axios from 'axios';
+import { baseUrl } from '../../utils/apiUtils';
 
 const itemCellSize = (screenWidth - 60) / 4;
 
 interface OutfitCardPropsType {
 	title: string;
-	itemCount: number;
-	items: UserClothing[];
+	items: string[];
 	onPress: () => void;
 }
 
 export default function OutfitCard({
 	title,
-	itemCount,
 	items,
 	onPress,
 }: OutfitCardPropsType) {
 	const truncatedTitle = title.length > 70 ? title.slice(0, 70) + '...' : title;
+
+	const [clothingItems, setClothingItems] = useState<UserClothing[]>([]);
+
+	useEffect(() => {
+		const getClothingItems = async () => {
+			let fetchedClothingItems: UserClothing[] = [];
+			for (let i = 0; i < items.length; i++) {
+				const { data, status } = await axios.get(`${baseUrl}/api/private/clothing_items/${items[i]}`);
+
+				if (status === 200) {
+					fetchedClothingItems.push(data.data);
+				}
+			}
+			setClothingItems(fetchedClothingItems);
+		};
+
+		void getClothingItems();
+	}, []);
+
 	return (
 		<Pressable style={styles.container} onPress={onPress}>
 			<View style={styles.infoBox}>
 				<Text style={styles.title}>{truncatedTitle}</Text>
 				<Text>
 					<View style={[styles.label, GlobalStyles.utils.tagShadow]}>
-						<Text style={styles.labelText}>{itemCount} items</Text>
+						<Text style={styles.labelText}>{clothingItems.length} items</Text>
 					</View>
 				</Text>
 			</View>
 			<View style={styles.itemsContainer}>
 				<FlatList
-					data={items.slice(0, 4)}
+					data={clothingItems.slice(0, 4)}
 					renderItem={({ item }) => (
 						<View style={styles.itemContainer}>
 							<ItemCell
-								image={item.image}
+								imageUrl={item.image_url}
 								disablePress={true}
 								imageStyle={{ width: '85%', height: '85%' }}
 							/>

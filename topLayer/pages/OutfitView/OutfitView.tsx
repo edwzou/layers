@@ -10,31 +10,33 @@ import BrandTag from '../../components/Tag/BrandTag';
 import { screenHeight } from '../../utils/modalMaxShow';
 
 import { UserOutfit } from '.'
+import { UserClothing } from '../../pages/Match';
 
 interface OutfitViewPropsType {
-	outfit: UserOutfit;
+	clothingItems: UserClothing[];
 }
 
-const OutfitView = ({ outfit }: OutfitViewPropsType) => {
+const OutfitView = ({ clothingItems }: OutfitViewPropsType) => {
 
-	const allColors = outfit.items.flatMap(item => item.colors);
-	const uniqueColorsNames = Array.from(new Set(allColors.map(color => color[0])));
-	const uniqueColors = uniqueColorsNames.map(name => ColorTags[name]);
+	const allColors = clothingItems.flatMap(item => item.color);
+	const uniqueColors = Array.from(new Set(allColors));
 
 	return (
 		<FlatList
-			data={outfit.items.slice(1)}
+			data={clothingItems.slice(1)}
 			numColumns={2}
 			renderItem={({ item, index }) => {
 				return (
 					<View style={{ flex: 1 / 2 }}>
-						<ItemCell image={item.image} disablePress />
+						<ItemCell imageUrl={item.image_url} disablePress />
 					</View>
 				);
 			}}
 			style={styles.container}
 			showsVerticalScrollIndicator={false}
-			ListHeaderComponent={<ItemCell image={outfit.items[0].image} />}
+			ListHeaderComponent={
+				clothingItems.length > 0 ? <ItemCell imageUrl={clothingItems[0].image_url} /> : null
+			}
 			contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
 			columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 			ListFooterComponent={

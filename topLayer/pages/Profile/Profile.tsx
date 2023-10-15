@@ -42,7 +42,7 @@ const Profile = () => {
 	// const { first_name, last_name, username, pp_url } = data;
 
 	const handleItemChange = (item: UserClothing | UserOutfit) => {
-		if ('items' in item) {
+		if ('oid' in item) {
 			navigation.navigate(StackNavigation.OutfitView, {
 				item: item,
 				editable: true,

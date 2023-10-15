@@ -18,7 +18,7 @@ interface CategorySlidePropsType {
 const CategorySlide = ({ clothingData, handleItemChange }: CategorySlidePropsType) => {
 
 	useEffect(() => {
-		console.log(clothingData.data[0] && clothingData.data[0].image_url)
+		console.log(clothingData.data)
 	}, []);
 
 	return (
@@ -31,8 +31,7 @@ const CategorySlide = ({ clothingData, handleItemChange }: CategorySlidePropsTyp
 							renderItem={({ item }) => (
 								<OutfitCard
 									title={item.title}
-									itemCount={item.items.length}
-									items={item.items}
+									items={item.clothing_items}
 									onPress={() => { handleItemChange(item) }}
 								/>
 							)}
