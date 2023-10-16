@@ -24,7 +24,7 @@ router.post('/', (req: Request, res: Response): void => {
   const insertClothingItem = async (): Promise<any> => {
     try {
       const ciid = uuidv4();
-      const imgRef = await convertImage(image, ciid, true);
+      const imgRef = await convertImage(image, ciid, false);
       await pool.query(
         `INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
@@ -74,7 +74,7 @@ router.put('/:ciid', (req: any, res: any): void => {
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-      const imgRef = await convertImage(image, ciid, true);
+      const imgRef = await convertImage(image, ciid, false);
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item
