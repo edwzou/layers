@@ -41,7 +41,7 @@ const CameraWrapper = ({ route }: any) => {
 			image: image,
 			id: newId,
 		});
-		console.log('test: ', newId, image);
+		// console.log('test: ', newId, image);
 	};
 	const updatePhoto = (photo: string) => {
 		setData(photo);
@@ -100,10 +100,5 @@ const CameraWrapper = ({ route }: any) => {
 		</NavigationContainer>
 	);
 };
-// 		<>
-
-// 		</>
-// 	);
-// };
 
 export default CameraWrapper;
