@@ -32,16 +32,23 @@ const ItemCell = ({
 	disablePress = false,
 	imageStyle,
 	onPress,
-	// canDelete,
-}: ItemCellPropsType) => {
-
+}: // canDelete,
+ItemCellPropsType) => {
 	// const handleDeletePress = () => {
 	// 	console.log('delete button pressed');
 	// };
 
 	return (
-		<Pressable disabled={disablePress} style={[styles.container]} onPress={onPress}>
-			<Image source={image} style={[styles.image, imageStyle]} resizeMode="contain" />
+		<Pressable
+			disabled={disablePress}
+			style={[styles.container]}
+			onPress={onPress}
+		>
+			<Image
+				source={image}
+				style={[styles.image, imageStyle]}
+				resizeMode="contain"
+			/>
 			{/* {canDelete && (
 				<View style={styles.deleteButtonContainer}>
 					<Pressable onPress={handleDeletePress}>

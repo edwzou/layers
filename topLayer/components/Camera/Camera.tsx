@@ -49,7 +49,7 @@ interface CameraPropType {
 	data: Dispatch<SetStateAction<string>>;
 }
 
-export default function CameraComponent({ data }: CameraPropType) {
+export default function CameraComponent({ data }: any) {
 	const [orientation, setOrientation] = useState(CameraType.front);
 	const [flash, setFlash] = useState(FlashMode.auto);
 	const [cameraPermission, requestCameraPermission] =
@@ -69,11 +69,11 @@ export default function CameraComponent({ data }: CameraPropType) {
 	const takePhotoOptions: CameraPictureOptions = {
 		quality: 0,
 		base64: true,
-		exif: false,
+		exif: false, // Exchangeable Image File Format. It's a standard that specifies the formats for images, sound, and ancillary tags used by digital cameras
 	};
 
 	useEffect(() => {
-		console.log(screenHeight, screenWidth);
+		// console.log(screenHeight, screenWidth);
 	}, []);
 
 	const flipCamera = () => {
@@ -86,6 +86,7 @@ export default function CameraComponent({ data }: CameraPropType) {
 		if (cameraRef.current == null) return;
 		const newPhoto = await cameraRef.current.takePictureAsync(takePhotoOptions);
 		setPhoto(newPhoto);
+		// console.log('Photo taken: ', newPhoto);
 	}, []);
 
 	const tapGestureEvent =
@@ -142,10 +143,11 @@ export default function CameraComponent({ data }: CameraPropType) {
 		return <></>;
 	}
 
-	if (photo != null) {
+	if (photo != null && photo.base64 != undefined) {
 		const savePhoto = () => {
+			// console.log('Test: ', photo.base64);
 			data(photo.base64);
-			navigation.goBack();
+			// navigation.goBack();
 			MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
 				setPhoto(undefined);
 			});
@@ -209,8 +211,10 @@ export default function CameraComponent({ data }: CameraPropType) {
 			quality: 0,
 		});
 		if (result.canceled) return;
+
+		// console.log('Test2: ', result.assets[0].base64);
 		data(result.assets[0].base64);
-		navigation.goBack();
+		// navigation.goBack();
 	};
 
 	return (

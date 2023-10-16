@@ -24,7 +24,10 @@ router.post('/', (req: Request, res: Response): void => {
   const insertClothingItem = async (): Promise<any> => {
     try {
       const ciid = uuidv4();
+      console.log('Image: ', image);
+      console.log('others: ', category, title, brands, size, color);
       const imgRef = await convertImage(image, ciid, false);
+      console.log('FAilure');
       await pool.query(
         `INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
