@@ -4,7 +4,7 @@ import { getBucketName, s3 } from '../utils/awsImport';
 async function deleteObjectFromS3(objectKey: string) {
   const params = {
     Bucket: getBucketName(),
-    Key: objectKey,
+    Key: objectKey
   };
 
   try {

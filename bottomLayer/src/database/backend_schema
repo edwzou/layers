@@ -18,6 +18,13 @@ CREATE TYPE color_enum AS ENUM (
     '#F2F2F2'  -- White
 );
 
+CREATE TYPE item_categories AS ENUM (
+    'outerwear',
+    'tops',
+    'bottoms',
+    'shoes'
+);
+
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE SCHEMA backend_schema;
 CREATE TABLE backend_schema.user (
@@ -48,7 +55,7 @@ CREATE TABLE backend_schema.outfit (
 CREATE TABLE backend_schema.clothing_item (
     ciid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     image_url VARCHAR(255) NOT NULL,
-    category VARCHAR(255) NOT NULL,
+    category item_categories NOT NULL,
     title VARCHAR(50) NOT NULL,
     uid UUID NOT NULL,
     brands VARCHAR[],
