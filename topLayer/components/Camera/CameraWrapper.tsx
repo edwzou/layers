@@ -18,11 +18,6 @@ type PhotoType = {
 	updatePhoto: (photo: any) => void;
 };
 
-// export const PhotoContext = createContext<PhotoType>({
-// 	base64: '',
-// 	updatePhoto: () => {},
-// });
-
 const CameraWrapper = ({ route }: any) => {
 	const [data, setData] = useState<string>('');
 	const [clothingItem, setClothingItem] = useState({
@@ -41,22 +36,16 @@ const CameraWrapper = ({ route }: any) => {
 			image: image,
 			id: newId,
 		});
-		// console.log('test: ', newId, image);
 	};
 	const updatePhoto = (photo: string) => {
 		setData(photo);
 		updateClothingItem(photo);
 	};
-	// const photoContextValue = {
-	// 	base64: data,
-	// 	updatePhoto: (photo: string) => {
-	// 		setData(photo);
-	// 		updateClothingItem(photo);
-	// 	},
-	// };
+
 	const EditClothingComponent = () => (
 		<EditClothing clothingItem={clothingItem} />
 	);
+
 	const CameraComponentS = () => <CameraComponent data={updatePhoto} />;
 
 	return (

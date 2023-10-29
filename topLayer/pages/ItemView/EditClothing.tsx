@@ -1,9 +1,13 @@
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { View, StyleSheet, Pressable, Keyboard } from 'react-native';
+import { View, StyleSheet, Pressable, Keyboard, Text } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import Button from '../../components/Button/Button';
-import { ClothingTypes, TagAction } from '../../constants/Enums';
+import {
+	ClothingTypes,
+	StackNavigation,
+	TagAction,
+} from '../../constants/Enums';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
@@ -20,6 +24,9 @@ import { UserClothing } from '../Match';
 import { useForm, Controller } from 'react-hook-form';
 import Icon from 'react-native-remix-icon';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from 'utils/StackNavigation';
 
 interface EditClothingPropsType {
 	clothingItem: UserClothing;
@@ -35,8 +42,7 @@ interface FormValues {
 }
 
 const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
-	// console.log('ClothingItem: ', clothingItem);
-
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const colorPickerRef = useRef<refPropType>(null);
 
 	const [currentColorTags, setColorTags] = useState(clothingItem.colors);
@@ -191,7 +197,6 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	}, [clothingItem.image]);
 
 	const onSubmit = async (values: FormValues | any) => {
-		// console.log('RUnning: ', values);
 		if (values.category == '') {
 			console.log('Category: ', values.category);
 			console.log(itemTypeValue);
@@ -241,7 +246,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	};
 
 	const handlePress = () => {
-		console.log('DELETE BUTTON');
+		navigation.navigate(StackNavigation.OutfitView, {});
 	};
 
 	return (
@@ -263,7 +268,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						}}
 						value={itemName}
 					/>
-					<ItemCell image={`data:image/jpeg;base64,${clothingItem.image}`} />
+					<ItemCell image={clothingItem.image} base64 />
 					<View
 						style={{ flexDirection: 'row', justifyContent: 'space-between' }}
 					>
@@ -306,13 +311,16 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 					/>
 				</View>
 			</ScrollView>
-			<View style={{ alignSelf: 'center' }}>
-				<Button
-					text="Create/Update Item"
-					onPress={handleSubmit(onSubmit)}
-					bgColor={GlobalStyles.colorPalette.primary[500]}
-				/>
-			</View>
+			<Button
+				text="Create/Update Item"
+				onPress={handleSubmit(onSubmit)}
+				bgColor={GlobalStyles.colorPalette.primary[500]}
+				style={{
+					position: 'absolute',
+					bottom: GlobalStyles.layout.gap * 7,
+					alignSelf: 'center',
+				}}
+			/>
 			<View style={styles.deleteButtonContainer}>
 				<Pressable onPress={handlePress}>
 					<View style={styles.deleteButton}>
@@ -324,31 +332,6 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 					</View>
 				</Pressable>
 			</View>
-			{/* <View
-					style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}
-				>
-					<BrandTag
-						action={TagAction.remove}
-						label="Nike"
-						onPress={() => {
-							console.log('Brand Click');
-						}}
-					/>
-					<BrandTag
-						action={TagAction.remove}
-						label="Arc'teryx"
-						onPress={() => {
-							console.log('Brand Click');
-						}}
-					/>
-					<BrandTag
-						action={TagAction.add}
-						label="Arc'teryx"
-						onPress={() => {
-							console.log('Brand Click');
-						}}
-					/>
-				</View> */}
 			<GeneralModal
 				ref={colorPickerRef}
 				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
