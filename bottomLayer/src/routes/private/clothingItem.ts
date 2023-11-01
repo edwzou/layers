@@ -128,7 +128,7 @@ router.get('/:itemId', (req: Request, res: Response): void => {
 // Endpoint for retrieving all a logged in users clothing items
 router.get('/', (req: Request, res: Response): void => {
   const uid = req.user as string;
-  const { parse } = req.body;
+  const { parse } = req.query;
 
   const client = pool.connect();
 
