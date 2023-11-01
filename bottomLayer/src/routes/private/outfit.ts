@@ -85,10 +85,9 @@ router.put('/:oid', (req: Request, res: Response): void => {
 });
 
 // Endpoint for retrieving the logged in users outfit
-router.get('/:outfitId', (req: Request, res: Response): void => {
+router.get('/:outfitId&:parse', (req: Request, res: Response): void => {
   const uid = req.user as string;
-  const { outfitId } = req.params;
-  const { parse } = req.body;
+  const { outfitId, parse } = req.params;
 
   const getOutfitById = async (outfitId: string): Promise<any> => {
     try {
@@ -164,9 +163,9 @@ router.get('/:outfitId', (req: Request, res: Response): void => {
 });
 
 // Endpoint for retrieving all of the logged in user's outfits
-router.get('/', (req: Request, res: Response): void => {
+router.get('/:parse', (req: Request, res: Response): void => {
   const uid = req.user as string;
-  const { parse } = req.body;
+  const { parse } = req.params;
 
   const client = pool.connect();
 
@@ -189,7 +188,7 @@ router.get('/', (req: Request, res: Response): void => {
     }
   };
 
-  const getAllOutfitsCate = async (outfitId: string): Promise<any> => {
+  const getAllOutfitsCate = async (): Promise<any> => {
     let itemPrefix = '';
     for (const itemField of Object.values(itemFields)) {
       if (itemField === 'color') {
