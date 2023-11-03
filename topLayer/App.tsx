@@ -21,7 +21,6 @@ import { baseUrl } from './utils/apiUtils';
 import { User } from './pages/Main';
 
 export default function App() {
-
 	const [user, setUser] = useState<User | null>(null);
 
 	const userContextValue = {

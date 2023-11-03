@@ -86,10 +86,12 @@ const signupStrate = new LocalStrategy(
       try {
         // Can optimize the following awaits to call run them at the same time
         const uid = uuidv4();
+        const async1 = convertImage(profile_picture, uid, false);
+        const async2 = hash(password, 10);
         const emailLower = email.toLowerCase();
-        const hashedPass = await hash(password, 10);
-        const imgRef = await convertImage(profile_picture, uid, false);
-        await pool.query(
+        const hashedPass = await async2;
+        const imgRef = await async1;
+        const result = await pool.query(
           `
         INSERT INTO backend_schema.user (
           uid, first_name, last_name, email, username, password, private_option, followers, following, pp_url

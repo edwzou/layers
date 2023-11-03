@@ -12,6 +12,9 @@ import { convertImage } from '../../s3/convert-image';
 import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
 import { v4 as uuidv4 } from 'uuid';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
+import { AsyncManager } from '../../utils/event-emitters/asyncManager';
+import { urlDownloadHandler } from '../../utils/event-emitters/asyncHandlers';
+import { once } from 'node:events';
 import { itemCategories } from '../../utils/constants/itemCategories';
 const router = express.Router();
 
@@ -22,11 +25,11 @@ router.post('/', (req: Request, res: Response): void => {
   const insertClothingItem = async (): Promise<any> => {
     try {
       const ciid = uuidv4();
-      const URL = await convertImage(image, ciid, false);
+      const imgRef = await convertImage(image, ciid, false);
       await pool.query(
         `INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [ciid, URL, category, title, brands, size, color, uid]
+        [ciid, imgRef, category, title, brands, size, color, uid]
       );
 
       responseCallbackPost(null, res, 'Clothing Item');
@@ -72,7 +75,8 @@ router.put('/:ciid', (req: any, res: any): void => {
   const updateItem = async (ciid: string): Promise<void> => {
     // Update the outfit in the database
     try {
-      const imgRef = await convertImage(image, title, false);
+      const imgRef = await convertImage(image, ciid, false);
+
       const updateItem = await pool.query(
         `
       UPDATE backend_schema.clothing_item
@@ -114,7 +118,7 @@ router.get('/:itemId', (req: Request, res: Response): void => {
       );
       const result = item.rows[0];
       const imgRef = result.image_url;
-      result.image_url = downloadURLFromS3(imgRef);
+      result.image_url = await downloadURLFromS3(imgRef);
 
       responseCallbackGet(null, result, res, 'Clothing Item');
     } catch (error) {
@@ -141,9 +145,14 @@ router.get('/', (req: Request, res: Response): void => {
       await getUserCore(uid, await client);
       const result = await run;
       const items = result.rows;
+      const asyncManager = new AsyncManager(items.length);
+      const asyncTrigger = once(asyncManager, 'proceed');
       for (const item of items) {
-        const imgRef = item.image_url;
-        item.image_url = downloadURLFromS3(imgRef);
+        void urlDownloadHandler(item.image_url, item, asyncManager);
+      }
+      const resolution = await asyncTrigger;
+      if (resolution[1] < 0) {
+        throw new Error('Some Url Download Requests Failed');
       }
       responseCallbackGetAll(items, res, 'Clothing Items');
     } catch (error) {

@@ -6,6 +6,9 @@ import {
   responseCallbackGetAll
 } from '../../utils/responseCallback';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
+import { AsyncManager } from '../../utils/event-emitters/asyncManager';
+import { urlDownloadHandler } from '../../utils/event-emitters/asyncHandlers';
+import { once } from 'node:events';
 const router = express.Router();
 
 // Endpoint for retrieving a specific clothing item
@@ -20,7 +23,7 @@ router.get('/:itemId', (req: Request, res: Response): void => {
       );
       const result = item.rows[0];
       const imgRef = result.image_url;
-      result.image_url = downloadURLFromS3(imgRef);
+      result.image_url = await downloadURLFromS3(imgRef);
 
       responseCallbackGet(null, result, res, 'Clothing Item');
     } catch (error) {
@@ -31,7 +34,7 @@ router.get('/:itemId', (req: Request, res: Response): void => {
   void getClothingById(itemId);
 });
 
-// Endpoint for retrieving a all clothing items
+// Endpoint for retrieving all clothing items
 router.get('/u/:userId', (req: Request, res: Response): void => {
   const { userId } = req.params;
 
@@ -46,11 +49,16 @@ router.get('/u/:userId', (req: Request, res: Response): void => {
       await getUserCore(userId, await client);
       const result = await run;
       const items = result.rows;
+      const asyncManager = new AsyncManager(items.length);
+      const asyncTrigger = once(asyncManager, 'proceed');
       for (const item of items) {
-        const imgRef = item.image_url;
-        item.image_url = downloadURLFromS3(imgRef);
+        void urlDownloadHandler(item.image_url, item, asyncManager);
       }
 
+      const resolution = await asyncTrigger;
+      if (resolution[1] < 0) {
+        throw new Error('Some Url Download Requests Failed');
+      }
       responseCallbackGetAll(items, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);
