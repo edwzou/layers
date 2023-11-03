@@ -142,7 +142,6 @@ router.get('/', (req: Request, res: Response): void => {
         'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE uid = $1',
         [uid]
       );
-      await getUserCore(uid, await client);
       const result = await run;
       const items = result.rows;
       const asyncManager = new AsyncManager(items.length);
@@ -170,13 +169,20 @@ router.get('/', (req: Request, res: Response): void => {
       await getUserCore(uid, await client);
       const result = await run;
       const items = result.rows;
+      const asyncManager = new AsyncManager(items.length);
+      const asyncTrigger = once(asyncManager, 'proceed');
+      for (const item of items) {
+        void urlDownloadHandler(item.image_url, item, asyncManager);
+      }
       const categories: Record<string, any> = {};
       Object.values(itemCategories).forEach((value) => {
         categories[value] = [];
       });
+      const resolution = await asyncTrigger;
+      if (resolution[1] < 0) {
+        throw new Error('Some Url Download Requests Failed');
+      }
       for (const item of items) {
-        const imgRef = item.image_url;
-        item.image_url = downloadURLFromS3(imgRef);
         categories[item.category].push(item);
       }
       responseCallbackGetAll(categories, res, 'Clothing Items');
