@@ -1,6 +1,9 @@
+import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 import { itemCategories } from '../../utils/constants/itemCategories';
 import { itemFields } from '../../utils/constants/itemFields';
 import { outfitFields } from '../../utils/constants/outfitFields';
+import { urlDownloadHandlerOutfits } from '../../utils/event-emitters/asyncHandlers';
+import { AsyncManager } from '../../utils/event-emitters/asyncManager';
 import {
   getUserCore,
   responseCallbackDelete,
@@ -11,6 +14,8 @@ import {
 } from '../../utils/responseCallback';
 import { pool } from '../../utils/sqlImport';
 import express, { type Request, type Response } from 'express';
+import { once } from 'node:events';
+
 const router = express.Router();
 
 // Endpoint for creating a new outfit
@@ -131,18 +136,30 @@ router.get('/:outfitId', (req: Request, res: Response): void => {
         [outfitId, uid]
       );
       const result = outfit.rows;
+      const asyncManager = new AsyncManager(result.length);
+      const asyncTrigger = once(asyncManager, 'proceed');
+      for (const item of result) {
+        void urlDownloadHandlerOutfits(item.item_image_url, item, asyncManager);
+      }
+      // console.log('Result', result);
       const outfits: Record<string, any> = {};
       if (result.length !== 0) {
         for (const field of Object.values(outfitFields)) {
+          // console.log('test', result[0][field]);
           outfits[field] = result[0][field];
         }
         const categories: Record<string, any> = {};
         Object.values(itemCategories).forEach((value) => {
           categories[value] = [];
         });
+        const resolution = await asyncTrigger;
+        if (resolution[1] < 0) {
+          throw new Error('Some Url Download Requests Failed');
+        }
         for (const item of result) {
           const itemFilter: Record<string, any> = {};
           for (const field of Object.values(itemFields)) {
+            // console.log(field, item[`item_${field}`]);
             itemFilter[field] = item[`item_${field}`];
           }
           categories[item.item_category].push(itemFilter);
@@ -216,6 +233,12 @@ router.get('/', (req: Request, res: Response): void => {
         [uid]
       );
       const result = outfit.rows;
+      const asyncManager = new AsyncManager(result.length);
+      const asyncTrigger = once(asyncManager, 'proceed');
+      for (const item of result) {
+        void urlDownloadHandlerOutfits(item.item_image_url, item, asyncManager);
+      }
+      // console.log('test', result);
       const outfits: any[] = [];
       let categories: Record<string, any> = {};
       Object.values(itemCategories).forEach((value) => {
@@ -225,11 +248,19 @@ router.get('/', (req: Request, res: Response): void => {
       if (result.length !== 0) {
         let curoid: string = '';
         let fit: Record<string, any> = {};
+        curoid = result[0].oid;
+        for (const field of Object.values(outfitFields)) {
+          fit[field] = result[0][field];
+        }
+        const resolution = await asyncTrigger;
+        if (resolution[1] < 0) {
+          throw new Error('Some Url Download Requests Failed');
+        }
         for (const ofit of result) {
-          if (ofit.oid !== curoid && curoid !== '') {
+          if (ofit.oid !== curoid) {
+            curoid = ofit.oid;
             fit.clothing_items = categories;
             outfits.push(fit);
-            curoid = ofit.oid;
             categories = {};
             Object.values(itemCategories).forEach((value) => {
               categories[value] = [];
@@ -238,19 +269,14 @@ router.get('/', (req: Request, res: Response): void => {
             for (const field of Object.values(outfitFields)) {
               fit[field] = ofit[field];
             }
-          } else if (curoid === '') {
-            curoid = ofit.oid;
-            for (const field of Object.values(outfitFields)) {
-              fit[field] = ofit[field];
-            }
           }
           const itemFilter: Record<string, any> = {};
           for (const field of Object.values(itemFields)) {
             itemFilter[field] = ofit[`item_${field}`];
           }
-          console.log('Test2: ', itemFilter.category, itemFilter);
+          // console.log('Test2: ', itemFilter.category, itemFilter);
           categories[itemFilter.category].push(itemFilter);
-          console.log('Test: ', fit, outfits);
+          // console.log('Test: ', fit, outfits);
         }
         fit.clothing_items = categories;
         outfits.push(fit);

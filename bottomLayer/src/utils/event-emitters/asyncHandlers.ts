@@ -22,3 +22,24 @@ export const urlDownloadHandler = async (
     }
   }
 };
+
+export const urlDownloadHandlerOutfits = async (
+  imgRef: string,
+  objRef: any,
+  asyncEmitter: AsyncManager,
+  failure: string = 'Failure Downloading URL from S3: '
+): Promise<void> => {
+  try {
+    const result = await downloadURLFromS3(imgRef);
+    objRef.item_image_url = result;
+
+    asyncEmitter.complete(objRef.uid);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      asyncEmitter.failure(
+        failure + error.message + '\n with image: ' + imgRef,
+        objRef.item_uid
+      );
+    }
+  }
+};
