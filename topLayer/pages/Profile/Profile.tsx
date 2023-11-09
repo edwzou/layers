@@ -1,9 +1,9 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import {
-	View,
-	Pressable,
-	StyleSheet,
-	FlatList,
+    View,
+    Pressable,
+    StyleSheet,
+    FlatList,
 } from 'react-native';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
@@ -14,10 +14,10 @@ import CategorySlides from '../../components/Category/CategorySlides';
 import Navbar from '../../components/Bar/Navbar';
 
 import {
-	CategoryToIndex,
-	IndexToCategory,
-	StackNavigation,
-	ClothingTypes,
+    CategoryToIndex,
+    IndexToCategory,
+    StackNavigation,
+    ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { mockItemsData } from '../../constants/testData';
@@ -25,111 +25,150 @@ import { mockItemsData } from '../../constants/testData';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { UserClothing } from '../Match';
+import { UserClothing, UserClothingList } from '../Match';
 import { UserOutfit } from '../OutfitView';
 import { UserContext } from '../../utils/UserContext';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import axios from 'axios';
+import { baseUrl } from '../../utils/apiUtils';
+
 const Profile = () => {
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const flatListRef = useRef<FlatList>(null);
+    const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+    const flatListRef = useRef<FlatList>(null);
 
-	const [selectedCategory, setSelectedCategory] = useState(
-		ClothingTypes.outfits
-	);
-	const { data } = useContext(UserContext);
-	// const { first_name, last_name, username, pp_url } = data;
+    const [selectedCategory, setSelectedCategory] = useState(
+        ClothingTypes.outfits
+    );
+    const { data } = useContext(UserContext);
+    // const { first_name, last_name, username, pp_url } = data;
 
-	const handleItemChange = (item: UserClothing | UserOutfit) => {
-		if ('oid' in item) {
-			navigation.navigate(StackNavigation.OutfitView, {
-				item: item,
-				editable: true,
-			});
-		} else {
-			navigation.navigate(StackNavigation.ItemView, {
-				item: item,
-				editable: true,
-			});
-		}
-	};
+    const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
+    const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
+    const [allTops, setAllTops] = useState<UserClothing[]>([]);
+    const [allBottoms, setAllBottoms] = useState<UserClothing[]>([]);
+    const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
 
-	const handleCategoryChange = (category: string) => {
-		setSelectedCategory(category);
-		handleIndexChange(CategoryToIndex[category]);
-	};
+    useEffect(() => {
 
-	const handleIndexChange = (index: number) => {
-		if (flatListRef.current != null) {
-			flatListRef.current?.scrollToIndex({ index, animated: true });
-		}
-	};
+        const getAllOutfits = async () => {
+            const { data, status } = await axios.get(`${baseUrl}/api/private/outfits?parse=categories`);
 
-	const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
-		if (viewableItems.length > 0) {
-			const visibleItem = viewableItems[0];
-			const index = mockItemsData.findIndex(
-				(item) => item.category === visibleItem.item.category
-			);
-			setSelectedCategory(IndexToCategory[index]);
-		}
-	}).current;
+            if (status === 200) {
+                return setAllOutfits(data.data);
+            }
 
-	const toggleFeedbackModal = () => {
-		navigation.navigate(StackNavigation.Feedback, {});
-	};
+            return setAllOutfits([]);
+        };
 
-	const toggleSettingsModal = () => {
-		navigation.navigate(StackNavigation.Settings, {});
-	};
+        const getAllClothingItems = async () => {
+            const { data, status } = await axios.get(`${baseUrl}/api/private/clothing_items?parse=categories`);
 
-	return (
-		<SafeAreaView style={{ flex: 1 }}>
-			<Navbar toggleFeedbackModal={toggleFeedbackModal} />
-			<View style={styles.profilePicture}>
-				<Pressable
-					onPress={() => {
-						toggleSettingsModal()
-					}}
-				>
-					<ProfilePicture imageUrl={data ? data.pp_url : ''} />
-				</Pressable>
-				<View>
-					<FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
-					<Username username={data ? data.username : ''} />
-					{/* <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
+            if (status === 200) {
+                return setAllOuterwear(data.data['outerwear']), setAllTops(data.data['tops']), setAllBottoms(data.data['bottoms']), setAllShoes(data.data['shoes'])
+            }
+
+            return setAllOuterwear([]), setAllTops([]), setAllBottoms([]), setAllShoes([]);
+        };
+
+        void getAllOutfits();
+        void getAllClothingItems();
+    }, []);
+
+    const handleItemChange = (item: UserClothing | UserOutfit) => {
+        if ('oid' in item) {
+            navigation.navigate(StackNavigation.OutfitView, {
+                item: item,
+                editable: true,
+            });
+        } else {
+            navigation.navigate(StackNavigation.ItemView, {
+                item: item,
+                editable: true,
+            });
+        }
+    };
+
+    const handleCategoryChange = (category: string) => {
+        setSelectedCategory(category);
+        handleIndexChange(CategoryToIndex[category]);
+    };
+
+    const handleIndexChange = (index: number) => {
+        if (flatListRef.current != null) {
+            flatListRef.current?.scrollToIndex({ index, animated: true });
+        }
+    };
+
+    const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
+        if (viewableItems.length > 0) {
+            const visibleItem = viewableItems[0];
+            const index = mockItemsData.findIndex(
+                (item) => item.category === visibleItem.item.category
+            );
+            setSelectedCategory(IndexToCategory[index]);
+        }
+    }).current;
+
+    const toggleFeedbackModal = () => {
+        navigation.navigate(StackNavigation.Feedback, {});
+    };
+
+    const toggleSettingsModal = () => {
+        navigation.navigate(StackNavigation.Settings, {});
+    };
+
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <Navbar toggleFeedbackModal={toggleFeedbackModal} />
+            <View style={styles.profilePicture}>
+                <Pressable
+                    onPress={() => {
+                        toggleSettingsModal()
+                    }}
+                >
+                    <ProfilePicture imageUrl={data ? data.pp_url : ''} />
+                </Pressable>
+                <View>
+                    <FullName firstName={data ? data.first_name : ''} lastName={data ? data.last_name : ''} />
+                    <Username username={data ? data.username : ''} />
+                    {/* <FullName firstName={mockUserData.firstName} lastName={mockUserData.lastName} />
                         <Username username={mockUserData.username} /> */}
-				</View>
-			</View>
-			<View style={{ top: 5 }}>
-				<CategoryBar
-					selectedCategory={selectedCategory}
-					handleCategoryChange={handleCategoryChange}
-				/>
-				<CategorySlides
-					categorySlidesRef={flatListRef}
-					clothingData={mockItemsData}
-					selectedCategory={selectedCategory}
-					handleItemChange={handleItemChange}
-					handleViewableItemsChanged={handleViewableItemsChanged}
-				/>
-			</View>
-		</SafeAreaView >
-	);
+                </View>
+            </View>
+            <View style={{ top: 5 }}>
+                <CategoryBar
+                    selectedCategory={selectedCategory}
+                    handleCategoryChange={handleCategoryChange}
+                />
+                <CategorySlides
+                    categorySlidesRef={flatListRef}
+                    allOutfitsData={allOutfits}
+                    allOuterwearData={allOuterwear}
+                    allTopsData={allTops}
+                    allBottomsData={allBottoms}
+                    allShoesData={allShoes}
+                    selectedCategory={selectedCategory}
+                    handleItemChange={handleItemChange}
+                    handleViewableItemsChanged={handleViewableItemsChanged}
+                />
+            </View>
+        </SafeAreaView >
+    );
 };
 
 const styles = StyleSheet.create({
-	bookmarkIconWrapper: {
-		position: 'absolute',
-		top: 0,
-		right: GlobalStyles.layout.xGap,
-	},
-	profilePicture: {
-		alignItems: 'center',
-		gap: 7,
-		shadowColor: 'black',
-	},
+    bookmarkIconWrapper: {
+        position: 'absolute',
+        top: 0,
+        right: GlobalStyles.layout.xGap,
+    },
+    profilePicture: {
+        alignItems: 'center',
+        gap: 7,
+        shadowColor: 'black',
+    },
 });
 
 export default Profile;

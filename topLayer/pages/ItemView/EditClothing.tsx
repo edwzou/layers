@@ -196,8 +196,8 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 
 	const onSubmit = async (values: FormValues | any) => {
 		if (values.category == '') {
-			console.log('Category: ', values.category);
-			console.log(itemTypeValue);
+			//console.log('Category: ', values.category);
+			//console.log(itemTypeValue);
 			throw new Error('Category Value Not Filled Out.');
 		}
 		if (values.title == '') {
@@ -229,7 +229,6 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		}
 	};
 
-<<<<<<< HEAD
 	const handleOnRemovePress = (colorToDelete: string) => {
 		const updatedColorTags = currentColorTags.filter((color: string) => color !== colorToDelete);
 		setColorTags(updatedColorTags);
@@ -237,17 +236,6 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 
 	const handleOnNewColorPress = (colorToAdd: string) => {
 		if (!currentColorTags.some((color: string) => color === colorToAdd)) {
-=======
-	const handleOnRemovePress = (colorToDelete: [string, string]) => {
-		const updatedColorTags = currentColorTags.filter(
-			(color) => color !== colorToDelete
-		);
-		setColorTags(updatedColorTags);
-	};
-
-	const handleOnNewColorPress = (colorToAdd: [string, string]) => {
-		if (!currentColorTags.some((color) => color[1] === colorToAdd[1])) {
->>>>>>> main
 			setColorTags([...currentColorTags, colorToAdd]);
 		}
 		colorPickerRef.current?.scrollTo(0);
@@ -276,53 +264,46 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						}}
 						value={itemName}
 					/>
-<<<<<<< HEAD
 					<ItemCell imageUrl={clothingItem.image_url} />
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-=======
-					<ItemCell image={clothingItem.image} base64 />
-			<View
-				style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-			>
->>>>>>> main
-				<View style={{ width: ITEM_SIZE(2) }}>
-					<Dropdown
-						label="Item type"
-						open={itemTypeOpen}
-						setOpen={setItemTypeOpen}
-						setItems={setItemType}
-						setValue={(value) => {
-							setItemTypeValue(value);
-							setValue('category', itemTypeValue);
+						<View style={{ width: ITEM_SIZE(2) }}>
+							<Dropdown
+								label="Item type"
+								open={itemTypeOpen}
+								setOpen={setItemTypeOpen}
+								setItems={setItemType}
+								setValue={(value) => {
+									setItemTypeValue(value);
+									setValue('category', itemTypeValue);
+								}}
+								items={itemType}
+								value={itemTypeValue}
+							/>
+						</View>
+						<View style={{ width: ITEM_SIZE(2) }}>
+							<Dropdown
+								label="Size"
+								open={sizeOpen}
+								setOpen={setSizeOpen}
+								setItems={setSizes}
+								setValue={(value) => {
+									setSizeValue(value);
+									setValue('size', sizeValue);
+								}}
+								items={sizes}
+								value={sizeValue}
+							/>
+						</View>
+					</View>
+					<ColorTagsList
+						data={currentColorTags}
+						tagAction={TagAction.remove}
+						onAddPress={() => {
+							colorPickerRef.current?.scrollTo(lowTranslateY);
 						}}
-						items={itemType}
-						value={itemTypeValue}
+						onRemovePress={handleOnRemovePress}
 					/>
 				</View>
-				<View style={{ width: ITEM_SIZE(2) }}>
-					<Dropdown
-						label="Size"
-						open={sizeOpen}
-						setOpen={setSizeOpen}
-						setItems={setSizes}
-						setValue={(value) => {
-							setSizeValue(value);
-							setValue('size', sizeValue);
-						}}
-						items={sizes}
-						value={sizeValue}
-					/>
-				</View>
-			</View>
-			<ColorTagsList
-				data={currentColorTags}
-				tagAction={TagAction.remove}
-				onAddPress={() => {
-					colorPickerRef.current?.scrollTo(lowTranslateY);
-				}}
-				onRemovePress={handleOnRemovePress}
-			/>
-		</View>
 			</ScrollView >
 			<Button
 				text="Create/Update Item"

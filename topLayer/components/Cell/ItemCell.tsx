@@ -1,9 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Image, type ImageStyle, Pressable, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 interface ItemCellPropsType {
-	imageUrl: string; // !!! Replace 'any' with 'string'
+	imageUrl: string;
 	disablePress?: boolean;
 	imageStyle?: ImageStyle;
 	onPress?: () => void;
@@ -17,9 +17,16 @@ const ItemCell = ({
 	onPress,
 	base64,
 }: ItemCellPropsType) => {
-	const img = base64 ? `data:image/jpg;base64,${image}` : image;
+
+	//const img = base64 ? `data:image/jpg;base64,${image}` : image;
+
+	// const handleDeletePress = () => {
+	// 	console.log('delete button pressed');
+	// };
+
+	//console.log(imageUrl)
+
 	return (
-<<<<<<< HEAD
 		<Pressable disabled={disablePress} style={[styles.container]} onPress={onPress}>
 			<Image source={{ uri: imageUrl }} style={[styles.image, imageStyle]} resizeMode="contain" />
 			{/* {canDelete && (
@@ -35,26 +42,6 @@ const ItemCell = ({
 					</Pressable>
 				</View>
 			)} */}
-=======
-		<Pressable
-			disabled={disablePress}
-			style={[styles.container]}
-			onPress={onPress}
-		>
-			{base64 ? (
-				<Image
-					source={{ uri: `data:image/jpg;base64,${image}` }}
-					style={[styles.image, imageStyle]}
-					resizeMode="cover"
-				/>
-			) : (
-				<Image
-					source={img}
-					style={[styles.image, imageStyle]}
-					resizeMode="cover"
-				/>
-			)}
->>>>>>> main
 		</Pressable>
 	);
 };

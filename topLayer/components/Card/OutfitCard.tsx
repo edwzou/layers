@@ -7,41 +7,22 @@ import ItemCell from '../Cell/ItemCell';
 import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { type UserClothing } from '../../pages/Match';
-import axios from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
 
 const itemCellSize = (screenWidth - 60) / 4;
 
 interface OutfitCardPropsType {
 	title: string;
-	items: string[];
+	clothingItems: UserClothing[];
 	onPress: () => void;
 }
 
 export default function OutfitCard({
 	title,
-	items,
+	clothingItems,
 	onPress,
 }: OutfitCardPropsType) {
 	const truncatedTitle = title.length > 70 ? title.slice(0, 70) + '...' : title;
-
-	const [clothingItems, setClothingItems] = useState<UserClothing[]>([]);
-
-	useEffect(() => {
-		const getClothingItems = async () => {
-			let fetchedClothingItems: UserClothing[] = [];
-			for (let i = 0; i < items.length; i++) {
-				const { data, status } = await axios.get(`${baseUrl}/api/private/clothing_items/${items[i]}`);
-
-				if (status === 200) {
-					fetchedClothingItems.push(data.data);
-				}
-			}
-			setClothingItems(fetchedClothingItems);
-		};
-
-		void getClothingItems();
-	}, []);
+	const clothingArray = Object.values(clothingItems).flat().slice(0, 4);
 
 	return (
 		<Pressable style={styles.container} onPress={onPress}>
@@ -49,13 +30,13 @@ export default function OutfitCard({
 				<Text style={styles.title}>{truncatedTitle}</Text>
 				<Text>
 					<View style={[styles.label, GlobalStyles.utils.tagShadow]}>
-						<Text style={styles.labelText}>{clothingItems.length} items</Text>
+						<Text style={styles.labelText}>{clothingArray.length} items</Text>
 					</View>
 				</Text>
 			</View>
 			<View style={styles.itemsContainer}>
 				<FlatList
-					data={clothingItems.slice(0, 4)}
+					data={clothingArray}
 					renderItem={({ item }) => (
 						<View style={styles.itemContainer}>
 							<ItemCell
