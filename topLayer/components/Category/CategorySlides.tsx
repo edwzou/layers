@@ -5,35 +5,25 @@ import CategorySlide from './CategorySlide';
 
 import { CategoryToIndex } from '../../constants/Enums';
 
-import { UserClothing } from '../../pages/Match';
+import { UserClothing, UserAllItems } from '../../pages/Match';
 import { UserOutfit } from '../../pages/OutfitView';
 
 interface CategorySlidesPropsType {
     categorySlidesRef: any; /// !!! Fix any type
-    allOutfitsData: UserOutfit[];
-    allOuterwearData: UserClothing[];
-    allTopsData: UserClothing[];
-    allBottomsData: UserClothing[];
-    allShoesData: UserClothing[];
+    allItemsData: UserAllItems[]
     selectedCategory: string;
     handleItemChange: (item: any) => void;
     handleViewableItemsChanged: ({ viewableItems }: any) => void;
 }
 
-const CategorySlides = ({ categorySlidesRef, allOutfitsData, allOuterwearData, allTopsData, allBottomsData, allShoesData, selectedCategory, handleItemChange, handleViewableItemsChanged }: CategorySlidesPropsType) => {
+const CategorySlides = ({ categorySlidesRef, allItemsData, selectedCategory, handleItemChange, handleViewableItemsChanged }: CategorySlidesPropsType) => {
 
     const windowWidth = Dimensions.get('window').width;
-
-    console.log(allOutfitsData)
-    console.log(allOuterwearData)
-    console.log(allTopsData)
-    console.log(allBottomsData)
-    console.log(allShoesData)
 
     return (
         <FlatList
             ref={categorySlidesRef}
-            data={[allOutfitsData, allOuterwearData, allTopsData, allBottomsData, allShoesData]}
+            data={allItemsData}
             renderItem={({ item }) => {
                 //console.log(item)
                 return (

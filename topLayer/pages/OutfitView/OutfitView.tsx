@@ -5,11 +5,9 @@ import ItemCell from '../../components/Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { FlatList } from 'react-native-gesture-handler';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
-import { TagAction, ColorTags } from '../../constants/Enums';
-import BrandTag from '../../components/Tag/BrandTag';
+import { TagAction } from '../../constants/Enums';
 import { screenHeight } from '../../utils/modalMaxShow';
 
-import { UserOutfit } from '.'
 import { UserClothing } from '../../pages/Match';
 
 interface OutfitViewPropsType {

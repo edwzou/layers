@@ -25,7 +25,7 @@ import { mockItemsData } from '../../constants/testData';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { UserClothing, UserClothingList } from '../Match';
+import { UserAllItems, UserClothing, UserClothingList } from '../Match';
 import { UserOutfit } from '../OutfitView';
 import { UserContext } from '../../utils/UserContext';
 import { MainPageContext } from '../../pages/Main/MainPage';
@@ -38,9 +38,7 @@ const Profile = () => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
 
-    const [selectedCategory, setSelectedCategory] = useState(
-        ClothingTypes.outfits
-    );
+    const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
     const { data } = useContext(UserContext);
     // const { first_name, last_name, username, pp_url } = data;
 
@@ -50,7 +48,32 @@ const Profile = () => {
     const [allBottoms, setAllBottoms] = useState<UserClothing[]>([]);
     const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
 
+    const allItems: UserAllItems[] = [
+        {
+            category: 'outfits',
+            data: allOutfits
+        },
+        {
+            category: 'outerwear',
+            data: allOuterwear
+        },
+        {
+            category: 'tops',
+            data: allTops
+        },
+        {
+            category: 'bottoms',
+            data: allBottoms
+        },
+        {
+            category: 'shoes',
+            data: allShoes
+        },
+    ]
+
     useEffect(() => {
+
+        console.log(selectedCategory)
 
         const getAllOutfits = async () => {
             const { data, status } = await axios.get(`${baseUrl}/api/private/outfits?parse=categories`);
@@ -104,7 +127,7 @@ const Profile = () => {
     const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
         if (viewableItems.length > 0) {
             const visibleItem = viewableItems[0];
-            const index = mockItemsData.findIndex(
+            const index = allItems.findIndex(
                 (item) => item.category === visibleItem.item.category
             );
             setSelectedCategory(IndexToCategory[index]);
@@ -144,11 +167,7 @@ const Profile = () => {
                 />
                 <CategorySlides
                     categorySlidesRef={flatListRef}
-                    allOutfitsData={allOutfits}
-                    allOuterwearData={allOuterwear}
-                    allTopsData={allTops}
-                    allBottomsData={allBottoms}
-                    allShoesData={allShoes}
+                    allItemsData={allItems}
                     selectedCategory={selectedCategory}
                     handleItemChange={handleItemChange}
                     handleViewableItemsChanged={handleViewableItemsChanged}

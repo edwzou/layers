@@ -10,12 +10,12 @@ import ItemCell from '../Cell/ItemCell';
 import { ClothingTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { UserClothing } from '../../pages/Match';
+import { UserClothing, UserAllItems } from '../../pages/Match';
 import { UserOutfit } from '../../pages/OutfitView';
 
 interface CategorySlidePropsType {
 	// ex) [{"clothing_items": {"bottoms": [Array], "outerwear": [Array], "shoes": [Array], "tops": [Array]}, "created_at": "2023-10-14T07:15:07.986Z", "oid": "a11bdae9-9ecb-48f4-8ac2-802809034a0f", "title": "Weekend Casual", "uid": "890e7fad-1352-4998-8f2f-ff8b74b04b86"}]
-	itemsData: UserClothing[] | UserOutfit[]; //! !! fix any type
+	itemsData: UserAllItems; //! !! fix any type
 	handleItemChange: (item: any) => void;
 }
 
@@ -29,11 +29,11 @@ const CategorySlide = ({ itemsData, handleItemChange }: CategorySlidePropsType) 
 
 	return (
 		<View style={[styles.container, { width: windowWidth - 2 * GlobalStyles.layout.xGap }]}>
-			{itemsData.length !== 0 ?
+			{itemsData.data.length !== 0 ?
 				(
-					typeof itemsData[0] === 'object' && 'oid' in itemsData[0] ? (
+					itemsData.category == 'outfits' ? (
 						<FlatList
-							data={itemsData as UserOutfit[]}
+							data={itemsData.data as UserOutfit[]}
 							renderItem={({ item }) => {
 								//console.log(item)
 								return (
@@ -52,7 +52,7 @@ const CategorySlide = ({ itemsData, handleItemChange }: CategorySlidePropsType) 
 						/>
 					) : (
 						<FlatList
-							data={itemsData as UserClothing[]}
+							data={itemsData.data as UserClothing[]}
 							renderItem={({ item }) => {
 								//console.log(item);
 								return (

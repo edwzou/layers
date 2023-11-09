@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import OutfitView from './OutfitView'
 import OutfitEdit from './OutfitEdit';
@@ -11,35 +11,18 @@ import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import { headerRight } from '../../components/Modal/HeaderRight';
-import { UserClothing } from '../../pages/Match';
-
-import axios from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
+import { UserClothing, UserClothingList } from '../../pages/Match';
 
 const OutfitViewPage = ({ route }: any) => {
 
     const { item, editable } = route.params;
 
-    const [clothingItems, setClothingItems] = useState<UserClothing[]>([]);
+    const getFlatArrayOfValues = (clothingList: UserClothingList): UserClothing[] => {
+        return Object.values(clothingList).flat()
+    }
 
-    useEffect(() => {
-        const getClothingItems = async () => {
-            let fetchedClothingItems: UserClothing[] = [];
-            for (let i = 0; i < item.clothing_items.length; i++) {
-                const { data, status } = await axios.get(`${baseUrl}/api/private/clothing_items/${item.clothing_items[i]}`);
-
-                if (status === 200) {
-                    fetchedClothingItems.push(data.data);
-                }
-            }
-            setClothingItems(fetchedClothingItems);
-        };
-
-        void getClothingItems();
-    }, []);
-
-    const OutfitViewComponent = () => (<OutfitView clothingItems={clothingItems} />)
-    const OutfitEditComponent = () => (<OutfitEdit title={item.title} clothingItems={clothingItems} />)
+    const OutfitViewComponent = () => (<OutfitView clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
+    const OutfitEditComponent = () => (<OutfitEdit title={item.title} clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
 
     return (
         <NavigationContainer
