@@ -181,18 +181,21 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		formState: { dirtyFields, errors },
 	} = useForm({
 		defaultValues: {
-			image: clothingItem.image,
-			category: itemTypeValue,
-			title: itemName,
-			size: '',
-			color: currentColorTags,
+			ciid: '',
+			image_url: '',
+			category: '',
+			title: '',
+			uid: '',
 			brands: [],
+			size: '',
+			color: [],
+			created_at: ''
 		},
 	});
 
 	useEffect(() => {
-		setValue('image', clothingItem.image);
-	}, [clothingItem.image]);
+		setValue('image_url', clothingItem.image_url);
+	}, [clothingItem.image_url]);
 
 	const onSubmit = async (values: FormValues | any) => {
 		if (values.category == '') {
@@ -206,7 +209,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		if (values.size == '') {
 			throw new Error('Size Value Not Filled Out.');
 		}
-		if (values.image == '') {
+		if (values.image_url == '') {
 			throw new Error('Image Value Not Filled Out.');
 		}
 		try {

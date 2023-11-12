@@ -20,7 +20,7 @@ import {
     ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { mockItemsData } from '../../constants/testData';
+// import { mockItemsData } from '../../constants/testData';
 
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -35,7 +35,7 @@ const Profile = () => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
 
-    const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
+    const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits as string);
     const { data } = useContext(UserContext);
     const { allItems } = useContext(MainPageContext);
     // const { first_name, last_name, username, pp_url } = data;
