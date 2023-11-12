@@ -31,73 +31,14 @@ import { UserContext } from '../../utils/UserContext';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import axios from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
-
 const Profile = () => {
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
 
     const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
     const { data } = useContext(UserContext);
+    const { allItems } = useContext(MainPageContext);
     // const { first_name, last_name, username, pp_url } = data;
-
-    const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
-    const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
-    const [allTops, setAllTops] = useState<UserClothing[]>([]);
-    const [allBottoms, setAllBottoms] = useState<UserClothing[]>([]);
-    const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
-
-    const allItems: UserAllItems[] = [
-        {
-            category: 'outfits',
-            data: allOutfits
-        },
-        {
-            category: 'outerwear',
-            data: allOuterwear
-        },
-        {
-            category: 'tops',
-            data: allTops
-        },
-        {
-            category: 'bottoms',
-            data: allBottoms
-        },
-        {
-            category: 'shoes',
-            data: allShoes
-        },
-    ]
-
-    useEffect(() => {
-
-        console.log(selectedCategory)
-
-        const getAllOutfits = async () => {
-            const { data, status } = await axios.get(`${baseUrl}/api/private/outfits?parse=categories`);
-
-            if (status === 200) {
-                return setAllOutfits(data.data);
-            }
-
-            return setAllOutfits([]);
-        };
-
-        const getAllClothingItems = async () => {
-            const { data, status } = await axios.get(`${baseUrl}/api/private/clothing_items?parse=categories`);
-
-            if (status === 200) {
-                return setAllOuterwear(data.data['outerwear']), setAllTops(data.data['tops']), setAllBottoms(data.data['bottoms']), setAllShoes(data.data['shoes'])
-            }
-
-            return setAllOuterwear([]), setAllTops([]), setAllBottoms([]), setAllShoes([]);
-        };
-
-        void getAllOutfits();
-        void getAllClothingItems();
-    }, []);
 
     const handleItemChange = (item: UserClothing | UserOutfit) => {
         if ('oid' in item) {

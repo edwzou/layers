@@ -14,21 +14,21 @@ export const StepOverTypes = {
 	update: 'Update',
 } as const;
 
-export interface ClothingCategoryTypes {
-	// !!! Change these types
-	outfits: any;
-	outerwear: any;
-	tops: any;
-	bottoms: any;
-	shoes: any;
-}
+// export interface ClothingCategoryTypes {
+// 	// !!! Change these types
+// 	outfits: any;
+// 	outerwear: any;
+// 	tops: any;
+// 	bottoms: any;
+// 	shoes: any;
+// }
 
-export const ClothingTypes: ClothingCategoryTypes = {
-	outfits,
-	outerwear,
-	tops,
-	bottoms,
-	shoes,
+export const ClothingTypes = {
+	outfits: outfits,
+	outerwear: outerwear,
+	tops: tops,
+	bottoms: bottoms,
+	shoes: shoes,
 } as const;
 
 export const StackNavigation = {

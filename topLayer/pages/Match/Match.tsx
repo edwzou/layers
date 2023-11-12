@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { SafeAreaView } from 'react-native';
 
 import { type refPropType } from '../../components/Modal/GeneralModal';
@@ -10,7 +10,9 @@ import {
     ClothingTypes,
     StackNavigation,
 } from '../../constants/Enums';
-import { mockItemsData } from '../../constants/testData';
+// import { mockItemsData } from '../../constants/testData';
+
+import { MainPageContext } from '../../pages/Main/MainPage';
 
 import {
     type UserClothing,
@@ -26,6 +28,8 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 
 const Match = () => {
+
+    const { allItems } = useContext(MainPageContext);
 
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
@@ -46,27 +50,33 @@ const Match = () => {
     });
 
     useEffect(() => {
+
         const filterClothing = (type: string) => {
-            return mockItemsData.slice(1).filter((value) => value.category.toString() === type);
+            return allItems.slice(1).filter((value) => value.category.toString() === type);
         };
+        console.log(filterClothing(ClothingTypes.tops)[0])
 
         setData((value) => ({
             ...value,
             outerwear: filterClothing(ClothingTypes.outerwear)[0].data,
-        }));
+        }) as UserClothingList);
+
         setData((value) => ({
             ...value,
             tops: filterClothing(ClothingTypes.tops)[0].data,
-        }));
+        }) as UserClothingList);
+
         setData((value) => ({
             ...value,
             bottoms: filterClothing(ClothingTypes.bottoms)[0].data,
-        }));
+        }) as UserClothingList);
+
         setData((value) => ({
             ...value,
             shoes: filterClothing(ClothingTypes.shoes)[0].data,
-        }));
-    }, []);
+        }) as UserClothingList);
+
+    }, [allItems]);
 
     useEffect(() => {
         setPreviewData((value) => ({

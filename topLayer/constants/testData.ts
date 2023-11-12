@@ -35,95 +35,95 @@ import { User } from '../pages/Main';
 import { UserItems } from '../pages/Main';
 import { UserOutfits } from '../pages/OutfitView';
 
-export const mockItemsData: (UserItems | UserOutfits)[] = [
-	{
-		category: 'outfits',
-		data: [
-			{
-				oid: "a11bdae9-9ecb-48f4-8ac2-802809034a0f",
-				title: "Weekend Casual",
-				clothing_items: [
-					"069ef97a-6c32-4588-a7ba-38885a869718",
-					"ddee59f2-acc7-46d5-bf1f-4255d990932b",
-					"0b6224eb-799e-4f71-a27a-1dcb6a801a96",
-					"3e56dedf-9e82-4ca4-94a8-c4d694e484a5"
-				],
-				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
-				created_at: "2023-10-14T14:15:07.986Z"
-			}
-		]
-	},
-	{
-		category: 'outerwear',
-		data: [
-			{
-				ciid: "069ef97a-6c32-4588-a7ba-38885a869718",
-				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/069ef97a-6c32-4588-a7ba-38885a869718",
-				category: "outerwear",
-				title: "Cozy Flannel",
-				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
-				brands: [],
-				size: "m",
-				color: [
-					"#3869B2",
-					"#E8D3B4"
-				],
-				created_at: "2023-10-14T14:06:12.393Z"
-		}
-	],
-	},
-	{
-		category: 'tops',
-		data: [
-			{
-				ciid: "36179217-b9c9-4840-82d5-e798fdb26b24",
-				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/36179217-b9c9-4840-82d5-e798fdb26b24",
-				category: "tops",
-				title: "Human 285 Designed",
-				uid: "ccefe48f-2387-4b2f-a7f3-65bc0588f70f",
-				brands: [],
-				size: "m",
-				color: ['#977854'],
-				created_at: "2023-10-07T07:44:51.690Z"
-		}
-	],
-	},
-	{
-		category: 'bottoms',
-		data: [
-			{
-				ciid: "0b6224eb-799e-4f71-a27a-1dcb6a801a96",
-				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/0b6224eb-799e-4f71-a27a-1dcb6a801a96",
-				category: "bottoms",
-				title: "Parachute cargo!",
-				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
-				brands: [],
-				size: "m",
-				color: ['#E8D3B4'],
-				created_at: "2023-10-14T13:53:22.659Z"
-		}
-	],
-	},
-	{
-		category: 'shoes',
-		data: [
-			{
-				ciid: "3e56dedf-9e82-4ca4-94a8-c4d694e484a5",
-				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/3e56dedf-9e82-4ca4-94a8-c4d694e484a5",
-				category: "shoes",
-				title: "Cold Dunks",
-				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
-				brands: [],
-				size: "m",
-				color: [
-					"#977854",
-					"#E8D3B4"
-				],
-				created_at: "2023-10-14T14:12:36.939Z"
-		}
-	],
-	},
-];
+// export const mockItemsData: (UserItems | UserOutfits)[] = [
+// 	{
+// 		category: 'outfits',
+// 		data: [
+// 			{
+// 				oid: "a11bdae9-9ecb-48f4-8ac2-802809034a0f",
+// 				title: "Weekend Casual",
+// 				clothing_items: [
+// 					"069ef97a-6c32-4588-a7ba-38885a869718",
+// 					"ddee59f2-acc7-46d5-bf1f-4255d990932b",
+// 					"0b6224eb-799e-4f71-a27a-1dcb6a801a96",
+// 					"3e56dedf-9e82-4ca4-94a8-c4d694e484a5"
+// 				],
+// 				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
+// 				created_at: "2023-10-14T14:15:07.986Z"
+// 			}
+// 		]
+// 	},
+// 	{
+// 		category: 'outerwear',
+// 		data: [
+// 			{
+// 				ciid: "069ef97a-6c32-4588-a7ba-38885a869718",
+// 				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/069ef97a-6c32-4588-a7ba-38885a869718",
+// 				category: "outerwear",
+// 				title: "Cozy Flannel",
+// 				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
+// 				brands: [],
+// 				size: "m",
+// 				color: [
+// 					"#3869B2",
+// 					"#E8D3B4"
+// 				],
+// 				created_at: "2023-10-14T14:06:12.393Z"
+// 		}
+// 	],
+// 	},
+// 	{
+// 		category: 'tops',
+// 		data: [
+// 			{
+// 				ciid: "36179217-b9c9-4840-82d5-e798fdb26b24",
+// 				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/36179217-b9c9-4840-82d5-e798fdb26b24",
+// 				category: "tops",
+// 				title: "Human 285 Designed",
+// 				uid: "ccefe48f-2387-4b2f-a7f3-65bc0588f70f",
+// 				brands: [],
+// 				size: "m",
+// 				color: ['#977854'],
+// 				created_at: "2023-10-07T07:44:51.690Z"
+// 		}
+// 	],
+// 	},
+// 	{
+// 		category: 'bottoms',
+// 		data: [
+// 			{
+// 				ciid: "0b6224eb-799e-4f71-a27a-1dcb6a801a96",
+// 				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/0b6224eb-799e-4f71-a27a-1dcb6a801a96",
+// 				category: "bottoms",
+// 				title: "Parachute cargo!",
+// 				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
+// 				brands: [],
+// 				size: "m",
+// 				color: ['#E8D3B4'],
+// 				created_at: "2023-10-14T13:53:22.659Z"
+// 		}
+// 	],
+// 	},
+// 	{
+// 		category: 'shoes',
+// 		data: [
+// 			{
+// 				ciid: "3e56dedf-9e82-4ca4-94a8-c4d694e484a5",
+// 				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/3e56dedf-9e82-4ca4-94a8-c4d694e484a5",
+// 				category: "shoes",
+// 				title: "Cold Dunks",
+// 				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
+// 				brands: [],
+// 				size: "m",
+// 				color: [
+// 					"#977854",
+// 					"#E8D3B4"
+// 				],
+// 				created_at: "2023-10-14T14:12:36.939Z"
+// 		}
+// 	],
+// 	},
+// ];
 
 // export const mockItemsData: UserItems[] = [
 // 	{
