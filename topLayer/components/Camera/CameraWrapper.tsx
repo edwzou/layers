@@ -21,20 +21,23 @@ type PhotoType = {
 const CameraWrapper = ({ route }: any) => {
 	const [data, setData] = useState<string>('');
 	const [clothingItem, setClothingItem] = useState({
-		id: '',
-		image: '',
-		title: '',
-		size: '',
+		ciid: '',
+		image_url: '',
 		category: '',
-		colors: [],
+		title: '',
+		uid: '',
+		brands: [],
+		size: '',
+		color: [],
+		created_at: ''
 	});
 	const updateClothingItem = (image: string) => {
 		createCount += 1;
 		const newId = dummyId + createCount;
 		setClothingItem({
 			...clothingItem,
-			image: image,
-			id: newId,
+			image_url: image,
+			ciid: newId,
 		});
 	};
 	const updatePhoto = (photo: string) => {

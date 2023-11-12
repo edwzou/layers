@@ -6,14 +6,14 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { screenWidth } from '../../utils/modalMaxShow';
 
 interface ColorPickerPropsType {
-    onNewColorPress: (colorToAdd: [string, string]) => void;
+    onNewColorPress: (colorToAdd: string) => void;
 }
 
 const ColorPicker = ({ onNewColorPress }: ColorPickerPropsType) => {
     const colors = [
-        ColorTags.Blue, ColorTags.Teal, ColorTags.Mint, ColorTags.Green, ColorTags.Olive, ColorTags.Yellow, ColorTags.Beige, ColorTags.Brown,
-        ColorTags.Orange, ColorTags.Red, ColorTags.Maroon, ColorTags.Pink, ColorTags.Purple, ColorTags.Navy, ColorTags.Black, ColorTags.Grey, ColorTags.Cream,
-        ColorTags.White
+        "#4891FF", "#46B9C9", "#A3DEC9", "#6DC86E", "#76956B", "#EEE16B", "#E8D3B4", "#977854",
+        "#EBA655", "#E55A5A", "#AD4E4E", "#F67ECE", "#B77AC7", "#3869B2", "#121212", "#CDCDCD", "#FFFBEB",
+        "#FFFFF7"
     ];
 
     const tagWidth = 60; // Adjust this value according to your desired tag size

@@ -6,10 +6,10 @@ import ColorTag from '../../components/Tag/ColorTag';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 interface ColorTagsListPropsType {
-    data: [string, string][];
+    data: string[];
     tagAction: string;
     onAddPress?: () => void;
-    onRemovePress?: (colorToDelete: [string, string]) => void;
+    onRemovePress?: (colorToDelete: string) => void;
 }
 
 const ColorTagsList = ({ data, tagAction, onAddPress, onRemovePress }: ColorTagsListPropsType) => {

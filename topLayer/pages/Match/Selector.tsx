@@ -32,6 +32,7 @@ const Selector = ({
 	const padding: Record<string, number> = { id: -1 };
 
 	useEffect(() => {
+
 		if (outerwear !== null && outerwear.length > 0)
 			setDataWithPlaceholders((placeholderData) => ({
 				...placeholderData,

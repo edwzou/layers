@@ -5,28 +5,34 @@ import CategorySlide from './CategorySlide';
 
 import { CategoryToIndex } from '../../constants/Enums';
 
+import { UserClothing, UserAllItems } from '../../pages/Match';
+import { UserOutfit } from '../../pages/OutfitView';
+
 interface CategorySlidesPropsType {
     categorySlidesRef: any; /// !!! Fix any type
-    clothingData: any; /// !!! Fix any type
+    allItemsData: UserAllItems[]
     selectedCategory: string;
     handleItemChange: (item: any) => void;
     handleViewableItemsChanged: ({ viewableItems }: any) => void;
 }
 
-const CategorySlides = ({ categorySlidesRef, clothingData, selectedCategory, handleItemChange, handleViewableItemsChanged }: CategorySlidesPropsType) => {
+const CategorySlides = ({ categorySlidesRef, allItemsData, selectedCategory, handleItemChange, handleViewableItemsChanged }: CategorySlidesPropsType) => {
 
     const windowWidth = Dimensions.get('window').width;
 
     return (
         <FlatList
             ref={categorySlidesRef}
-            data={clothingData}
-            renderItem={({ item }) => (
-                <CategorySlide
-                    clothingData={item}
-                    handleItemChange={handleItemChange}
-                />
-            )}
+            data={allItemsData}
+            renderItem={({ item }) => {
+                //console.log(item)
+                return (
+                    <CategorySlide
+                        itemsData={item}
+                        handleItemChange={handleItemChange}
+                    />
+                )
+            }}
             horizontal
             pagingEnabled
             snapToAlignment="center"

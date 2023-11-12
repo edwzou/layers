@@ -17,5 +17,10 @@ export interface User {
 
 export interface UserItems {
     category: string,
-    data: UserClothing[] | UserOutfit[],
+    data: UserClothing[],
 }
+
+// export interface UserItems {
+//     category: string,
+//     data: UserClothing[] | UserOutfit[],
+// }

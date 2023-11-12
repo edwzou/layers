@@ -50,7 +50,7 @@ const OutfitPreview = ({ route }: any) => {
 				data={data}
 				renderItem={({ item }) => (
 					<View style={{ width: ITEM_SIZE(2) }}>
-						<ItemCell image={item.image} disablePress={false} key={item.id} />
+						<ItemCell imageUrl={item.image_url} disablePress={false} key={item.ciid} />
 					</View>
 				)}
 				numColumns={2}

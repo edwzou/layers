@@ -12,6 +12,7 @@ import { type UserOutfit } from '.';
 import { outfitEdit } from '../../constants/GlobalStrings'
 
 import Icon from 'react-native-remix-icon';
+import { UserClothing } from '../../pages/Match';
 
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
@@ -22,10 +23,11 @@ import Icon from 'react-native-remix-icon';
 // }
 
 interface OutfitViewPropsType {
-	outfit: UserOutfit;
+	title: string;
+	clothingItems: UserClothing[];
 }
 
-const OutfitEdit = ({ outfit }: OutfitViewPropsType) => {
+const OutfitEdit = ({ title, clothingItems }: OutfitViewPropsType) => {
 	const [text, setText] = useState('');
 	const [rawData, setRawData] = useState<UserOutfit[]>([]);
 	const [data, setData] = useState<UserOutfit[]>([]);
@@ -37,6 +39,10 @@ const OutfitEdit = ({ outfit }: OutfitViewPropsType) => {
 	// useEffect(() => {
 	//     setRawData([outerwear, tops, bottoms, shoes])
 	// }, [outerwear, tops, bottoms, shoes])
+
+	useEffect(() => {
+		;
+	}, []);
 
 	useEffect(() => {
 		setData(rawData.filter(Boolean));
@@ -51,14 +57,14 @@ const OutfitEdit = ({ outfit }: OutfitViewPropsType) => {
 			<StackedTextbox
 				label={outfitEdit.outfitName}
 				onFieldChange={onInputChange}
-				value={outfit.title ? outfit.title : text}
+				value={title ? title : text}
 			/>
 			<FlatList
-				data={outfit.items}
+				data={clothingItems}
 				renderItem={({ item }) => {
 					return (
 						<View style={{ width: ITEM_SIZE(2) }}>
-							<ItemCell image={item.image} disablePress={false} key={item.id} />
+							<ItemCell imageUrl={item.image_url} disablePress={false} key={item.ciid} />
 						</View>
 					);
 				}}
