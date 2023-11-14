@@ -90,8 +90,8 @@ router.put(
             username,
             password,
             private_option,
-            JSON.parse(followers),
-            JSON.parse(following),
+            followers,
+            following,
             imgRef,
             userId
           ]
