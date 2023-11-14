@@ -5,6 +5,7 @@ import {
   responseCallbackUpdate,
   responseCallbackGet
 } from '../../utils/responseCallback';
+import { hash } from 'bcrypt';
 import { convertImage } from '../../s3/convert-image';
 import { upload } from '../../utils/multer';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
@@ -70,7 +71,9 @@ router.put(
     } = req.body;
     const updateUser = async (): Promise<void> => {
       try {
-        const imgRef = await convertImage(profile_picture, username, false);
+        const async1 = convertImage(profile_picture, userId, false);
+        const hashedPass = await hash(password, 10);
+        const imgRef = await async1;
         const updateUser = await pool.query(
           `UPDATE backend_schema.user
         SET first_name = $1,
@@ -88,7 +91,7 @@ router.put(
             last_name,
             email.toLowerCase(),
             username,
-            password,
+            hashedPass,
             private_option,
             followers,
             following,
