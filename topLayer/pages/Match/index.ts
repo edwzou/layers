@@ -1,10 +1,20 @@
+import { UserOutfit } from "../../pages/OutfitView";
+
 export interface UserClothing {
-	id: string;
-	image: string;
-	category: string;
-	title: string;
-	size: string;
-	colors: [string, string][]
+	ciid: string,
+    image_url: string,
+    category: string,
+    title: string,
+    uid: string,
+    brands: string[],
+    size: string,
+    color: string[],
+    created_at: string
+}
+
+export interface UserAllItems {
+	category: string,
+	data: UserClothing[] | UserOutfit[]
 }
 
 export interface UserClothingList {

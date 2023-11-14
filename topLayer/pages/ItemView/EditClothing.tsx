@@ -45,10 +45,8 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const colorPickerRef = useRef<refPropType>(null);
 
-	const [currentColorTags, setColorTags] = useState(clothingItem.colors);
-	const [itemName, setItemName] = useState(
-		clothingItem.title ? clothingItem.title : ''
-	);
+	const [currentColorTags, setColorTags] = useState(clothingItem.color);
+	const [itemName, setItemName] = useState(clothingItem.title ? clothingItem.title : '');
 
 	const [sizeOpen, setSizeOpen] = useState(false);
 	const [sizeValue, setSizeValue] = useState(
@@ -183,23 +181,26 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		formState: { dirtyFields, errors },
 	} = useForm({
 		defaultValues: {
-			image: clothingItem.image,
-			category: itemTypeValue,
-			title: itemName,
-			size: '',
-			color: currentColorTags,
+			ciid: '',
+			image_url: '',
+			category: '',
+			title: '',
+			uid: '',
 			brands: [],
+			size: '',
+			color: [],
+			created_at: ''
 		},
 	});
 
 	useEffect(() => {
-		setValue('image', clothingItem.image);
-	}, [clothingItem.image]);
+		setValue('image_url', clothingItem.image_url);
+	}, [clothingItem.image_url]);
 
 	const onSubmit = async (values: FormValues | any) => {
 		if (values.category == '') {
-			console.log('Category: ', values.category);
-			console.log(itemTypeValue);
+			//console.log('Category: ', values.category);
+			//console.log(itemTypeValue);
 			throw new Error('Category Value Not Filled Out.');
 		}
 		if (values.title == '') {
@@ -208,7 +209,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		if (values.size == '') {
 			throw new Error('Size Value Not Filled Out.');
 		}
-		if (values.image == '') {
+		if (values.image_url == '') {
 			throw new Error('Image Value Not Filled Out.');
 		}
 		try {
@@ -231,15 +232,13 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		}
 	};
 
-	const handleOnRemovePress = (colorToDelete: [string, string]) => {
-		const updatedColorTags = currentColorTags.filter(
-			(color) => color !== colorToDelete
-		);
+	const handleOnRemovePress = (colorToDelete: string) => {
+		const updatedColorTags = currentColorTags.filter((color: string) => color !== colorToDelete);
 		setColorTags(updatedColorTags);
 	};
 
-	const handleOnNewColorPress = (colorToAdd: [string, string]) => {
-		if (!currentColorTags.some((color) => color[1] === colorToAdd[1])) {
+	const handleOnNewColorPress = (colorToAdd: string) => {
+		if (!currentColorTags.some((color: string) => color === colorToAdd)) {
 			setColorTags([...currentColorTags, colorToAdd]);
 		}
 		colorPickerRef.current?.scrollTo(0);
@@ -268,10 +267,8 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						}}
 						value={itemName}
 					/>
-					<ItemCell image={clothingItem.image} base64 />
-					<View
-						style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-					>
+					<ItemCell imageUrl={clothingItem.image_url} />
+					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 						<View style={{ width: ITEM_SIZE(2) }}>
 							<Dropdown
 								label="Item type"
@@ -310,7 +307,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						onRemovePress={handleOnRemovePress}
 					/>
 				</View>
-			</ScrollView>
+			</ScrollView >
 			<Button
 				text="Create/Update Item"
 				onPress={handleSubmit(onSubmit)}
@@ -337,7 +334,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
 				dim={false}
 			/>
-		</View>
+		</View >
 	);
 };
 

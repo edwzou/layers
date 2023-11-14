@@ -33,571 +33,662 @@ import shoes4 from '../assets/shoes4.png'
 import { ClothingTypes, ColorTags } from './Enums';
 import { User } from '../pages/Main';
 import { UserItems } from '../pages/Main';
+import { UserOutfits } from '../pages/OutfitView';
 
-export const mockItemsData: UserItems[] = [
-	{
-		category: 'outfits',
-		data: [
-			{
-				title: 'Weekend Casual',
-				items: [
-					{
-						id: 'outerwear4',
-						image: outerwear4,
-						title: 'Fit shacket',
-						size: 'l',
-						category: 'outerwear',
-						colors: [
-							ColorTags.Beige,
-							ColorTags.Navy,
-							ColorTags.White,
-						]
-					},
-					{
-						id: 'tops1',
-						image: tops1,
-						title: 'Human 285 Designed',
-						size: 'l',
-						category: 'tops',
-						colors: [
-							ColorTags.Brown,
-							ColorTags.White,
-						]
-					},
-					{
-						id: 'bottoms1',
-						image: bottoms1,
-						title: 'Parachute cargo',
-						size: 'l',
-						category: 'bottoms',
-						colors: [
-							ColorTags.Beige,
-						]
-					},
-					{
-						id: 'shoes3',
-						image: shoes3,
-						title: 'Air Jordan 1 Low SE',
-						size: 'l',
-						category: 'shoes',
-						colors: [
-							ColorTags.Beige,
-							ColorTags.White,
-						]
-					},
-				],
-				category: ClothingTypes.outfits,
-			},
-			{
-				title: 'Friday Night',
-				items: [
-					{
-						id: 'outerwear3',
-						image: outerwear3,
-						title: 'Wool-blend jacket',
-						size: 'l',
-						category: 'outerwear',
-						colors: [
-							ColorTags.Black,
-						]
-					},
-					{
-						id: 'tops6',
-						image: tops6,
-						title: 'New York jersey',
-						size: 'l',
-						category: 'tops',
-						colors: [
-							ColorTags.Black,
-							ColorTags.White,
-						]
-					},
-					{
-						id: 'bottoms2',
-						image: bottoms2,
-						title: 'Pleaded wide',
-						size: 'l',
-						category: 'bottoms',
-						colors: [
-							ColorTags.Black
-						]
-					},
-					{
-						id: 'shoes2',
-						image: shoes2,
-						title: 'Air Jordan 1 Retro High OG',
-						size: 'l',
-						category: 'shoes',
-						colors: [
-							ColorTags.Grey,
-							ColorTags.White,
-						]
-					},
-				],
-				category: ClothingTypes.outfits,
-			},
-			{
-				title:
-					"Relaxed fit designed for roadtrips!",
-				items: [
-					{
-						id: 'tops2',
-						image: tops2,
-						title: 'Keith Haring\'s Love tee',
-						size: 'l',
-						category: 'tops',
-						colors: [
-							ColorTags.Cream,
-							ColorTags.Red,
-							ColorTags.Pink,
-						]
-					},
-					{
-						id: 'bottoms4',
-						image: bottoms4,
-						title: 'HeatTech pile lined',
-						size: 'l',
-						category: 'bottoms',
-						colors: [
-							ColorTags.Grey
-						]
-					},
-					{
-						id: 'shoes3',
-						image: shoes3,
-						title: 'Air Jordan 1 Low SE',
-						size: 'l',
-						category: 'shoes',
-						colors: [
-							ColorTags.Beige,
-							ColorTags.White,
-						]
-					},
-				],
-				category: ClothingTypes.outfits,
-			},
-		],
-	},
-	{
-		category: 'outerwear',
-		data: [
-			{
-				id: 'outerwear4',
-				image: outerwear4,
-				title: 'Fit shacket',
-				size: 'l',
-				category: 'outerwear',
-				colors: [
-					ColorTags.Beige,
-					ColorTags.Navy,
-					ColorTags.White,
-				]
-			},
-			{
-				id: 'outerwear3',
-				image: outerwear3,
-				title: 'Wool-blend jacket',
-				size: 'l',
-				category: 'outerwear',
-				colors: [
-					ColorTags.Black,
-				]
-			},
-			{
-				id: 'outerwear5',
-				image: outerwear5,
-				title: 'Relaxed fit',
-				size: 'l',
-				category: 'outerwear',
-				colors: [
-					ColorTags.Cream,
-				]
-			},
-		],
-	},
-	{
-		category: 'tops',
-		data: [
-			{
-				id: 'tops1',
-				image: tops1,
-				title: 'Human 285 Designed',
-				size: 'l',
-				category: 'tops',
-				colors: [
-					ColorTags.Brown,
-					ColorTags.White,
-				]
-			},
-			{
-				id: 'tops2',
-				image: tops2,
-				title: 'Keith Haring\'s Love tee',
-				size: 'l',
-				category: 'tops',
-				colors: [
-					ColorTags.Cream,
-					ColorTags.Red,
-					ColorTags.Pink,
-				]
-			},
-			{
-				id: 'tops3',
-				image: tops3,
-				title: 'Geothermal Research',
-				size: 'l',
-				category: 'tops',
-				colors: [
-					ColorTags.Black,
-					ColorTags.Orange,
-					ColorTags.Navy,
-				]
-			},
-			{
-				id: 'tops6',
-				image: tops6,
-				title: 'New York jersey',
-				size: 'l',
-				category: 'tops',
-				colors: [
-					ColorTags.Black,
-					ColorTags.White,
-				]
-			},
-		],
-	},
-	{
-		category: 'bottoms',
-		data: [
-			{
-				id: 'bottoms1',
-				image: bottoms1,
-				title: 'Parachute cargo',
-				size: 'l',
-				category: 'bottoms',
-				colors: [
-					ColorTags.Beige,
-				]
-			},
-			{
-				id: 'bottoms2',
-				image: bottoms2,
-				title: 'Pleaded wide',
-				size: 'l',
-				category: 'bottoms',
-				colors: [
-					ColorTags.Black
-				]
-			},
-			{
-				id: 'bottoms4',
-				image: bottoms4,
-				title: 'HeatTech pile lined',
-				size: 'l',
-				category: 'bottoms',
-				colors: [
-					ColorTags.Grey
-				]
-			},
-		],
-	},
-	{
-		category: 'shoes',
-		data: [
-			{
-				id: 'shoes2',
-				image: shoes2,
-				title: 'Air Jordan 1 Retro High OG',
-				size: 'l',
-				category: 'shoes',
-				colors: [
-					ColorTags.Grey,
-					ColorTags.White,
-				]
-			},
-			{
-				id: 'shoes3',
-				image: shoes3,
-				title: 'Air Jordan 1 Low SE',
-				size: 'l',
-				category: 'shoes',
-				colors: [
-					ColorTags.Beige,
-					ColorTags.White,
-				]
-			},
-		],
-	},
-];
+// export const mockItemsData: (UserItems | UserOutfits)[] = [
+// 	{
+// 		category: 'outfits',
+// 		data: [
+// 			{
+// 				oid: "a11bdae9-9ecb-48f4-8ac2-802809034a0f",
+// 				title: "Weekend Casual",
+// 				clothing_items: [
+// 					"069ef97a-6c32-4588-a7ba-38885a869718",
+// 					"ddee59f2-acc7-46d5-bf1f-4255d990932b",
+// 					"0b6224eb-799e-4f71-a27a-1dcb6a801a96",
+// 					"3e56dedf-9e82-4ca4-94a8-c4d694e484a5"
+// 				],
+// 				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
+// 				created_at: "2023-10-14T14:15:07.986Z"
+// 			}
+// 		]
+// 	},
+// 	{
+// 		category: 'outerwear',
+// 		data: [
+// 			{
+// 				ciid: "069ef97a-6c32-4588-a7ba-38885a869718",
+// 				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/069ef97a-6c32-4588-a7ba-38885a869718",
+// 				category: "outerwear",
+// 				title: "Cozy Flannel",
+// 				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
+// 				brands: [],
+// 				size: "m",
+// 				color: [
+// 					"#3869B2",
+// 					"#E8D3B4"
+// 				],
+// 				created_at: "2023-10-14T14:06:12.393Z"
+// 		}
+// 	],
+// 	},
+// 	{
+// 		category: 'tops',
+// 		data: [
+// 			{
+// 				ciid: "36179217-b9c9-4840-82d5-e798fdb26b24",
+// 				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/36179217-b9c9-4840-82d5-e798fdb26b24",
+// 				category: "tops",
+// 				title: "Human 285 Designed",
+// 				uid: "ccefe48f-2387-4b2f-a7f3-65bc0588f70f",
+// 				brands: [],
+// 				size: "m",
+// 				color: ['#977854'],
+// 				created_at: "2023-10-07T07:44:51.690Z"
+// 		}
+// 	],
+// 	},
+// 	{
+// 		category: 'bottoms',
+// 		data: [
+// 			{
+// 				ciid: "0b6224eb-799e-4f71-a27a-1dcb6a801a96",
+// 				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/0b6224eb-799e-4f71-a27a-1dcb6a801a96",
+// 				category: "bottoms",
+// 				title: "Parachute cargo!",
+// 				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
+// 				brands: [],
+// 				size: "m",
+// 				color: ['#E8D3B4'],
+// 				created_at: "2023-10-14T13:53:22.659Z"
+// 		}
+// 	],
+// 	},
+// 	{
+// 		category: 'shoes',
+// 		data: [
+// 			{
+// 				ciid: "3e56dedf-9e82-4ca4-94a8-c4d694e484a5",
+// 				image_url: "https://layers-bucket-1.s3.us-east-2.amazonaws.com/3e56dedf-9e82-4ca4-94a8-c4d694e484a5",
+// 				category: "shoes",
+// 				title: "Cold Dunks",
+// 				uid: "890e7fad-1352-4998-8f2f-ff8b74b04b86",
+// 				brands: [],
+// 				size: "m",
+// 				color: [
+// 					"#977854",
+// 					"#E8D3B4"
+// 				],
+// 				created_at: "2023-10-14T14:12:36.939Z"
+// 		}
+// 	],
+// 	},
+// ];
 
-export const mockItemsData1: UserItems[] = [];
+// export const mockItemsData: UserItems[] = [
+// 	{
+// 		category: 'outfits',
+// 		data: [
+// 			{
+// 				title: 'Weekend Casual',
+// 				items: [
+// 					{
+// 						id: 'outerwear4',
+// 						image: outerwear4,
+// 						title: 'Fit shacket',
+// 						size: 'l',
+// 						category: 'outerwear',
+// 						colors: [
+// 							ColorTags.Beige,
+// 							ColorTags.Navy,
+// 							ColorTags.White,
+// 						]
+// 					},
+// 					{
+// 						id: 'tops1',
+// 						image: tops1,
+// 						title: 'Human 285 Designed',
+// 						size: 'l',
+// 						category: 'tops',
+// 						colors: [
+// 							ColorTags.Brown,
+// 							ColorTags.White,
+// 						]
+// 					},
+// 					{
+// 						id: 'bottoms1',
+// 						image: bottoms1,
+// 						title: 'Parachute cargo',
+// 						size: 'l',
+// 						category: 'bottoms',
+// 						colors: [
+// 							ColorTags.Beige,
+// 						]
+// 					},
+// 					{
+// 						id: 'shoes3',
+// 						image: shoes3,
+// 						title: 'Air Jordan 1 Low SE',
+// 						size: 'l',
+// 						category: 'shoes',
+// 						colors: [
+// 							ColorTags.Beige,
+// 							ColorTags.White,
+// 						]
+// 					},
+// 				],
+// 				category: ClothingTypes.outfits,
+// 			},
+// 			{
+// 				title: 'Friday Night',
+// 				items: [
+// 					{
+// 						id: 'outerwear3',
+// 						image: outerwear3,
+// 						title: 'Wool-blend jacket',
+// 						size: 'l',
+// 						category: 'outerwear',
+// 						colors: [
+// 							ColorTags.Black,
+// 						]
+// 					},
+// 					{
+// 						id: 'tops6',
+// 						image: tops6,
+// 						title: 'New York jersey',
+// 						size: 'l',
+// 						category: 'tops',
+// 						colors: [
+// 							ColorTags.Black,
+// 							ColorTags.White,
+// 						]
+// 					},
+// 					{
+// 						id: 'bottoms2',
+// 						image: bottoms2,
+// 						title: 'Pleaded wide',
+// 						size: 'l',
+// 						category: 'bottoms',
+// 						colors: [
+// 							ColorTags.Black
+// 						]
+// 					},
+// 					{
+// 						id: 'shoes2',
+// 						image: shoes2,
+// 						title: 'Air Jordan 1 Retro High OG',
+// 						size: 'l',
+// 						category: 'shoes',
+// 						colors: [
+// 							ColorTags.Grey,
+// 							ColorTags.White,
+// 						]
+// 					},
+// 				],
+// 				category: ClothingTypes.outfits,
+// 			},
+// 			{
+// 				title:
+// 					"Relaxed fit designed for roadtrips!",
+// 				items: [
+// 					{
+// 						id: 'tops2',
+// 						image: tops2,
+// 						title: 'Keith Haring\'s Love tee',
+// 						size: 'l',
+// 						category: 'tops',
+// 						colors: [
+// 							ColorTags.Cream,
+// 							ColorTags.Red,
+// 							ColorTags.Pink,
+// 						]
+// 					},
+// 					{
+// 						id: 'bottoms4',
+// 						image: bottoms4,
+// 						title: 'HeatTech pile lined',
+// 						size: 'l',
+// 						category: 'bottoms',
+// 						colors: [
+// 							ColorTags.Grey
+// 						]
+// 					},
+// 					{
+// 						id: 'shoes3',
+// 						image: shoes3,
+// 						title: 'Air Jordan 1 Low SE',
+// 						size: 'l',
+// 						category: 'shoes',
+// 						colors: [
+// 							ColorTags.Beige,
+// 							ColorTags.White,
+// 						]
+// 					},
+// 				],
+// 				category: ClothingTypes.outfits,
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'outerwear',
+// 		data: [
+// 			{
+// 				id: 'outerwear4',
+// 				image: outerwear4,
+// 				title: 'Fit shacket',
+// 				size: 'l',
+// 				category: 'outerwear',
+// 				colors: [
+// 					ColorTags.Beige,
+// 					ColorTags.Navy,
+// 					ColorTags.White,
+// 				]
+// 			},
+// 			{
+// 				id: 'outerwear3',
+// 				image: outerwear3,
+// 				title: 'Wool-blend jacket',
+// 				size: 'l',
+// 				category: 'outerwear',
+// 				colors: [
+// 					ColorTags.Black,
+// 				]
+// 			},
+// 			{
+// 				id: 'outerwear5',
+// 				image: outerwear5,
+// 				title: 'Relaxed fit',
+// 				size: 'l',
+// 				category: 'outerwear',
+// 				colors: [
+// 					ColorTags.Cream,
+// 				]
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'tops',
+// 		data: [
+// 			{
+// 				id: 'tops1',
+// 				image: tops1,
+// 				title: 'Human 285 Designed',
+// 				size: 'l',
+// 				category: 'tops',
+// 				colors: [
+// 					ColorTags.Brown,
+// 					ColorTags.White,
+// 				]
+// 			},
+// 			{
+// 				id: 'tops2',
+// 				image: tops2,
+// 				title: 'Keith Haring\'s Love tee',
+// 				size: 'l',
+// 				category: 'tops',
+// 				colors: [
+// 					ColorTags.Cream,
+// 					ColorTags.Red,
+// 					ColorTags.Pink,
+// 				]
+// 			},
+// 			{
+// 				id: 'tops3',
+// 				image: tops3,
+// 				title: 'Geothermal Research',
+// 				size: 'l',
+// 				category: 'tops',
+// 				colors: [
+// 					ColorTags.Black,
+// 					ColorTags.Orange,
+// 					ColorTags.Navy,
+// 				]
+// 			},
+// 			{
+// 				id: 'tops6',
+// 				image: tops6,
+// 				title: 'New York jersey',
+// 				size: 'l',
+// 				category: 'tops',
+// 				colors: [
+// 					ColorTags.Black,
+// 					ColorTags.White,
+// 				]
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'bottoms',
+// 		data: [
+// 			{
+// 				id: 'bottoms1',
+// 				image: bottoms1,
+// 				title: 'Parachute cargo',
+// 				size: 'l',
+// 				category: 'bottoms',
+// 				colors: [
+// 					ColorTags.Beige,
+// 				]
+// 			},
+// 			{
+// 				id: 'bottoms2',
+// 				image: bottoms2,
+// 				title: 'Pleaded wide',
+// 				size: 'l',
+// 				category: 'bottoms',
+// 				colors: [
+// 					ColorTags.Black
+// 				]
+// 			},
+// 			{
+// 				id: 'bottoms4',
+// 				image: bottoms4,
+// 				title: 'HeatTech pile lined',
+// 				size: 'l',
+// 				category: 'bottoms',
+// 				colors: [
+// 					ColorTags.Grey
+// 				]
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'shoes',
+// 		data: [
+// 			{
+// 				id: 'shoes2',
+// 				image: shoes2,
+// 				title: 'Air Jordan 1 Retro High OG',
+// 				size: 'l',
+// 				category: 'shoes',
+// 				colors: [
+// 					ColorTags.Grey,
+// 					ColorTags.White,
+// 				]
+// 			},
+// 			{
+// 				id: 'shoes3',
+// 				image: shoes3,
+// 				title: 'Air Jordan 1 Low SE',
+// 				size: 'l',
+// 				category: 'shoes',
+// 				colors: [
+// 					ColorTags.Beige,
+// 					ColorTags.White,
+// 				]
+// 			},
+// 		],
+// 	},
+// ];
 
-export const mockItemsData2: UserItems[] = [
-	{
-		category: 'outfits',
-		data: [
-			{
-				title: 'fridays',
-				items: [
-					{
-						id: 'outerwear6',
-						image: outerwear6,
-						title: 'Coated Bomber',
-						size: 's',
-						category: 'outerwear',
-						colors: [
-							ColorTags.Black,
-						]
-					},
-					{
-						id: 'tops8',
-						image: tops8,
-						title: 'Relaxed fit',
-						size: 's',
-						category: 'tops',
-						colors: [
-							ColorTags.Black,
-						]
-					},
-					{
-						id: 'bottoms5',
-						image: bottoms5,
-						title: 'Stretch Slim Straight',
-						size: 's',
-						category: 'bottoms',
-						colors: [
-							ColorTags.Blue
-						]
-					},
-					{
-						id: 'shoes4',
-						image: shoes4,
-						title: 'Nike Air Force 1 Shadow',
-						size: 's',
-						category: 'shoes',
-						colors: [
-							ColorTags.White,
-							ColorTags.Teal,
-							ColorTags.Mint
-						]
-					},
-				],
-				category: ClothingTypes.outfits,
-			},
-		],
-	},
-	{
-		category: 'outerwear',
-		data: [
-			{
-				id: 'outerwear6',
-				image: outerwear6,
-				title: 'Coated Bomber',
-				size: 's',
-				category: 'outerwear',
-				colors: [
-					ColorTags.Black,
-				]
-			},
-		],
-	},
-	{
-		category: 'tops',
-		data: [
-			{
-				id: 'tops7',
-				image: tops7,
-				title: 'Rib-knit top',
-				size: 's',
-				category: 'tops',
-				colors: [
-					ColorTags.Cream,
-				]
-			},
-			{
-				id: 'tops8',
-				image: tops8,
-				title: 'Relaxed fit',
-				size: 's',
-				category: 'tops',
-				colors: [
-					ColorTags.Black,
-				]
-			},
-		],
-	},
-	{
-		category: 'bottoms',
-		data: [
-			{
-				id: 'bottoms5',
-				image: bottoms5,
-				title: 'Stretch Slim Straight',
-				size: 's',
-				category: 'bottoms',
-				colors: [
-					ColorTags.Blue
-				]
-			},
-		],
-	},
-	{
-		category: 'shoes',
-		data: [
-			{
-				id: 'shoes4',
-				image: shoes4,
-				title: 'Nike Air Force 1 Shadow',
-				size: 's',
-				category: 'shoes',
-				colors: [
-					ColorTags.White,
-					ColorTags.Teal,
-					ColorTags.Mint
-				]
-			},
-		],
-	},
-];
+// export const mockItemsData1: UserItems[] = [];
 
-export const mockItemsData3: UserItems[] = [
-	{
-		category: 'outfits',
-		data: [
-		],
-	},
-	{
-		category: 'outerwear',
-		data: [
-			{
-				id: 'outerwear1',
-				image: outerwear1,
-				category: ClothingTypes.outerwear,
-				title: 'Canada Goose',
-				size: 'm',
-				colors: [
-					ColorTags.Black,
-					ColorTags.Red,
-					ColorTags.White,
-				],
-			},
-			{
-				id: 'outerwear2',
-				image: outerwear2,
-				category: ClothingTypes.outerwear,
-				title: 'Cargo jacket',
-				size: 'm',
-				colors: [ColorTags.Brown],
-			},
-		],
-	},
-	{
-		category: 'tops',
-		data: [
-			{
-				id: 'tops4',
-				image: tops4,
-				category: ClothingTypes.tops,
-				title: 'Relaxed long',
-				size: 'm',
-				colors: [ColorTags.Olive],
-			},
-			{
-				id: 'tops5',
-				image: tops5,
-				category: ClothingTypes.tops,
-				title: 'Nirvana',
-				size: 'm',
-				colors: [
-					ColorTags.Blue,
-					ColorTags.White
-				],
-			},
-		]
-	},
-	{
-		category: 'bottoms',
-		data: [
-			{
-				id: 'bottoms3',
-				image: bottoms3,
-				category: ClothingTypes.bottoms,
-				title: 'Semi-formal',
-				size: 'm',
-				colors: [ColorTags.Beige],
-			},
-		],
-	},
-	{
-		category: 'shoes',
-		data: [
-			{
-				id: 'shoes1',
-				image: shoes1,
-				category: ClothingTypes.shoes,
-				title: 'Nike lows',
-				size: 'm',
-				colors: [
-					ColorTags.Black,
-					ColorTags.White
-				],
-			},
-		],
-	},
-];
+// export const mockItemsData2: UserItems[] = [
+// 	{
+// 		category: 'outfits',
+// 		data: [
+// 			{
+// 				title: 'fridays',
+// 				items: [
+// 					{
+// 						id: 'outerwear6',
+// 						image: outerwear6,
+// 						title: 'Coated Bomber',
+// 						size: 's',
+// 						category: 'outerwear',
+// 						colors: [
+// 							ColorTags.Black,
+// 						]
+// 					},
+// 					{
+// 						id: 'tops8',
+// 						image: tops8,
+// 						title: 'Relaxed fit',
+// 						size: 's',
+// 						category: 'tops',
+// 						colors: [
+// 							ColorTags.Black,
+// 						]
+// 					},
+// 					{
+// 						id: 'bottoms5',
+// 						image: bottoms5,
+// 						title: 'Stretch Slim Straight',
+// 						size: 's',
+// 						category: 'bottoms',
+// 						colors: [
+// 							ColorTags.Blue
+// 						]
+// 					},
+// 					{
+// 						id: 'shoes4',
+// 						image: shoes4,
+// 						title: 'Nike Air Force 1 Shadow',
+// 						size: 's',
+// 						category: 'shoes',
+// 						colors: [
+// 							ColorTags.White,
+// 							ColorTags.Teal,
+// 							ColorTags.Mint
+// 						]
+// 					},
+// 				],
+// 				category: ClothingTypes.outfits,
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'outerwear',
+// 		data: [
+// 			{
+// 				id: 'outerwear6',
+// 				image: outerwear6,
+// 				title: 'Coated Bomber',
+// 				size: 's',
+// 				category: 'outerwear',
+// 				colors: [
+// 					ColorTags.Black,
+// 				]
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'tops',
+// 		data: [
+// 			{
+// 				id: 'tops7',
+// 				image: tops7,
+// 				title: 'Rib-knit top',
+// 				size: 's',
+// 				category: 'tops',
+// 				colors: [
+// 					ColorTags.Cream,
+// 				]
+// 			},
+// 			{
+// 				id: 'tops8',
+// 				image: tops8,
+// 				title: 'Relaxed fit',
+// 				size: 's',
+// 				category: 'tops',
+// 				colors: [
+// 					ColorTags.Black,
+// 				]
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'bottoms',
+// 		data: [
+// 			{
+// 				id: 'bottoms5',
+// 				image: bottoms5,
+// 				title: 'Stretch Slim Straight',
+// 				size: 's',
+// 				category: 'bottoms',
+// 				colors: [
+// 					ColorTags.Blue
+// 				]
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'shoes',
+// 		data: [
+// 			{
+// 				id: 'shoes4',
+// 				image: shoes4,
+// 				title: 'Nike Air Force 1 Shadow',
+// 				size: 's',
+// 				category: 'shoes',
+// 				colors: [
+// 					ColorTags.White,
+// 					ColorTags.Teal,
+// 					ColorTags.Mint
+// 				]
+// 			},
+// 		],
+// 	},
+// ];
 
-export const mockUserData: User = {
-	uid: '00000000-abcd-efgh-ijkl-mnopqrstuvwx',
-	firstName: 'Luis',
-	lastName: 'Ramos',
-	email: 'luisramos@gmail.com',
-	username: 'luis_ramos_',
-	password: 'Layers2023',
-	privateOption: 'f',
-	followers: [],
-	following: [],
-	profilePicture: pfp1,
-	items: mockItemsData,
-}
+// export const mockItemsData3: UserItems[] = [
+// 	{
+// 		category: 'outfits',
+// 		data: [
+// 		],
+// 	},
+// 	{
+// 		category: 'outerwear',
+// 		data: [
+// 			{
+// 				id: 'outerwear1',
+// 				image: outerwear1,
+// 				category: ClothingTypes.outerwear,
+// 				title: 'Canada Goose',
+// 				size: 'm',
+// 				colors: [
+// 					ColorTags.Black,
+// 					ColorTags.Red,
+// 					ColorTags.White,
+// 				],
+// 			},
+// 			{
+// 				id: 'outerwear2',
+// 				image: outerwear2,
+// 				category: ClothingTypes.outerwear,
+// 				title: 'Cargo jacket',
+// 				size: 'm',
+// 				colors: [ColorTags.Brown],
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'tops',
+// 		data: [
+// 			{
+// 				id: 'tops4',
+// 				image: tops4,
+// 				category: ClothingTypes.tops,
+// 				title: 'Relaxed long',
+// 				size: 'm',
+// 				colors: [ColorTags.Olive],
+// 			},
+// 			{
+// 				id: 'tops5',
+// 				image: tops5,
+// 				category: ClothingTypes.tops,
+// 				title: 'Nirvana',
+// 				size: 'm',
+// 				colors: [
+// 					ColorTags.Blue,
+// 					ColorTags.White
+// 				],
+// 			},
+// 		]
+// 	},
+// 	{
+// 		category: 'bottoms',
+// 		data: [
+// 			{
+// 				id: 'bottoms3',
+// 				image: bottoms3,
+// 				category: ClothingTypes.bottoms,
+// 				title: 'Semi-formal',
+// 				size: 'm',
+// 				colors: [ColorTags.Beige],
+// 			},
+// 		],
+// 	},
+// 	{
+// 		category: 'shoes',
+// 		data: [
+// 			{
+// 				id: 'shoes1',
+// 				image: shoes1,
+// 				category: ClothingTypes.shoes,
+// 				title: 'Nike lows',
+// 				size: 'm',
+// 				colors: [
+// 					ColorTags.Black,
+// 					ColorTags.White
+// 				],
+// 			},
+// 		],
+// 	},
+// ];
 
-export const foreignUsersData: User[] = [
-	{
-		uid: '00000001-abcd-efgh-ijkl-mnopqrstuvwx',
-		firstName: 'Elu',
-		lastName: 'Deere',
-		email: 'eludeere@gmail.com',
-		username: 'elu.deere',
-		password: 'Layers2023',
-		privateOption: 't',
-		followers: [],
-		following: [],
-		profilePicture: pfp4,
-		items: mockItemsData1,
-	},
-	{
-		uid: '00000002-abcd-efgh-ijkl-mnopqrstuvwx',
-		firstName: 'maya',
-		lastName: 'smith',
-		email: 'mayasmith@gmail.com',
-		username: 'mayas23',
-		password: 'Layers2023',
-		privateOption: 'f',
-		followers: [],
-		following: [],
-		profilePicture: pfp3,
-		items: mockItemsData2,
-	},
-	{
-		uid: '00000003-abcd-efgh-ijkl-mnopqrstuvwx',
-		firstName: 'Noah',
-		lastName: 'Barry',
-		email: 'noahbarry@gmail.com',
-		username: 'noahbarry',
-		password: 'Layers2023',
-		privateOption: 'f',
-		followers: [],
-		following: [],
-		profilePicture: pfp2,
-		items: mockItemsData3,
-	},
-];
+// export const mockUserData: User = {
+// 	uid: '00000000-abcd-efgh-ijkl-mnopqrstuvwx',
+// 	firstName: 'Luis',
+// 	lastName: 'Ramos',
+// 	email: 'luisramos@gmail.com',
+// 	username: 'luis_ramos_',
+// 	password: 'Layers2023',
+// 	privateOption: 'f',
+// 	followers: [],
+// 	following: [],
+// 	profilePicture: pfp1,
+// 	items: mockItemsData,
+// }
+
+// export const foreignUsersData: User[] = [
+// 	{
+// 		uid: '00000001-abcd-efgh-ijkl-mnopqrstuvwx',
+// 		firstName: 'Elu',
+// 		lastName: 'Deere',
+// 		email: 'eludeere@gmail.com',
+// 		username: 'elu.deere',
+// 		password: 'Layers2023',
+// 		privateOption: 't',
+// 		followers: [],
+// 		following: [],
+// 		profilePicture: pfp4,
+// 		items: mockItemsData1,
+// 	},
+// 	{
+// 		uid: '00000002-abcd-efgh-ijkl-mnopqrstuvwx',
+// 		firstName: 'maya',
+// 		lastName: 'smith',
+// 		email: 'mayasmith@gmail.com',
+// 		username: 'mayas23',
+// 		password: 'Layers2023',
+// 		privateOption: 'f',
+// 		followers: [],
+// 		following: [],
+// 		profilePicture: pfp3,
+// 		items: mockItemsData2,
+// 	},
+// 	{
+// 		uid: '00000003-abcd-efgh-ijkl-mnopqrstuvwx',
+// 		firstName: 'Noah',
+// 		lastName: 'Barry',
+// 		email: 'noahbarry@gmail.com',
+// 		username: 'noahbarry',
+// 		password: 'Layers2023',
+// 		privateOption: 'f',
+// 		followers: [],
+// 		following: [],
+// 		profilePicture: pfp2,
+// 		items: mockItemsData3,
+// 	},
+// ];

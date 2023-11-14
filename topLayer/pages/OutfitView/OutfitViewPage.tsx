@@ -11,13 +11,18 @@ import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import { headerRight } from '../../components/Modal/HeaderRight';
+import { UserClothing, UserClothingList } from '../../pages/Match';
 
 const OutfitViewPage = ({ route }: any) => {
 
     const { item, editable } = route.params;
 
-    const OutfitViewComponent = () => (<OutfitView outfit={item} />)
-    const OutfitEditComponent = () => (<OutfitEdit outfit={item} />)
+    const getFlatArrayOfValues = (clothingList: UserClothingList): UserClothing[] => {
+        return Object.values(clothingList).flat()
+    }
+
+    const OutfitViewComponent = () => (<OutfitView clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
+    const OutfitEditComponent = () => (<OutfitEdit title={item.title} clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
 
     return (
         <NavigationContainer

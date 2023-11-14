@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -12,35 +12,35 @@ const itemCellSize = (screenWidth - 60) / 4;
 
 interface OutfitCardPropsType {
 	title: string;
-	itemCount: number;
-	items: UserClothing[];
+	clothingItems: UserClothing[];
 	onPress: () => void;
 }
 
 export default function OutfitCard({
 	title,
-	itemCount,
-	items,
+	clothingItems,
 	onPress,
 }: OutfitCardPropsType) {
 	const truncatedTitle = title.length > 70 ? title.slice(0, 70) + '...' : title;
+	const clothingArray = Object.values(clothingItems).flat().slice(0, 4);
+
 	return (
 		<Pressable style={styles.container} onPress={onPress}>
 			<View style={styles.infoBox}>
 				<Text style={styles.title}>{truncatedTitle}</Text>
 				<Text>
 					<View style={[styles.label, GlobalStyles.utils.tagShadow]}>
-						<Text style={styles.labelText}>{itemCount} items</Text>
+						<Text style={styles.labelText}>{clothingArray.length} items</Text>
 					</View>
 				</Text>
 			</View>
 			<View style={styles.itemsContainer}>
 				<FlatList
-					data={items.slice(0, 4)}
+					data={clothingArray}
 					renderItem={({ item }) => (
 						<View style={styles.itemContainer}>
 							<ItemCell
-								image={item.image}
+								imageUrl={item.image_url}
 								disablePress={true}
 								imageStyle={{ width: '85%', height: '85%' }}
 							/>

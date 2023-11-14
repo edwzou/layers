@@ -14,21 +14,21 @@ export const StepOverTypes = {
 	update: 'Update',
 } as const;
 
-export interface ClothingCategoryTypes {
-	// !!! Change these types
-	outfits: any;
-	outerwear: any;
-	tops: any;
-	bottoms: any;
-	shoes: any;
-}
+// export interface ClothingCategoryTypes {
+// 	// !!! Change these types
+// 	outfits: any;
+// 	outerwear: any;
+// 	tops: any;
+// 	bottoms: any;
+// 	shoes: any;
+// }
 
-export const ClothingTypes: ClothingCategoryTypes = {
-	outfits,
-	outerwear,
-	tops,
-	bottoms,
-	shoes,
+export const ClothingTypes = {
+	outfits: outfits,
+	outerwear: outerwear,
+	tops: tops,
+	bottoms: bottoms,
+	shoes: shoes,
 } as const;
 
 export const StackNavigation = {
@@ -83,23 +83,24 @@ export const IndexToCategory: Record<number, string> = {
 	4: shoes,
 };
 
-export const ColorTags: Record<string, [string, string]> = {
-  Blue: ["Blue", "#4891FF"],
-  Teal: ["Teal", "#46B9C9"],
-  Mint: ["Mint", "#A3DEC9"],
-  Green: ["Green", "#6DC86E"],
-  Olive: ["Olive", "#76956B"],
-  Yellow: ["Yellow", "#EEE16B"],
-  Beige: ["Beige", "#E8D3B4"],
-  Brown: ["Brown", "#977854"],
-  Orange: ["Orange", "#EBA655"],
-  Red: ["Red", "#E55A5A"],
-  Maroon: ["Maroon", "#AD4E4E"],
-  Pink: ["Pink", "#F67ECE"],
-  Purple: ["Purple", "#B77AC7"],
-  Navy: ["Navy", "#3869B2"],
-  Black: ["Black", "#121212"],
-  Grey: ["Grey", "#CDCDCD"],
-  White: ["White", "#FFFFF7"],
-  Cream: ["Cream", "#FFFBEB"],
+export const ColorTags: Record<string, string> = {
+	"#4891FF": "Blue",
+	"#46B9C9": "Teal",
+	"#A3DEC9": "Mint",
+	"#6DC86E": "Green",
+	"#76956B": "Olive",
+	"#EEE16B": "Yellow",
+	"#E8D3B4": "Beige",
+	"#977854": "Brown",
+	"#EBA655": "Orange",
+	"#E55A5A": "Red",
+	"#AD4E4E": "Maroon",
+	"#F67ECE": "Pink",
+	"#B77AC7": "Purple",
+	"#3869B2": "Navy",
+	"#121212": "Black",
+	"#CDCDCD": "Grey",
+	"#FFFFF7": "White",
+	"#FFFBEB": "Cream",
 };
+  
