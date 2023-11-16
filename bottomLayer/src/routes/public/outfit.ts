@@ -11,6 +11,7 @@ import { outfitFields } from '../../utils/constants/outfitFields';
 import { urlDownloadHandlerOutfits } from '../../utils/event-emitters/asyncHandlers';
 import { AsyncManager } from '../../utils/event-emitters/asyncManager';
 import { once } from 'node:events';
+import { NotFoundError } from '../../utils/Errors/NotFoundError';
 
 const router = express.Router();
 
@@ -62,6 +63,9 @@ router.get('/:outfitId', (req: Request, res: Response): void => {
       );
       const temp = await outfit;
       const result = temp.rows;
+      if (result.length === 0) {
+        throw new NotFoundError('Outfit Not Found, id: ' + outfitId);
+      }
       const asyncManager = new AsyncManager(result.length);
       const asyncTrigger = once(asyncManager, 'proceed');
       for (const item of result) {
