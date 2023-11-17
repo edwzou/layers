@@ -112,11 +112,16 @@ router.get('/:itemId', (req: Request, res: Response): void => {
 
   const getClothingById = async (itemId: string): Promise<any> => {
     try {
-      const item = await pool.query(
+      const query = pool.query(
         'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE ciid = $1 AND uid = $2',
         [itemId, uid]
       );
-      const result = item.rows[0];
+      const item = await query;
+      const temp = item.rows;
+      if (temp.length === 0) {
+        return responseCallbackGet(null, temp, res, 'Clothing Item');
+      }
+      const result = temp[0];
       const imgRef = result.image_url;
       result.image_url = await downloadURLFromS3(imgRef);
 
@@ -134,8 +139,6 @@ router.get('/', (req: Request, res: Response): void => {
   const uid = req.user as string;
   const { parse } = req.query;
 
-  const client = pool.connect();
-
   const getAllClothing = async (uid: string): Promise<any> => {
     try {
       const run = pool.query(
@@ -144,6 +147,9 @@ router.get('/', (req: Request, res: Response): void => {
       );
       const result = await run;
       const items = result.rows;
+      if (items.length === 0) {
+        return responseCallbackGetAll(items, res, 'Clothing Item');
+      }
       const asyncManager = new AsyncManager(items.length);
       const asyncTrigger = once(asyncManager, 'proceed');
       for (const item of items) {
@@ -156,8 +162,6 @@ router.get('/', (req: Request, res: Response): void => {
       responseCallbackGetAll(items, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);
-    } finally {
-      (await client).release();
     }
   };
   const getAllClothingCate = async (uid: string): Promise<any> => {
@@ -166,9 +170,11 @@ router.get('/', (req: Request, res: Response): void => {
         'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE uid = $1',
         [uid]
       );
-      await getUserCore(uid, await client);
       const result = await run;
       const items = result.rows;
+      if (items.length === 0) {
+        return responseCallbackGetAll(items, res, 'Clothing Item');
+      }
       const asyncManager = new AsyncManager(items.length);
       const asyncTrigger = once(asyncManager, 'proceed');
       for (const item of items) {
@@ -188,8 +194,6 @@ router.get('/', (req: Request, res: Response): void => {
       responseCallbackGetAll(categories, res, 'Clothing Items');
     } catch (error) {
       responseCallbackGet(error, null, res);
-    } finally {
-      (await client).release();
     }
   };
 

@@ -1,4 +1,5 @@
 import { EventEmitter } from 'node:events';
+import { NotFoundError } from '../Errors/NotFoundError';
 
 export class AsyncManager extends EventEmitter {
   calls: number;
@@ -8,6 +9,9 @@ export class AsyncManager extends EventEmitter {
     super();
     this.calls = calls;
     this.failures = [];
+    if (calls <= 0) {
+      throw new NotFoundError('0 Items to Create Calls On');
+    }
   }
 
   // All async calls are complete

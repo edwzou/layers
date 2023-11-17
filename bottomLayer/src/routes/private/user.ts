@@ -57,7 +57,6 @@ router.put(
   upload.single('profile_picture'),
   (req: Request, res: Response): void => {
     const userId = req.user as string;
-    if (userId == null) return;
     const {
       first_name,
       last_name,

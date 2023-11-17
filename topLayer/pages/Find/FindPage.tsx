@@ -11,7 +11,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigation } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { foreignUsersData } from '../../constants/testData';
+// import { foreignUsersData } from '../../constants/testData';
 
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';

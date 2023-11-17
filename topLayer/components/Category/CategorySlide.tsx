@@ -24,12 +24,12 @@ const CategorySlide = ({ itemsData, handleItemChange }: CategorySlidePropsType) 
 	const windowWidth = Dimensions.get('window').width;
 
 	// useEffect(() => {
-	// 	console.log('CATEGORY SLIDE -> ' + itemsData)
+	// 	console.log(itemsData)
 	// }, []);
 
 	return (
 		<View style={[styles.container, { width: windowWidth - 2 * GlobalStyles.layout.xGap }]}>
-			{itemsData.data.length !== 0 ?
+			{itemsData.data && itemsData.data.length !== 0 ?
 				(
 					itemsData.category == 'outfits' ? (
 						<FlatList

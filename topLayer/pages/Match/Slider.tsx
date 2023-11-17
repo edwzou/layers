@@ -72,8 +72,6 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 				ref={flatListRef}
 				data={data && [...data.slice(0, data.length - 1), emptyItem, ...data.slice(data.length - 1, data.length)]}
 				renderItem={({ item, index }) => {
-					console.log(item)
-					console.log(index)
 					if ((!item.image_url || !item.category) && item.ciid !== '') {
 						return <View style={{ width: EMPTY_ITEM_SIZE }} />;
 					}
