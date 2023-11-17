@@ -117,7 +117,7 @@ const Settings = () => {
 						});
 					}}
 				>
-					<ProfilePicture image={pp_url} />
+					<ProfilePicture imageUrl={pp_url} />
 				</Pressable>
 				<View
 					style={{
