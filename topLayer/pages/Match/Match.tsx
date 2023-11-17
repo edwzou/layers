@@ -54,7 +54,6 @@ const Match = () => {
         const filterClothing = (type: string) => {
             return allItems.slice(1).filter((value) => value.category.toString() === type);
         };
-        console.log(filterClothing(ClothingTypes.tops)[0])
 
         setData((value) => ({
             ...value,

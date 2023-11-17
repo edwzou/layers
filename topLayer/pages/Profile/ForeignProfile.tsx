@@ -19,7 +19,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { UserClothing } from '../Match';
+import { UserAllItems, UserClothing } from '../Match';
 import { UserOutfit } from '../OutfitView'
 import { UserItems } from 'pages/Main';
 
@@ -33,13 +33,41 @@ const ForeignProfile = ({ route }: any) => {
 
     const [user, setUser] = useState<User | null>(null);
 
+    const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
+    const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
+    const [allTops, setAllTops] = useState<UserClothing[]>([]);
+    const [allBottoms, setAllBottoms] = useState<UserClothing[]>([]);
+    const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
+
+    // initializes an array of clothing categories and their data
+    const allItems: UserAllItems[] = [
+        {
+            category: 'outfits',
+            data: allOutfits
+        },
+        {
+            category: 'outerwear',
+            data: allOuterwear
+        },
+        {
+            category: 'tops',
+            data: allTops
+        },
+        {
+            category: 'bottoms',
+            data: allBottoms
+        },
+        {
+            category: 'shoes',
+            data: allShoes
+        },
+    ]
+
     useEffect(() => {
         const getUser = async () => {
             const { data, status } = await axios.get(`${baseUrl}/api/users/${userID}`)
 
             if (status === 200) {
-                console.log('Successfully fetched foreign user Profile')
-                console.log('Foreign user: ' + data.data)
                 return setUser(data.data)
             } else {
                 console.log('Failed to fetch foreign user Profile')
@@ -48,27 +76,60 @@ const ForeignProfile = ({ route }: any) => {
             return setUser(null);
         };
 
-        void getUser();
+        const getAllOutfits = async () => {
+            const { data, status } = await axios.get(`${baseUrl}/api/outfits/u/${userID}?parse=categories`);
+
+            if (status === 200) {
+                console.log('foreign profile: outfits')
+                console.log(data.data)
+                return setAllOutfits(data.data);
+            }
+
+            console.log('Failed to fetch All Outfits')
+            return setAllOutfits([]);
+        };
+
+        const getAllClothingItems = async () => {
+            const { data, status } = await axios.get(`${baseUrl}/api/clothing_items/u/${userID}?parse=categories`);
+
+            if (status === 200) {
+                console.log('foreign profile: clothing')
+                console.log(data.data)
+                return setAllOuterwear(data.data['outerwear']), setAllTops(data.data['tops']), setAllBottoms(data.data['bottoms']), setAllShoes(data.data['shoes'])
+            }
+
+            console.log('Failed to fetch All Clothing Items')
+            return setAllOuterwear([]), setAllTops([]), setAllBottoms([]), setAllShoes([]);
+        };
+
+        const fetchData = async () => {
+            await getUser();
+            await getAllOutfits();
+            await getAllClothingItems();
+        };
+
+        fetchData();
+
     }, [])
 
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const flatListRef = useRef<FlatList>(null);
 
-    const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits);
+    const [selectedCategory, setSelectedCategory] = useState(ClothingTypes.outfits as string);
 
     const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkFill); //! !! Use user state from backend
 
     const handleItemChange = (item: UserClothing | UserOutfit) => {
-        if ('items' in item) {
+        if ('oid' in item) {
             navigation.navigate(StackNavigation.OutfitView, {
                 item: item,
                 editable: false,
-            })
+            });
         } else {
             navigation.navigate(StackNavigation.ItemView, {
                 item: item,
                 editable: false,
-            })
+            });
         }
     };
 
@@ -94,8 +155,8 @@ const ForeignProfile = ({ route }: any) => {
     const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
         if (viewableItems.length > 0) {
             const visibleItem = viewableItems[0];
-            const index = userID.items.findIndex(
-                (item: UserItems) => item.category === visibleItem.item.category
+            const index = allItems.findIndex(
+                (item) => item.category === visibleItem.item.category
             );
             setSelectedCategory(IndexToCategory[index]);
         }
@@ -135,7 +196,7 @@ const ForeignProfile = ({ route }: any) => {
                             />
                             <CategorySlides
                                 categorySlidesRef={flatListRef}
-                                clothingData={[]} /// !!! ENTER IN REAL DATA
+                                allItemsData={allItems}
                                 selectedCategory={selectedCategory}
                                 handleItemChange={handleItemChange}
                                 handleViewableItemsChanged={handleViewableItemsChanged}

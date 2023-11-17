@@ -65,6 +65,8 @@ const MainPage: React.FC = () => {
             const { data, status } = await axios.get(`${baseUrl}/api/private/clothing_items?parse=categories`);
 
             if (status === 200) {
+                console.log('main profile')
+                console.log(data.data)
                 return setAllOuterwear(data.data['outerwear']), setAllTops(data.data['tops']), setAllBottoms(data.data['bottoms']), setAllShoes(data.data['shoes'])
             }
 

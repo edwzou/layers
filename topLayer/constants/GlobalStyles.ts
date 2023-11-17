@@ -105,8 +105,8 @@ const utils = StyleSheet.create({
 	},
 	tagShadow: {
 		shadowOffset: { width: 0, height: 0 },
-		shadowOpacity: 0.33,
-		shadowRadius: 7,
+		shadowOpacity: 0.25,
+		shadowRadius: 5,
 	},
 	buttonShadow: {
 		shadowOffset: { width: 0, height: 4 },
