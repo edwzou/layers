@@ -52,7 +52,7 @@ router.get('/:outfitId', (req: Request, res: Response): void => {
         `
         SELECT *
         FROM backend_schema.outfit AS table1
-        JOIN LATERAL (
+        LEFT JOIN LATERAL (
           SELECT ${itemPrefix}
           FROM backend_schema.clothing_item 
           WHERE ciid = ANY((ARRAY[table1.clothing_items])::uuid[])
@@ -64,12 +64,23 @@ router.get('/:outfitId', (req: Request, res: Response): void => {
       const temp = await outfit;
       const result = temp.rows;
       if (result.length === 0) {
-        throw new NotFoundError('Outfit Not Found, id: ' + outfitId);
+        return responseCallbackGet(null, result, res, 'Outfits');
       }
       const asyncManager = new AsyncManager(result.length);
       const asyncTrigger = once(asyncManager, 'proceed');
       for (const item of result) {
-        void urlDownloadHandlerOutfits(item.item_image_url, item, asyncManager);
+        if (item.item_image_url !== null) {
+          void urlDownloadHandlerOutfits(
+            item.item_image_url,
+            item,
+            asyncManager
+          );
+        } else {
+          console.log('Item has No Image, ciid: ' + String(item.item_ciid));
+          asyncManager.complete(
+            'Item has No Image, ciid: ' + String(item.item_ciid)
+          );
+        }
       }
       const outfits: Record<string, any> = {};
       if (result.length !== 0) {
@@ -85,6 +96,9 @@ router.get('/:outfitId', (req: Request, res: Response): void => {
           throw new Error('Some Url Download Requests Failed');
         }
         for (const item of result) {
+          if (item.item_category === null) {
+            continue;
+          }
           const itemFilter: Record<string, any> = {};
           for (const field of Object.values(itemFields)) {
             itemFilter[field] = item[`item_${field}`];
@@ -148,7 +162,7 @@ router.get('/u/:uid', (req: Request, res: Response): void => {
         `
         SELECT *
         FROM backend_schema.outfit AS table1
-        JOIN LATERAL (
+        LEFT JOIN LATERAL (
           SELECT ${itemPrefix}
           FROM backend_schema.clothing_item 
           WHERE ciid = ANY((ARRAY[table1.clothing_items])::uuid[])
@@ -161,10 +175,24 @@ router.get('/u/:uid', (req: Request, res: Response): void => {
       await getUserCore(uid, await client);
       const temp = await outfit;
       const result = temp.rows;
+      if (result.length === 0) {
+        return responseCallbackGetAll(result, res, 'Clothing Item');
+      }
       const asyncManager = new AsyncManager(result.length);
       const asyncTrigger = once(asyncManager, 'proceed');
       for (const item of result) {
-        void urlDownloadHandlerOutfits(item.item_image_url, item, asyncManager);
+        if (item.item_image_url !== null) {
+          void urlDownloadHandlerOutfits(
+            item.item_image_url,
+            item,
+            asyncManager
+          );
+        } else {
+          console.log('Item has No Image, ciid: ' + String(item.item_ciid));
+          asyncManager.complete(
+            'Item has No Image, ciid: ' + String(item.item_ciid)
+          );
+        }
       }
       // console.log('test', result);
       const outfits: any[] = [];
@@ -173,42 +201,43 @@ router.get('/u/:uid', (req: Request, res: Response): void => {
         categories[value] = [];
       });
 
-      if (result.length !== 0) {
-        let curoid: string = '';
-        let fit: Record<string, any> = {};
-        curoid = result[0].oid;
-        for (const field of Object.values(outfitFields)) {
-          fit[field] = result[0][field];
-        }
-        const resolution = await asyncTrigger;
-        if (resolution[1] < 0) {
-          throw new Error('Some Url Download Requests Failed');
-        }
-        for (const ofit of result) {
-          if (ofit.oid !== curoid) {
-            curoid = ofit.oid;
-            fit.clothing_items = categories;
-            outfits.push(fit);
-            categories = {};
-            Object.values(itemCategories).forEach((value) => {
-              categories[value] = [];
-            });
-            fit = {};
-            for (const field of Object.values(outfitFields)) {
-              fit[field] = ofit[field];
-            }
-          }
-          const itemFilter: Record<string, any> = {};
-          for (const field of Object.values(itemFields)) {
-            itemFilter[field] = ofit[`item_${field}`];
-          }
-          // console.log('Test2: ', itemFilter.category, itemFilter);
-          categories[itemFilter.category].push(itemFilter);
-          // console.log('Test: ', fit, outfits);
-        }
-        fit.clothing_items = categories;
-        outfits.push(fit);
+      let curoid: string = '';
+      let fit: Record<string, any> = {};
+      curoid = result[0].oid;
+      for (const field of Object.values(outfitFields)) {
+        fit[field] = result[0][field];
       }
+      const resolution = await asyncTrigger;
+      if (resolution[1] < 0) {
+        throw new Error('Some Url Download Requests Failed');
+      }
+      for (const ofit of result) {
+        if (ofit.oid !== curoid) {
+          curoid = ofit.oid;
+          fit.clothing_items = categories;
+          outfits.push(fit);
+          categories = {};
+          Object.values(itemCategories).forEach((value) => {
+            categories[value] = [];
+          });
+          fit = {};
+          for (const field of Object.values(outfitFields)) {
+            fit[field] = ofit[field];
+          }
+        }
+        if (ofit.item_category === null) {
+          continue;
+        }
+        const itemFilter: Record<string, any> = {};
+        for (const field of Object.values(itemFields)) {
+          itemFilter[field] = ofit[`item_${field}`];
+        }
+        // console.log('Test2: ', itemFilter.category, itemFilter);
+        categories[itemFilter.category].push(itemFilter);
+        // console.log('Test: ', fit, outfits);
+      }
+      fit.clothing_items = categories;
+      outfits.push(fit);
 
       responseCallbackGet(null, outfits, res, 'Outfits');
     } catch (error) {

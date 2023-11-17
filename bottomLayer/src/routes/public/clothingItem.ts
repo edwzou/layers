@@ -19,15 +19,16 @@ router.get('/:itemId', (req: Request, res: Response): void => {
 
   const getClothingById = async (itemId: string): Promise<any> => {
     try {
-      const item = await pool.query(
+      const query = pool.query(
         'SELECT *, to_json(color) AS color FROM backend_schema.clothing_item WHERE ciid = $1',
         [itemId]
       );
 
+      const item = await query;
       const temp = item.rows;
 
       if (temp.length === 0) {
-        throw new NotFoundError('Item Not Found, id: ' + itemId);
+        return responseCallbackGet(null, temp, res, 'Clothing Item');
       }
       const result = temp[0];
       const imgRef = result.image_url;
