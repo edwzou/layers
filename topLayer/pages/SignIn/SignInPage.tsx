@@ -30,7 +30,6 @@ export default function LoginPage() {
 				</Text>
 			</Text>
 		</Pressable>
-
 	);
 }
 

@@ -152,6 +152,7 @@ const SignUp = () => {
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
+							autoCapitalize="none"
 							label="Username"
 							onFieldChange={onChange}
 							value={value.trim()}
@@ -167,6 +168,7 @@ const SignUp = () => {
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
+							autoCapitalize="none"
 							label="Email"
 							onFieldChange={onChange}
 							value={value.trim()}

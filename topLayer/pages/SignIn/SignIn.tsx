@@ -26,6 +26,7 @@ const SignIn = () => {
 	});
 
 	const onSubmit = async (formData: any) => {
+		console.log('data: ', formData);
 		try {
 			const { status } = await axios.post(
 				`${baseUrl}/login`,
@@ -66,6 +67,7 @@ const SignIn = () => {
 					}}
 					render={({ field: { onChange, value } }) => (
 						<InlineTextbox
+							autoCapitalize="none"
 							icon={GlobalStyles.icons.userOutline}
 							placeholder="Email or Username"
 							value={value}

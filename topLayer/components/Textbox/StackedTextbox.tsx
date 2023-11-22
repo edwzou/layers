@@ -7,6 +7,7 @@ interface StackedTextboxPropsType {
 	value?: string;
 	secure?: boolean;
 	onFieldChange: (text: string) => void;
+	autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
 }
 
 const StackedTextBox = ({
@@ -14,6 +15,7 @@ const StackedTextBox = ({
 	value,
 	secure,
 	onFieldChange,
+	autoCapitalize = 'sentences',
 }: StackedTextboxPropsType) => {
 	const [fieldText, setFieldText] = useState(value || '');
 	const textRef = useRef<TextInput>(null);
@@ -29,6 +31,7 @@ const StackedTextBox = ({
 				{label}
 			</Text>
 			<TextInput
+				autoCapitalize={autoCapitalize}
 				value={fieldText}
 				onChangeText={(text) => {
 					setFieldText(text);
