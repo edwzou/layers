@@ -22,10 +22,8 @@ export const getClothingById = async (
   res: Response
 ): Promise<any> => {
   try {
-    console.log('query: ', queryString);
     const query = pool.query(queryString);
     const item = await query;
-    console.log('result: ', item);
     const temp = item.rows;
     if (temp.length === 0) {
       return responseCallbackGet(null, temp, res, 'Clothing Item');
@@ -147,7 +145,10 @@ export const outfitCateQueryPrefix = (): string => {
   return itemPrefix;
 };
 
-export const outfitCateQuery = (outfitId: string, uid: string = ''): string => {
+export const outfitCateQuery = (
+  outfitId: string = '',
+  uid: string = ''
+): string => {
   const itemPrefix = outfitCateQueryPrefix();
   let query = `
         SELECT *
@@ -158,16 +159,15 @@ export const outfitCateQuery = (outfitId: string, uid: string = ''): string => {
           WHERE ciid = ANY((ARRAY[table1.clothing_items])::uuid[])
         `;
   if (uid !== '') {
-    query += `
-          AND uid = '${uid}'
-        ) AS table2 ON true
-        WHERE table1.oid = '${outfitId}' AND table1.uid = '${uid}'
-`;
+    query += ` AND uid = '${uid}'`;
+  }
+  query += ') AS table2 ON true ';
+  if (outfitId !== '' && uid !== '') {
+    query += ` WHERE table1.oid = '${outfitId}' AND table1.uid = '${uid}'`;
+  } else if (outfitId !== '') {
+    query += ` WHERE table1.oid = '${outfitId}'`;
   } else {
-    query += `
-      ) AS table2 ON true
-        WHERE table1.oid =  '${outfitId}'
-`;
+    query += ` WHERE table1.uid = '${uid}'`;
   }
   return query;
 };
@@ -229,5 +229,111 @@ export const getOutfitByIdCate = async (
     responseCallbackGet(null, outfits, res, 'Outfits');
   } catch (error) {
     responseCallbackGet(error, null, res);
+  }
+};
+
+export const getAllOutfits = async (
+  queryString: string,
+  res: Response,
+  client: Promise<PoolClient> | null = null,
+  uid: string = ''
+): Promise<any> => {
+  try {
+    const run = pool.query(queryString);
+    if (client !== null) {
+      await getUserCore(uid, await client);
+    }
+    const result = await run;
+    const outfits = result.rows;
+
+    responseCallbackGetAll(outfits, res, 'Outfits');
+  } catch (error) {
+    responseCallbackGet(error, null, res);
+  } finally {
+    if (client !== null) {
+      (await client).release();
+    }
+  }
+};
+
+export const getAllOutfitsCate = async (
+  queryString: string,
+  res: Response,
+  client: Promise<PoolClient> | null = null,
+  uid: string = ''
+): Promise<any> => {
+  try {
+    const outfit = pool.query(queryString);
+    if (client !== null) {
+      await getUserCore(uid, await client);
+    }
+    const temp = await outfit;
+    const result = temp.rows;
+    if (result.length === 0) {
+      return responseCallbackGetAll(result, res, 'Outfits');
+    }
+    const asyncManager = new AsyncManager(result.length);
+    const asyncTrigger = once(asyncManager, 'proceed');
+    for (const item of result) {
+      if (item.item_image_url !== null) {
+        void urlDownloadHandlerOutfits(item.item_image_url, item, asyncManager);
+      } else {
+        console.log('Item has No Image, ciid: ' + String(item.item_ciid));
+        asyncManager.complete(
+          'Item has No Image, ciid: ' + String(item.item_ciid)
+        );
+      }
+    }
+    const outfits: any[] = [];
+    let categories: Record<string, any> = {};
+    Object.values(itemCategories).forEach((value) => {
+      categories[value] = [];
+    });
+
+    let curoid: string = '';
+    let fit: Record<string, any> = {};
+    curoid = result[0].oid;
+    for (const field of Object.values(outfitFields)) {
+      fit[field] = result[0][field];
+    }
+    const resolution = await asyncTrigger;
+    if (resolution[1] < 0) {
+      throw new Error('Some Url Download Requests Failed');
+    }
+    for (const ofit of result) {
+      if (ofit.oid !== curoid) {
+        curoid = ofit.oid;
+        fit.clothing_items = categories;
+        outfits.push(fit);
+        categories = {};
+        Object.values(itemCategories).forEach((value) => {
+          categories[value] = [];
+        });
+        fit = {};
+        for (const field of Object.values(outfitFields)) {
+          fit[field] = ofit[field];
+        }
+      }
+      if (ofit.item_category === null) {
+        continue;
+      }
+      const itemFilter: Record<string, any> = {};
+      for (const field of Object.values(itemFields)) {
+        itemFilter[field] = ofit[`item_${field}`];
+      }
+      // console.log('Test2: ', itemFilter.category, itemFilter);
+      categories[itemFilter.category].push(itemFilter);
+      // console.log('Test: ', fit, outfits);
+    }
+    fit.clothing_items = categories;
+    outfits.push(fit);
+
+    responseCallbackGet(null, outfits, res, 'Outfits');
+  } catch (error) {
+    responseCallbackGet(error, null, res);
+  } finally {
+    if (client !== null) {
+      (await client).release();
+    }
   }
 };
