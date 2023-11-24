@@ -63,6 +63,7 @@ router.get('/:outfitId', (req: Request, res: Response): void => {
       );
       const temp = await outfit;
       const result = temp.rows;
+      console.log('result: ', result);
       if (result.length === 0) {
         return responseCallbackGet(null, result, res, 'Outfits');
       }
