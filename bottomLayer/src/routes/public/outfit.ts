@@ -1,18 +1,6 @@
 import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import {
-  getUserCore,
-  responseCallbackGet,
-  responseCallbackGetAll
-} from '../../utils/responseCallback';
-import { itemCategories } from '../../utils/constants/itemCategories';
-import { itemFields } from '../../utils/constants/itemFields';
-import { outfitFields } from '../../utils/constants/outfitFields';
-import { urlDownloadHandlerOutfits } from '../../utils/event-emitters/asyncHandlers';
-import { AsyncManager } from '../../utils/event-emitters/asyncManager';
-import { once } from 'node:events';
-import { NotFoundError } from '../../utils/Errors/NotFoundError';
-import {
   getAllOutfits,
   getAllOutfitsCate,
   getOutfitById,

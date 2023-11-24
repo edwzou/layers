@@ -1,4 +1,4 @@
-import express, { type Request, type Response } from 'express';
+import { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 import { AsyncManager } from '../../utils/event-emitters/asyncManager';
@@ -17,6 +17,7 @@ import { itemFields } from '../../utils/constants/itemFields';
 import { outfitFields } from '../../utils/constants/outfitFields';
 import { type PoolClient } from 'pg';
 
+// Get Clothing Item By Id
 export const getClothingById = async (
   queryString: string,
   res: Response
@@ -38,6 +39,7 @@ export const getClothingById = async (
   }
 };
 
+// Gets All Clothing Items for a User
 export const getAllClothing = async (
   queryString: string,
   res: Response,
@@ -73,6 +75,7 @@ export const getAllClothing = async (
   }
 };
 
+// Gets All Clothing Items for a User in Parsed Categorical Format
 export const getAllClothingCate = async (
   queryString: string,
   res: Response,
@@ -115,6 +118,7 @@ export const getAllClothingCate = async (
   }
 };
 
+// Gets an Outfit By Id
 export const getOutfitById = async (
   queryString: string,
   res: Response
@@ -131,6 +135,7 @@ export const getOutfitById = async (
   }
 };
 
+// Writes out the a prefix for Outfit Query so Clothing Item and Outfit fields don't overlap
 export const outfitCateQueryPrefix = (): string => {
   let itemPrefix = '';
   for (const itemField of Object.values(itemFields)) {
@@ -145,6 +150,7 @@ export const outfitCateQueryPrefix = (): string => {
   return itemPrefix;
 };
 
+// Creates the Query to Query Outfits
 export const outfitCateQuery = (
   outfitId: string = '',
   uid: string = ''
@@ -172,6 +178,7 @@ export const outfitCateQuery = (
   return query;
 };
 
+// Gets an Outfit By Id parsed into Categorical Format
 export const getOutfitByIdCate = async (
   queryString: string,
   res: Response
@@ -232,6 +239,7 @@ export const getOutfitByIdCate = async (
   }
 };
 
+// Gets all outfits for a User
 export const getAllOutfits = async (
   queryString: string,
   res: Response,
@@ -256,6 +264,7 @@ export const getAllOutfits = async (
   }
 };
 
+// Gets all outfits for a User Parsed into Categorical Format
 export const getAllOutfitsCate = async (
   queryString: string,
   res: Response,

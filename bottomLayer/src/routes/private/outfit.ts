@@ -1,12 +1,4 @@
-import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
-import { NotFoundError } from '../../utils/Errors/NotFoundError';
-import { itemCategories } from '../../utils/constants/itemCategories';
-import { itemFields } from '../../utils/constants/itemFields';
-import { outfitFields } from '../../utils/constants/outfitFields';
-import { urlDownloadHandlerOutfits } from '../../utils/event-emitters/asyncHandlers';
-import { AsyncManager } from '../../utils/event-emitters/asyncManager';
 import {
-  getUserCore,
   responseCallbackDelete,
   responseCallbackGet,
   responseCallbackGetAll,
@@ -15,7 +7,6 @@ import {
 } from '../../utils/responseCallback';
 import { pool } from '../../utils/sqlImport';
 import express, { type Request, type Response } from 'express';
-import { once } from 'node:events';
 import {
   getAllOutfits,
   getAllOutfitsCate,
