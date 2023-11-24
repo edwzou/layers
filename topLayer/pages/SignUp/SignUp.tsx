@@ -56,9 +56,7 @@ const SignUp = () => {
 		setValue('profile_picture', image);
 	}, [image]);
 
-	const onSubmit = async (values: FormValues | any) => {
-		const formData = new FormData();
-
+	const onSubmit = (values: FormValues | any) => {
 		const formValues: Record<string, any> = {
 			first_name: values.first_name,
 			last_name: values.last_name,
@@ -69,25 +67,29 @@ const SignUp = () => {
 			private_option: values.private_option,
 		};
 
-		Object.keys(formValues).forEach((key) => {
-			formData.append(key, formValues[key]);
-		});
+		const onSubmitInner = async (): Promise<any> => {
+			try {
+				const { data, status } = await axios.post(
+					`${baseUrl}/signup`,
+					formValues
+				);
 
-		try {
-			const { data, status } = await axios.post(`${baseUrl}/signup`, formData);
-
-			if (status === 200) {
-				try {
-					updateData(data.data);
-				} catch (error) {
-					console.log(error);
+				if (status === 200) {
+					console.log('data2: ', data);
+					try {
+						updateData(data.data);
+					} catch (error) {
+						console.log(error);
+					}
+				} else {
+					throw new Error('Not Authorized.');
 				}
-			} else {
-				throw new Error('Not Authorized.');
+			} catch (error) {
+				console.log(error);
+				alert(error);
 			}
-		} catch (error) {
-			alert(error);
-		}
+		};
+		void onSubmitInner();
 	};
 
 	const privacyOptions = [
