@@ -8,6 +8,7 @@ interface InlineTextboxType {
 	placeholder: string;
 	value?: string;
 	onFieldChange: (text: string) => void;
+	autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
 }
 
 export default function InlineTextbox({
@@ -16,6 +17,7 @@ export default function InlineTextbox({
 	placeholder,
 	value,
 	onFieldChange,
+	autoCapitalize = 'sentences',
 }: InlineTextboxType) {
 	const [fieldText, setFieldText] = useState(value || '');
 	const textRef = useRef<TextInput>(null);
@@ -33,6 +35,7 @@ export default function InlineTextbox({
 				color={GlobalStyles.colorPalette.primary[400]}
 			/>
 			<TextInput
+				autoCapitalize={autoCapitalize}
 				style={[styles.input, GlobalStyles.typography.body]}
 				value={fieldText}
 				secureTextEntry={secure || false}

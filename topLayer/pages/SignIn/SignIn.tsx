@@ -25,35 +25,49 @@ const SignIn = () => {
 		},
 	});
 
-	const onSubmit = async (formData: any) => {
-		try {
-			const { status } = await axios.post(
-				`${baseUrl}/login`,
-				{
-					email: formData.email !== '' ? formData.email : null,
-					password: formData.password,
-				},
-				{
+	const onSubmit = (formData: any) => {
+		console.log('Button Pressed');
+		console.log('data: ', formData);
+		let formValues: Record<string, string> = {};
+		if (formData.username !== '') {
+			formValues = {
+				username: formData.username,
+				password: formData.password,
+			};
+		} else if (formData.email !== '') {
+			formValues = {
+				email: formData.email,
+				password: formData.password,
+			};
+		} else {
+			throw new Error('No Username or Email');
+		}
+		console.log('values: ', formValues);
+
+		const onSubmitInner = async (): Promise<any> => {
+			try {
+				const { status } = await axios.post(`${baseUrl}/login`, formValues, {
 					headers: {
 						'Content-Type': 'application/json',
 					},
-				}
-			);
-
-			if (status === 200) {
-				const { data: userData, status } = await axios.get(
-					`${baseUrl}/api/private/users`
-				);
+				});
 
 				if (status === 200) {
-					updateData(userData.data);
+					const { data: userData, status } = await axios.get(
+						`${baseUrl}/api/private/users`
+					);
+
+					if (status === 200) {
+						updateData(userData.data);
+					}
+				} else {
+					throw new Error('An error has occurred');
 				}
-			} else {
-				throw new Error('An error has occurred');
+			} catch (error) {
+				alert(error);
 			}
-		} catch (error) {
-			alert(error);
-		}
+		};
+		void onSubmitInner();
 	};
 
 	return (
@@ -66,18 +80,14 @@ const SignIn = () => {
 					}}
 					render={({ field: { onChange, value } }) => (
 						<InlineTextbox
+							autoCapitalize="none"
 							icon={GlobalStyles.icons.userOutline}
 							placeholder="Email or Username"
 							value={value}
 							onFieldChange={onChange}
 						/>
 					)}
-					name={
-						getValues('username').match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) !=
-						null
-							? 'email'
-							: 'username'
-					}
+					name="email"
 				/>
 				<Controller
 					control={control}

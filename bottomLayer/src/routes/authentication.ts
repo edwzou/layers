@@ -27,6 +27,7 @@ const loginStrate = new LocalStrategy(
       options?: IVerifyOptions
     ) => void
   ) => {
+    console.log('data', email, password);
     const login = async (): Promise<void> => {
       try {
         const result = await pool.query(
@@ -81,12 +82,23 @@ const signupStrate = new LocalStrategy(
       private_option,
       profile_picture
     } = req.body;
+    console.log(
+      'data: ',
+      first_name,
+      last_name,
+      email,
+      username,
+      password,
+      private_option,
+      profile_picture
+    );
 
     const signup = async (): Promise<void> => {
       try {
         // Can optimize the following awaits to call run them at the same time
         const uid = uuidv4();
-        const async1 = convertImage(profile_picture, uid, false);
+        const pp = profile_picture !== undefined ? profile_picture : '';
+        const async1 = convertImage(pp, uid, false);
         const async2 = hash(password, 10);
         const emailLower = email.toLowerCase();
         const hashedPass = await async2;
