@@ -45,7 +45,6 @@ CREATE TABLE backend_schema.outfit (
     clothing_items UUID[] NOT NULL,
     uid UUID NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT unique_outfit_per_user UNIQUE (title, clothing_items, uid),
     CONSTRAINT fit
       FOREIGN KEY (uid) 
       REFERENCES backend_schema.user(uid)

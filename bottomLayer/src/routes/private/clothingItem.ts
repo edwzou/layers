@@ -44,12 +44,21 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
   const uid = req.user as string;
   const { ciid } = req.params;
   const deleteItem = async (ciid: string): Promise<void> => {
+    const client = pool.connect();
     try {
-      await deleteObjectFromS3(ciid);
-      const deleteItem = await pool.query(
+      const async1 = deleteObjectFromS3(ciid);
+      const cli = await client;
+      const async2 = pool.query(
         'DELETE FROM backend_schema.clothing_item WHERE ciid = $1 AND uid = $2',
         [ciid, uid]
       );
+      const async3 = cli.query(
+        `UPDATE backend_schema.outfit SET clothing_items = array_remove(clothing_items, '${ciid}')`
+      );
+
+      const removeFromOutfit = await async3;
+      const deleteItem = await async2;
+      await async1;
 
       responseCallbackDelete(
         null,
@@ -60,6 +69,8 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
       );
     } catch (error) {
       responseCallbackDelete(error, ciid, res, 'Clothing Item');
+    } finally {
+      (await client).release();
     }
   };
   void deleteItem(ciid);
