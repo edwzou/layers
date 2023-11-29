@@ -10,6 +10,7 @@ import {
 import { hash, compare } from 'bcrypt';
 import { type IVerifyOptions, Strategy as LocalStrategy } from 'passport-local';
 import { v4 as uuidv4 } from 'uuid';
+import { downloadURLFromS3 } from '../s3/download-url-from-s3';
 
 const router = express.Router();
 
@@ -51,6 +52,7 @@ const loginStrate = new LocalStrategy(
           return;
         }
 
+        console.log('full query data: ', result.rows);
         done(null, result.rows[0]);
       } catch (err) {
         console.log(err);
@@ -147,6 +149,24 @@ const signupStrate = new LocalStrategy(
   }
 );
 
+const getUser = async (
+  user: any,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { password, ...userFields } = user;
+    const imgRef = userFields.pp_url;
+    userFields.pp_url = await downloadURLFromS3(imgRef);
+
+    console.log('Extracted User: ', userFields);
+    responseCallbackLogin(null, userFields, res);
+    next();
+  } catch (error) {
+    responseCallbackLogin(error, '', res);
+  }
+};
+
 const login = (req: Request, res: Response, next: NextFunction): any => {
   passport.authenticate('login', (err: any, user: any, info: any) => {
     if (err !== null && err !== undefined) {
@@ -163,19 +183,12 @@ const login = (req: Request, res: Response, next: NextFunction): any => {
         'Unknown User Error, User Not Defined'
       );
     }
+    console.log('full user data: ', user);
     req.logIn(user, { session: true }, (err) => {
       if (err !== null && err !== undefined) {
         return responseCallbackLogin(err, '', res);
       }
-      const userFields = (({
-        uid,
-        first_name,
-        last_name,
-        email,
-        username
-      }) => ({ uid, first_name, last_name, email, username }))(user);
-      responseCallbackLogin(null, userFields, res);
-      next();
+      void getUser(user, res, next);
     });
   })(req, res, next);
 };
@@ -200,15 +213,7 @@ const signup = (req: Request, res: Response, next: NextFunction): any => {
       if (err !== null && err !== undefined) {
         return responseCallbackSignUp(err, '', res);
       }
-      const userFields = (({
-        uid,
-        first_name,
-        last_name,
-        email,
-        username
-      }) => ({ uid, first_name, last_name, email, username }))(user);
-      responseCallbackSignUp(null, userFields, res);
-      next();
+      void getUser(user, res, next);
     });
   })(req, res, next);
 };

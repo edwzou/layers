@@ -1,9 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
-
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
-import { type StackTypes } from '../../utils/StackNavigation';
+import { Text, StyleSheet, Pressable, Keyboard } from 'react-native';
 import { StackNavigation } from '../../constants/Enums';
 
 import GlobalStyles from '../../constants/GlobalStyles';

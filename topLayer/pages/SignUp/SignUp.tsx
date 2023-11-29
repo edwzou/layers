@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
 import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
@@ -18,6 +18,14 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { UserContext } from '../../utils/UserContext';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+
+interface ApiResponse {
+	// Define the structure of your API response data
+	// For example, you might have properties like 'data', 'status', etc.
+	data: any;
+	status: number;
+}
 
 interface FormValues {
 	first_name: string;
@@ -69,24 +77,18 @@ const SignUp = () => {
 
 		const onSubmitInner = async (): Promise<any> => {
 			try {
-				const { data, status } = await axios.post(
+				const { data: userData, status } = await axios.post(
 					`${baseUrl}/signup`,
 					formValues
 				);
 
 				if (status === 200) {
-					console.log('data2: ', data);
-					try {
-						updateData(data.data);
-					} catch (error) {
-						console.log(error);
-					}
+					updateData(userData.data);
 				} else {
-					throw new Error('Not Authorized.');
+					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}
-			} catch (error) {
-				console.log(error);
-				alert(error);
+			} catch (err: unknown) {
+				void axiosEndpointErrorHandler(err);
 			}
 		};
 		void onSubmitInner();
