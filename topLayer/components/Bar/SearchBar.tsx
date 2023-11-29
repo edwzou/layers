@@ -6,7 +6,6 @@ import ProfileCell from '../../components/Cell/ProfileCell';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 
-
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -47,13 +46,16 @@ const SearchBar = ({
 
 		setSearchQuery(text);
 
+		console.log('text', text);
+		console.log('userdata', foreignUsersData);
 		/// !!! search doesn't account for full name
-		const filteredResults = foreignUsersData.filter(
-			(user) =>
-				user.username.toLowerCase().includes(text.toLowerCase()) ||
+		const filteredResults = foreignUsersData.filter((user) => {
+			console.log('User inner', user);
+			return ['test', 'test2'];
+			user.username.toLowerCase().includes(text.toLowerCase()) ||
 				user.firstName.toLowerCase().includes(text.toLowerCase()) ||
-				user.lastName.toLowerCase().includes(text.toLowerCase())
-		);
+				user.lastName.toLowerCase().includes(text.toLowerCase());
+		});
 
 		setSearchResults(text.trim() === '' ? [] : filteredResults);
 	};
@@ -61,7 +63,7 @@ const SearchBar = ({
 	const handleProfilePress = (user: User) => {
 		navigation.navigate(StackNavigation.ForeignProfile, {
 			user: user,
-		})
+		});
 	};
 
 	return (
@@ -84,7 +86,12 @@ const SearchBar = ({
 
 			<FlatList
 				data={searchResults}
-				renderItem={({ item }) => <ProfileCell user={item} handleProfilePress={() => handleProfilePress(item)} />}
+				renderItem={({ item }) => (
+					<ProfileCell
+						user={item}
+						handleProfilePress={() => handleProfilePress(item)}
+					/>
+				)}
 				keyExtractor={(item) => item.uid}
 			/>
 		</View>

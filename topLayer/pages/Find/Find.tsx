@@ -17,20 +17,19 @@ import Marked from './Marked';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { User } from '../../pages/Main';
 
-export const ShowProfileContext = createContext(() => { });
+export const ShowProfileContext = createContext(() => {});
 
 interface FindPropsType {
 	foreignUserIDs: string[];
 }
 
 const Find = ({ foreignUserIDs }: FindPropsType) => {
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [isComponentVisible, setComponentVisible] = useState(true);
 
 	const handlePress = () => {
-		navigation.navigate(StackNavigation.MarkedList, {})
+		navigation.navigate(StackNavigation.MarkedList, {});
 	};
 
 	const handleEmptyString = () => {
@@ -53,9 +52,7 @@ const Find = ({ foreignUserIDs }: FindPropsType) => {
 				/>
 				{isComponentVisible && (
 					<Pressable onPress={handlePress}>
-						<Marked
-							foreignUserIDs={foreignUserIDs}
-						/>
+						<Marked foreignUserIDs={foreignUserIDs} />
 					</Pressable>
 				)}
 			</View>

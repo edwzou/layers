@@ -1,7 +1,6 @@
 import { StyleSheet, StatusBar, View, SafeAreaView } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -46,49 +45,47 @@ export default function App() {
 
 	return (
 		<NavigationContainer ref={navigationRef}>
-			<GestureHandlerRootView style={{ flex: 1 }}>
-				<View style={styles.container}>
-					<UserContext.Provider value={userContextValue}>
-						<Stack.Navigator
-							screenOptions={{
-								headerShown: false,
+			<View style={styles.container}>
+				<UserContext.Provider value={userContextValue}>
+					<Stack.Navigator
+						screenOptions={{
+							headerShown: false,
+							// gestureEnabled: false,
+							// gestureDirection: 'horizontal',
+						}}
+					>
+						{!user ? (
+							<>
+								<Stack.Screen
+									name={StackNavigation.Login}
+									component={SignInPage}
+								/>
+								<Stack.Screen
+									name={StackNavigation.SignUp}
+									component={SignUpPage}
+								/>
+							</>
+						) : (
+							<>
+								<Stack.Screen
+									name={StackNavigation.Main}
+									component={MainPage}
+								/>
+							</>
+						)}
+						<Stack.Screen
+							name={StackNavigation.Camera}
+							component={CameraWrapper}
+							options={{
+								animation: 'slide_from_bottom',
 								gestureEnabled: true,
-								gestureDirection: 'horizontal',
+								gestureDirection: 'vertical',
 							}}
-						>
-							{!user ? (
-								<>
-									<Stack.Screen
-										name={StackNavigation.Login}
-										component={SignInPage}
-									/>
-									<Stack.Screen
-										name={StackNavigation.SignUp}
-										component={SignUpPage}
-									/>
-								</>
-							) : (
-								<>
-									<Stack.Screen
-										name={StackNavigation.Main}
-										component={MainPage}
-									/>
-								</>
-							)}
-							<Stack.Screen
-								name={StackNavigation.Camera}
-								component={CameraWrapper}
-								options={{
-									animation: 'slide_from_bottom',
-									gestureEnabled: true,
-									gestureDirection: 'vertical',
-								}}
-							/>
-						</Stack.Navigator>
-						<ExpoStatusBar style="auto" />
-					</UserContext.Provider>
-				</View>
-			</GestureHandlerRootView>
+						/>
+					</Stack.Navigator>
+					<ExpoStatusBar style="auto" />
+				</UserContext.Provider>
+			</View>
 		</NavigationContainer>
 	);
 }

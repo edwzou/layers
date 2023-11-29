@@ -8,10 +8,9 @@ import { StackNavigation } from '../../constants/Enums';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 import SignIn from './SignIn';
+import { NavigationProp } from 'constants/typing';
 
-export default function LoginPage() {
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
+const LoginPage: React.FC<NavigationProp> = ({ navigation }) => {
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={styles.container}>
 			<Text style={[GlobalStyles.typography.header, GlobalStyles.utils.font]}>
@@ -31,7 +30,7 @@ export default function LoginPage() {
 			</Text>
 		</Pressable>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -43,3 +42,5 @@ const styles = StyleSheet.create({
 		marginHorizontal: GlobalStyles.layout.xGap,
 	},
 });
+
+export default LoginPage;
