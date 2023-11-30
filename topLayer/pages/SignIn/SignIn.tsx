@@ -9,6 +9,7 @@ import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
 import { UserContext } from '../../utils/UserContext';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 const SignIn = () => {
 	const { updateData } = useContext(UserContext);
@@ -46,25 +47,23 @@ const SignIn = () => {
 
 		const onSubmitInner = async (): Promise<any> => {
 			try {
-				const { status } = await axios.post(`${baseUrl}/login`, formValues, {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				const { data: userData, status } = await axios.post(
+					`${baseUrl}/login`,
+					formValues,
+					{
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					}
+				);
 
 				if (status === 200) {
-					const { data: userData, status } = await axios.get(
-						`${baseUrl}/api/private/users`
-					);
-
-					if (status === 200) {
-						updateData(userData.data);
-					}
+					updateData(userData.data);
 				} else {
-					throw new Error('An error has occurred');
+					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}
-			} catch (error) {
-				alert(error);
+			} catch (err: unknown) {
+				void axiosEndpointErrorHandler(err);
 			}
 		};
 		void onSubmitInner();

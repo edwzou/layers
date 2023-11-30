@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
 import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
@@ -18,6 +18,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { UserContext } from '../../utils/UserContext';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 interface FormValues {
 	first_name: string;
@@ -31,9 +32,14 @@ interface FormValues {
 
 const SignUp = () => {
 	const [image, setImage] = useState('');
-	const [modalVisible, setModalVisible] = useState(false);
+	// const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { updateData } = useContext(UserContext);
+
+	const privacyOptions = [
+		{ value: 'Public', boolean: false },
+		{ value: 'Private', boolean: true },
+	];
 
 	const {
 		control,
@@ -69,33 +75,22 @@ const SignUp = () => {
 
 		const onSubmitInner = async (): Promise<any> => {
 			try {
-				const { data, status } = await axios.post(
+				const { data: userData, status } = await axios.post(
 					`${baseUrl}/signup`,
 					formValues
 				);
 
 				if (status === 200) {
-					console.log('data2: ', data);
-					try {
-						updateData(data.data);
-					} catch (error) {
-						console.log(error);
-					}
+					updateData(userData.data);
 				} else {
-					throw new Error('Not Authorized.');
+					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}
-			} catch (error) {
-				console.log(error);
-				alert(error);
+			} catch (err: unknown) {
+				void axiosEndpointErrorHandler(err);
 			}
 		};
 		void onSubmitInner();
 	};
-
-	const privacyOptions = [
-		{ value: 'Public', boolean: false },
-		{ value: 'Private', boolean: true },
-	];
 
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
@@ -108,7 +103,7 @@ const SignUp = () => {
 						});
 					}}
 				>
-					<ProfilePicture image={image} base64 />
+					<ProfilePicture imageUrl={image} base64 />
 				</Pressable>
 				<View
 					style={{
@@ -150,7 +145,7 @@ const SignUp = () => {
 					control={control}
 					rules={{
 						required: true,
-						maxLength: 20, // Just a random number
+						maxLength: 63, // Just a random number
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -167,6 +162,7 @@ const SignUp = () => {
 					rules={{
 						required: true,
 						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+						maxLength: 63, // Just a random number
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -183,6 +179,7 @@ const SignUp = () => {
 					rules={{
 						required: true,
 						minLength: 5,
+						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox

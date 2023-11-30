@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import { StyleSheet } from 'react-native';
+import React, { useContext, useEffect } from 'react';
 
 import Find from './Find';
 import MarkedList from './MarkedList';
@@ -21,70 +21,76 @@ import { UserContext } from '../../utils/UserContext';
 import axios from 'axios';
 
 const FindPage = () => {
+	const { data } = useContext(UserContext);
 
-    const { data } = useContext(UserContext);
+	const FindComponent = () => (
+		<Find foreignUserIDs={data ? data.following : []} />
+	);
+	const MarkedListComponent = () => (
+		<MarkedList foreignUserIDs={data ? data.following : []} />
+	);
 
-    const FindComponent = () => (<Find foreignUserIDs={data ? data.following : []} />)
-    const MarkedListComponent = () => (<MarkedList foreignUserIDs={data ? data.following : []} />)
+	return (
+		<NavigationContainer independent={true}>
+			<Stack.Navigator>
+				<Stack.Group
+					screenOptions={{
+						headerTitleStyle: GlobalStyles.typography.subtitle,
+						headerStyle: {
+							backgroundColor: GlobalStyles.colorPalette.background,
+						},
+						headerShadowVisible: false,
+					}}
+				>
+					<Stack.Screen
+						name={StackNavigation.Find}
+						component={FindComponent}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Group
+						screenOptions={{
+							presentation: 'modal',
+						}}
+					>
+						<Stack.Screen
+							name={StackNavigation.MarkedList}
+							component={MarkedListComponent}
+							options={{
+								headerTitle: `${
+									data ? (data.following ? data.following.length : 0) : 0
+								} Marked`,
+							}}
+						/>
+						<Stack.Screen
+							name={StackNavigation.ForeignProfile}
+							component={ForeignProfile}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name={StackNavigation.ItemView}
+							component={ItemViewPage}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name={StackNavigation.OutfitView}
+							component={OutfitViewPage}
+							options={{
+								headerShown: false,
+							}}
+						/>
+					</Stack.Group>
+				</Stack.Group>
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
+};
 
-    return (
-        <NavigationContainer
-            independent={true}>
-            <Stack.Navigator>
-                <Stack.Group
-                    screenOptions={{
-                        headerTitleStyle: GlobalStyles.typography.subtitle,
-                        headerStyle: {
-                            backgroundColor: GlobalStyles.colorPalette.background,
-                        },
-                        headerShadowVisible: false,
-                    }}>
-                    <Stack.Screen
-                        name={StackNavigation.Find}
-                        component={FindComponent}
-                        options={{
-                            headerShown: false
-                        }}
-                    />
-                    <Stack.Group
-                        screenOptions={{
-                            presentation: 'modal'
-                        }}>
-                        <Stack.Screen
-                            name={StackNavigation.MarkedList}
-                            component={MarkedListComponent}
-                            options={{
-                                headerTitle: `${data ? (data.following ? data.following.length : 0) : 0} Marked`
-                            }}
-                        />
-                        <Stack.Screen
-                            name={StackNavigation.ForeignProfile}
-                            component={ForeignProfile}
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                        <Stack.Screen
-                            name={StackNavigation.ItemView}
-                            component={ItemViewPage}
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                        <Stack.Screen
-                            name={StackNavigation.OutfitView}
-                            component={OutfitViewPage}
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                    </Stack.Group>
-                </Stack.Group>
-            </Stack.Navigator>
-        </NavigationContainer>
-    )
-}
+export default FindPage;
 
-export default FindPage
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
