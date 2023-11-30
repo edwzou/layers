@@ -20,13 +20,6 @@ import { StackNavigation } from '../../constants/Enums';
 import { UserContext } from '../../utils/UserContext';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
-interface ApiResponse {
-	// Define the structure of your API response data
-	// For example, you might have properties like 'data', 'status', etc.
-	data: any;
-	status: number;
-}
-
 interface FormValues {
 	first_name: string;
 	last_name: string;
@@ -39,9 +32,14 @@ interface FormValues {
 
 const SignUp = () => {
 	const [image, setImage] = useState('');
-	const [modalVisible, setModalVisible] = useState(false);
+	// const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { updateData } = useContext(UserContext);
+
+	const privacyOptions = [
+		{ value: 'Public', boolean: false },
+		{ value: 'Private', boolean: true },
+	];
 
 	const {
 		control,
@@ -94,11 +92,6 @@ const SignUp = () => {
 		void onSubmitInner();
 	};
 
-	const privacyOptions = [
-		{ value: 'Public', boolean: false },
-		{ value: 'Private', boolean: true },
-	];
-
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
 			<View style={{ gap: GlobalStyles.layout.gap }}>
@@ -110,7 +103,7 @@ const SignUp = () => {
 						});
 					}}
 				>
-					<ProfilePicture image={image} base64 />
+					<ProfilePicture imageUrl={image} base64 />
 				</Pressable>
 				<View
 					style={{
@@ -152,7 +145,7 @@ const SignUp = () => {
 					control={control}
 					rules={{
 						required: true,
-						maxLength: 20, // Just a random number
+						maxLength: 63, // Just a random number
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -169,6 +162,7 @@ const SignUp = () => {
 					rules={{
 						required: true,
 						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+						maxLength: 63, // Just a random number
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -185,6 +179,7 @@ const SignUp = () => {
 					rules={{
 						required: true,
 						minLength: 5,
+						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox

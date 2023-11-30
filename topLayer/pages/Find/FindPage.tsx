@@ -23,9 +23,9 @@ import axios from 'axios';
 const FindPage = () => {
 	const { data } = useContext(UserContext);
 
-	// const FindComponent = () => (
-	// 	<Find foreignUserIDs={data ? data.following : []} />
-	// );
+	const FindComponent = () => (
+		<Find foreignUserIDs={data ? data.following : []} />
+	);
 	const MarkedListComponent = () => (
 		<MarkedList foreignUserIDs={data ? data.following : []} />
 	);
@@ -42,13 +42,13 @@ const FindPage = () => {
 						headerShadowVisible: false,
 					}}
 				>
-					{/* <Stack.Screen */}
-					{/*     name={StackNavigation.Find} */}
-					{/*     component={FindComponent} */}
-					{/*     options={{ */}
-					{/*         headerShown: false */}
-					{/*     }} */}
-					{/* /> */}
+					<Stack.Screen
+						name={StackNavigation.Find}
+						component={FindComponent}
+						options={{
+							headerShown: false,
+						}}
+					/>
 					<Stack.Group
 						screenOptions={{
 							presentation: 'modal',
@@ -94,4 +94,3 @@ const FindPage = () => {
 export default FindPage;
 
 const styles = StyleSheet.create({});
-
