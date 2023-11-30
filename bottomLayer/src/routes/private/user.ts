@@ -18,7 +18,7 @@ router.get('/', (req: Request, res: Response): void => {
   const getUser = async (): Promise<void> => {
     try {
       const user = await pool.query(
-        'SELECT uid, first_name, last_name, email, username, private_option, followers, following, pp_url FROM backend_schema.user WHERE uid = $1',
+        'SELECT * FROM backend_schema.user WHERE uid = $1',
         [userId]
       );
       const result = user.rows[0];

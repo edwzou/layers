@@ -6,7 +6,7 @@ import {
   getOutfitById,
   getOutfitByIdCate,
   outfitCateQuery
-} from '../helper/clothingItem';
+} from '../helper/outfit';
 
 const router = express.Router();
 
