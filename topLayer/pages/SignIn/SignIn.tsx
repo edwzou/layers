@@ -16,7 +16,6 @@ const SignIn = () => {
 	const {
 		control,
 		handleSubmit,
-		getValues,
 		formState: { dirtyFields },
 	} = useForm({
 		defaultValues: {
@@ -76,6 +75,7 @@ const SignIn = () => {
 					control={control}
 					rules={{
 						required: true,
+						maxLength: 63,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<InlineTextbox
@@ -92,6 +92,8 @@ const SignIn = () => {
 					control={control}
 					rules={{
 						required: true,
+						minLength: 8,
+						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<InlineTextbox
