@@ -13,6 +13,8 @@ import axios from 'axios';
 
 import Match from './Match';
 import OutfitPreview from '../../pages/OutfitPreview/OutfitPreview';
+import { UserClothing } from '.';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 export const MatchPageContext = createContext({ setMatch: (_?: any) => { } });
 
@@ -20,27 +22,26 @@ const MatchPage = () => {
 
 	const [match, setMatch] = useState({
 		previewData: {
-			outerwear: null,
-			tops: null,
-			bottoms: null,
-			shoes: null
+			outerwear: {} as UserClothing,
+			tops: {} as UserClothing,
+			bottoms: {} as UserClothing,
+			shoes: {} as UserClothing
 		},
 		matchName: ''
 	})
 
 	const handleSubmitOutfit = async () => {
 		const clothingItems = [
-			match.previewData.outerwear,
-			match.previewData.tops,
-			match.previewData.bottoms,
-			match.previewData.shoes,
-		].filter(Boolean);
+			match.previewData.outerwear.ciid,
+			match.previewData.tops.ciid,
+			match.previewData.bottoms.ciid,
+			match.previewData.shoes.ciid,
+		].filter(item => Object.keys(item).length > 0);
 
 		try {
-			const response = await axios.post(`${baseUrl}/outfits`, {
+			const response = await axios.post(`${baseUrl}/api/private/outfits`, {
 				title: match.matchName,
-				clothing_items: clothingItems,
-				uid: 'a45ab439-0dce-448a-9126-43f32f8d56c8', // !!! change to real UID
+				clothing_items: clothingItems
 			});
 
 			if (response.status === 201) {
@@ -49,6 +50,7 @@ const MatchPage = () => {
 				throw new Error('An error has occurred');
 			}
 		} catch (error) {
+			void axiosEndpointErrorHandler(error)
 			alert(error);
 		}
 	};
