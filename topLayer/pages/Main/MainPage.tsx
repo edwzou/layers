@@ -10,6 +10,7 @@ import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import { UserOutfit } from '../../pages/OutfitView';
 import { UserAllItems, UserClothing } from '../../pages/Match';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 export const MainPageContext = createContext({
 	navigationArray: [() => {}],
@@ -46,22 +47,25 @@ const MainPage: React.FC = () => {
 			data: allShoes,
 		},
 	];
-
-	// fetched all the outfits and clothings
-	useEffect(() => {
-		const getAllOutfits = async () => {
+	const getAllOutfits = async () => {
+		try {
 			const { data, status } = await axios.get(
 				`${baseUrl}/api/private/outfits?parse=categories`
 			);
 
 			if (status === 200) {
 				return setAllOutfits(data.data);
+			} else {
+				throw new Error(`An Get All Outfits Error Has Occurred: ${status}`);
 			}
-
+		} catch (err: unknown) {
+			void axiosEndpointErrorHandler(err);
 			return setAllOutfits([]);
-		};
+		}
+	};
 
-		const getAllClothingItems = async () => {
+	const getAllClothingItems = async () => {
+		try {
 			const { data, status } = await axios.get(
 				`${baseUrl}/api/private/clothing_items?parse=categories`
 			);
@@ -75,23 +79,31 @@ const MainPage: React.FC = () => {
 					setAllBottoms(data.data['bottoms']),
 					setAllShoes(data.data['shoes'])
 				);
+			} else {
+				throw new Error(
+					`An Get All Clothing Items Error Has Occurred: ${status}`
+				);
 			}
-
+		} catch (err: unknown) {
+			void axiosEndpointErrorHandler(err);
 			return (
 				setAllOuterwear([]), setAllTops([]), setAllBottoms([]), setAllShoes([])
 			);
-		};
+		}
+	};
 
+	// fetched all the outfits and clothings
+	useEffect(() => {
 		void getAllOutfits();
 		void getAllClothingItems();
 	}, []);
 
 	const ref = useRef<PagerView>(null);
-	const navigateToProfile = (): void => {
-		ref.current?.setPage(1);
-	};
 	const navigateToMatch = (): void => {
 		ref.current?.setPage(0);
+	};
+	const navigateToProfile = (): void => {
+		ref.current?.setPage(1);
 	};
 	const navigateToFind = (): void => {
 		ref.current?.setPage(2);
