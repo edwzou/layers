@@ -116,6 +116,7 @@ const SignUp = () => {
 						control={control}
 						rules={{
 							required: true,
+							maxLength: 50,
 						}}
 						render={({ field: { onChange, value } }) => (
 							<StackedTextBox
@@ -130,6 +131,7 @@ const SignUp = () => {
 						control={control}
 						rules={{
 							required: true,
+							maxLength: 50,
 						}}
 						render={({ field: { onChange, value } }) => (
 							<StackedTextBox
@@ -178,7 +180,7 @@ const SignUp = () => {
 					control={control}
 					rules={{
 						required: true,
-						minLength: 5,
+						minLength: 8,
 						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
@@ -199,7 +201,7 @@ const SignUp = () => {
 				)}
 				{errors.password != null && (
 					<Text style={styles.error}>
-						Password must be 5 characters or more.
+						Password must be 8 characters or more.
 					</Text>
 				)}
 			</View>

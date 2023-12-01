@@ -46,7 +46,9 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	const colorPickerRef = useRef<refPropType>(null);
 
 	const [currentColorTags, setColorTags] = useState(clothingItem.color);
-	const [itemName, setItemName] = useState(clothingItem.title ? clothingItem.title : '');
+	const [itemName, setItemName] = useState(
+		clothingItem.title ? clothingItem.title : ''
+	);
 
 	const [sizeOpen, setSizeOpen] = useState(false);
 	const [sizeValue, setSizeValue] = useState(
@@ -189,7 +191,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 			brands: [],
 			size: '',
 			color: [],
-			created_at: ''
+			created_at: '',
 		},
 	});
 
@@ -233,7 +235,9 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	};
 
 	const handleOnRemovePress = (colorToDelete: string) => {
-		const updatedColorTags = currentColorTags.filter((color: string) => color !== colorToDelete);
+		const updatedColorTags = currentColorTags.filter(
+			(color: string) => color !== colorToDelete
+		);
 		setColorTags(updatedColorTags);
 	};
 
@@ -268,7 +272,9 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						value={itemName}
 					/>
 					<ItemCell imageUrl={clothingItem.image_url} />
-					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+					<View
+						style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+					>
 						<View style={{ width: ITEM_SIZE(2) }}>
 							<Dropdown
 								label="Item type"
@@ -307,7 +313,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						onRemovePress={handleOnRemovePress}
 					/>
 				</View>
-			</ScrollView >
+			</ScrollView>
 			<Button
 				text="Create/Update Item"
 				onPress={handleSubmit(onSubmit)}
@@ -334,7 +340,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
 				dim={false}
 			/>
-		</View >
+		</View>
 	);
 };
 

@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
 import Icon from 'react-native-remix-icon';
-import { stepOverHandler } from '.';
 import { NavigationBack } from '../../constants/Enums';
 
 import { MainPageContext } from '../../pages/Main/MainPage';
@@ -15,15 +14,14 @@ interface HeaderPropType {
 	back?: string;
 	rightArrow?: boolean;
 	leftArrow?: boolean;
-	stepOver?: { type: string; handlePress: () => void };
+	// stepOver?: { type: string; handlePress: () => void };
 }
 
-const Header = ({
+const Header: React.FC<HeaderPropType> = ({
 	text,
 	back,
 	rightArrow,
 	leftArrow,
-	stepOver,
 }: HeaderPropType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { navigationArray } = useContext(MainPageContext);
@@ -79,7 +77,6 @@ const Header = ({
 				) : null}
 
 				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
-				{stepOver != null ? stepOverHandler(stepOver) : null}
 			</View>
 		</SafeAreaView>
 	);
