@@ -23,9 +23,10 @@ import axios from 'axios';
 const FindPage = () => {
 	const { data } = useContext(UserContext);
 
-	const FindComponent = () => (
-		<Find foreignUserIDs={data ? data.following : []} />
-	);
+	const FindComponent = () => {
+		console.log('Following', data.following);
+		return <Find foreignUserIDs={data ? data.following : []} />;
+	};
 	const MarkedListComponent = () => (
 		<MarkedList foreignUserIDs={data ? data.following : []} />
 	);
