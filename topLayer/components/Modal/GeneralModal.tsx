@@ -1,5 +1,10 @@
 import { View, Text, StyleSheet } from 'react-native';
-import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
+import React, {
+	forwardRef,
+	useCallback,
+	useImperativeHandle,
+	type ReactElement,
+} from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
 	useAnimatedProps,
@@ -14,7 +19,6 @@ import {
 	screenHeight,
 	screenWidth,
 } from '../../utils/modalMaxShow';
-import { type ModalPropTypes, stepOverHandler } from '.';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 
@@ -22,10 +26,18 @@ export interface refPropType {
 	scrollTo: (destination: number) => void;
 	isActive: () => boolean;
 }
+export interface ModalPropTypes {
+	title?: string;
+	back?: boolean;
+	height?: number;
+	stepOver?: { type: string; handlePress: () => void };
+	content: ReactElement;
+	dim?: boolean;
+}
 
 const GeneralModal = forwardRef(
 	(
-		{ title, stepOver, height = lowTranslateY, content, dim = true }: ModalPropTypes,
+		{ title, height = lowTranslateY, content, dim = true }: ModalPropTypes,
 		ref
 	) => {
 		const active = useSharedValue(false);
@@ -93,7 +105,9 @@ const GeneralModal = forwardRef(
 					style={[
 						{
 							...StyleSheet.absoluteFillObject,
-							backgroundColor: dim ? GlobalStyles.colorPalette.primary[500] + '20' : 'transparent',
+							backgroundColor: dim
+								? GlobalStyles.colorPalette.primary[500] + '20'
+								: 'transparent',
 						},
 						backdropStyle,
 					]}
@@ -103,7 +117,6 @@ const GeneralModal = forwardRef(
 						{title && (
 							<View style={styles.header}>
 								<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
-								{stepOver != null ? stepOverHandler(stepOver) : null}
 							</View>
 						)}
 						<View style={{ flex: 1 }}>{content}</View>

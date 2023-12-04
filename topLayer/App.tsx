@@ -50,8 +50,6 @@ export default function App() {
 					<Stack.Navigator
 						screenOptions={{
 							headerShown: false,
-							// gestureEnabled: false,
-							// gestureDirection: 'horizontal',
 						}}
 					>
 						{!user ? (
