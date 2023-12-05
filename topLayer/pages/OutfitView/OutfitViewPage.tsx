@@ -22,7 +22,7 @@ const OutfitViewPage = ({ route }: any) => {
     }
 
     const OutfitViewComponent = () => (<OutfitView clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
-    const OutfitEditComponent = () => (<OutfitEdit title={item.title} clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
+    const OutfitEditComponent = () => (<OutfitEdit id={item.oid} title={item.title} clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
 
     return (
         <NavigationContainer

@@ -14,6 +14,10 @@ import { outfitEdit } from '../../constants/GlobalStrings'
 import Icon from 'react-native-remix-icon';
 import { UserClothing } from '../../pages/Match';
 
+import { baseUrl } from '../../utils/apiUtils';
+import axios from 'axios';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
 //     tops: UserOutfit,
@@ -23,33 +27,42 @@ import { UserClothing } from '../../pages/Match';
 // }
 
 interface OutfitViewPropsType {
+	id: string;
 	title: string;
 	clothingItems: UserClothing[];
 }
 
-const OutfitEdit = ({ title, clothingItems }: OutfitViewPropsType) => {
+const OutfitEdit = ({ id, title, clothingItems }: OutfitViewPropsType) => {
+
 	const [text, setText] = useState('');
 	const [rawData, setRawData] = useState<UserOutfit[]>([]);
-	const [data, setData] = useState<UserOutfit[]>([]);
+	const [outfitData, setOutfitData] = useState<UserOutfit[]>([]);
 	const onInputChange = (text: string) => {
 		setText(text);
 		// matchName(text);
 	};
 
 	// useEffect(() => {
-	//     setRawData([outerwear, tops, bottoms, shoes])
+	// 	setRawData([outerwear, tops, bottoms, shoes])
 	// }, [outerwear, tops, bottoms, shoes])
 
 	useEffect(() => {
-		;
-	}, []);
-
-	useEffect(() => {
-		setData(rawData.filter(Boolean));
+		setOutfitData(rawData.filter(Boolean));
 	}, [rawData]);
 
-	const handlePress = () => {
-		console.log('DELETE BUTTON');
+	const handleDelete = async () => {
+		try {
+			const response = await axios.delete(`${baseUrl}/api/private/outfits/${id}`);
+
+			if (response.status === 200) {
+				alert(`You have deleted: ${JSON.stringify(response.data)}`);
+			} else {
+				throw new Error('An error has occurred while deleting outfit');
+			}
+		} catch (error) {
+			void axiosEndpointErrorHandler(error)
+			alert(error);
+		}
 	};
 
 	return (
@@ -74,7 +87,7 @@ const OutfitEdit = ({ title, clothingItems }: OutfitViewPropsType) => {
 				style={{ height: screenHeight - 350, padding: 6 }}
 			/>
 			<View style={styles.deleteButtonContainer}>
-				<Pressable onPress={handlePress}>
+				<Pressable onPress={handleDelete}>
 					<View style={styles.deleteButton}>
 						<Icon
 							name={GlobalStyles.icons.closeOutline}
