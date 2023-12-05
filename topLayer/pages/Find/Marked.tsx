@@ -14,46 +14,22 @@ import { baseUrl } from '../../utils/apiUtils';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 interface MarkedPropsType {
-	foreignUserIDs: string[];
+	foreignUserIDs: any[];
 }
 
 const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 	const [users, setUsers] = useState<User[]>([]);
 
-	const getUser = async (userId: string) => {
-		try {
-			const { data, status } = await axios.get(
-				`${baseUrl}/api/users/${userId}`
-			);
-
-			if (status === 200) {
-				return data.data;
-			}
-		} catch (error) {
-			console.error('Error getting user', error);
-		}
-		return null;
-	};
-
 	useEffect(() => {
-		const getUsers = async () => {
-			if (foreignUserIDs.length === 0) {
-				console.log('No user IDs available');
-				return;
-			}
-
-			try {
-				const top3Users = await Promise.all(
-					foreignUserIDs.slice(0, 3).map((userId) => getUser(userId))
-				);
-				setUsers(top3Users);
-			} catch (error) {
-				console.error('Error getting users', error);
+		const set3Users = async () => {
+			if (foreignUserIDs.length < 4) {
+				console.log('3Users: ', foreignUserIDs);
+				setUsers(foreignUserIDs.slice(0, 3));
 			}
 		};
 
-		void getUsers();
-	}, []);
+		void set3Users();
+	}, [foreignUserIDs]);
 
 	return (
 		<View style={styles.container}>

@@ -47,12 +47,15 @@ const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
 			{isComponentVisible && (
 				<FlatList
 					data={foreignUserIDs}
-					renderItem={({ item }) => (
-						<ProfileCell
-							userID={item}
-							handleProfilePress={() => handleProfilePress(item)}
-						/>
-					)}
+					renderItem={({ item }) => {
+						console.log('Item', item);
+						return (
+							<ProfileCell
+								userID={item}
+								handleProfilePress={() => handleProfilePress(item)}
+							/>
+						);
+					}}
 				/>
 			)}
 		</View>

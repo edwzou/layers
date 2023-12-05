@@ -10,29 +10,30 @@ import { baseUrl } from '../../utils/apiUtils';
 import { User } from '../../pages/Main';
 
 interface ProfileCellPropsType {
-	userID: string;
+	userID: any;
 	handleProfilePress: () => void;
 }
 
 const ProfileCell = ({ userID, handleProfilePress }: ProfileCellPropsType) => {
 	const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkFill);
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<User | string>(userID);
+	const getUser = async () => {
+		const { data, status } = await axios.get(`${baseUrl}/api/users/${userID}`);
 
-	useEffect(() => {
-		const getUser = async () => {
-			const { data, status } = await axios.get(`${baseUrl}/api/users/${userID}`);
+		if (status === 200) {
+			console.log('Successfully fetched foreign user ProfileCell');
+			setUser(data.data);
+		} else {
+			console.log('Failed to fetch foreign user ProfileCell');
+			setUser('Fail');
+		}
+	};
+	console.log('Inner User: ', userID);
 
-			if (status === 200) {
-				console.log('Successfully fetched foreign user ProfileCell');
-				setUser(data.data);
-			} else {
-				console.log('Failed to fetch foreign user ProfileCell');
-				setUser(null);
-			}
-		};
-
+	if (typeof user === 'string') {
+		// TODO: update parent component as well
 		void getUser();
-	}, [userID]);
+	}
 
 	const handleIconPress = () => {
 		if (iconName === GlobalStyles.icons.bookmarkFill) {
@@ -46,7 +47,12 @@ const ProfileCell = ({ userID, handleProfilePress }: ProfileCellPropsType) => {
 		<Pressable style={styles.container} onPress={handleProfilePress}>
 			{/* Use the ProfilePicture component to render the user's profile picture */}
 			<View style={styles.profilePicture}>
-				<ProfilePicture imageUrl={user ? user.pp_url : ''} base64={false} size={GlobalStyles.sizing.pfp.small} shadow={false} />
+				<ProfilePicture
+					imageUrl={user ? user.pp_url : ''}
+					base64={false}
+					size={GlobalStyles.sizing.pfp.small}
+					shadow={false}
+				/>
 			</View>
 			<View style={styles.textContainer}>
 				<Text style={styles.username}>{user ? user.username : ''}</Text>
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		paddingTop: 20,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	textContainer: {
 		flex: 1,

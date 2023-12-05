@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Find from './Find';
 import MarkedList from './MarkedList';
@@ -18,17 +18,61 @@ import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
 import { UserContext } from '../../utils/UserContext';
 
+import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 const FindPage = () => {
 	const { data } = useContext(UserContext);
+	// this only gets the foreignUsersData from UserContext on initial load
+	let foreignUsersIDs: any[] = data && data.following ? data.following : [];
+	const [foreignUsersData, updateForeignUsers] = useState(foreignUsersIDs);
+
+	const getUser = async (userId: string) => {
+		try {
+			const { data, status } = await axios.get(
+				`${baseUrl}/api/users/${userId}`
+			);
+
+			if (status === 200) {
+				return data.data;
+			}
+		} catch (error) {
+			void axiosEndpointErrorHandler(error);
+		}
+	};
+
+	useEffect(() => {
+		const get3Users = async () => {
+			try {
+				const top3Users = await Promise.all(
+					foreignUsersData.slice(0, 3).map((user) => {
+						if (user.uid) {
+							return user;
+						} else {
+							return getUser(user);
+							// return user;
+						}
+					})
+				);
+				updateForeignUsers(top3Users.concat(foreignUsersData.slice(3)));
+			} catch (error) {
+				void axiosEndpointErrorHandler(error);
+			}
+		};
+
+		if (foreignUsersData.slice(0, 3).some((user) => !user.uid)) {
+			console.log('test1', foreignUsersData.slice(0, 3));
+			void get3Users();
+		}
+	}, [foreignUsersData]);
 
 	const FindComponent = () => {
-		console.log('Following', data.following);
-		return <Find foreignUserIDs={data ? data.following : []} />;
+		console.log('Following', foreignUsersData);
+		return <Find foreignUserIDs={foreignUsersData} />;
 	};
 	const MarkedListComponent = () => (
-		<MarkedList foreignUserIDs={data ? data.following : []} />
+		<MarkedList foreignUserIDs={foreignUsersData} />
 	);
 
 	return (

@@ -20,7 +20,7 @@ import { User } from '../../pages/Main';
 export const ShowProfileContext = createContext(() => {});
 
 interface FindPropsType {
-	foreignUserIDs: string[];
+	foreignUserIDs: any[];
 }
 
 const Find = ({ foreignUserIDs }: FindPropsType) => {
