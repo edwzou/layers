@@ -3,6 +3,7 @@ import authRoute from '../routes/authentication';
 import outfitRoute from '../routes/public/outfit';
 import clothingRoute from '../routes/public/clothingItem';
 import searchRoute from '../routes/public/search';
+import usersRoute from '../routes/public/user';
 import privateUserRoute from '../routes/private/user';
 import privateOutfitRoute from '../routes/private/outfit';
 import privateClothingRoute from '../routes/private/clothingItem';
@@ -20,6 +21,7 @@ routerBase.use('/', authRoute);
 routerPublic.use('/outfits', outfitRoute);
 routerPublic.use('/clothing_items', clothingRoute);
 routerPublic.use('/search', searchRoute);
+routerPublic.use('/users', usersRoute);
 
 routerPrivate.use(checkAuthenticated);
 routerPrivate.use('/users', privateUserRoute, privateFollowUserRoute);
