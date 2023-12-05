@@ -32,11 +32,11 @@ const MatchPage = () => {
 
 	const handleSubmitOutfit = async () => {
 		const clothingItems = [
-			match.previewData.outerwear.ciid,
-			match.previewData.tops.ciid,
-			match.previewData.bottoms.ciid,
-			match.previewData.shoes.ciid,
-		].filter(item => Object.keys(item).length > 0);
+			match.previewData && match.previewData.outerwear ? match.previewData.outerwear.ciid : null,
+			match.previewData && match.previewData.tops ? match.previewData.tops.ciid : null,
+			match.previewData && match.previewData.bottoms ? match.previewData.bottoms.ciid : null,
+			match.previewData && match.previewData.shoes ? match.previewData.shoes.ciid : null,
+		].filter(item => item !== null);
 
 		try {
 			const response = await axios.post(`${baseUrl}/api/private/outfits`, {
@@ -44,10 +44,10 @@ const MatchPage = () => {
 				clothing_items: clothingItems
 			});
 
-			if (response.status === 201) {
+			if (response.status === 200) {
 				alert(`You have created: ${JSON.stringify(response.data)}`);
 			} else {
-				throw new Error('An error has occurred');
+				throw new Error('An error has occurred while submitting outfit');
 			}
 		} catch (error) {
 			void axiosEndpointErrorHandler(error)
