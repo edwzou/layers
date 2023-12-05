@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	Image,
+	ImageSourcePropType,
+} from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 import { User } from '../../pages/Main';
@@ -12,12 +18,13 @@ interface MarkedPropsType {
 }
 
 const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
-
 	const [users, setUsers] = useState<User[]>([]);
 
 	const getUser = async (userId: string) => {
 		try {
-			const { data, status } = await axios.get(`${baseUrl}/api/users/${userId}`);
+			const { data, status } = await axios.get(
+				`${baseUrl}/api/users/${userId}`
+			);
 
 			if (status === 200) {
 				return data.data;
@@ -36,8 +43,10 @@ const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 			}
 
 			try {
-				const top3Users = await Promise.all(foreignUserIDs.slice(0, 3).map(userId => getUser(userId)));
-				setUsers(top3Users)
+				const top3Users = await Promise.all(
+					foreignUserIDs.slice(0, 3).map((userId) => getUser(userId))
+				);
+				setUsers(top3Users);
 			} catch (error) {
 				console.error('Error getting users', error);
 			}
@@ -55,21 +64,30 @@ const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 				<Text style={styles.label}>{find.viewYourMarkedProfiles}</Text>
 			</View>
 			<View style={styles.profilePicturesContainer}>
-				{users[0] &&
+				{users[0] && (
 					<View style={styles.profilePicture}>
-						<ProfilePicture imageUrl={users[0].pp_url} size={GlobalStyles.sizing.pfp.small} />
+						<ProfilePicture
+							imageUrl={users[0].pp_url ? users[0].pp_url : ''}
+							size={GlobalStyles.sizing.pfp.small}
+						/>
 					</View>
-				}
-				{users[1] &&
+				)}
+				{users[1] && (
 					<View style={styles.profilePicture}>
-						<ProfilePicture imageUrl={users[1].pp_url} size={GlobalStyles.sizing.pfp.small} />
+						<ProfilePicture
+							imageUrl={users[1].pp_url ? users[1].pp_url : ''}
+							size={GlobalStyles.sizing.pfp.small}
+						/>
 					</View>
-				}
-				{users[2] &&
+				)}
+				{users[2] && (
 					<View style={styles.profilePicture}>
-						<ProfilePicture imageUrl={users[2].pp_url} size={GlobalStyles.sizing.pfp.small} />
+						<ProfilePicture
+							imageUrl={users[2].pp_url ? users[2].pp_url : ''}
+							size={GlobalStyles.sizing.pfp.small}
+						/>
 					</View>
-				}
+				)}
 			</View>
 		</View>
 	);

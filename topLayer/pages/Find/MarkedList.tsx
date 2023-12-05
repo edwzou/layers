@@ -1,4 +1,4 @@
-import React, { useState, } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 
 import SearchBar from '../../components/Bar/SearchBar';
@@ -18,7 +18,6 @@ interface MarkedListPropsType {
 }
 
 const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [isComponentVisible, setComponentVisible] = useState(true);
@@ -34,7 +33,7 @@ const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
 	const handleProfilePress = (userID: string) => {
 		navigation.navigate(StackNavigation.ForeignProfile, {
 			userID: userID,
-		})
+		});
 	};
 
 	return (
@@ -48,7 +47,12 @@ const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
 			{isComponentVisible && (
 				<FlatList
 					data={foreignUserIDs}
-					renderItem={({ item }) => <ProfileCell userID={item} handleProfilePress={() => handleProfilePress(item)} />}
+					renderItem={({ item }) => (
+						<ProfileCell
+							userID={item}
+							handleProfilePress={() => handleProfilePress(item)}
+						/>
+					)}
 				/>
 			)}
 		</View>
