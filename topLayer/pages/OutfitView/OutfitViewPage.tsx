@@ -17,7 +17,13 @@ import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from 'utils/StackNavigation';
+
 const OutfitViewPage = ({ route }: any) => {
+
+    const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
     const { item, editable } = route.params;
 
@@ -27,12 +33,17 @@ const OutfitViewPage = ({ route }: any) => {
         return Object.values(clothingList).flat()
     }
 
+    const navigateToProfile = () => {
+        navigation.navigate(StackNavigation.Profile, {});
+    }
+
     const OutfitViewComponent = () => (<OutfitView clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
     const OutfitEditComponent = () => (<OutfitEdit
         id={item.oid}
         title={item.title}
         clothingItems={getFlatArrayOfValues(item.clothing_items)}
-        titleRef={outfitTitleRef} />)
+        titleRef={outfitTitleRef}
+        navigateToProfile={navigateToProfile} />)
 
     // Only updates title
     const handleSubmitOutfit = async () => {

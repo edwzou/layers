@@ -1,5 +1,12 @@
 import { StyleSheet } from 'react-native';
-import React, { createContext, useRef, useEffect, useState } from 'react';
+import React, {
+	type Dispatch,
+	type SetStateAction,
+	createContext,
+	useRef,
+	useEffect,
+	useState
+} from 'react';
 import PagerView from 'react-native-pager-view';
 
 import ProfilePage from '../Profile/ProfilePage';
@@ -15,6 +22,8 @@ import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 export const MainPageContext = createContext({
 	navigationArray: [() => { }],
 	allItems: [] as UserAllItems[],
+	setShouldRefreshMatchPage: (() => { }) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshOutfitEdit: (() => { }) as Dispatch<SetStateAction<boolean>>,
 });
 
 const MainPage: React.FC = () => {
@@ -25,6 +34,7 @@ const MainPage: React.FC = () => {
 	const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
 
 	const [shouldRefreshMatchPage, setShouldRefreshMatchPage] = useState(false)
+	const [shouldRefreshOutfitEdit, setShouldRefreshOutfitEdit] = useState(false)
 
 	// initializes an array of clothing categories and their data
 	const allItems: UserAllItems[] = [
@@ -95,15 +105,32 @@ const MainPage: React.FC = () => {
 	};
 
 	// fetches all the outfits and clothings
+
 	useEffect(() => {
 		void getAllOutfits();
 		void getAllClothingItems();
+	}, []);
+
+	useEffect(() => {
+		if (shouldRefreshMatchPage) {
+			void getAllOutfits();
+			void getAllClothingItems();
+			setShouldRefreshMatchPage(false);
+		}
 	}, [shouldRefreshMatchPage]);
 
-	// resets value to false
 	useEffect(() => {
-		setShouldRefreshMatchPage(false);
-	}, [shouldRefreshMatchPage]);
+		if (shouldRefreshMatchPage || shouldRefreshOutfitEdit) {
+			void getAllOutfits();
+			void getAllClothingItems();
+		}
+		if (shouldRefreshMatchPage) {
+			setShouldRefreshMatchPage(false)
+		}
+		if (shouldRefreshOutfitEdit) {
+			setShouldRefreshOutfitEdit(false)
+		}
+	}, [shouldRefreshMatchPage, shouldRefreshOutfitEdit]);
 
 	const ref = useRef<PagerView>(null);
 	const navigateToMatch = (): void => {
@@ -121,10 +148,12 @@ const MainPage: React.FC = () => {
 			value={{
 				navigationArray: [navigateToProfile, navigateToMatch, navigateToFind],
 				allItems: allItems,
+				setShouldRefreshMatchPage: setShouldRefreshMatchPage,
+				setShouldRefreshOutfitEdit: setShouldRefreshOutfitEdit,
 			}}
 		>
 			<PagerView style={styles.pager} ref={ref} initialPage={1}>
-				<MatchPage setShouldRefresh={setShouldRefreshMatchPage} />
+				<MatchPage />
 				<ProfilePage />
 				<FindPage />
 			</PagerView>

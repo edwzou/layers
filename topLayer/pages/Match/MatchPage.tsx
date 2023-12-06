@@ -1,6 +1,4 @@
 import React, {
-	type Dispatch,
-	type SetStateAction,
 	useState,
 	createContext,
 	useContext
@@ -29,13 +27,9 @@ export const MatchPageContext = createContext({
 	dismissal: false,
 });
 
-interface MatchPagePropsType {
-	setShouldRefresh: Dispatch<SetStateAction<boolean>>
-}
+const MatchPage = () => {
 
-const MatchPage = ({ setShouldRefresh }: MatchPagePropsType) => {
-
-	const { navigationArray } = useContext(MainPageContext);
+	const { navigationArray, setShouldRefreshMatchPage } = useContext(MainPageContext);
 	const [dismissal, setDismissal] = useState(false);
 
 	const [match, setMatch] = useState({
@@ -65,7 +59,7 @@ const MatchPage = ({ setShouldRefresh }: MatchPagePropsType) => {
 			if (response.status === 200) {
 				//alert(`You have created: ${JSON.stringify(response.data)}`);
 				setDismissal(true)
-				setShouldRefresh(true)
+				setShouldRefreshMatchPage(true)
 				navigationArray[0]()
 				setDismissal(false)
 			} else {
