@@ -24,6 +24,7 @@ export const MainPageContext = createContext({
 	allItems: [] as UserAllItems[],
 	setShouldRefreshMatchPage: (() => { }) as Dispatch<SetStateAction<boolean>>,
 	setShouldRefreshOutfitEdit: (() => { }) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshOutfitViewPage: (() => { }) as Dispatch<SetStateAction<boolean>>,
 });
 
 const MainPage: React.FC = () => {
@@ -35,6 +36,7 @@ const MainPage: React.FC = () => {
 
 	const [shouldRefreshMatchPage, setShouldRefreshMatchPage] = useState(false)
 	const [shouldRefreshOutfitEdit, setShouldRefreshOutfitEdit] = useState(false)
+	const [shouldRefreshOutfitViewPage, setShouldRefreshOutfitViewPage] = useState(false)
 
 	// initializes an array of clothing categories and their data
 	const allItems: UserAllItems[] = [
@@ -112,15 +114,7 @@ const MainPage: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		if (shouldRefreshMatchPage) {
-			void getAllOutfits();
-			void getAllClothingItems();
-			setShouldRefreshMatchPage(false);
-		}
-	}, [shouldRefreshMatchPage]);
-
-	useEffect(() => {
-		if (shouldRefreshMatchPage || shouldRefreshOutfitEdit) {
+		if (shouldRefreshMatchPage || shouldRefreshOutfitEdit || shouldRefreshOutfitViewPage) {
 			void getAllOutfits();
 			void getAllClothingItems();
 		}
@@ -130,7 +124,10 @@ const MainPage: React.FC = () => {
 		if (shouldRefreshOutfitEdit) {
 			setShouldRefreshOutfitEdit(false)
 		}
-	}, [shouldRefreshMatchPage, shouldRefreshOutfitEdit]);
+		if (shouldRefreshOutfitViewPage) {
+			setShouldRefreshOutfitViewPage(false)
+		}
+	}, [shouldRefreshMatchPage, shouldRefreshOutfitEdit, shouldRefreshOutfitViewPage]);
 
 	const ref = useRef<PagerView>(null);
 	const navigateToMatch = (): void => {
@@ -150,6 +147,7 @@ const MainPage: React.FC = () => {
 				allItems: allItems,
 				setShouldRefreshMatchPage: setShouldRefreshMatchPage,
 				setShouldRefreshOutfitEdit: setShouldRefreshOutfitEdit,
+				setShouldRefreshOutfitViewPage: setShouldRefreshOutfitViewPage,
 			}}
 		>
 			<PagerView style={styles.pager} ref={ref} initialPage={1}>

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import React, { useRef } from 'react'
+import React, { useRef, useContext } from 'react'
 
 import OutfitView from './OutfitView'
 import OutfitEdit from './OutfitEdit';
@@ -20,8 +20,11 @@ import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
+import { MainPageContext } from '../../pages/Main/MainPage';
 
 const OutfitViewPage = ({ route }: any) => {
+
+    const { setShouldRefreshOutfitViewPage } = useContext(MainPageContext);
 
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
@@ -33,7 +36,7 @@ const OutfitViewPage = ({ route }: any) => {
         return Object.values(clothingList).flat()
     }
 
-    const navigateToProfile = () => {
+    const redirectToProfile = () => {
         navigation.navigate(StackNavigation.Profile, {});
     }
 
@@ -43,7 +46,7 @@ const OutfitViewPage = ({ route }: any) => {
         title={item.title}
         clothingItems={getFlatArrayOfValues(item.clothing_items)}
         titleRef={outfitTitleRef}
-        navigateToProfile={navigateToProfile} />)
+        navigateToProfile={redirectToProfile} />)
 
     // Only updates title
     const handleSubmitOutfit = async () => {
@@ -56,7 +59,9 @@ const OutfitViewPage = ({ route }: any) => {
             });
 
             if (response.status === 200) {
-                alert(`You have updated: ${JSON.stringify(response.data)}`);
+                //alert(`You have updated: ${JSON.stringify(response.data)}`);
+                setShouldRefreshOutfitViewPage(true)
+                redirectToProfile()
             } else {
                 throw new Error('An error has occurred while updating outfit');
             }
