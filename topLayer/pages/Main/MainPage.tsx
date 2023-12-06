@@ -111,12 +111,7 @@ const MainPage: React.FC = () => {
 		}
 	};
 
-	// fetches all the outfits and clothings
-	useEffect(() => {
-		void getAllOutfits();
-		void getAllClothingItems();
-	}, []);
-
+	// fetched all the outfits and clothings
 	useEffect(() => {
 		if (
 			shouldRefreshMatchPage ||

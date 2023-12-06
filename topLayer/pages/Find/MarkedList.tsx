@@ -7,20 +7,13 @@ import ProfileCell from '../../components/Cell/ProfileCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 
-import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from '../../utils/StackNavigation';
-
 import { User } from '../../pages/Main';
-import { StackNavigation } from '../../constants/Enums';
 
 interface MarkedListPropsType {
 	foreignUserIDs: (User | string)[];
 }
 
 const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
 	console.log('New Load2');
 	const [preLoad, setPreLoad] = useState(false);
 	useEffect(() => {
@@ -32,28 +25,41 @@ const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
 
 	const [isComponentVisible, setComponentVisible] = useState(true);
 	const handleEmptyString = () => {
-		setComponentVisible((isComponentVisible) => true);
+		setComponentVisible(true);
 	};
 
 	const handleNonEmptyString = () => {
-		setComponentVisible((isComponentVisible) => false);
+		setComponentVisible(false);
 	};
 
 	const renderProfile = ({ item }: { item: User | string }) => {
 		console.log('Item', item);
 
-		return <ProfileCell user={item} />;
+		return <ProfileCell user={item} marked={true} />;
 	};
 
 	return (
 		<View style={styles.container}>
-			<SearchBar
-				placeholder={find.searchMarked}
-				foreignUsersData={foreignUserIDs}
-				handleEmptyString={handleEmptyString}
-				handleNonEmptyString={handleNonEmptyString}
-			/>
-			{preLoad && <FlatList data={foreignUserIDs} renderItem={renderProfile} />}
+			{/* the search bar for markedlist will behave different searching only the marked list for followers. */}
+			{/* <SearchBar */}
+			{/* 	placeholder={find.searchMarked} */}
+			{/* 	foreignUsersData={foreignUserIDs} */}
+			{/* 	handleEmptyString={handleEmptyString} */}
+			{/* 	handleNonEmptyString={handleNonEmptyString} */}
+			{/* /> */}
+			{preLoad && isComponentVisible && (
+				<FlatList
+					data={foreignUserIDs}
+					renderItem={renderProfile}
+					keyExtractor={(item) => {
+						if (typeof item === 'string') {
+							return item;
+						} else {
+							return item.uid;
+						}
+					}}
+				/>
+			)}
 		</View>
 	);
 };

@@ -33,11 +33,11 @@ const Find = ({ foreignUserIDs }: FindPropsType) => {
 	};
 
 	const handleEmptyString = () => {
-		setComponentVisible((isComponentVisible) => true);
+		setComponentVisible(true);
 	};
 
 	const handleNonEmptyString = () => {
-		setComponentVisible((isComponentVisible) => false);
+		setComponentVisible(false);
 	};
 
 	return (
@@ -46,7 +46,6 @@ const Find = ({ foreignUserIDs }: FindPropsType) => {
 			<View style={styles.content}>
 				<SearchBar
 					placeholder={find.searchProfiles}
-					foreignUsersData={foreignUserIDs}
 					handleEmptyString={handleEmptyString}
 					handleNonEmptyString={handleNonEmptyString}
 				/>

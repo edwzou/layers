@@ -1,39 +1,60 @@
 import React, { useState, useRef } from 'react';
 import { View, TextInput, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-remix-icon';
-
+import {
+	axiosEndpointErrorHandler,
+	axiosEndpointErrorHandlerNoAlert,
+} from '../../utils/ErrorHandlers';
+import axios from 'axios';
 import ProfileCell from '../../components/Cell/ProfileCell';
 
+import { baseUrl } from '../../utils/apiUtils';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from '../../utils/StackNavigation';
-
-import { StackNavigation } from '../../constants/Enums';
-
-import { User } from '../../pages/Main';
+import { markedPrivateUser, markedUser, User } from '../../pages/Main';
 
 interface SearchBarPropsType {
 	placeholder: string;
-	foreignUsersData: any[]; // !!! fix any type
 	handleEmptyString?: () => void;
 	handleNonEmptyString?: () => void;
 }
 
 const SearchBar = ({
 	placeholder,
-	foreignUsersData,
 	handleEmptyString,
 	handleNonEmptyString,
 }: SearchBarPropsType) => {
 	const [searchQuery, setSearchQuery] = useState('');
-	const [searchResults, setSearchResults] = useState<any[]>([]);
+	const [searchResults, setSearchResults] = useState<
+		(markedUser | markedPrivateUser)[]
+	>([]);
 	const textInputRef = useRef<TextInput>(null);
 
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+	const allSearch = async (text: string) => {
+		try {
+			const { data, status } = await axios.get(
+				`${baseUrl}/api/private/search/${text}`
+			);
+
+			if (status === 200) {
+				console.log('Successfully Searched For Username');
+				console.log('Data: ', data.data);
+				setSearchResults(data.data);
+			} else {
+				console.log('Failed to fetch foreign user ProfileCell');
+			}
+		} catch (error) {
+			void axiosEndpointErrorHandlerNoAlert(error);
+			setSearchResults([]);
+		}
+	};
 
 	const handleSearch = (text: string) => {
+		if (text === '') {
+			setSearchResults([]);
+		} else {
+			void allSearch(text);
+		}
 		if (text === '') {
 			if (handleEmptyString != null) {
 				handleEmptyString();
@@ -43,27 +64,18 @@ const SearchBar = ({
 				handleNonEmptyString();
 			}
 		}
-
 		setSearchQuery(text);
-
-		console.log('text', text);
-		console.log('userdata', foreignUsersData);
-		/// !!! search doesn't account for full name
-		const filteredResults = foreignUsersData.filter((user) => {
-			console.log('User inner', user);
-			return ['test', 'test2'];
-			user.username.toLowerCase().includes(text.toLowerCase()) ||
-				user.firstName.toLowerCase().includes(text.toLowerCase()) ||
-				user.lastName.toLowerCase().includes(text.toLowerCase());
-		});
-
-		setSearchResults(text.trim() === '' ? [] : filteredResults);
 	};
 
-	const handleProfilePress = (user: User) => {
-		navigation.navigate(StackNavigation.ForeignProfile, {
-			user: user,
-		});
+	const renderProfile = ({
+		item,
+	}: {
+		item: markedUser | markedPrivateUser;
+	}) => {
+		const user: User = {
+			...item,
+		} as User;
+		return <ProfileCell user={user} marked={item.marked} />;
 	};
 
 	return (
@@ -86,12 +98,7 @@ const SearchBar = ({
 
 			<FlatList
 				data={searchResults}
-				renderItem={({ item }) => (
-					<ProfileCell
-						user={item}
-						handleProfilePress={() => handleProfilePress(item)}
-					/>
-				)}
+				renderItem={renderProfile}
 				keyExtractor={(item) => item.uid}
 			/>
 		</View>

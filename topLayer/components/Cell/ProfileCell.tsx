@@ -5,7 +5,7 @@ import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture'; // Import the ProfilePicture component
 
-import { User } from '../../pages/Main';
+import { isPrivateUser, privateUser, User } from '../../pages/Main';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -20,7 +20,6 @@ const defaultUser: User = {
 	last_name: '',
 	email: '',
 	username: '',
-	password: '',
 	private_option: false,
 	followers: [],
 	following: [],
@@ -28,16 +27,31 @@ const defaultUser: User = {
 };
 
 interface ProfileCellPropsType {
-	user: User | string;
+	user: privateUser | User | string;
+	marked: boolean;
 }
 
-const ProfileCell = ({ user }: ProfileCellPropsType) => {
+const ProfileCell = ({ user, marked }: ProfileCellPropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+	const [iconName, setIconName] = useState(
+		marked
+			? GlobalStyles.icons.bookmarkFill
+			: GlobalStyles.icons.bookmarkOutline
+	);
 
-	const [iconName, setIconName] = useState(GlobalStyles.icons.bookmarkFill);
 	let baseUser: User;
 	if (typeof user === 'string') {
 		baseUser = defaultUser;
+	} else if (isPrivateUser(user)) {
+		baseUser = {
+			...user,
+			first_name: '',
+			last_name: '',
+			email: '',
+			followers: [],
+			following: [],
+			pp_url: '',
+		};
 	} else {
 		baseUser = user;
 	}
@@ -59,7 +73,7 @@ const ProfileCell = ({ user }: ProfileCellPropsType) => {
 	};
 
 	useEffect(() => {
-		if (userProcessed.uid === '' && typeof user === 'string') {
+		if (typeof user === 'string' && userProcessed.uid === '') {
 			void getUser(user);
 		}
 	}, [userProcessed]);

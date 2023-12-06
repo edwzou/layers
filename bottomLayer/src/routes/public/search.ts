@@ -5,8 +5,9 @@ const router = express.Router();
 
 router.get('/:username', (req: Request, res: Response): void => {
   const username = req.params.username;
-  const query = `Select * FROM backend_schema.user Where username ~* '${username}.*'
-ORDER BY LENGTH(username);`;
+  // the '~*' in the query below makes it case insensitvie to change it to case sensitive remove the '*'
+  let query = `Select * FROM backend_schema.user Where username ~* '${username}.*'`;
+  query += ' ORDER BY LENGTH(username);';
 
   void userSearch(query, res);
 });
