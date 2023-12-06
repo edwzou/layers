@@ -13,7 +13,7 @@ import { UserAllItems, UserClothing } from '../../pages/Match';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 export const MainPageContext = createContext({
-	navigationArray: [() => {}],
+	navigationArray: [() => { }],
 	allItems: [] as UserAllItems[],
 });
 
@@ -23,6 +23,8 @@ const MainPage: React.FC = () => {
 	const [allTops, setAllTops] = useState<UserClothing[]>([]);
 	const [allBottoms, setAllBottoms] = useState<UserClothing[]>([]);
 	const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
+
+	const [shouldRefreshMatchPage, setShouldRefreshMatchPage] = useState(false)
 
 	// initializes an array of clothing categories and their data
 	const allItems: UserAllItems[] = [
@@ -92,11 +94,16 @@ const MainPage: React.FC = () => {
 		}
 	};
 
-	// fetched all the outfits and clothings
+	// fetches all the outfits and clothings
 	useEffect(() => {
 		void getAllOutfits();
 		void getAllClothingItems();
-	}, []);
+	}, [shouldRefreshMatchPage]);
+
+	// resets value to false
+	useEffect(() => {
+		setShouldRefreshMatchPage(false);
+	}, [shouldRefreshMatchPage]);
 
 	const ref = useRef<PagerView>(null);
 	const navigateToMatch = (): void => {
@@ -117,7 +124,7 @@ const MainPage: React.FC = () => {
 			}}
 		>
 			<PagerView style={styles.pager} ref={ref} initialPage={1}>
-				<MatchPage />
+				<MatchPage setShouldRefresh={setShouldRefreshMatchPage} />
 				<ProfilePage />
 				<FindPage />
 			</PagerView>
