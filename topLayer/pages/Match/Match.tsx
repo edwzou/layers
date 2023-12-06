@@ -35,7 +35,9 @@ const Match = () => {
 
     const [selectedIndexes, setSelectedIndexes] =
         useState<UserSelectedClothingList>({} as UserSelectedClothingList);
-    const [matchName, setMatchName] = useState('');
+
+    // const [matchName, setMatchName] = useState('');
+
     const [data, setData] = useState<UserClothingList>({
         outerwear: [] as UserClothing[],
         tops: [] as UserClothing[],
@@ -116,7 +118,7 @@ const Match = () => {
                 bottoms: previewData.bottoms,
                 shoes: previewData.shoes
             },
-            matchName: setMatchName
+            // setMatchName: setMatchName
         })
     };
 

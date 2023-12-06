@@ -14,7 +14,7 @@ export type StackNavigatorType = {
 		bottoms?: UserClothing,
 		shoes?: UserClothing,
 	}
-	matchName?: (text: string) => void;
+	setMatchName?: (text: string) => void;
 	setImage?: (base64: string) => void;
 };
 

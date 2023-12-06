@@ -15,7 +15,8 @@ import { MatchPageContext } from '../../pages/Match/MatchPage';
 
 const OutfitPreview = ({ route }: any) => {
 
-	const { matchItems, matchName } = route.params;
+	// const { matchItems, setMatchName } = route.params;
+	const { matchItems } = route.params;
 
 	const { setMatch } = useContext(MatchPageContext);
 
@@ -24,16 +25,16 @@ const OutfitPreview = ({ route }: any) => {
 	const [data, setData] = useState<UserClothing[]>([]);
 	const onInputChange = (text: string) => {
 		setText(text);
-		matchName(text);
+		// setMatchName(text);
 	};
 
 	useEffect(() => {
 		setRawData([matchItems.outerwear, matchItems.tops, matchItems.bottoms, matchItems.shoes]);
 		setMatch({
 			previewData: matchItems,
-			matchName: matchName,
+			matchName: text,
 		})
-	}, [matchItems.outerwear, matchItems.tops, matchItems.bottoms, matchItems.shoes]);
+	}, [matchItems.outerwear, matchItems.tops, matchItems.bottoms, matchItems.shoes, text]);
 
 	useEffect(() => {
 		setData(rawData.filter(Boolean));
