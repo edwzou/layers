@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useRef } from 'react'
 
 import OutfitView from './OutfitView'
 import OutfitEdit from './OutfitEdit';
@@ -13,16 +13,47 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { headerRight } from '../../components/Modal/HeaderRight';
 import { UserClothing, UserClothingList } from '../../pages/Match';
 
+import { baseUrl } from '../../utils/apiUtils';
+import axios from 'axios';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+
 const OutfitViewPage = ({ route }: any) => {
 
     const { item, editable } = route.params;
+
+    const outfitTitleRef = useRef(item.title);
 
     const getFlatArrayOfValues = (clothingList: UserClothingList): UserClothing[] => {
         return Object.values(clothingList).flat()
     }
 
     const OutfitViewComponent = () => (<OutfitView clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
-    const OutfitEditComponent = () => (<OutfitEdit id={item.oid} title={item.title} clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
+    const OutfitEditComponent = () => (<OutfitEdit
+        id={item.oid}
+        title={item.title}
+        clothingItems={getFlatArrayOfValues(item.clothing_items)}
+        titleRef={outfitTitleRef} />)
+
+    // Only updates title
+    const handleSubmitOutfit = async () => {
+
+        const updatedTitle = outfitTitleRef.current
+
+        try {
+            const response = await axios.put(`${baseUrl}/api/private/outfits/${item.oid}`, {
+                title: updatedTitle
+            });
+
+            if (response.status === 200) {
+                alert(`You have updated: ${JSON.stringify(response.data)}`);
+            } else {
+                throw new Error('An error has occurred while updating outfit');
+            }
+        } catch (error) {
+            void axiosEndpointErrorHandler(error)
+            alert(error);
+        }
+    };
 
     return (
         <NavigationContainer
@@ -56,9 +87,7 @@ const OutfitViewPage = ({ route }: any) => {
                             headerTitle: "Edit",
                             headerRight: () => headerRight({
                                 type: StepOverTypes.done,
-                                handlePress: () => {
-                                    console.log("Done tapped")
-                                },
+                                handlePress: handleSubmitOutfit,
                             }),
                         }}
                     />

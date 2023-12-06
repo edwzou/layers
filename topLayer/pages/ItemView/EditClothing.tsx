@@ -314,7 +314,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 					/>
 				</View>
 			</ScrollView>
-			<Button
+			{/* <Button
 				text="Create/Update Item"
 				onPress={handleSubmit(onSubmit)}
 				bgColor={GlobalStyles.colorPalette.primary[500]}
@@ -323,7 +323,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 					bottom: GlobalStyles.layout.gap * 7,
 					alignSelf: 'center',
 				}}
-			/>
+			/> */}
 			<View style={styles.deleteButtonContainer}>
 				<Pressable onPress={handlePress}>
 					<View style={styles.deleteButton}>

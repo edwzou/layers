@@ -1,5 +1,11 @@
 import { View, StyleSheet, Pressable } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {
+	useEffect,
+	useState,
+	type Dispatch,
+	type SetStateAction,
+	MutableRefObject
+} from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
 import ItemCell from '../../components/Cell/ItemCell';
@@ -30,15 +36,18 @@ interface OutfitViewPropsType {
 	id: string;
 	title: string;
 	clothingItems: UserClothing[];
+	titleRef: MutableRefObject<string>
 }
 
-const OutfitEdit = ({ id, title, clothingItems }: OutfitViewPropsType) => {
+const OutfitEdit = ({ id, title, clothingItems, titleRef }: OutfitViewPropsType) => {
 
-	const [text, setText] = useState('');
+	const [text, setText] = useState(title);
 	const [rawData, setRawData] = useState<UserOutfit[]>([]);
 	const [outfitData, setOutfitData] = useState<UserOutfit[]>([]);
 	const onInputChange = (text: string) => {
 		setText(text);
+		titleRef.current = text;
+		// setTitle(text)
 		// matchName(text);
 	};
 
