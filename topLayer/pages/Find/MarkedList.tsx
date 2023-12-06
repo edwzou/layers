@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 
 import SearchBar from '../../components/Bar/SearchBar';
@@ -11,17 +11,26 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 
+import { User } from '../../pages/Main';
 import { StackNavigation } from '../../constants/Enums';
 
 interface MarkedListPropsType {
-	foreignUserIDs: string[];
+	foreignUserIDs: (User | string)[];
 }
 
 const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const [isComponentVisible, setComponentVisible] = useState(true);
+	console.log('New Load2');
+	const [preLoad, setPreLoad] = useState(false);
+	useEffect(() => {
+		if (!foreignUserIDs.slice(0, 3).some((user) => typeof user === 'string')) {
+			console.log('New Load');
+			setPreLoad(true);
+		}
+	}, [foreignUserIDs]);
 
+	const [isComponentVisible, setComponentVisible] = useState(true);
 	const handleEmptyString = () => {
 		setComponentVisible((isComponentVisible) => true);
 	};
@@ -30,10 +39,10 @@ const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
 		setComponentVisible((isComponentVisible) => false);
 	};
 
-	const handleProfilePress = (userID: string) => {
-		navigation.navigate(StackNavigation.ForeignProfile, {
-			userID: userID,
-		});
+	const renderProfile = ({ item }: { item: User | string }) => {
+		console.log('Item', item);
+
+		return <ProfileCell user={item} />;
 	};
 
 	return (
@@ -44,20 +53,7 @@ const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
 				handleEmptyString={handleEmptyString}
 				handleNonEmptyString={handleNonEmptyString}
 			/>
-			{isComponentVisible && (
-				<FlatList
-					data={foreignUserIDs}
-					renderItem={({ item }) => {
-						console.log('Item', item);
-						return (
-							<ProfileCell
-								userID={item}
-								handleProfilePress={() => handleProfilePress(item)}
-							/>
-						);
-					}}
-				/>
-			)}
+			{preLoad && <FlatList data={foreignUserIDs} renderItem={renderProfile} />}
 		</View>
 	);
 };

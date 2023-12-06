@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 
 import Find from './Find';
 import MarkedList from './MarkedList';
@@ -17,6 +17,7 @@ import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
 import { UserContext } from '../../utils/UserContext';
+import { User } from '../../pages/Main';
 
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
@@ -26,7 +27,9 @@ const FindPage = () => {
 	const { data } = useContext(UserContext);
 	// this only gets the foreignUsersData from UserContext on initial load
 	let foreignUsersIDs: any[] = data && data.following ? data.following : [];
-	const [foreignUsersData, updateForeignUsers] = useState(foreignUsersIDs);
+	// const [foreignUsersData, updateForeignUsers] = useState(foreignUsersIDs);
+	let foreignUsersData = useRef<any[]>(foreignUsersIDs);
+	const [rerender, updateReRender] = useState(false);
 
 	const getUser = async (userId: string) => {
 		try {
@@ -46,7 +49,7 @@ const FindPage = () => {
 		const get3Users = async () => {
 			try {
 				const top3Users = await Promise.all(
-					foreignUsersData.slice(0, 3).map((user) => {
+					foreignUsersData.current.slice(0, 3).map((user) => {
 						if (user.uid) {
 							return user;
 						} else {
@@ -55,24 +58,27 @@ const FindPage = () => {
 						}
 					})
 				);
-				updateForeignUsers(top3Users.concat(foreignUsersData.slice(3)));
+				foreignUsersData.current = top3Users.concat(
+					foreignUsersData.current.slice(3)
+				);
+				updateReRender(!rerender);
 			} catch (error) {
 				void axiosEndpointErrorHandler(error);
 			}
 		};
 
-		if (foreignUsersData.slice(0, 3).some((user) => !user.uid)) {
-			console.log('test1', foreignUsersData.slice(0, 3));
+		if (foreignUsersData.current.slice(0, 3).some((user) => !user.uid)) {
+			console.log('test1', foreignUsersData.current.slice(0, 3));
 			void get3Users();
 		}
-	}, [foreignUsersData]);
+	}, [foreignUsersData.current]);
 
 	const FindComponent = () => {
 		console.log('Following', foreignUsersData);
-		return <Find foreignUserIDs={foreignUsersData} />;
+		return <Find foreignUserIDs={foreignUsersData.current} />;
 	};
 	const MarkedListComponent = () => (
-		<MarkedList foreignUserIDs={foreignUsersData} />
+		<MarkedList foreignUserIDs={foreignUsersData.current} />
 	);
 
 	return (
