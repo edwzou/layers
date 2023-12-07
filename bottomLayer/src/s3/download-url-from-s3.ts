@@ -13,18 +13,18 @@ import { getBucketName, s3 } from '../utils/awsImport';
 import { GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-// Function to retrieve the URL of an S3 object with token refresh
+// Function to retrieve the URL of an S3 object with automatic token refresh
 async function downloadURLFromS3(objectKey: string) {
   const bucketName = getBucketName();
 
-  // Set the expiration time for the presigned URL
-  const expirationTime = 60; // 1 minute or 60 seconds
+  // Set the initial expiration time for the presigned URL
+  let expirationTime = 5; // trying 5 seconds
 
   // Function to generate a presigned URL
-  const getPresignedUrl = async () => {
+  const getPresignedUrl = async (key: string) => {
     const params = {
       Bucket: bucketName,
-      Key: objectKey,
+      Key: key,
     };
 
     try {
@@ -39,20 +39,31 @@ async function downloadURLFromS3(objectKey: string) {
     }
   };
 
-  // Initial URL generation
-  let url = await getPresignedUrl();
-
   // Function to refresh the presigned URL before it expires
   const refreshUrl = async () => {
-    url = await getPresignedUrl();
+    const newUrl = await getPresignedUrl(objectKey);
+    // Update the expiration time based on the new URL
+    const now = Math.floor(Date.now() / 1000);
+    expirationTime = Math.max(1, expirationTime - (now - Math.floor(Date.parse(newUrl) / 1000)));
+    console.log('Presigned URL refreshed. New expiration time:', expirationTime);
     // Schedule the next refresh slightly before the expiration
     setTimeout(refreshUrl, (expirationTime - 60) * 1000); // Refresh 1 minute before expiration
   };
 
-  // Start the refresh cycle
-  refreshUrl();
+  // Initial URL generation
+  let url = await getPresignedUrl(objectKey);
+
+  // Start the automatic refresh cycle
+  refreshUrl(); // may have to move this function elsewhere
+
+  // two possible approaches, 1: simply set the expiration date to be as long as possible (168 * 60 * 60) i.e. 7 days. Not robust enough but 
+  // somewhat a valid approach for an MVP. 2: call refreshUrl() somewhere. The issue is that it may create too many presigned URLs in the
+  // bucket. For approach 2 need to also modify the upload-buffer-to-s3 method to remove the existing url to replace with old one
+
+  // Does the URL get automatically overwritten?
 
   return url;
 }
 
 export { downloadURLFromS3 };
+
