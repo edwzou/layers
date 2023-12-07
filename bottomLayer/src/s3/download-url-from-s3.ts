@@ -1,20 +1,14 @@
-// import { getBucketName, getRegion } from '../utils/awsImport';
-
-// // Function to retrieve the URL of an S3 object
-// async function downloadURLFromS3(objectKey: string) {
-//   const bucketName = getBucketName();
-//   const region = getRegion();
-//   return `https://${bucketName}.s3.${region}.amazonaws.com/${objectKey}`;
-// }
-
-// export { downloadURLFromS3 };
-
 import { getBucketName, s3 } from '../utils/awsImport';
 import { GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 // Function to retrieve the URL of an S3 object with automatic token refresh
-async function downloadURLFromS3(objectKey: string) {
+async function downloadURLFromS3(objectKey: string | undefined): Promise<string> {
+  if (objectKey === undefined) {
+    console.log('Object key is undefined. Returning an empty string.');
+    return '';
+  }
+
   const bucketName = getBucketName();
 
   // Set the initial expiration time for the presigned URL
@@ -55,6 +49,7 @@ async function downloadURLFromS3(objectKey: string) {
 
   // Start the automatic refresh cycle
   refreshUrl(); // may have to move this function elsewhere
+  console.log("expiration time: " + expirationTime);
 
   // two possible approaches, 1: simply set the expiration date to be as long as possible (168 * 60 * 60) i.e. 7 days. Not robust enough but 
   // somewhat a valid approach for an MVP. 2: call refreshUrl() somewhere. The issue is that it may create too many presigned URLs in the
@@ -68,4 +63,3 @@ async function downloadURLFromS3(objectKey: string) {
 }
 
 export { downloadURLFromS3 };
-
