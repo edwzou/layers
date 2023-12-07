@@ -1,4 +1,9 @@
-import React, { useState, createContext } from 'react';
+import React, {
+	useState,
+	createContext,
+	useContext
+}
+	from 'react';
 import { StyleSheet } from 'react-native';
 
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
@@ -15,10 +20,17 @@ import Match from './Match';
 import OutfitPreview from '../../pages/OutfitPreview/OutfitPreview';
 import { UserClothing } from '.';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+import { MainPageContext } from '../../pages/Main/MainPage';
 
-export const MatchPageContext = createContext({ setMatch: (_?: any) => { } });
+export const MatchPageContext = createContext({
+	setMatch: (_?: any) => { },
+	dismissal: false,
+});
 
 const MatchPage = () => {
+
+	const { navigationArray, setShouldRefreshMatchPage } = useContext(MainPageContext);
+	const [dismissal, setDismissal] = useState(false);
 
 	const [match, setMatch] = useState({
 		previewData: {
@@ -45,7 +57,11 @@ const MatchPage = () => {
 			});
 
 			if (response.status === 200) {
-				alert(`You have created: ${JSON.stringify(response.data)}`);
+				//alert(`You have created: ${JSON.stringify(response.data)}`);
+				setDismissal(true)
+				setShouldRefreshMatchPage(true)
+				navigationArray[0]()
+				setDismissal(false)
 			} else {
 				throw new Error('An error has occurred while submitting outfit');
 			}
@@ -56,7 +72,7 @@ const MatchPage = () => {
 	};
 
 	return (
-		<MatchPageContext.Provider value={{ setMatch }}>
+		<MatchPageContext.Provider value={{ setMatch, dismissal }}>
 			<NavigationContainer
 				independent={true}>
 				<Stack.Navigator>
