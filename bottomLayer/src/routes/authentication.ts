@@ -136,7 +136,7 @@ const signupStrate = new LocalStrategy(
           private_option,
           followers: [],
           following: [],
-          profile_picture: imgRef
+          pp_url: imgRef
         };
 
         done(null, user);
@@ -157,8 +157,6 @@ const getUser = async (
   try {
     const { password, ...userFields } = user;
     const imgRef = userFields.pp_url;
-    console.log("imgRef:", imgRef); // when a new user is created, the pp_url of that user is undefined. Why?
-    console.log("1");
     userFields.pp_url = await downloadURLFromS3(imgRef);
 
     console.log('Extracted User: ', userFields);
