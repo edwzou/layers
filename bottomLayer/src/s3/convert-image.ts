@@ -6,7 +6,7 @@ async function isValidBase64String(base64: string): Promise<boolean> {
     return false;
   }
 
-  // Check if the string starts with "data:image/jpeg;base64," or "data:image/png;base64,"
+  // Check if the string starts with '/9j/' for JPEG or 'iVBORw0KGgo=' for PNG
   if (base64.startsWith('/9j/') || base64.startsWith('iVBORw0KGgo=')) {
     return true;
   }
