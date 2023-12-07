@@ -71,12 +71,33 @@ router.put('/:oid', (req: Request, res: Response): void => {
   const { title, clothing_items } = req.body;
 
   const updateOutfit = async (oid: string): Promise<void> => {
+    // Initialize query parts
+    let query = 'UPDATE backend_schema.outfit SET ';
+    let queryParams = [];
+    let paramCounter = 1;
+
+    // Append title to the query if provided
+    if (title !== undefined) {
+      query += `title = $${paramCounter}`;
+      queryParams.push(title);
+      paramCounter++;
+    }
+
+    // Append clothing_items to the query if provided
+    if (clothing_items !== undefined) {
+      if (queryParams.length > 0) query += ', ';
+      query += `clothing_items = $${paramCounter}`;
+      queryParams.push(clothing_items);
+      paramCounter++;
+    }
+
+    // Finalize the query
+    query += ` WHERE oid = $${paramCounter} AND uid = $${paramCounter + 1}`;
+    queryParams.push(oid, uid);
+
     // Update the outfit in the database
     try {
-      const updateOutfit = await pool.query(
-        'UPDATE backend_schema.outfit SET title = $1, clothing_items = $2 WHERE oid = $3 AND uid = $4',
-        [title, clothing_items, oid, uid]
-      );
+      const updateOutfit = await pool.query(query, queryParams);
 
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, oid, res, 'Outfit', updateOutfit.rowCount);
