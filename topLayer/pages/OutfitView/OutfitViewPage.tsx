@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native'
-import React, { useRef } from 'react'
+import { StyleSheet } from 'react-native';
+import React, { useRef, useContext } from 'react';
 
-import OutfitView from './OutfitView'
+import OutfitView from './OutfitView';
 import OutfitEdit from './OutfitEdit';
 
 import { Stack } from '../../utils/StackNavigation';
@@ -17,86 +17,118 @@ import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from 'utils/StackNavigation';
+import { MainPageContext } from '../../pages/Main/MainPage';
+
 const OutfitViewPage = ({ route }: any) => {
+	const { setShouldRefreshOutfitViewPage } = useContext(MainPageContext);
 
-    const { item, editable } = route.params;
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-    const outfitTitleRef = useRef(item.title);
+	const { item, editable } = route.params;
 
-    const getFlatArrayOfValues = (clothingList: UserClothingList): UserClothing[] => {
-        return Object.values(clothingList).flat()
-    }
+	const outfitTitleRef = useRef(item.title);
 
-    const OutfitViewComponent = () => (<OutfitView clothingItems={getFlatArrayOfValues(item.clothing_items)} />)
-    const OutfitEditComponent = () => (<OutfitEdit
-        id={item.oid}
-        title={item.title}
-        clothingItems={getFlatArrayOfValues(item.clothing_items)}
-        titleRef={outfitTitleRef} />)
+	const getFlatArrayOfValues = (
+		clothingList: UserClothingList
+	): UserClothing[] => {
+		return Object.values(clothingList).flat();
+	};
 
-    // Only updates title
-    const handleSubmitOutfit = async () => {
+	const redirectToProfile = () => {
+		navigation.navigate(StackNavigation.Profile, {});
+	};
 
-        const updatedTitle = outfitTitleRef.current
+	const OutfitViewComponent = () => (
+		<OutfitView clothingItems={getFlatArrayOfValues(item.clothing_items)} />
+	);
+	const OutfitEditComponent = () => (
+		<OutfitEdit
+			id={item.oid}
+			title={item.title}
+			clothingItems={getFlatArrayOfValues(item.clothing_items)}
+			titleRef={outfitTitleRef}
+			navigateToProfile={redirectToProfile}
+		/>
+	);
 
-        try {
-            const response = await axios.put(`${baseUrl}/api/private/outfits/${item.oid}`, {
-                title: updatedTitle
-            });
+	// Only updates title
+	const updateOutfit = async () => {
+		const updatedTitle = outfitTitleRef.current;
 
-            if (response.status === 200) {
-                alert(`You have updated: ${JSON.stringify(response.data)}`);
-            } else {
-                throw new Error('An error has occurred while updating outfit');
-            }
-        } catch (error) {
-            void axiosEndpointErrorHandler(error)
-            alert(error);
-        }
-    };
+		try {
+			const response = await axios.put(
+				`${baseUrl}/api/private/outfits/${item.oid}`,
+				{
+					title: updatedTitle,
+				}
+			);
 
-    return (
-        <NavigationContainer
-            independent={true}>
-            <Stack.Navigator>
-                <Stack.Group
-                    screenOptions={{
-                        headerTitleStyle: GlobalStyles.typography.subtitle,
-                        headerStyle: {
-                            backgroundColor: GlobalStyles.colorPalette.background,
-                        },
-                        headerShadowVisible: false,
-                    }}>
-                    <Stack.Screen
-                        name={StackNavigation.ItemView}
-                        component={OutfitViewComponent}
-                        options={({ navigation }) => ({
-                            headerTitle: item.title,
-                            headerRight: editable ? (() => headerRight({
-                                type: StepOverTypes.edit,
-                                handlePress: () => {
-                                    navigation.navigate(StackNavigation.EditClothing);
-                                },
-                            })) : undefined,
-                        })}
-                    />
-                    <Stack.Screen
-                        name={StackNavigation.EditClothing}
-                        component={OutfitEditComponent}
-                        options={{
-                            headerTitle: "Edit",
-                            headerRight: () => headerRight({
-                                type: StepOverTypes.done,
-                                handlePress: handleSubmitOutfit,
-                            }),
-                        }}
-                    />
-                </Stack.Group>
-            </Stack.Navigator>
-        </NavigationContainer>
-    )
-}
+			if (response.status === 200) {
+				//alert(`You have updated: ${JSON.stringify(response.data)}`);
+				setShouldRefreshOutfitViewPage(true);
+			} else {
+				throw new Error('An error has occurred while updating outfit');
+			}
+		} catch (error) {
+			void axiosEndpointErrorHandler(error);
+		}
+	};
 
-export default OutfitViewPage
+	const handleSubmitOutfit = () => {
+		void updateOutfit();
+		redirectToProfile();
+	};
 
-const styles = StyleSheet.create({})
+	return (
+		<NavigationContainer independent={true}>
+			<Stack.Navigator>
+				<Stack.Group
+					screenOptions={{
+						headerTitleStyle: GlobalStyles.typography.subtitle,
+						headerStyle: {
+							backgroundColor: GlobalStyles.colorPalette.background,
+						},
+						headerShadowVisible: false,
+					}}
+				>
+					<Stack.Screen
+						name={StackNavigation.ItemView}
+						component={OutfitViewComponent}
+						options={({ navigation }) => ({
+							headerTitle: item.title,
+							headerRight: editable
+								? () =>
+										headerRight({
+											type: StepOverTypes.edit,
+											handlePress: () => {
+												navigation.navigate(StackNavigation.EditClothing);
+											},
+										})
+								: undefined,
+						})}
+					/>
+					<Stack.Screen
+						name={StackNavigation.EditClothing}
+						component={OutfitEditComponent}
+						options={{
+							headerTitle: 'Edit',
+							headerRight: () =>
+								headerRight({
+									type: StepOverTypes.done,
+									handlePress: handleSubmitOutfit,
+								}),
+						}}
+					/>
+				</Stack.Group>
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
+};
+
+export default OutfitViewPage;
+
+const styles = StyleSheet.create({});
+

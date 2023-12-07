@@ -4,6 +4,7 @@ import React, {
 	useState,
 	type Dispatch,
 	type SetStateAction,
+	useContext,
 	MutableRefObject
 } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
@@ -23,6 +24,11 @@ import { UserClothing } from '../../pages/Match';
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+import { MainPageContext } from '../../pages/Main/MainPage';
+
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from 'utils/StackNavigation';
 
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
@@ -36,10 +42,13 @@ interface OutfitViewPropsType {
 	id: string;
 	title: string;
 	clothingItems: UserClothing[];
-	titleRef: MutableRefObject<string>
+	titleRef: MutableRefObject<string>;
+	navigateToProfile: () => void;
 }
 
-const OutfitEdit = ({ id, title, clothingItems, titleRef }: OutfitViewPropsType) => {
+const OutfitEdit = ({ id, title, clothingItems, titleRef, navigateToProfile }: OutfitViewPropsType) => {
+
+	const { setShouldRefreshOutfitEdit } = useContext(MainPageContext);
 
 	const [text, setText] = useState(title);
 	const [rawData, setRawData] = useState<UserOutfit[]>([]);
@@ -64,7 +73,9 @@ const OutfitEdit = ({ id, title, clothingItems, titleRef }: OutfitViewPropsType)
 			const response = await axios.delete(`${baseUrl}/api/private/outfits/${id}`);
 
 			if (response.status === 200) {
-				alert(`You have deleted: ${JSON.stringify(response.data)}`);
+				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
+				setShouldRefreshOutfitEdit(true)
+				navigateToProfile()
 			} else {
 				throw new Error('An error has occurred while deleting outfit');
 			}

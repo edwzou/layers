@@ -13,12 +13,18 @@ import { match } from '../../constants/GlobalStrings';
 
 import { MatchPageContext } from '../../pages/Match/MatchPage';
 
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from 'utils/StackNavigation';
+
 const OutfitPreview = ({ route }: any) => {
+
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	// const { matchItems, setMatchName } = route.params;
 	const { matchItems } = route.params;
 
-	const { setMatch } = useContext(MatchPageContext);
+	const { setMatch, dismissal } = useContext(MatchPageContext);
 
 	const [text, setText] = useState('');
 	const [rawData, setRawData] = useState<UserClothing[]>([]);
@@ -39,6 +45,12 @@ const OutfitPreview = ({ route }: any) => {
 	useEffect(() => {
 		setData(rawData.filter(Boolean));
 	}, [rawData]);
+
+	useEffect(() => {
+		if (dismissal) {
+			navigation.goBack()
+		}
+	}, [dismissal])
 
 	return (
 		<View style={styles.container}>
