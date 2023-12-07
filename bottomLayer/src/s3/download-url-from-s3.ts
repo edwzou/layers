@@ -62,6 +62,8 @@ async function downloadURLFromS3(objectKey: string) {
 
   // Does the URL get automatically overwritten?
 
+  // note: right now working with layers-test-bucket-1 all credential are for that bucket's policy
+
   return url;
 }
 
