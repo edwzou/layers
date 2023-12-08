@@ -42,8 +42,13 @@ export const userSearchQueryMarked = (
   } else {
     query += ` WHERE table1.uid = '${uid}'`;
   }
-  query +=
-    'ORDER BY CASE WHEN marked IS NULL THEN 0 ELSE 1 END DESC, LENGTH(table1.username);';
+
+  // Extra Orderings by Marked and Private Option
+  // CASE WHEN marked IS NULL THEN 0 ELSE 1 END DESC,
+  // CASE WHEN private_option is true then 0 else 1 end DESC,
+  query += `ORDER BY 
+    CASE WHEN pp_url IS NULL THEN 0 WHEN pp_url = '' THEN 0 ELSE 1 END DESC,
+      LENGTH(table1.username);`;
   return query;
 };
 

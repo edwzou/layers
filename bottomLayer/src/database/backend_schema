@@ -38,7 +38,7 @@ CREATE TABLE backend_schema.user (
     private_option BOOL NOT NULL,
     followers UUID[] NOT NULL,
     following UUID[] NOT NULL,
-    pp_url VARCHAR(255)
+    pp_url VARCHAR(511)
 );
 CREATE TABLE backend_schema.outfit (
     oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -54,7 +54,7 @@ CREATE TABLE backend_schema.outfit (
 
 CREATE TABLE backend_schema.clothing_item (
     ciid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    image_url VARCHAR(255) NOT NULL,
+    image_url VARCHAR(511) NOT NULL,
     category item_categories NOT NULL,
     title VARCHAR(50) NOT NULL,
     uid UUID NOT NULL,

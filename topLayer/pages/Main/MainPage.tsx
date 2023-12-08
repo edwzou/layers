@@ -14,11 +14,9 @@ import ProfilePage from '../Profile/ProfilePage';
 import MatchPage from '../Match/MatchPage';
 import FindPage from '../Find/FindPage';
 
-import axios from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
 import { UserOutfit } from '../../pages/OutfitView';
 import { UserAllItems, UserClothing } from '../../pages/Match';
-import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+import { getAllClothingItems, getAllOutfits } from '../../endpoints/wardrobe';
 
 export const MainPageContext = createContext({
 	navigationArray: [() => {}],
@@ -38,10 +36,10 @@ const MainPage: React.FC = () => {
 	const [allBottoms, setAllBottoms] = useState<UserClothing[]>([]);
 	const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
 
-	const [shouldRefreshMatchPage, setShouldRefreshMatchPage] = useState(false);
-	const [shouldRefreshOutfitEdit, setShouldRefreshOutfitEdit] = useState(false);
+	const [shouldRefreshMatchPage, setShouldRefreshMatchPage] = useState(true);
+	const [shouldRefreshOutfitEdit, setShouldRefreshOutfitEdit] = useState(true);
 	const [shouldRefreshOutfitViewPage, setShouldRefreshOutfitViewPage] =
-		useState(false);
+		useState(true);
 
 	// initializes an array of clothing categories and their data
 	const allItems: UserAllItems[] = [
@@ -66,50 +64,6 @@ const MainPage: React.FC = () => {
 			data: allShoes,
 		},
 	];
-	const getAllOutfits = async () => {
-		try {
-			const { data, status } = await axios.get(
-				`${baseUrl}/api/private/outfits?parse=categories`
-			);
-
-			if (status === 200) {
-				return setAllOutfits(data.data);
-			} else {
-				throw new Error(`An Get All Outfits Error Has Occurred: ${status}`);
-			}
-		} catch (err: unknown) {
-			void axiosEndpointErrorHandler(err);
-			return setAllOutfits([]);
-		}
-	};
-
-	const getAllClothingItems = async () => {
-		try {
-			const { data, status } = await axios.get(
-				`${baseUrl}/api/private/clothing_items?parse=categories`
-			);
-
-			if (status === 200) {
-				console.log('main profile');
-				console.log(data.data);
-				return (
-					setAllOuterwear(data.data['outerwear']),
-					setAllTops(data.data['tops']),
-					setAllBottoms(data.data['bottoms']),
-					setAllShoes(data.data['shoes'])
-				);
-			} else {
-				throw new Error(
-					`An Get All Clothing Items Error Has Occurred: ${status}`
-				);
-			}
-		} catch (err: unknown) {
-			void axiosEndpointErrorHandler(err);
-			return (
-				setAllOuterwear([]), setAllTops([]), setAllBottoms([]), setAllShoes([])
-			);
-		}
-	};
 
 	// fetched all the outfits and clothings
 	useEffect(() => {
@@ -118,8 +72,13 @@ const MainPage: React.FC = () => {
 			shouldRefreshOutfitEdit ||
 			shouldRefreshOutfitViewPage
 		) {
-			void getAllOutfits();
-			void getAllClothingItems();
+			void getAllOutfits(setAllOutfits);
+			void getAllClothingItems(
+				setAllOuterwear,
+				setAllTops,
+				setAllBottoms,
+				setAllShoes
+			);
 		}
 		if (shouldRefreshMatchPage) {
 			setShouldRefreshMatchPage(false);

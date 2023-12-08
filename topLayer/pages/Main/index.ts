@@ -28,17 +28,20 @@ export interface markedPrivateUser extends privateUser {
 	marked: boolean;
 }
 
+export interface userToFetch {
+	uid: string;
+	marked: boolean;
+}
+
 export interface UserItems {
 	category: string;
 	data: UserClothing[];
 }
 
-export const isPrivateUser = (obj: any): obj is privateUser => {
+export const isMarkedPrivateUser = (obj: any): obj is markedPrivateUser => {
 	return !('first_name' in obj);
 };
-
 // export interface UserItems {
 //     category: string,
 //     data: UserClothing[] | UserOutfit[],
 // }
-

@@ -17,44 +17,27 @@ import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
 import { UserContext } from '../../utils/UserContext';
-import { User } from '../../pages/Main';
 
-import { baseUrl } from '../../utils/apiUtils';
-import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+import { getUser } from '../../endpoints/endpoints';
+import { User } from '../../pages/Main';
 
 const FindPage = () => {
 	const { data } = useContext(UserContext);
 	// this only gets the foreignUsersData from UserContext on initial load
-	let foreignUsersIDs: any[] = data && data.following ? data.following : [];
-	// const [foreignUsersData, updateForeignUsers] = useState(foreignUsersIDs);
-	let foreignUsersData = useRef<any[]>(foreignUsersIDs);
+	let foreignUsersIDs: string[] = data && data.following ? data.following : [];
+	let foreignUsersData = useRef<(string | User)[]>(foreignUsersIDs);
 	const [rerender, updateReRender] = useState(false);
-
-	const getUser = async (userId: string) => {
-		try {
-			const { data, status } = await axios.get(
-				`${baseUrl}/api/users/${userId}`
-			);
-
-			if (status === 200) {
-				return data.data;
-			}
-		} catch (error) {
-			void axiosEndpointErrorHandler(error);
-		}
-	};
 
 	useEffect(() => {
 		const get3Users = async () => {
 			try {
 				const top3Users = await Promise.all(
 					foreignUsersData.current.slice(0, 3).map((user) => {
-						if (user.uid) {
-							return user;
-						} else {
+						if (typeof user === 'string') {
 							return getUser(user);
-							// return user;
+						} else {
+							return user;
 						}
 					})
 				);
@@ -67,7 +50,11 @@ const FindPage = () => {
 			}
 		};
 
-		if (foreignUsersData.current.slice(0, 3).some((user) => !user.uid)) {
+		if (
+			foreignUsersData.current
+				.slice(0, 3)
+				.some((user) => typeof user === 'string')
+		) {
 			console.log('test1', foreignUsersData.current.slice(0, 3));
 			void get3Users();
 		}

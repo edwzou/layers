@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 
-import SearchBar from '../../components/Bar/SearchBar';
 import ProfileCell from '../../components/Cell/ProfileCell';
 
 import GlobalStyles from '../../constants/GlobalStyles';
-import { find } from '../../constants/GlobalStrings';
 
 import { User } from '../../pages/Main';
+import FetchProfileCell from '../../components/Cell/LoadProfileCell';
 
 interface MarkedListPropsType {
 	foreignUserIDs: (User | string)[];
@@ -34,8 +33,17 @@ const MarkedList = ({ foreignUserIDs }: MarkedListPropsType) => {
 
 	const renderProfile = ({ item }: { item: User | string }) => {
 		console.log('Item', item);
-
-		return <ProfileCell user={item} marked={true} />;
+		if (typeof item !== 'string') {
+			return (
+				<ProfileCell
+					user={{
+						...item,
+						marked: true,
+					}}
+				/>
+			);
+		}
+		return <FetchProfileCell userID={item} marked={true} />;
 	};
 
 	return (

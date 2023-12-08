@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-	View,
-	Text,
-	StyleSheet,
-	Image,
-	ImageSourcePropType,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 import { User } from '../../pages/Main';
-import axios from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 interface MarkedPropsType {
@@ -21,14 +13,7 @@ const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 	const [users, setUsers] = useState<User[]>([]);
 
 	useEffect(() => {
-		const set3Users = async () => {
-			if (foreignUserIDs.length < 4) {
-				console.log('3Users: ', foreignUserIDs);
-				setUsers(foreignUserIDs.slice(0, 3));
-			}
-		};
-
-		void set3Users();
+		setUsers(foreignUserIDs.slice(0, 3));
 	}, [foreignUserIDs]);
 
 	return (

@@ -5,45 +5,37 @@ import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture'; // Import the ProfilePicture component
 
-import { isPrivateUser, privateUser, User } from '../../pages/Main';
+import {
+	isMarkedPrivateUser,
+	markedPrivateUser,
+	markedUser,
+} from '../../pages/Main';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
-import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
-
-const defaultUser: User = {
-	uid: '',
-	first_name: '',
-	last_name: '',
-	email: '',
-	username: '',
-	private_option: false,
-	followers: [],
-	following: [],
-	pp_url: '',
-};
+import {
+	axiosEndpointErrorHandler,
+	axiosEndpointErrorHandlerNoAlert,
+} from '../../utils/ErrorHandlers';
 
 interface ProfileCellPropsType {
-	user: privateUser | User | string;
-	marked: boolean;
+	user: markedPrivateUser | markedUser;
 }
 
-const ProfileCell = ({ user, marked }: ProfileCellPropsType) => {
+const ProfileCell = ({ user }: ProfileCellPropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const [iconName, setIconName] = useState(
-		marked
+		user.marked
 			? GlobalStyles.icons.bookmarkFill
 			: GlobalStyles.icons.bookmarkOutline
 	);
 
-	let baseUser: User;
-	if (typeof user === 'string') {
-		baseUser = defaultUser;
-	} else if (isPrivateUser(user)) {
-		baseUser = {
+	let userProcessed: markedUser;
+	if (isMarkedPrivateUser(user)) {
+		userProcessed = {
 			...user,
 			first_name: '',
 			last_name: '',
@@ -53,43 +45,68 @@ const ProfileCell = ({ user, marked }: ProfileCellPropsType) => {
 			pp_url: '',
 		};
 	} else {
-		baseUser = user;
+		userProcessed = user;
 	}
-	const [userProcessed, setUser] = useState<User>(baseUser);
 
-	const getUser = async (id: string) => {
+	const followUser = async () => {
 		try {
-			const { data, status } = await axios.get(`${baseUrl}/api/users/${id}`);
-
+			const { data, status } = await axios.post(
+				`${baseUrl}/api/private/users/follow`,
+				{
+					followedId: userProcessed.uid,
+				}
+			);
 			if (status === 200) {
-				console.log('Successfully fetched foreign user ProfileCell');
-				setUser(data.data);
+				console.log('Successfully Followed User: ', data.message);
 			} else {
-				console.log('Failed to fetch foreign user ProfileCell');
+				throw new Error('An error has occurred while Following A User');
 			}
 		} catch (error) {
-			void axiosEndpointErrorHandler(error);
+			void axiosEndpointErrorHandlerNoAlert(error);
 		}
 	};
 
-	useEffect(() => {
-		if (typeof user === 'string' && userProcessed.uid === '') {
-			void getUser(user);
+	const unFollowUser = async () => {
+		try {
+			const { data, status } = await axios.post(
+				`${baseUrl}/api/private/users/unfollow`,
+				{
+					unfollowedId: userProcessed.uid,
+				}
+			);
+			if (status === 200) {
+				console.log('Successfully Unfollowed User: ', data.message);
+			} else {
+				throw new Error('An error has occurred while Unfollowing A User');
+			}
+		} catch (error) {
+			void axiosEndpointErrorHandlerNoAlert(error);
 		}
-	}, [userProcessed]);
+	};
 
-	const handleIconPress = () => {
+	const handleIconPress = (user: markedUser) => {
+		if (user.uid !== '') {
+			handleBookmarkPress();
+		}
+	};
+
+	const handleBookmarkPress = () => {
 		if (iconName === GlobalStyles.icons.bookmarkFill) {
+			void unFollowUser();
 			setIconName(GlobalStyles.icons.bookmarkOutline);
+			userProcessed.marked = false;
 		} else {
+			void followUser();
 			setIconName(GlobalStyles.icons.bookmarkFill);
+			userProcessed.marked = true;
 		}
 	};
 
-	const handleProfilePress = (userID: string) => {
-		if (userID !== '') {
+	const handleProfilePress = (user: markedUser) => {
+		if (user.uid !== '') {
 			navigation.navigate(StackNavigation.ForeignProfile, {
-				userID: userID,
+				markedUser: user,
+				setMarked: handleBookmarkPress,
 			});
 		}
 	};
@@ -97,7 +114,7 @@ const ProfileCell = ({ user, marked }: ProfileCellPropsType) => {
 	return (
 		<Pressable
 			style={styles.container}
-			onPress={() => handleProfilePress(userProcessed.uid)}
+			onPress={() => handleProfilePress(userProcessed)}
 		>
 			{/* Use the ProfilePicture component to render the user's profile picture */}
 			<View style={styles.profilePicture}>
@@ -114,7 +131,7 @@ const ProfileCell = ({ user, marked }: ProfileCellPropsType) => {
 					{`${userProcessed.first_name} ${userProcessed.last_name}`}
 				</Text>
 			</View>
-			<Pressable onPress={handleIconPress}>
+			<Pressable onPress={() => handleIconPress(userProcessed)}>
 				<Icon
 					name={iconName}
 					color={GlobalStyles.colorPalette.primary[900]}
