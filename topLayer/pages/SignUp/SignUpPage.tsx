@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
 		marginHorizontal: GlobalStyles.layout.xGap,
-		paddingTop: GlobalStyles.layout.modalTopPadding,
 	},
 });
 
