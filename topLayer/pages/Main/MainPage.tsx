@@ -30,7 +30,8 @@ export const MainPageContext = createContext({
 
 const MainPage: React.FC = () => {
 	console.log('rendered');
-	const [currentPage, setCurrentPage] = useState(1);
+	const [refresh, setRefresh] = useState(false);
+	let prevPage = 1;
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
 	const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
 	const [allTops, setAllTops] = useState<UserClothing[]>([]);
@@ -110,7 +111,11 @@ const MainPage: React.FC = () => {
 	const onPageScroll = (event: any) => {
 		const { position } = event.nativeEvent;
 		console.log(` Position: ${position}`);
-		setCurrentPage(position);
+		if (prevPage === 2) {
+			console.log('working');
+			setRefresh(!refresh);
+		}
+		prevPage = position;
 	};
 
 	return (
