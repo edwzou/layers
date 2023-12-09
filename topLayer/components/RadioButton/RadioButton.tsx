@@ -4,9 +4,14 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { UserContext } from '../../utils/UserContext';
 
+interface PrivacyOption {
+	value: string;
+	boolean: boolean;
+}
+
 interface RadioButtonPropsType {
-	privateData: any;
-	onSelect: any;
+	privateData: PrivacyOption[];
+	onSelect: (option: PrivacyOption) => void;
 }
 
 const RadioButton = ({ privateData, onSelect }: RadioButtonPropsType) => {
@@ -30,7 +35,7 @@ const RadioButton = ({ privateData, onSelect }: RadioButtonPropsType) => {
 					<Pressable
 						onPress={() => {
 							setUserOption(item.value);
-							onSelect('private_option', item.boolean);
+							onSelect(item);  // Pass the entire item to the onSelect function
 						}}
 						style={[
 							item.value === userOption ? styles.selected : null,

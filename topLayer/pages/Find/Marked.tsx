@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-	View,
-	Text,
-	StyleSheet,
-	Image,
-	ImageSourcePropType,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 import { User } from '../../pages/Main';
@@ -14,10 +8,10 @@ import { baseUrl } from '../../utils/apiUtils';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 interface MarkedPropsType {
-	foreignUserIDs: string[];
+	foreignUserIDs?: string[]; // foreignUserIDs is now optional
 }
 
-const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
+const Marked = ({ foreignUserIDs = [] }: MarkedPropsType) => { // Default to an empty array if foreignUserIDs is undefined
 	const [users, setUsers] = useState<User[]>([]);
 
 	const getUser = async (userId: string) => {
@@ -53,7 +47,7 @@ const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 		};
 
 		void getUsers();
-	}, []);
+	}, [foreignUserIDs]); // Add foreignUserIDs as a dependency
 
 	return (
 		<View style={styles.container}>
@@ -124,4 +118,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Marked;
+export default React.memo(Marked);
