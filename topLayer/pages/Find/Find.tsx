@@ -12,15 +12,17 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import Header from '../../components/Header/Header';
 
 import Marked from './Marked';
-
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchUsers from '../../components/Bar/SearchUsers';
 
+import { User } from '../../pages/Main';
+
 interface FindPropsType {
-	foreignUserIDs: any[];
+	foreignUserIDs: (string | User)[];
+	updateFollowed: (followed: (string | User)[]) => void;
 }
 
-const Find = ({ foreignUserIDs }: FindPropsType) => {
+const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [isComponentVisible, setComponentVisible] = useState(true);
@@ -29,7 +31,29 @@ const Find = ({ foreignUserIDs }: FindPropsType) => {
 		navigation.navigate(StackNavigation.MarkedList, {});
 	};
 
-	const handleEmptyString = () => {
+	const handleEmptyString = (relationChanges: (string | User)[]) => {
+		const usersToAdd = [];
+		for (const user of relationChanges) {
+			if (typeof user === 'string') {
+				console.log('unfollow: ', user);
+				foreignUserIDs = foreignUserIDs.filter((value) => {
+					if (typeof value === 'string') {
+						return value !== user;
+					} else {
+						return value.uid !== user;
+					}
+				});
+			} else {
+				console.log('follow: ', user);
+				if (user.pp_url !== '') {
+					usersToAdd.push(user);
+				} else {
+					foreignUserIDs.push(user);
+				}
+			}
+		}
+		usersToAdd.push(...foreignUserIDs);
+		updateFollowed(usersToAdd);
 		setComponentVisible(true);
 	};
 

@@ -4,16 +4,24 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 import { User } from '../../pages/Main';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
+import { previewLength } from '../../constants/Find';
 
 interface MarkedPropsType {
-	foreignUserIDs: any[];
+	foreignUserIDs: (string | User)[];
+}
+
+function isUserArray(arr: any[]): arr is User[] {
+	return arr.every((item) => typeof item === 'object');
 }
 
 const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 	const [users, setUsers] = useState<User[]>([]);
 
 	useEffect(() => {
-		setUsers(foreignUserIDs.slice(0, 3));
+		const preview = foreignUserIDs.slice(0, previewLength);
+		if (isUserArray(preview)) {
+			setUsers(preview);
+		}
 	}, [foreignUserIDs]);
 
 	return (

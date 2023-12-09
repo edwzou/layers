@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -16,22 +16,29 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
-import {
-	axiosEndpointErrorHandler,
-	axiosEndpointErrorHandlerNoAlert,
-} from '../../utils/ErrorHandlers';
+import { axiosEndpointErrorHandlerNoAlert } from '../../utils/ErrorHandlers';
 
 interface ProfileCellPropsType {
 	user: markedPrivateUser | markedUser;
+	handleRelationRender: (
+		uid: string,
+		marked: boolean,
+		index: number,
+		user: markedUser
+	) => number;
 }
 
-const ProfileCell = ({ user }: ProfileCellPropsType) => {
+const ProfileCell = ({
+	user,
+	handleRelationRender: handleRelationRender,
+}: ProfileCellPropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const [iconName, setIconName] = useState(
 		user.marked
 			? GlobalStyles.icons.bookmarkFill
 			: GlobalStyles.icons.bookmarkOutline
 	);
+	const index = useRef<number>(-1);
 
 	let userProcessed: markedUser;
 	if (isMarkedPrivateUser(user)) {
@@ -95,10 +102,22 @@ const ProfileCell = ({ user }: ProfileCellPropsType) => {
 			void unFollowUser();
 			setIconName(GlobalStyles.icons.bookmarkOutline);
 			userProcessed.marked = false;
+			index.current = handleRelationRender(
+				userProcessed.uid,
+				false,
+				index.current,
+				userProcessed
+			);
 		} else {
 			void followUser();
 			setIconName(GlobalStyles.icons.bookmarkFill);
 			userProcessed.marked = true;
+			index.current = handleRelationRender(
+				userProcessed.uid,
+				true,
+				index.current,
+				userProcessed
+			);
 		}
 	};
 

@@ -14,7 +14,6 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfilePage = () => {
-	console.log('test2');
 	return (
 		<NavigationContainer independent={true}>
 			<Stack.Navigator>

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Find from './Find';
 import MarkedList from './MarkedList';
@@ -11,8 +11,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigation } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-// import { foreignUsersData } from '../../constants/testData';
-
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 
@@ -21,51 +19,63 @@ import { UserContext } from '../../utils/UserContext';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { getUser } from '../../endpoints/endpoints';
 import { User } from '../../pages/Main';
+import { previewLength } from '../../constants/Find';
 
 const FindPage = () => {
 	const { data } = useContext(UserContext);
 	// this only gets the foreignUsersData from UserContext on initial load
 	let foreignUsersIDs: string[] = data && data.following ? data.following : [];
-	let foreignUsersData = useRef<(string | User)[]>(foreignUsersIDs);
-	const [rerender, updateReRender] = useState(false);
+	const [followedUsersData, setFollowed] =
+		useState<(string | User)[]>(foreignUsersIDs);
+
+	const updateFollowed = (followed: (string | User)[]) => {
+		setFollowed(followed);
+	};
 
 	useEffect(() => {
 		const get3Users = async () => {
 			try {
 				const top3Users = await Promise.all(
-					foreignUsersData.current.slice(0, 3).map((user) => {
-						if (typeof user === 'string') {
-							return getUser(user);
-						} else {
-							return user;
-						}
-					})
+					followedUsersData
+						.slice(0, previewLength)
+						.map((user: string | User) => {
+							if (typeof user === 'string') {
+								return getUser(user);
+							} else {
+								return user;
+							}
+						})
 				);
-				foreignUsersData.current = top3Users.concat(
-					foreignUsersData.current.slice(3)
-				);
-				updateReRender(!rerender);
+				setFollowed(top3Users.concat(followedUsersData.slice(previewLength)));
 			} catch (error) {
 				void axiosEndpointErrorHandler(error);
 			}
 		};
 
 		if (
-			foreignUsersData.current
-				.slice(0, 3)
+			followedUsersData
+				.slice(0, previewLength)
 				.some((user) => typeof user === 'string')
 		) {
-			console.log('test1', foreignUsersData.current.slice(0, 3));
+			console.log('test1', followedUsersData.slice(0, previewLength));
 			void get3Users();
 		}
-	}, [foreignUsersData.current]);
+	}, [followedUsersData]);
 
-	const FindComponent = () => {
-		console.log('Following', foreignUsersData);
-		return <Find foreignUserIDs={foreignUsersData.current} />;
+	const FindHomePage = () => {
+		console.log('Following', followedUsersData);
+		return (
+			<Find
+				foreignUserIDs={followedUsersData}
+				updateFollowed={updateFollowed}
+			/>
+		);
 	};
 	const MarkedListComponent = () => (
-		<MarkedList foreignUserIDs={foreignUsersData.current} />
+		<MarkedList
+			foreignUserIDs={followedUsersData}
+			updateFollowed={updateFollowed}
+		/>
 	);
 
 	return (
@@ -82,7 +92,7 @@ const FindPage = () => {
 				>
 					<Stack.Screen
 						name={StackNavigation.Find}
-						component={FindComponent}
+						component={FindHomePage}
 						options={{
 							headerShown: false,
 						}}
@@ -96,9 +106,7 @@ const FindPage = () => {
 							name={StackNavigation.MarkedList}
 							component={MarkedListComponent}
 							options={{
-								headerTitle: `${
-									data ? (data.following ? data.following.length : 0) : 0
-								} Marked`,
+								headerShown: false,
 							}}
 						/>
 						<Stack.Screen

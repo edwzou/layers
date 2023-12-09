@@ -1,22 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, StyleSheet, FlatList } from 'react-native';
-import Icon from 'react-native-remix-icon';
-import {
-	axiosEndpointErrorHandler,
-	axiosEndpointErrorHandlerNoAlert,
-} from '../../utils/ErrorHandlers';
+import { axiosEndpointErrorHandlerNoAlert } from '../../utils/ErrorHandlers';
 import axios from 'axios';
 import ProfileCell from '../../components/Cell/ProfileCell';
 
 import { baseUrl } from '../../utils/apiUtils';
-import GlobalStyles from '../../constants/GlobalStyles';
 
 import { markedPrivateUser, markedUser, User } from '../../pages/Main';
 import SearchBar from './SearchBar';
 
 interface SearchBarPropsType {
 	placeholder: string;
-	handleEmptyString?: () => void;
+	handleEmptyString?: (changes: (string | User)[]) => void;
 	handleNonEmptyString?: () => void;
 }
 
@@ -29,6 +24,7 @@ const SearchUsers = ({
 	const [searchResults, setSearchResults] = useState<
 		(markedUser | markedPrivateUser)[]
 	>([]);
+	const userRelations: (string | User)[] = [];
 
 	const allSearch = async (text: string) => {
 		try {
@@ -49,7 +45,29 @@ const SearchUsers = ({
 		}
 	};
 
+	const handleMarking = (
+		uid: string,
+		marked: boolean,
+		index: number,
+		user: markedUser
+	) => {
+		console.log('userRelation: ', userRelations);
+		if (index !== -1) {
+			userRelations.splice(index, 1);
+			return -1;
+		} else {
+			// The below is only called to mark a new User, whom is 1 of 3 of the users marked
+			if (marked) {
+				userRelations.push(user as User);
+			} else {
+				userRelations.push(uid);
+			}
+		}
+		return userRelations.length - 1;
+	};
+
 	const handleSearch = (text: string) => {
+		console.log('userRelation: ', userRelations);
 		setSearchQuery(text);
 		if (text === '') {
 			setSearchResults([]);
@@ -58,7 +76,7 @@ const SearchUsers = ({
 		}
 		if (text === '') {
 			if (handleEmptyString != null) {
-				handleEmptyString();
+				handleEmptyString(userRelations);
 			}
 		} else {
 			if (handleNonEmptyString != null) {
@@ -67,16 +85,12 @@ const SearchUsers = ({
 		}
 	};
 
-	useEffect(() => {
-		console.log('search results update: ', searchResults);
-	}, [searchResults]);
-
 	const renderProfile = ({
 		item,
 	}: {
 		item: markedUser | markedPrivateUser;
 	}) => {
-		return <ProfileCell user={item} />;
+		return <ProfileCell user={item} handleRelationRender={handleMarking} />;
 	};
 
 	return (

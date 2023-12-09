@@ -21,9 +21,19 @@ const defaultUser: User = {
 interface FetchProfileCellPropsType {
 	userID: string;
 	marked: boolean;
+	handleRelationRender: (
+		uid: string,
+		marked: boolean,
+		index: number,
+		user: markedUser
+	) => number;
 }
 
-const FetchProfileCell = ({ userID, marked }: FetchProfileCellPropsType) => {
+const FetchProfileCell = ({
+	userID,
+	marked,
+	handleRelationRender,
+}: FetchProfileCellPropsType) => {
 	const [userProcessed, setUser] = useState<markedUser>({
 		...defaultUser,
 		marked: marked,
@@ -34,7 +44,7 @@ const FetchProfileCell = ({ userID, marked }: FetchProfileCellPropsType) => {
 			const { data, status } = await axios.get(`${baseUrl}/api/users/${id}`);
 
 			if (status === 200) {
-				console.log('Successfully fetched foreign user ProfileCell5');
+				console.log('Successfully fetched foreign user ProfileCell6');
 				setUser({
 					...data.data,
 					marked: marked,
@@ -53,7 +63,12 @@ const FetchProfileCell = ({ userID, marked }: FetchProfileCellPropsType) => {
 		void getUser(userID);
 	}, []);
 
-	return <ProfileCell user={userProcessed} />;
+	return (
+		<ProfileCell
+			user={userProcessed}
+			handleRelationRender={handleRelationRender}
+		/>
+	);
 };
 
 const styles = StyleSheet.create({});

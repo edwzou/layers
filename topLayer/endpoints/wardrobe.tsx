@@ -1,6 +1,9 @@
 import { baseUrl } from '../utils/apiUtils';
 import axios from 'axios';
-import { axiosEndpointErrorHandler } from '../utils/ErrorHandlers';
+import {
+	axiosEndpointErrorHandler,
+	axiosEndpointErrorHandlerNoAlert,
+} from '../utils/ErrorHandlers';
 import { UserOutfit } from '../pages/OutfitView';
 import { UserClothing } from '../pages/Match';
 
@@ -39,7 +42,7 @@ const getAllOutfitsHandler = async (
 			throw new Error(`An Get All Outfits Error Has Occurred: ${status}`);
 		}
 	} catch (err: unknown) {
-		void axiosEndpointErrorHandler(err);
+		void axiosEndpointErrorHandlerNoAlert(err);
 		return updateOutfits([]);
 	}
 };
@@ -102,7 +105,7 @@ const getAllClothingItemsHandler = async (
 			);
 		}
 	} catch (err: unknown) {
-		void axiosEndpointErrorHandler(err);
+		void axiosEndpointErrorHandlerNoAlert(err);
 		return (
 			setAllOuterwear([]), setAllTops([]), setAllBottoms([]), setAllShoes([])
 		);
