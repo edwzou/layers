@@ -32,7 +32,6 @@ const Selector = ({
 	const padding: Record<string, number> = { id: -1 };
 
 	useEffect(() => {
-
 		if (outerwear !== null && outerwear.length > 0)
 			setDataWithPlaceholders((placeholderData) => ({
 				...placeholderData,
@@ -65,6 +64,7 @@ const Selector = ({
 					data={dataWithPlaceholders.outerwear}
 					selectedIndex={selectedIndex}
 					category={ClothingTypes.outerwear}
+					key={ClothingTypes.outerwear}
 				/>
 			) : null}
 			{tops !== null && tops.length > 0 ? (
@@ -72,6 +72,7 @@ const Selector = ({
 					data={dataWithPlaceholders.tops}
 					selectedIndex={selectedIndex}
 					category={ClothingTypes.tops}
+					key={ClothingTypes.tops}
 				/>
 			) : null}
 			{bottoms !== null && bottoms.length > 0 ? (
@@ -79,6 +80,7 @@ const Selector = ({
 					data={dataWithPlaceholders.bottoms}
 					selectedIndex={selectedIndex}
 					category={ClothingTypes.bottoms}
+					key={ClothingTypes.bottoms}
 				/>
 			) : null}
 			{shoes !== null && shoes.length > 0 ? (
@@ -86,6 +88,7 @@ const Selector = ({
 					data={dataWithPlaceholders.shoes}
 					selectedIndex={selectedIndex}
 					category={ClothingTypes.shoes}
+					key={ClothingTypes.shoes}
 				/>
 			) : null}
 		</ScrollView>

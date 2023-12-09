@@ -19,8 +19,10 @@ interface CategorySlidePropsType {
 	handleItemChange: (item: any) => void;
 }
 
-const CategorySlide = ({ itemsData, handleItemChange }: CategorySlidePropsType) => {
-
+const CategorySlide = ({
+	itemsData,
+	handleItemChange,
+}: CategorySlidePropsType) => {
 	const windowWidth = Dimensions.get('window').width;
 
 	// useEffect(() => {
@@ -28,61 +30,86 @@ const CategorySlide = ({ itemsData, handleItemChange }: CategorySlidePropsType) 
 	// }, []);
 
 	return (
-		<View style={[styles.container, { width: windowWidth - 2 * GlobalStyles.layout.xGap }]}>
-			{itemsData.data && itemsData.data.length !== 0 ?
-				(
-					itemsData.category == 'outfits' ? (
-						<FlatList
-							data={itemsData.data as UserOutfit[]}
-							renderItem={({ item }) => {
-								//console.log(item)
-								return (
-									<OutfitCard
-										title={item.title}
-										clothingItems={item.clothing_items}
-										onPress={() => { handleItemChange(item) }}
+		<View
+			style={[
+				styles.container,
+				{ width: windowWidth - 2 * GlobalStyles.layout.xGap },
+			]}
+		>
+			{itemsData.data && itemsData.data.length !== 0 ? (
+				itemsData.category == 'outfits' ? (
+					<FlatList
+						data={itemsData.data as UserOutfit[]}
+						renderItem={({ item }) => {
+							//console.log(item)
+							return (
+								<OutfitCard
+									title={item.title}
+									clothingItems={item.clothing_items}
+									onPress={() => {
+										handleItemChange(item);
+									}}
+								/>
+							);
+						}}
+						keyExtractor={(item) => {
+							return item.oid;
+						}}
+						showsVerticalScrollIndicator={false}
+						contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+						ListFooterComponent={
+							<View style={{ padding: screenHeight * 0.15 }} />
+						}
+					/>
+				) : (
+					<FlatList
+						data={itemsData.data as UserClothing[]}
+						renderItem={({ item }) => {
+							//console.log(item);
+							return (
+								<View style={{ width: ITEM_SIZE(2) }}>
+									<ItemCell
+										imageUrl={item.image_url}
+										key={item.ciid}
+										onPress={() => handleItemChange(item)}
 									/>
-								)
-							}}
-							showsVerticalScrollIndicator={false}
-							contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-							ListFooterComponent={
-								<View style={{ padding: screenHeight * 0.15 }} />
-							}
-						/>
-					) : (
-						<FlatList
-							data={itemsData.data as UserClothing[]}
-							renderItem={({ item }) => {
-								//console.log(item);
-								return (
-									<View style={{ width: ITEM_SIZE(2) }}>
-										<ItemCell
-											imageUrl={item.image_url}
-											key={item.ciid}
-											onPress={() => handleItemChange(item)}
-										/>
-									</View>
-								)
-							}}
-							numColumns={2}
-							contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-							columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
-							showsVerticalScrollIndicator={false}
-							ListFooterComponent={
-								<View style={{ padding: screenHeight * 0.15 }} />
-							}
-						/>
-					)
-				) :
-				<View style={{ alignItems: 'center', flex: 1, top: GlobalStyles.layout.pageStateTopMargin, gap: 5, width: screenWidth - GlobalStyles.layout.xGap * 2 }}>
+								</View>
+							);
+						}}
+						numColumns={2}
+						contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+						columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
+						showsVerticalScrollIndicator={false}
+						ListFooterComponent={
+							<View style={{ padding: screenHeight * 0.15 }} />
+						}
+					/>
+				)
+			) : (
+				<View
+					style={{
+						alignItems: 'center',
+						flex: 1,
+						top: GlobalStyles.layout.pageStateTopMargin,
+						gap: 5,
+						width: screenWidth - GlobalStyles.layout.xGap * 2,
+					}}
+				>
 					<Icon
 						name={GlobalStyles.icons.bubbleOutline}
 						color={GlobalStyles.colorPalette.primary[300]}
 						size={GlobalStyles.sizing.icon.large}
 					/>
-					<Text style={[GlobalStyles.typography.subtitle, { color: GlobalStyles.colorPalette.primary[300] }]}>Empty</Text>
-				</View>}
+					<Text
+						style={[
+							GlobalStyles.typography.subtitle,
+							{ color: GlobalStyles.colorPalette.primary[300] },
+						]}
+					>
+						Empty
+					</Text>
+				</View>
+			)}
 		</View>
 	);
 };
@@ -94,4 +121,3 @@ const styles = StyleSheet.create({
 		marginHorizontal: GlobalStyles.layout.xGap,
 	},
 });
-
