@@ -1,98 +1,37 @@
-import React, { useState, useRef } from 'react';
-import { View, TextInput, StyleSheet, FlatList } from 'react-native';
+import React, { useRef } from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
-
-import ProfileCell from '../../components/Cell/ProfileCell';
-
 import GlobalStyles from '../../constants/GlobalStyles';
-
-import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from '../../utils/StackNavigation';
-
-import { StackNavigation } from '../../constants/Enums';
-
-import { User } from '../../pages/Main';
 
 interface SearchBarPropsType {
 	placeholder: string;
-	foreignUsersData: any[]; // !!! fix any type
-	handleEmptyString?: () => void;
-	handleNonEmptyString?: () => void;
+	searchQuery: string;
+	handleSearch: (text: string) => void;
 }
 
 const SearchBar = ({
 	placeholder,
-	foreignUsersData,
-	handleEmptyString,
-	handleNonEmptyString,
+	searchQuery,
+	handleSearch,
 }: SearchBarPropsType) => {
-	const [searchQuery, setSearchQuery] = useState('');
-	const [searchResults, setSearchResults] = useState<any[]>([]);
 	const textInputRef = useRef<TextInput>(null);
 
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
-	const handleSearch = (text: string) => {
-		if (text === '') {
-			if (handleEmptyString != null) {
-				handleEmptyString();
-			}
-		} else {
-			if (handleNonEmptyString != null) {
-				handleNonEmptyString();
-			}
-		}
-
-		setSearchQuery(text);
-
-		console.log('text', text);
-		console.log('userdata', foreignUsersData);
-		/// !!! search doesn't account for full name
-		const filteredResults = foreignUsersData.filter((user) => {
-			console.log('User inner', user);
-			return ['test', 'test2'];
-			user.username.toLowerCase().includes(text.toLowerCase()) ||
-				user.firstName.toLowerCase().includes(text.toLowerCase()) ||
-				user.lastName.toLowerCase().includes(text.toLowerCase());
-		});
-
-		setSearchResults(text.trim() === '' ? [] : filteredResults);
-	};
-
-	const handleProfilePress = (user: User) => {
-		navigation.navigate(StackNavigation.ForeignProfile, {
-			user: user,
-		});
-	};
-
 	return (
-		<View style={{ gap: 0 }}>
-			<View style={styles.searchBar}>
-				<Icon
-					name={GlobalStyles.icons.searchOutline}
-					color={GlobalStyles.colorPalette.primary[400]}
-					size={GlobalStyles.sizing.icon.small}
-				/>
-				<TextInput
-					ref={textInputRef}
-					style={{ flex: 1, ...GlobalStyles.typography.body }}
-					placeholder={placeholder}
-					placeholderTextColor={GlobalStyles.colorPalette.primary[400]}
-					value={searchQuery}
-					onChangeText={handleSearch}
-				/>
-			</View>
-
-			<FlatList
-				data={searchResults}
-				renderItem={({ item }) => (
-					<ProfileCell
-						user={item}
-						handleProfilePress={() => handleProfilePress(item)}
-					/>
-				)}
-				keyExtractor={(item) => item.uid}
+		<View style={styles.searchBar}>
+			<Icon
+				name={GlobalStyles.icons.searchOutline}
+				color={GlobalStyles.colorPalette.primary[400]}
+				size={GlobalStyles.sizing.icon.small}
+			/>
+			<TextInput
+				ref={textInputRef}
+				autoCapitalize={'none'}
+				style={{ flex: 1, ...GlobalStyles.typography.body }}
+				placeholder={placeholder}
+				placeholderTextColor={GlobalStyles.colorPalette.primary[400]}
+				value={searchQuery}
+				onChangeText={handleSearch}
+				clearButtonMode="while-editing"
 			/>
 		</View>
 	);

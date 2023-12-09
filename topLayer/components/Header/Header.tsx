@@ -14,7 +14,6 @@ interface HeaderPropType {
 	back?: string;
 	rightArrow?: boolean;
 	leftArrow?: boolean;
-	// stepOver?: { type: string; handlePress: () => void };
 }
 
 const Header: React.FC<HeaderPropType> = ({

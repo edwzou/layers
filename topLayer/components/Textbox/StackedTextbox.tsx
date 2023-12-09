@@ -37,7 +37,7 @@ const StackedTextBox = ({
 					setFieldText(text);
 					onFieldChange(text);
 				}}
-				secureTextEntry={secure || false}
+				secureTextEntry={secure}
 				clearButtonMode="while-editing"
 				ref={textRef}
 			/>

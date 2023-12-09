@@ -136,7 +136,7 @@ const signupStrate = new LocalStrategy(
           private_option,
           followers: [],
           following: [],
-          profile_picture: imgRef
+          pp_url: imgRef
         };
 
         done(null, user);
@@ -209,6 +209,8 @@ const signup = (req: Request, res: Response, next: NextFunction): any => {
         'Unknown User Error, User Not Defined'
       );
     }
+
+    console.log('full user data: ', user);
     req.logIn(user, { session: true }, (err) => {
       if (err !== null && err !== undefined) {
         return responseCallbackSignUp(err, '', res);

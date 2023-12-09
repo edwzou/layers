@@ -1,59 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import {
-	View,
-	Text,
-	StyleSheet,
-	Image,
-	ImageSourcePropType,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 import { User } from '../../pages/Main';
-import axios from 'axios';
-import { baseUrl } from '../../utils/apiUtils';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
+import { previewLength } from '../../constants/Find';
 
 interface MarkedPropsType {
-	foreignUserIDs: string[];
+	foreignUserIDs: (string | User)[];
+}
+
+function isUserArray(arr: any[]): arr is User[] {
+	return arr.every((item) => typeof item === 'object');
 }
 
 const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 	const [users, setUsers] = useState<User[]>([]);
 
-	const getUser = async (userId: string) => {
-		try {
-			const { data, status } = await axios.get(
-				`${baseUrl}/api/users/${userId}`
-			);
-
-			if (status === 200) {
-				return data.data;
-			}
-		} catch (error) {
-			console.error('Error getting user', error);
-		}
-		return null;
-	};
-
 	useEffect(() => {
-		const getUsers = async () => {
-			if (foreignUserIDs.length === 0) {
-				console.log('No user IDs available');
-				return;
-			}
-
-			try {
-				const top3Users = await Promise.all(
-					foreignUserIDs.slice(0, 3).map((userId) => getUser(userId))
-				);
-				setUsers(top3Users);
-			} catch (error) {
-				console.error('Error getting users', error);
-			}
-		};
-
-		void getUsers();
-	}, []);
+		const preview = foreignUserIDs.slice(0, previewLength);
+		if (isUserArray(preview)) {
+			setUsers(preview);
+		}
+	}, [foreignUserIDs]);
 
 	return (
 		<View style={styles.container}>

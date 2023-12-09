@@ -225,9 +225,7 @@ export const getAllOutfitsCate = async (
       for (const field of Object.values(itemFields)) {
         itemFilter[field] = ofit[`item_${field}`];
       }
-      // console.log('Test2: ', itemFilter.category, itemFilter);
       categories[itemFilter.category].push(itemFilter);
-      // console.log('Test: ', fit, outfits);
     }
     fit.clothing_items = categories;
     outfits.push(fit);

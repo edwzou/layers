@@ -8,6 +8,7 @@ import privateUserRoute from '../routes/private/user';
 import privateOutfitRoute from '../routes/private/outfit';
 import privateClothingRoute from '../routes/private/clothingItem';
 import privateFollowUserRoute from '../routes/private/followUser';
+import privateSearchRoute from '../routes/private/search';
 import { devUserRoute } from './dev/user';
 import { checkAuthenticated } from '../middleware/auth';
 const routerBase = express.Router();
@@ -27,6 +28,7 @@ routerPrivate.use(checkAuthenticated);
 routerPrivate.use('/users', privateUserRoute, privateFollowUserRoute);
 routerPrivate.use('/outfits', privateOutfitRoute);
 routerPrivate.use('/clothing_items', privateClothingRoute);
+routerPrivate.use('/search', privateSearchRoute);
 
 routerDev.use('/users', devUserRoute);
 
