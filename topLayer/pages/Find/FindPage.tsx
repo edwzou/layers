@@ -22,6 +22,7 @@ import { User } from '../../pages/Main';
 import { previewLength } from '../../constants/Find';
 
 const FindPage = () => {
+	console.log('rerender');
 	const { data } = useContext(UserContext);
 	// this only gets the foreignUsersData from UserContext on initial load
 	let foreignUsersIDs: string[] = data && data.following ? data.following : [];

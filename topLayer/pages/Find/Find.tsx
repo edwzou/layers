@@ -14,7 +14,6 @@ import Header from '../../components/Header/Header';
 import Marked from './Marked';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchUsers from '../../components/Bar/SearchUsers';
-
 import { User } from '../../pages/Main';
 
 interface FindPropsType {
@@ -33,6 +32,7 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 
 	const handleEmptyString = (relationChanges: (string | User)[]) => {
 		const usersToAdd = [];
+		const length = foreignUserIDs.length;
 		for (const user of relationChanges) {
 			if (typeof user === 'string') {
 				console.log('unfollow: ', user);
@@ -52,8 +52,11 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 				}
 			}
 		}
-		usersToAdd.push(...foreignUserIDs);
-		updateFollowed(usersToAdd);
+		if (usersToAdd.length > 0 || length !== foreignUserIDs.length) {
+			console.log('called', usersToAdd, length, foreignUserIDs.length);
+			usersToAdd.push(...foreignUserIDs);
+			updateFollowed(usersToAdd);
+		}
 		setComponentVisible(true);
 	};
 

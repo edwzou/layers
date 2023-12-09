@@ -30,6 +30,7 @@ export const MainPageContext = createContext({
 
 const MainPage: React.FC = () => {
 	console.log('rendered');
+	const [currentPage, setCurrentPage] = useState(1);
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
 	const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
 	const [allTops, setAllTops] = useState<UserClothing[]>([]);
@@ -106,6 +107,13 @@ const MainPage: React.FC = () => {
 		ref.current?.setPage(2);
 	};
 
+	const onPageScroll = (event: any) => {
+		const { position } = event.nativeEvent;
+		console.log(` Position: ${position}`);
+		// setCurrentPage(position);
+		// Perform actions based on the scroll state
+	};
+
 	return (
 		<MainPageContext.Provider
 			value={{
@@ -116,7 +124,12 @@ const MainPage: React.FC = () => {
 				setShouldRefreshOutfitViewPage: setShouldRefreshOutfitViewPage,
 			}}
 		>
-			<PagerView style={styles.pager} ref={ref} initialPage={1}>
+			<PagerView
+				style={styles.pager}
+				ref={ref}
+				initialPage={1}
+				onPageScrollStateChanged={onPageScroll}
+			>
 				<MatchPage />
 				<ProfilePage />
 				<FindPage />

@@ -30,9 +30,6 @@ const MarkedList = ({
 	const unmarked = useRef<string[]>([]);
 	const [count, setCount] = useState<number>(foreignUserIDs.length);
 	const [isComponentVisible, setComponentVisible] = useState(true);
-	useEffect(() => {
-		console.log('marked changed');
-	}, [unmarked]);
 	const handleEmptyString = () => {
 		setComponentVisible(true);
 	};
@@ -54,7 +51,6 @@ const MarkedList = ({
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('beforeRemove', () => {
-			console.log('leaving', unmarked);
 			for (const user of unmarked.current) {
 				foreignUserIDs = foreignUserIDs.filter((value) => {
 					if (typeof value === 'string') {
@@ -64,11 +60,10 @@ const MarkedList = ({
 					}
 				});
 			}
-			console.log(foreignUserIDs.length);
 			updateFollowed(foreignUserIDs);
 		});
 		return unsubscribe;
-	});
+	}, [navigation]);
 
 	const handleMarking = (
 		uid: string,

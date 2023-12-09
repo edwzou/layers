@@ -26,6 +26,14 @@ const SearchUsers = ({
 	>([]);
 	const userRelations: (string | User)[] = [];
 
+	useEffect(() => {
+		return () => {
+			// cleanup logic
+			setSearchQuery('');
+			console.log('cleanup');
+		};
+	}, []);
+
 	const allSearch = async (text: string) => {
 		try {
 			const { data, status } = await axios.get(
@@ -51,7 +59,6 @@ const SearchUsers = ({
 		index: number,
 		user: markedUser
 	) => {
-		console.log('userRelation: ', userRelations);
 		if (index !== -1) {
 			userRelations.splice(index, 1);
 			return -1;
@@ -67,7 +74,6 @@ const SearchUsers = ({
 	};
 
 	const handleSearch = (text: string) => {
-		console.log('userRelation: ', userRelations);
 		setSearchQuery(text);
 		if (text === '') {
 			setSearchResults([]);
