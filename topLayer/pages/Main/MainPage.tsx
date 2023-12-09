@@ -110,8 +110,7 @@ const MainPage: React.FC = () => {
 	const onPageScroll = (event: any) => {
 		const { position } = event.nativeEvent;
 		console.log(` Position: ${position}`);
-		// setCurrentPage(position);
-		// Perform actions based on the scroll state
+		setCurrentPage(position);
 	};
 
 	return (
@@ -128,7 +127,7 @@ const MainPage: React.FC = () => {
 				style={styles.pager}
 				ref={ref}
 				initialPage={1}
-				onPageScrollStateChanged={onPageScroll}
+				onPageSelected={onPageScroll}
 			>
 				<MatchPage />
 				<ProfilePage />
