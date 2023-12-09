@@ -16,7 +16,7 @@ async function downloadURLFromS3(objectKey: string): Promise<string> {
   
   try {
     const signedUrl = await getSignedUrl(s3, new GetObjectCommand(params), { expiresIn: 300 }); // Could change this to 168 * 60 * 60 seconds
-    console.log('Download successful: ', signedUrl);
+    console.log('Download successful:', signedUrl);
     return signedUrl;
   } catch (error) {
     console.error('Error generating signed URL:', error);
