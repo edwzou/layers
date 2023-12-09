@@ -143,7 +143,7 @@ const ForeignProfile = ({ route }: any) => {
 
 	return (
 		<>
-			<View style={{ paddingVertical: 20 }} />
+			<View style={{ paddingVertical: GlobalStyles.layout.modalTopPadding }} />
 			<View style={{ flex: 1 }}>
 				<View style={styles.profilePicture}>
 					<ProfilePicture imageUrl={user ? user.pp_url : ''} />

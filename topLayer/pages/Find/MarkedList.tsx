@@ -13,7 +13,6 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import Header from '../../components/Header/Header';
-import DynamicHeader from '../../components/Header/DynamicHeader';
 
 interface MarkedListPropsType {
 	foreignUserIDs: (User | string)[];
@@ -107,16 +106,6 @@ const MarkedList = ({
 	return (
 		<View style={styles.container}>
 			<Header text={`${count} ${find.marked}`} />
-			{/* <DynamicHeader text={`${count.current} ${find.marked}`} /> */}
-
-			{/* <DynamicHead text={`${count} ${find.marked}`} /> */}
-			{/* the search bar for markedlist will behave different searching only the marked list for followers. */}
-			{/* <SearchBar */}
-			{/* 	placeholder={find.searchMarked} */}
-			{/* 	foreignUsersData={foreignUserIDs} */}
-			{/* 	handleEmptyString={handleEmptyString} */}
-			{/* 	handleNonEmptyString={handleNonEmptyString} */}
-			{/* /> */}
 			{preLoad && isComponentVisible && (
 				<FlatList
 					data={foreignUserIDs}
@@ -136,6 +125,7 @@ const MarkedList = ({
 
 const styles = StyleSheet.create({
 	container: {
+		top: GlobalStyles.layout.modalTopPadding,
 		marginHorizontal: GlobalStyles.layout.xGap,
 	},
 });
