@@ -9,7 +9,7 @@ import { StyleSheet } from 'react-native';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
 
-import { headerRight } from '../../components/Modal/HeaderRight';
+import { headerButton } from '../../components/Modal/HeaderButton';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
@@ -91,7 +91,7 @@ const MatchPage = () => {
 								backgroundColor: GlobalStyles.colorPalette.background,
 							},
 							headerShadowVisible: false,
-							headerRight: () => headerRight({
+							headerRight: () => headerButton({
 								type: StepOverTypes.done,
 								handlePress: handleSubmitOutfit,
 							}),

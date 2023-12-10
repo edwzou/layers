@@ -12,6 +12,7 @@ export const StepOverTypes = {
 	send: 'Send',
 	next: 'Next',
 	update: 'Update',
+	logout: 'Logout'
 } as const;
 
 // export interface ClothingCategoryTypes {

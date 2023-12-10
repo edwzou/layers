@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 
-import { headerRight } from '../../components/Modal/HeaderRight';
+import { headerButton } from '../Modal/HeaderButton';
 import bottoms1 from '../../assets/bottoms1.png';
 import { ColorTags } from '../../constants/Enums';
 
@@ -78,7 +78,7 @@ const CameraWrapper = ({ route }: any) => {
 							options={{
 								headerTitle: 'Edit',
 								headerRight: () =>
-									headerRight({
+									headerButton({
 										type: StepOverTypes.done,
 										handlePress: () => {
 											console.log('Done tapped');

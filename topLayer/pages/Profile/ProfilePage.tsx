@@ -8,7 +8,7 @@ import FeedbackPage from '../Feedback/FeedbackPage';
 import SettingsPage from './SettingsPage';
 import ItemViewPage from '../../pages/ItemView/ItemViewPage'
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
-import { headerRight } from '../../components/Modal/HeaderRight';
+import { headerButton } from '../../components/Modal/HeaderButton';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -75,6 +75,11 @@ const ProfilePage = () => {
 	} = useForm({
 		defaultValues: formData,
 	});
+
+	const handleLogout = async () => {
+		await axios(`${baseUrl}/logout`);
+		updateData(null);
+	};
 
 	const onSubmit = async (formValues: FormValues | any) => {
 
@@ -163,7 +168,7 @@ const ProfilePage = () => {
 							name={StackNavigation.Feedback}
 							component={FeedbackPage}
 							options={{
-								headerRight: () => headerRight({
+								headerRight: () => headerButton({
 									type: StepOverTypes.send,
 									handlePress: () => {
 										console.log("Hello")
@@ -175,7 +180,11 @@ const ProfilePage = () => {
 							name={StackNavigation.Settings}
 							component={SettingsPage}
 							options={{
-								headerRight: () => headerRight({
+								headerLeft: () => headerButton({
+									type: StepOverTypes.logout,
+									handlePress: handleLogout
+								}),
+								headerRight: () => headerButton({
 									type: StepOverTypes.update,
 									handlePress: handleSubmit(() => onSubmit(formData)),
 								}),

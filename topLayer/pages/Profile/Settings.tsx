@@ -47,11 +47,6 @@ const Settings = () => {
 	const { data, updateData } = useContext(UserContext);
 	const { control, setValue, setFormData, pp_url, errors } = useContext(ProfilePageContext);
 
-	const handleLogout = async () => {
-		await axios(`${baseUrl}/logout`);
-		updateData(null);
-	};
-
 	useEffect(() => {
 		setValue('pp_url', image);
 	}, [image]);
@@ -187,13 +182,6 @@ const Settings = () => {
 					}}
 				/>
 
-			</View>
-			<View style={{ alignItems: 'center' }}>
-				<Button
-					onPress={handleLogout}
-					text={'Sign out'}
-					bgColor={GlobalStyles.colorPalette.primary[500]}
-				/>
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
