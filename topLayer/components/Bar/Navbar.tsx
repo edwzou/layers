@@ -6,7 +6,6 @@ import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import { MainPageContext } from '../../pages/Main/MainPage';
-import { UserContext } from '../../utils/UserContext';
 
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -19,7 +18,6 @@ interface NavbarPropsType {
 
 const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
 	const { navigationArray } = useContext(MainPageContext);
-	const { data, updateData } = useContext(UserContext);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const [image, setImage] = useState('');
 
@@ -74,13 +72,6 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
 						size={GlobalStyles.sizing.icon.regular}
 					/>
 				</Pressable>
-				{/* <Pressable onPress={handleLogout}>
-          <Icon
-            name={GlobalStyles.icons.circleLogout}
-            color={GlobalStyles.colorPalette.primary[900]}
-            size={GlobalStyles.sizing.icon.regular}
-          />
-        </Pressable> */}
 			</View>
 		</SafeAreaView>
 	);

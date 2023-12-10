@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -9,21 +9,19 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 
-import SearchBar from '../../components/Bar/SearchBar';
 import Header from '../../components/Header/Header';
 
 import Marked from './Marked';
-
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SearchUsers from '../../components/Bar/SearchUsers';
 import { User } from '../../pages/Main';
 
-export const ShowProfileContext = createContext(() => {});
-
 interface FindPropsType {
-	foreignUserIDs: string[];
+	foreignUserIDs: (string | User)[];
+	updateFollowed: (followed: (string | User)[]) => void;
 }
 
-const Find = ({ foreignUserIDs }: FindPropsType) => {
+const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [isComponentVisible, setComponentVisible] = useState(true);
@@ -32,21 +30,46 @@ const Find = ({ foreignUserIDs }: FindPropsType) => {
 		navigation.navigate(StackNavigation.MarkedList, {});
 	};
 
-	const handleEmptyString = () => {
-		setComponentVisible((isComponentVisible) => true);
+	const handleEmptyString = (relationChanges: (string | User)[]) => {
+		const usersToAdd = [];
+		const length = foreignUserIDs.length;
+		for (const user of relationChanges) {
+			if (typeof user === 'string') {
+				console.log('unfollow: ', user);
+				foreignUserIDs = foreignUserIDs.filter((value) => {
+					if (typeof value === 'string') {
+						return value !== user;
+					} else {
+						return value.uid !== user;
+					}
+				});
+			} else {
+				console.log('follow: ', user);
+				if (user.pp_url !== '') {
+					usersToAdd.push(user);
+				} else {
+					foreignUserIDs.push(user);
+				}
+			}
+		}
+		if (usersToAdd.length > 0 || length !== foreignUserIDs.length) {
+			console.log('called', usersToAdd, length, foreignUserIDs.length);
+			usersToAdd.push(...foreignUserIDs);
+			updateFollowed(usersToAdd);
+		}
+		setComponentVisible(true);
 	};
 
 	const handleNonEmptyString = () => {
-		setComponentVisible((isComponentVisible) => false);
+		setComponentVisible(false);
 	};
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<Header text={StackNavigation.Find} leftArrow={true} />
 			<View style={styles.content}>
-				<SearchBar
+				<SearchUsers
 					placeholder={find.searchProfiles}
-					foreignUsersData={foreignUserIDs}
 					handleEmptyString={handleEmptyString}
 					handleNonEmptyString={handleNonEmptyString}
 				/>

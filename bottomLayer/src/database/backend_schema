@@ -34,15 +34,15 @@ CREATE TABLE backend_schema.user (
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(63) NOT NULL UNIQUE,
     username VARCHAR(63) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(63) NOT NULL,
     private_option BOOL NOT NULL,
     followers UUID[] NOT NULL,
     following UUID[] NOT NULL,
-    pp_url VARCHAR(255)
+    pp_url VARCHAR(2083)
 );
 CREATE TABLE backend_schema.outfit (
     oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    title VARCHAR(50) NOT NULL, 
+    title VARCHAR(255) NOT NULL, 
     clothing_items UUID[] NOT NULL,
     uid UUID NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -54,9 +54,9 @@ CREATE TABLE backend_schema.outfit (
 
 CREATE TABLE backend_schema.clothing_item (
     ciid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    image_url VARCHAR(255) NOT NULL,
+    image_url VARCHAR(2083) NOT NULL,
     category item_categories NOT NULL,
-    title VARCHAR(50) NOT NULL,
+    title VARCHAR(255) NOT NULL,
     uid UUID NOT NULL,
     brands VARCHAR[],
     size VARCHAR(50),
