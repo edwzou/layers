@@ -20,6 +20,7 @@ import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Control, FieldValues, SubmitHandler } from 'react-hook-form';
+import { AppContext } from '../../App';
 
 interface FormValues {
 	first_name: string,
@@ -52,6 +53,8 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 });
 
 const ProfilePage = () => {
+
+	const { setShouldRefreshProfilePage } = useContext(AppContext);
 
 	const { data, updateData } = useContext(UserContext);
 
@@ -132,6 +135,7 @@ const ProfilePage = () => {
 					// const sessionData = JSON.stringify(response.data.data);
 					// await AsyncStorage.setItem('session', sessionData);
 					// updateData(sessionData);
+					setShouldRefreshProfilePage(true)
 				} catch (error) {
 					console.log(error);
 				}
