@@ -52,6 +52,9 @@ const CategorySlide = ({
 								/>
 							);
 						}}
+						keyExtractor={(item) => {
+							return item.oid;
+						}}
 						numColumns={2}
 						showsVerticalScrollIndicator={false}
 						contentContainerStyle={{ gap: GlobalStyles.layout.gap }}

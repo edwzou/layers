@@ -1,4 +1,5 @@
 import { StyleSheet, FlatList, Dimensions, Text, View } from 'react-native';
+
 import React from 'react';
 
 import CategorySlide from './CategorySlide';
@@ -34,10 +35,13 @@ const CategorySlides = ({
 			ref={categorySlidesRef}
 			data={allItemsData}
 			renderItem={({ item }) => {
-				// console.log('item: ', item);
+				// console.log('categoryslide: ', item);
 				return (
 					<CategorySlide itemsData={item} handleItemChange={handleItemChange} />
 				);
+			}}
+			keyExtractor={(item) => {
+				return item.category;
 			}}
 			horizontal
 			pagingEnabled
@@ -57,4 +61,3 @@ const CategorySlides = ({
 
 export default CategorySlides;
 const styles = StyleSheet.create({});
-

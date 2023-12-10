@@ -5,7 +5,7 @@ import React, {
 	type Dispatch,
 	type SetStateAction,
 	useContext,
-	MutableRefObject
+	MutableRefObject,
 } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -16,7 +16,7 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserOutfit } from '.';
-import { outfitEdit } from '../../constants/GlobalStrings'
+import { outfitEdit } from '../../constants/GlobalStrings';
 
 import Icon from 'react-native-remix-icon';
 import { UserClothing } from '../../pages/Match';
@@ -46,8 +46,13 @@ interface OutfitViewPropsType {
 	navigateToProfile: () => void;
 }
 
-const OutfitEdit = ({ id, title, clothingItems, titleRef, navigateToProfile }: OutfitViewPropsType) => {
-
+const OutfitEdit = ({
+	id,
+	title,
+	clothingItems,
+	titleRef,
+	navigateToProfile,
+}: OutfitViewPropsType) => {
 	const { setShouldRefreshOutfitEdit } = useContext(MainPageContext);
 
 	const [text, setText] = useState(title);
@@ -70,17 +75,19 @@ const OutfitEdit = ({ id, title, clothingItems, titleRef, navigateToProfile }: O
 
 	const handleDelete = async () => {
 		try {
-			const response = await axios.delete(`${baseUrl}/api/private/outfits/${id}`);
+			const response = await axios.delete(
+				`${baseUrl}/api/private/outfits/${id}`
+			);
 
 			if (response.status === 200) {
 				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
-				setShouldRefreshOutfitEdit(true)
-				navigateToProfile()
+				setShouldRefreshOutfitEdit(true);
+				navigateToProfile();
 			} else {
 				throw new Error('An error has occurred while deleting outfit');
 			}
 		} catch (error) {
-			void axiosEndpointErrorHandler(error)
+			void axiosEndpointErrorHandler(error);
 			alert(error);
 		}
 	};
@@ -97,7 +104,11 @@ const OutfitEdit = ({ id, title, clothingItems, titleRef, navigateToProfile }: O
 				renderItem={({ item }) => {
 					return (
 						<View style={{ width: ITEM_SIZE(2) }}>
-							<ItemCell imageUrl={item.image_url} disablePress={false} key={item.ciid} />
+							<ItemCell
+								imageUrl={item.image_url}
+								disablePress={false}
+								key={item.ciid}
+							/>
 						</View>
 					);
 				}}
