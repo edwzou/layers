@@ -6,7 +6,7 @@ import { Stack } from '../../utils/StackNavigation';
 import Profile from './Profile';
 import FeedbackPage from '../Feedback/FeedbackPage';
 import SettingsPage from './SettingsPage';
-import ItemViewPage from '../../pages/ItemView/ItemViewPage'
+import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { headerButton } from '../../components/Modal/HeaderButton';
 import { NavigationContainer } from '@react-navigation/native';
