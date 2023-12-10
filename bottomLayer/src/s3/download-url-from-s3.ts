@@ -13,10 +13,28 @@ async function downloadURLFromS3(objectKey: string): Promise<string> {
     Bucket: getBucketName(),
     Key: objectKey,
   };
-  
+
   try {
-    const signedUrl = await getSignedUrl(s3, new GetObjectCommand(params), { expiresIn: 300 }); // Could change this to 168 * 60 * 60 seconds
+    // Set a shorter initial expiration time for the presigned URL (e.g., 60 seconds)
+    const expiresIn = 10;
+    const startTime = Math.floor(Date.now() / 1000);
+    const expirationTime = startTime + expiresIn;
+
+    const signedUrl = await getSignedUrl(s3, new GetObjectCommand(params), { expiresIn });
     console.log('Download successful:', signedUrl);
+
+    console.log(`Download URL will expire in ${expiresIn} seconds.`);
+    console.log("startTime", startTime);
+    console.log("expirationTime", expirationTime);
+
+    // Countdown the remaining time every second until it expires
+    for (let remainingTime = expiresIn; remainingTime >= 0; remainingTime--) {
+      console.log(`Time remaining: ${remainingTime} seconds.`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+
+    console.log('Expiration time has been met.');
+
     return signedUrl;
   } catch (error) {
     console.error('Error generating signed URL:', error);
