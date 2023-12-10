@@ -112,6 +112,8 @@ const ProfilePage = () => {
 			return;
 		}
 
+		console.log(updatedFields)
+
 		try {
 			const response = await axios.put(`${baseUrl}/api/private/users`, updatedFields, {
 				headers: {
@@ -175,7 +177,7 @@ const ProfilePage = () => {
 							options={{
 								headerRight: () => headerRight({
 									type: StepOverTypes.update,
-									handlePress: () => onSubmit(formData),
+									handlePress: handleSubmit(() => onSubmit(formData)),
 								}),
 							}}
 						/>

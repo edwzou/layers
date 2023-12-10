@@ -22,6 +22,8 @@ import { UserContext } from '../../utils/UserContext';
 import { User } from '../../pages/Main';
 import { ProfilePageContext } from './ProfilePage';
 
+import { settings } from '../../constants/GlobalStrings'
+
 interface FormValues {
 	first_name: string,
 	last_name: string,
@@ -43,7 +45,7 @@ const Settings = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const { data, updateData } = useContext(UserContext);
-	const { control, handleSubmit, setValue, setFormData, pp_url, errors } = useContext(ProfilePageContext);
+	const { control, setValue, setFormData, pp_url, errors } = useContext(ProfilePageContext);
 
 	const handleLogout = async () => {
 		await axios(`${baseUrl}/logout`);
@@ -162,7 +164,7 @@ const Settings = () => {
 					control={control}
 					rules={{
 						required: true,
-						minLength: 5,
+						minLength: 8,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -195,11 +197,13 @@ const Settings = () => {
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
-					<Text style={styles.error}>Please enter a valid email.</Text>
+					<Text style={styles.error}>
+						{settings.pleaseEnterAValidEmail}
+					</Text>
 				)}
 				{errors.password != null && (
 					<Text style={styles.error}>
-						Password must be 5 characters or more.
+						{settings.passwordMustBe5CharactersOrMore}
 					</Text>
 				)}
 			</View>
