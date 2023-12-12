@@ -44,12 +44,14 @@ import Animated, {
 
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
+import { StackNavigation } from '../../constants/Enums';
 
 interface CameraPropType {
-	data: Dispatch<SetStateAction<string>>;
+	data: (photo: string) => void;
+	returnToNavigation: NativeStackNavigationProp<StackTypes>
 }
 
-export default function CameraComponent({ data }: any) {
+export default function CameraComponent({ data, returnToNavigation }: CameraPropType) {
 	const [orientation, setOrientation] = useState(CameraType.front);
 	const [flash, setFlash] = useState(FlashMode.auto);
 	const [cameraPermission, requestCameraPermission] =
@@ -244,7 +246,7 @@ export default function CameraComponent({ data }: any) {
 					<Text>
 						<Pressable
 							onPress={() => {
-								navigation.goBack();
+								returnToNavigation.navigate(StackNavigation.Settings, {});
 							}}
 						>
 							<Icon

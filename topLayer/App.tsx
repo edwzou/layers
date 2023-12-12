@@ -92,7 +92,7 @@ export default function App() {
 								</>
 							)}
 							<Stack.Screen
-								name={StackNavigation.Camera}
+								name={StackNavigation.CameraWrapper}
 								component={CameraWrapper}
 								options={{
 									animation: 'slide_from_bottom',

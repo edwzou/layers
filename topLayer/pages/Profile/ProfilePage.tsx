@@ -21,6 +21,7 @@ import { baseUrl } from '../../utils/apiUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Control, FieldValues, SubmitHandler } from 'react-hook-form';
 import { AppContext } from '../../App';
+import CameraWrapper from '../../components/Camera/CameraWrapper';
 
 interface FormValues {
 	first_name: string,
@@ -206,6 +207,17 @@ const ProfilePage = () => {
 							component={OutfitViewPage}
 							options={{
 								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name={StackNavigation.CameraWrapper}
+							component={CameraWrapper}
+							options={{
+								presentation: 'fullScreenModal',
+								animation: 'slide_from_bottom',
+								gestureEnabled: true,
+								gestureDirection: 'vertical',
+								headerShown: false
 							}}
 						/>
 					</Stack.Group>
