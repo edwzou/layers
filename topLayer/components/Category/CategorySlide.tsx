@@ -30,80 +30,76 @@ const CategorySlide = ({
 	// }, []);
 
 	const slide = () => {
-		// console.log('items data: ', windowWidth, itemsData, itemsData.data.length);
-		if (
-			itemsData.data &&
-			(itemsData.data.length !== 0 || itemsData.category === 'outfits')
-		) {
-			// console.log('rendering list');
-			if (itemsData.category === 'outfits') {
-				return (
-					<FlatList
-						data={itemsData.data as UserOutfit[]}
-						renderItem={({ item }) => {
-							//console.log(item)
-							return (
-								<OutfitCard
-									title={item.title}
-									clothingItems={item.clothing_items}
-									onPress={() => {
-										handleItemChange(item);
-									}}
-								/>
-							);
-						}}
-						keyExtractor={(item) => {
-							return item.oid;
-						}}
-						numColumns={2}
-						showsVerticalScrollIndicator={false}
-						contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-						columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
-						ListFooterComponent={
-							<View style={{ padding: screenHeight * 0.15 }} />
-						}
-					/>
-				);
-			} else {
-				return (
-					<FlatList
-						data={itemsData.data as UserClothing[]}
-						renderItem={({ item }) => {
-							//console.log(item);
-							return (
-								<View style={{ width: ITEM_SIZE(2) }}>
-									<ItemCell
-										imageUrl={item.image_url}
-										key={item.ciid}
-										onPress={() => handleItemChange(item)}
-									/>
-								</View>
-							);
-						}}
-						numColumns={2}
-						showsVerticalScrollIndicator={false}
-						contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-						columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
-						ListFooterComponent={
-							<View style={{ padding: screenHeight * 0.15 }} />
-						}
-					/>
-				);
-			}
+		if (itemsData.category === 'outfits') {
+			return (
+				<FlatList
+					data={itemsData.data as UserOutfit[]}
+					renderItem={({ item }) => {
+						//console.log(item)
+						return (
+							<OutfitCard
+								title={item.title}
+								clothingItems={item.clothing_items}
+								onPress={() => {
+									handleItemChange(item);
+								}}
+							/>
+						);
+					}}
+					keyExtractor={(item) => {
+						return item.oid;
+					}}
+					numColumns={2}
+					showsVerticalScrollIndicator={false}
+					contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+					columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
+					ListFooterComponent={
+						<View style={{ padding: screenHeight * 0.15 }} />
+					}
+				/>
+			);
 		} else {
-			// console.log('not rendering list');
-			return <Empty />;
+			return (
+				<FlatList
+					data={itemsData.data as UserClothing[]}
+					renderItem={({ item }) => {
+						//console.log(item);
+						return (
+							<View style={{ width: ITEM_SIZE(2) }}>
+								<ItemCell
+									imageUrl={item.image_url}
+									key={item.ciid}
+									onPress={() => handleItemChange(item)}
+								/>
+							</View>
+						);
+					}}
+					numColumns={2}
+					showsVerticalScrollIndicator={false}
+					contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+					columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
+					ListFooterComponent={
+						<View style={{ padding: screenHeight * 0.15 }} />
+					}
+				/>
+			);
 		}
 	};
 	return (
-		<View
-			style={[
-				styles.container,
-				{ width: windowWidth - 2 * GlobalStyles.layout.xGap },
-			]}
-		>
-			{slide()}
-		</View>
+		<>
+			{itemsData.data && itemsData.data.length !== 0 ? (
+				<View
+					style={[
+						styles.container,
+						{ width: windowWidth - 2 * GlobalStyles.layout.xGap },
+					]}
+				>
+					{slide()}
+				</View>
+			) : (
+				<Empty />
+			)}
+		</>
 	);
 };
 

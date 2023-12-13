@@ -8,9 +8,9 @@ const Empty = () => {
 			style={{
 				alignItems: 'center',
 				flex: 1,
-				top: GlobalStyles.layout.pageStateTopMargin,
+				marginTop: GlobalStyles.layout.pageStateTopMargin,
 				gap: 5,
-				width: screenWidth - GlobalStyles.layout.xGap * 2,
+				width: screenWidth,
 			}}
 		>
 			<Icon

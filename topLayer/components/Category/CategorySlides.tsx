@@ -11,6 +11,7 @@ import { screenWidth, screenHeight } from '../../utils/modalMaxShow';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { UserClothing, UserAllItems } from '../../pages/Match';
 import { UserOutfit } from '../../pages/OutfitView';
+import Empty from './Empty';
 
 interface CategorySlidesPropsType {
 	categorySlidesRef: any; /// !!! Fix any type
@@ -28,15 +29,28 @@ const CategorySlides = ({
 	handleViewableItemsChanged,
 }: CategorySlidesPropsType) => {
 	const windowWidth = Dimensions.get('window').width;
-	console.log('data: ', allItemsData);
+	// console.log('data: ', allItemsData);
 
 	return (
 		<FlatList
 			ref={categorySlidesRef}
 			data={allItemsData}
 			renderItem={({ item }) => {
-				// console.log('categoryslide: ', item);
+				console.log('categoryslide: ', item.data);
 				return (
+					// {/* <Text */}
+					// {/* 	style={{ */}
+					// {/* 		width: screenWidth, */}
+					// {/* 		// width: GlobalStyles.layout.gap, */}
+					// {/* 		backgroundColor: 'red', */}
+					// {/* 		// borderColor: 'black', */}
+					// {/* 		// borderWidth: 10, */}
+					// {/* 		// borderStyle: 'solid', */}
+					// {/* 	}} */}
+					// {/* > */}
+					// {/* 	Empty */}
+					// {/* </Text> */}
+					// <Empty />
 					<CategorySlide itemsData={item} handleItemChange={handleItemChange} />
 				);
 			}}
@@ -47,7 +61,7 @@ const CategorySlides = ({
 			pagingEnabled
 			snapToAlignment="center"
 			showsHorizontalScrollIndicator={false}
-			onViewableItemsChanged={handleViewableItemsChanged}
+			// onViewableItemsChanged={handleViewableItemsChanged}
 			viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
 			initialScrollIndex={CategoryToIndex[selectedCategory]}
 			getItemLayout={(data, index) => ({
