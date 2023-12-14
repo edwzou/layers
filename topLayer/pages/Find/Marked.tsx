@@ -14,7 +14,7 @@ function isUserArray(arr: any[]): arr is User[] {
 	return arr.every((item) => typeof item === 'object');
 }
 
-const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
+const MarkedBar = ({ foreignUserIDs }: MarkedPropsType) => {
 	const [users, setUsers] = useState<User[]>([]);
 
 	useEffect(() => {
@@ -33,30 +33,14 @@ const Marked = ({ foreignUserIDs }: MarkedPropsType) => {
 				<Text style={styles.label}>{find.viewYourMarkedProfiles}</Text>
 			</View>
 			<View style={styles.profilePicturesContainer}>
-				{users[0] && (
-					<View style={styles.profilePicture}>
+				{users.slice(0, previewLength).map((user, index) => (
+					<View key={index} style={styles.profilePicture}>
 						<ProfilePicture
-							imageUrl={users[0].pp_url ? users[0].pp_url : ''}
+							imageUrl={user.pp_url ? user.pp_url : ''}
 							size={GlobalStyles.sizing.pfp.small}
 						/>
 					</View>
-				)}
-				{users[1] && (
-					<View style={styles.profilePicture}>
-						<ProfilePicture
-							imageUrl={users[1].pp_url ? users[1].pp_url : ''}
-							size={GlobalStyles.sizing.pfp.small}
-						/>
-					</View>
-				)}
-				{users[2] && (
-					<View style={styles.profilePicture}>
-						<ProfilePicture
-							imageUrl={users[2].pp_url ? users[2].pp_url : ''}
-							size={GlobalStyles.sizing.pfp.small}
-						/>
-					</View>
-				)}
+				))}
 			</View>
 		</View>
 	);
@@ -93,4 +77,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Marked;
+export default MarkedBar;

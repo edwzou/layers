@@ -3,7 +3,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
 import GlobalStyles from '../../constants/GlobalStyles';
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture'; // Import the ProfilePicture component
+import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 import {
 	isMarkedPrivateUser,
@@ -14,9 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import { baseUrl } from '../../utils/apiUtils';
-import axios from 'axios';
-import { axiosEndpointErrorHandlerNoAlert } from '../../utils/ErrorHandlers';
+import { followUser, unFollowUser } from '../../endpoints/followUser';
 
 interface ProfileCellPropsType {
 	user: markedPrivateUser | markedUser;
@@ -55,42 +53,6 @@ const ProfileCell = ({
 		userProcessed = user;
 	}
 
-	const followUser = async () => {
-		try {
-			const { data, status } = await axios.post(
-				`${baseUrl}/api/private/users/follow`,
-				{
-					followedId: userProcessed.uid,
-				}
-			);
-			if (status === 200) {
-				console.log('Successfully Followed User: ', data.message);
-			} else {
-				throw new Error('An error has occurred while Following A User');
-			}
-		} catch (error) {
-			void axiosEndpointErrorHandlerNoAlert(error);
-		}
-	};
-
-	const unFollowUser = async () => {
-		try {
-			const { data, status } = await axios.post(
-				`${baseUrl}/api/private/users/unfollow`,
-				{
-					unfollowedId: userProcessed.uid,
-				}
-			);
-			if (status === 200) {
-				console.log('Successfully Unfollowed User: ', data.message);
-			} else {
-				throw new Error('An error has occurred while Unfollowing A User');
-			}
-		} catch (error) {
-			void axiosEndpointErrorHandlerNoAlert(error);
-		}
-	};
-
 	const handleIconPress = (user: markedUser) => {
 		if (user.uid !== '') {
 			handleBookmarkPress();
@@ -99,7 +61,7 @@ const ProfileCell = ({
 
 	const handleBookmarkPress = () => {
 		if (iconName === GlobalStyles.icons.bookmarkFill) {
-			void unFollowUser();
+			void unFollowUser(userProcessed.uid);
 			setIconName(GlobalStyles.icons.bookmarkOutline);
 			userProcessed.marked = false;
 			index.current = handleRelationRender(
@@ -109,7 +71,7 @@ const ProfileCell = ({
 				userProcessed
 			);
 		} else {
-			void followUser();
+			void followUser(userProcessed.uid);
 			setIconName(GlobalStyles.icons.bookmarkFill);
 			userProcessed.marked = true;
 			index.current = handleRelationRender(
