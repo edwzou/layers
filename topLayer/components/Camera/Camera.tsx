@@ -48,7 +48,7 @@ import { StackNavigation } from '../../constants/Enums';
 
 interface CameraPropType {
 	data: (photo: string) => void;
-	returnToNavigation: NativeStackNavigationProp<StackTypes>
+	returnToNavigation: NativeStackNavigationProp<StackTypes>;
 }
 
 export default function CameraComponent({ data, returnToNavigation }: CameraPropType) {
@@ -148,7 +148,11 @@ export default function CameraComponent({ data, returnToNavigation }: CameraProp
 	if (photo != null && photo.base64 != undefined) {
 		const savePhoto = () => {
 			// console.log('Test: ', photo.base64);
-			data(photo.base64);
+			if (photo.base64) {
+				data(photo.base64);
+			} else {
+				console.log('photo.base64 is undefined!')
+			}
 			// navigation.goBack();
 			MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
 				setPhoto(undefined);
@@ -215,7 +219,11 @@ export default function CameraComponent({ data, returnToNavigation }: CameraProp
 		if (result.canceled) return;
 
 		// console.log('Test2: ', result.assets[0].base64);
-		data(result.assets[0].base64);
+		if (result.assets[0].base64) {
+			data(result.assets[0].base64);
+		} else {
+			console.log('result.assets[0].base64 is undefined!')
+		}
 		// navigation.goBack();
 	};
 
@@ -246,7 +254,7 @@ export default function CameraComponent({ data, returnToNavigation }: CameraProp
 					<Text>
 						<Pressable
 							onPress={() => {
-								returnToNavigation.navigate(StackNavigation.Settings, {});
+								returnToNavigation.goBack();
 							}}
 						>
 							<Icon
