@@ -23,10 +23,6 @@ const CategorySlide = ({ itemsData, handleItemChange }: CategorySlidePropsType) 
 
 	const windowWidth = Dimensions.get('window').width;
 
-	// useEffect(() => {
-	// 	console.log(itemsData)
-	// }, []);
-
 	return (
 		<View style={[styles.container, { width: windowWidth - 2 * GlobalStyles.layout.xGap }]}>
 			{itemsData.data && itemsData.data.length !== 0 ?

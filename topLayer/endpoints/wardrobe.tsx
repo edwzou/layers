@@ -92,7 +92,7 @@ const getAllClothingItemsHandler = async (
 
 		if (status === 200) {
 			console.log('Successfully Fetched Clothing Items');
-			console.log(data.data);
+			// console.log(data.data);
 			return (
 				setAllOuterwear(data.data['outerwear']),
 				setAllTops(data.data['tops']),
