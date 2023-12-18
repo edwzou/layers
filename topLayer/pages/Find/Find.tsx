@@ -11,7 +11,7 @@ import { type StackTypes } from '../../utils/StackNavigation';
 
 import Header from '../../components/Header/Header';
 
-import Marked from './Marked';
+import MarkedBar from './Marked';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchUsers from '../../components/Bar/SearchUsers';
 import { User } from '../../pages/Main';
@@ -75,7 +75,7 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 				/>
 				{isComponentVisible && (
 					<Pressable onPress={handlePress}>
-						<Marked foreignUserIDs={foreignUserIDs} />
+						<MarkedBar foreignUserIDs={foreignUserIDs} />
 					</Pressable>
 				)}
 			</View>

@@ -11,7 +11,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 import Icon from 'react-native-remix-icon';
 
-import img from '../../assets/icon.png'
+import img from '../../assets/icon.png';
 //import { ClothingCategoryTypes } from 'constants/Enums';
 
 const SNAP_ITEM_SIZE = ITEM_SIZE() * 1.25; // Cell gap
@@ -26,7 +26,6 @@ interface SliderPropsType {
 }
 
 const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
-
 	const emptyItem: UserClothing = {
 		ciid: '',
 		image_url: '',
@@ -36,8 +35,8 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 		brands: [],
 		size: '',
 		color: [],
-		created_at: ''
-	}
+		created_at: '',
+	};
 
 	const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -70,7 +69,13 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 		<View>
 			<FlatList
 				ref={flatListRef}
-				data={data && [...data.slice(0, data.length - 1), emptyItem, ...data.slice(data.length - 1, data.length)]}
+				data={
+					data && [
+						...data.slice(0, data.length - 1),
+						emptyItem,
+						...data.slice(data.length - 1, data.length),
+					]
+				}
 				renderItem={({ item, index }) => {
 					if ((!item.image_url || !item.category) && item.ciid !== '') {
 						return <View style={{ width: EMPTY_ITEM_SIZE }} />;
@@ -94,18 +99,23 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 								style={[
 									{
 										transform: [{ scale }],
-										backgroundColor: item.ciid === '' ? GlobalStyles.colorPalette.background : GlobalStyles.colorPalette.card[200]
-
+										backgroundColor:
+											item.ciid === ''
+												? GlobalStyles.colorPalette.background
+												: GlobalStyles.colorPalette.card[200],
 									},
-									styles.itemContent]}
+									styles.itemContent,
+								]}
 							>
-								{item.ciid !== '' ? <ItemCell imageUrl={item.image_url} disablePress /> :
+								{item.ciid !== '' ? (
+									<ItemCell imageUrl={item.image_url} disablePress />
+								) : (
 									<Icon
 										name={GlobalStyles.icons.forbidOutline}
 										color={GlobalStyles.colorPalette.primary[300]}
 										size={GlobalStyles.sizing.icon.xLarge}
 									/>
-								}
+								)}
 							</Animated.View>
 						</View>
 					);
@@ -113,7 +123,13 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 				getItemLayout={getItemLayout}
 				horizontal
 				showsHorizontalScrollIndicator={false}
-				keyExtractor={(data) => data.ciid}
+				keyExtractor={(data, index) => {
+					if (data.ciid) {
+						return data.ciid;
+					} else {
+						return index;
+					}
+				}}
 				bounces={false}
 				decelerationRate={0}
 				renderToHardwareTextureAndroid

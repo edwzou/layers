@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, {
 	type Dispatch,
 	type SetStateAction,
@@ -134,9 +134,15 @@ const MainPage: React.FC = () => {
 				initialPage={1}
 				onPageSelected={onPageScroll}
 			>
-				<MatchPage />
-				<ProfilePage />
-				<FindPage />
+				<View collapsable={false}>
+					<MatchPage />
+				</View>
+				<View collapsable={false}>
+					<ProfilePage />
+				</View>
+				<View collapsable={false}>
+					<FindPage />
+				</View>
 			</PagerView>
 		</MainPageContext.Provider>
 	);
