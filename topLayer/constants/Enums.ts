@@ -49,7 +49,7 @@ export const StackNavigation = {
 	Settings: 'Settings',
 	MarkedList: 'MarkedList',
 	OutfitPreview: 'Preview',
-	ForeignProfile: 'ForeignProfile'
+	ForeignProfile: 'ForeignProfile',
 } as const;
 
 export const NavigationBack = {
@@ -86,23 +86,22 @@ export const IndexToCategory: Record<number, string> = {
 };
 
 export const ColorTags: Record<string, string> = {
-	"#4891FF": "Blue",
-	"#46B9C9": "Teal",
-	"#A3DEC9": "Mint",
-	"#6DC86E": "Green",
-	"#76956B": "Olive",
-	"#EEE16B": "Yellow",
-	"#E8D3B4": "Beige",
-	"#977854": "Brown",
-	"#EBA655": "Orange",
-	"#E55A5A": "Red",
-	"#AD4E4E": "Maroon",
-	"#F67ECE": "Pink",
-	"#B77AC7": "Purple",
-	"#3869B2": "Navy",
-	"#121212": "Black",
-	"#CDCDCD": "Grey",
-	"#FFFFF7": "White",
-	"#FFFBEB": "Cream",
+	'#4891FF': 'Blue',
+	'#46B9C9': 'Teal',
+	'#A3DEC9': 'Mint',
+	'#6DC86E': 'Green',
+	'#76956B': 'Olive',
+	'#EEE16B': 'Yellow',
+	'#E8D3B4': 'Beige',
+	'#977854': 'Brown',
+	'#EBA655': 'Orange',
+	'#E55A5A': 'Red',
+	'#AD4E4E': 'Maroon',
+	'#F67ECE': 'Pink',
+	'#B77AC7': 'Purple',
+	'#3869B2': 'Navy',
+	'#121212': 'Black',
+	'#CDCDCD': 'Grey',
+	'#FFFFF7': 'White',
+	'#FFFBEB': 'Cream',
 };
-  
