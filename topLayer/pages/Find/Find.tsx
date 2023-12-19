@@ -82,7 +82,9 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 					// But then it'll leave that padding over this Marked component
 					// This 'style={{ top: -screenHeight * 0.20 }}' is meant to offset that padding from the Flatlist
 					// If you can find a cleaner way to fully scroll down in SearchUsers.tsx, please use that instead!
-					<Pressable onPress={handlePress} style={{ top: -screenHeight * 0.20 }}>
+					// Before this chage the bottom 3 users outside the screen can't be seen
+					// currently this solution does fail sometimes
+					<Pressable onPress={handlePress} style={{ top: -screenHeight * 0.2 }}>
 						<MarkedBar foreignUserIDs={foreignUserIDs} />
 					</Pressable>
 				)}
