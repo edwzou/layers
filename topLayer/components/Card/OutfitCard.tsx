@@ -46,6 +46,9 @@ export default function OutfitCard({
 							/>
 						</View>
 					)}
+					keyExtractor={(item) => {
+						return item.ciid;
+					}}
 					numColumns={2}
 				/>
 			</View>
@@ -77,21 +80,21 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[500],
 		...GlobalStyles.utils.tagShape,
 		...GlobalStyles.utils.tagShadow,
-		shadowColor: GlobalStyles.colorPalette.primary[400]
+		shadowColor: GlobalStyles.colorPalette.primary[400],
 	},
 	labelText: {
 		color: GlobalStyles.colorPalette.background,
 		...GlobalStyles.typography.body,
 	},
 	itemContainer: {
-		width: ((((screenWidth - GlobalStyles.layout.xGap * 2) / 1.8) - 40) / 2) - 5,
-		margin: 5
+		width: ((screenWidth - GlobalStyles.layout.xGap * 2) / 1.8 - 40) / 2 - 5,
+		margin: 5,
 	},
 	itemsContainer: {
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
-		height: (((screenWidth - GlobalStyles.layout.xGap * 2) / 1.8) - 40) + 10,
+		height: (screenWidth - GlobalStyles.layout.xGap * 2) / 1.8 - 40 + 10,
 		aspectRatio: 1,
 	},
 });

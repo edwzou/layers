@@ -18,7 +18,6 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
 
 const OutfitPreview = ({ route }: any) => {
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	// const { matchItems, setMatchName } = route.params;
@@ -35,12 +34,23 @@ const OutfitPreview = ({ route }: any) => {
 	};
 
 	useEffect(() => {
-		setRawData([matchItems.outerwear, matchItems.tops, matchItems.bottoms, matchItems.shoes]);
+		setRawData([
+			matchItems.outerwear,
+			matchItems.tops,
+			matchItems.bottoms,
+			matchItems.shoes,
+		]);
 		setMatch({
 			previewData: matchItems,
 			matchName: text,
-		})
-	}, [matchItems.outerwear, matchItems.tops, matchItems.bottoms, matchItems.shoes, text]);
+		});
+	}, [
+		matchItems.outerwear,
+		matchItems.tops,
+		matchItems.bottoms,
+		matchItems.shoes,
+		text,
+	]);
 
 	useEffect(() => {
 		setData(rawData.filter(Boolean));
@@ -48,9 +58,9 @@ const OutfitPreview = ({ route }: any) => {
 
 	useEffect(() => {
 		if (dismissal) {
-			navigation.goBack()
+			navigation.goBack();
 		}
-	}, [dismissal])
+	}, [dismissal]);
 
 	return (
 		<View style={styles.container}>
@@ -63,7 +73,11 @@ const OutfitPreview = ({ route }: any) => {
 				data={data}
 				renderItem={({ item }) => (
 					<View style={{ width: ITEM_SIZE(2) }}>
-						<ItemCell imageUrl={item.image_url} disablePress={false} key={item.ciid} />
+						<ItemCell
+							imageUrl={item.image_url}
+							disablePress={false}
+							key={item.ciid}
+						/>
 					</View>
 				)}
 				numColumns={2}

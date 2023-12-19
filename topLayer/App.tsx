@@ -1,7 +1,7 @@
 import { StyleSheet, StatusBar, View, SafeAreaView } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from './utils/StackNavigation';
@@ -19,7 +19,14 @@ import axios from 'axios';
 import { baseUrl } from './utils/apiUtils';
 import { User } from './pages/Main';
 
+export const AppContext = createContext({
+	setShouldRefreshProfilePage: (() => { }) as Dispatch<SetStateAction<boolean>>,
+});
+
 export default function App() {
+
+	const [shouldRefreshProfilePage, setShouldRefreshProfilePage] = useState(false)
+
 	const [user, setUser] = useState<User | null>(null);
 
 	const userContextValue = {
@@ -29,62 +36,76 @@ export default function App() {
 		},
 	};
 
+	const getUser = async () => {
+		const { data, status } = await axios.get(`${baseUrl}/api/private/users`);
+
+		if (status === 200) {
+			return setUser(data.data);
+		}
+
+		return setUser(null);
+	};
+
 	useEffect(() => {
-		const getUser = async () => {
-			const { data, status } = await axios.get(`${baseUrl}/api/private/users`);
-
-			if (status === 200) {
-				return setUser(data.data);
-			}
-
-			return setUser(null);
-		};
-
 		void getUser();
 	}, []);
 
+	// refetches user after updating info in settings
+	useEffect(() => {
+		if (shouldRefreshProfilePage) {
+			void getUser();
+			setShouldRefreshProfilePage(false);
+		}
+	}, [shouldRefreshProfilePage]);
+
 	return (
-		<NavigationContainer ref={navigationRef}>
-			<View style={styles.container}>
-				<UserContext.Provider value={userContextValue}>
-					<Stack.Navigator
-						screenOptions={{
-							headerShown: false,
-						}}
-					>
-						{!user ? (
-							<>
-								<Stack.Screen
-									name={StackNavigation.Login}
-									component={SignInPage}
-								/>
-								<Stack.Screen
-									name={StackNavigation.SignUp}
-									component={SignUpPage}
-								/>
-							</>
-						) : (
-							<>
-								<Stack.Screen
-									name={StackNavigation.Main}
-									component={MainPage}
-								/>
-							</>
-						)}
-						<Stack.Screen
-							name={StackNavigation.Camera}
-							component={CameraWrapper}
-							options={{
-								animation: 'slide_from_bottom',
-								gestureEnabled: true,
-								gestureDirection: 'vertical',
+		<AppContext.Provider
+			value={{
+				setShouldRefreshProfilePage: setShouldRefreshProfilePage,
+			}}
+		>
+			<NavigationContainer ref={navigationRef}>
+				<View style={styles.container}>
+					<UserContext.Provider value={userContextValue}>
+						<Stack.Navigator
+							screenOptions={{
+								headerShown: false,
 							}}
-						/>
-					</Stack.Navigator>
-					<ExpoStatusBar style="auto" />
-				</UserContext.Provider>
-			</View>
-		</NavigationContainer>
+						>
+							{!user ? (
+								<>
+									<Stack.Screen
+										name={StackNavigation.Login}
+										component={SignInPage}
+									/>
+									<Stack.Screen
+										name={StackNavigation.SignUp}
+										component={SignUpPage}
+									/>
+								</>
+							) : (
+								<>
+									<Stack.Screen
+										name={StackNavigation.Main}
+										component={MainPage}
+									/>
+								</>
+							)}
+							<Stack.Screen
+								name={StackNavigation.CameraWrapper}
+								component={CameraWrapper}
+								options={{
+									animation: 'slide_from_bottom',
+									gestureEnabled: true,
+									gestureDirection: 'vertical',
+								}}
+							/>
+						</Stack.Navigator>
+						<ExpoStatusBar style="auto" />
+					</UserContext.Provider>
+				</View>
+			</NavigationContainer>
+		</AppContext.Provider>
 	);
 }
 

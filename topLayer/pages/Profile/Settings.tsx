@@ -19,92 +19,50 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../utils/UserContext';
+import { User } from '../../pages/Main';
+import { ProfilePageContext } from './ProfilePage';
+
+import { settings } from '../../constants/GlobalStrings'
 
 interface FormValues {
-	first_name: string;
-	last_name: string;
-	username: string;
-	email: string;
-	password: string;
-	private: boolean;
-	profile_picture: string;
+	first_name: string,
+	last_name: string,
+	email: string,
+	username: string,
+	password: string,
+	private_option: boolean,
+	pp_url: string,
+}
+
+interface PrivacyOption {
+	value: string;
+	boolean: boolean;
 }
 
 const Settings = () => {
 	const [image, setImage] = useState('');
 	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const { data, updateData } = useContext(UserContext);
 
-	const handleLogout = async () => {
-		await axios(`${baseUrl}/logout`);
-		updateData(null);
-	};
-	const { first_name, last_name, username, email, private_option, pp_url } =
-		data;
-	const {
-		control,
-		handleSubmit,
-		setValue,
-		formState: { dirtyFields, errors },
-	} = useForm({
-		defaultValues: {
-			first_name: first_name,
-			last_name: last_name,
-			username: username,
-			email: email,
-			password: '',
-			private: private_option,
-			profile_picture: pp_url,
-		},
-	});
+	const { data, updateData } = useContext(UserContext);
+	const { control, setValue, setFormData, pp_url, errors } = useContext(ProfilePageContext);
 
 	useEffect(() => {
-		setValue('profile_picture', image);
+		setValue('pp_url', image);
 	}, [image]);
 
-	const onSubmit = async (data: FormValues | any) => {
-		try {
-			const response = await axios.post(
-				`${baseUrl}/signup`,
-				{
-					first_name: data.first_name,
-					last_name: data.last_name,
-					username: data.username,
-					email: data.email,
-					password: data.password,
-					profile_picture: data.profile_picture,
-					following: [],
-					followers: [],
-					privateOption: data.private,
-				},
-				{
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				}
-			);
-
-			if (response.status === 200) {
-				try {
-					const sessionData = JSON.stringify(response.data.data);
-					await AsyncStorage.setItem('session', sessionData);
-					updateData(sessionData);
-				} catch (error) {
-					console.log(error);
-				}
-			} else {
-				throw new Error('An error has occurred');
-			}
-		} catch (error) {
-			alert(error);
-		}
-	};
-
-	const privacyOptions = [
+	const privacyOptions: PrivacyOption[] = [
 		{ value: 'Public', boolean: false },
 		{ value: 'Private', boolean: true },
 	];
+
+	// Update the state object when form fields change
+	const handleFieldChange = (fieldName: string, value: string | boolean) => {
+		setFormData((prevData: FormValues) => ({
+			...prevData,
+			[fieldName]: value,
+		}));
+	};
 
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
@@ -112,7 +70,7 @@ const Settings = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.Camera, {
+						navigation.navigate(StackNavigation.CameraWrapper, {
 							setImage: setImage,
 						});
 					}}
@@ -134,7 +92,10 @@ const Settings = () => {
 						render={({ field: { onChange, value } }) => (
 							<StackedTextBox
 								label="First Name"
-								onFieldChange={onChange}
+								onFieldChange={(newValue) => {
+									onChange(newValue);
+									handleFieldChange('first_name', newValue);
+								}}
 								value={value.trim()}
 							/>
 						)}
@@ -148,7 +109,10 @@ const Settings = () => {
 						render={({ field: { onChange, value } }) => (
 							<StackedTextBox
 								label="Last Name"
-								onFieldChange={onChange}
+								onFieldChange={(newValue) => {
+									onChange(newValue);
+									handleFieldChange('last_name', newValue);
+								}}
 								value={value.trim()}
 							/>
 						)}
@@ -164,7 +128,10 @@ const Settings = () => {
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
 							label="Username"
-							onFieldChange={onChange}
+							onFieldChange={(newValue) => {
+								onChange(newValue);
+								handleFieldChange('username', newValue);
+							}}
 							value={value.trim()}
 						/>
 					)}
@@ -179,7 +146,10 @@ const Settings = () => {
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
 							label="Email"
-							onFieldChange={onChange}
+							onFieldChange={(newValue) => {
+								onChange(newValue);
+								handleFieldChange('email', newValue);
+							}}
 							value={value.trim()}
 						/>
 					)}
@@ -189,34 +159,39 @@ const Settings = () => {
 					control={control}
 					rules={{
 						required: true,
-						minLength: 5,
+						minLength: 8,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
 							label="Password"
-							onFieldChange={onChange}
+							onFieldChange={(newValue) => {
+								onChange(newValue);
+								handleFieldChange('password', newValue);
+							}}
 							value={value}
 							secure
 						/>
 					)}
 					name="password"
 				/>
-				<RadioButton privateData={privacyOptions} onSelect={setValue} />
-			</View>
-			<View style={{ alignItems: 'center' }}>
-				<Button
-					onPress={handleLogout}
-					text={'Sign out'}
-					bgColor={GlobalStyles.colorPalette.primary[500]}
+				<RadioButton
+					privateData={privacyOptions}
+					onSelect={(selectedOption: PrivacyOption) => {
+						setValue('private_option', selectedOption.boolean);
+						handleFieldChange('private_option', selectedOption.boolean);
+					}}
 				/>
+
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
-					<Text style={styles.error}>Please enter a valid email.</Text>
+					<Text style={styles.error}>
+						{settings.pleaseEnterAValidEmail}
+					</Text>
 				)}
 				{errors.password != null && (
 					<Text style={styles.error}>
-						Password must be 5 characters or more.
+						{settings.passwordMustBe5CharactersOrMore}
 					</Text>
 				)}
 			</View>
@@ -252,4 +227,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Settings;
+export default React.memo(Settings);

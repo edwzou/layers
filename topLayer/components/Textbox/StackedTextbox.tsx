@@ -31,7 +31,7 @@ const StackedTextBox = ({
 				{label}
 			</Text>
 			<TextInput
-				autoCapitalize={autoCapitalize}
+				autoCapitalize={"none"}
 				value={fieldText}
 				onChangeText={(text) => {
 					setFieldText(text);

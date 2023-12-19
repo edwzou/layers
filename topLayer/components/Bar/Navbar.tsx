@@ -50,7 +50,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
 			<View style={styles.icons}>
 				<Pressable
 					onPress={() => {
-						navigate(StackNavigation.Camera, {
+						navigation.navigate(StackNavigation.CameraWrapper, {
 							setImage: setImage,
 						});
 					}}

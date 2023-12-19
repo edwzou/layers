@@ -15,8 +15,7 @@ interface OutfitViewPropsType {
 }
 
 const OutfitView = ({ clothingItems }: OutfitViewPropsType) => {
-
-	const allColors = clothingItems.flatMap(item => item.color);
+	const allColors = clothingItems.flatMap((item) => item.color);
 	const uniqueColors = Array.from(new Set(allColors));
 
 	return (
@@ -30,21 +29,23 @@ const OutfitView = ({ clothingItems }: OutfitViewPropsType) => {
 					</View>
 				);
 			}}
+			keyExtractor={(item) => {
+				return item.ciid;
+			}}
 			style={styles.container}
 			showsVerticalScrollIndicator={false}
 			ListHeaderComponent={
-				clothingItems.length > 0 ? <ItemCell imageUrl={clothingItems[0].image_url} /> : null
+				clothingItems.length > 0 ? (
+					<ItemCell imageUrl={clothingItems[0].image_url} />
+				) : null
 			}
 			contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
 			columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 			ListFooterComponent={
-				<View style={{ gap: 20, }}>
-					<View style={[styles.categoryContainer, { top: 4, }]}>
+				<View style={{ gap: 20 }}>
+					<View style={[styles.categoryContainer, { top: 4 }]}>
 						<Text style={styles.subheader}>Colors</Text>
-						<ColorTagsList
-							data={uniqueColors}
-							tagAction={TagAction.static}
-						/>
+						<ColorTagsList data={uniqueColors} tagAction={TagAction.static} />
 					</View>
 					{/* <View style={styles.categoryContainer}>
 						<Text style={styles.subheader}>Brands</Text>
