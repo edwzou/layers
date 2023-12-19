@@ -9,6 +9,8 @@ import { baseUrl } from '../../utils/apiUtils';
 import { markedPrivateUser, markedUser, User } from '../../pages/Main';
 import SearchBar from './SearchBar';
 
+import { screenHeight } from '../../utils/modalMaxShow';
+
 interface SearchBarPropsType {
 	placeholder: string;
 	handleEmptyString?: (changes: (string | User)[]) => void;
@@ -24,13 +26,12 @@ const SearchUsers = ({
 	const [searchResults, setSearchResults] = useState<
 		(markedUser | markedPrivateUser)[]
 	>([]);
-	const userRelations: (string | User)[] = [];
+	const userRelations = useRef<(string | User)[]>([]);
 
 	useEffect(() => {
 		return () => {
-			// cleanup logic
-			setSearchQuery('');
-			console.log('cleanup');
+			console.log('cleanup', userRelations);
+			handleSearch('');
 		};
 	}, []);
 
@@ -60,31 +61,29 @@ const SearchUsers = ({
 		user: markedUser
 	) => {
 		if (index !== -1) {
-			userRelations.splice(index, 1);
+			userRelations.current.splice(index, 1);
 			return -1;
 		} else {
 			// The below is only called to mark a new User, whom is 1 of 3 of the users marked
 			if (marked) {
-				userRelations.push(user as User);
+				userRelations.current.push(user as User);
 			} else {
-				userRelations.push(uid);
+				userRelations.current.push(uid);
 			}
 		}
-		return userRelations.length - 1;
+		return userRelations.current.length - 1;
 	};
 
 	const handleSearch = (text: string) => {
 		setSearchQuery(text);
 		if (text === '') {
 			setSearchResults([]);
+			if (handleEmptyString != null) {
+				handleEmptyString(userRelations.current);
+			}
+			userRelations.current = [];
 		} else {
 			void allSearch(text);
-		}
-		if (text === '') {
-			if (handleEmptyString != null) {
-				handleEmptyString(userRelations);
-			}
-		} else {
 			if (handleNonEmptyString != null) {
 				handleNonEmptyString();
 			}
@@ -110,6 +109,10 @@ const SearchUsers = ({
 				data={searchResults}
 				renderItem={renderProfile}
 				keyExtractor={(item) => item.uid}
+				showsVerticalScrollIndicator={false}
+				ListFooterComponent={
+					<View style={{ padding: screenHeight * 0.10 }} />
+				}
 			/>
 		</View>
 	);

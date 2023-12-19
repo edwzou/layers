@@ -98,7 +98,7 @@ const SignUp = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.Camera, {
+						navigation.navigate(StackNavigation.CameraWrapper, {
 							setImage: setImage,
 						});
 					}}

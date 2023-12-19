@@ -10,7 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { headerRight } from '../../components/Modal/HeaderRight';
+import { headerButton } from '../../components/Modal/HeaderButton';
 import { UserClothing, UserClothingList } from '../../pages/Match';
 
 import { baseUrl } from '../../utils/apiUtils';
@@ -101,12 +101,12 @@ const OutfitViewPage = ({ route }: any) => {
 							headerTitle: item.title,
 							headerRight: editable
 								? () =>
-										headerRight({
-											type: StepOverTypes.edit,
-											handlePress: () => {
-												navigation.navigate(StackNavigation.EditClothing);
-											},
-										})
+									headerButton({
+										type: StepOverTypes.edit,
+										handlePress: () => {
+											navigation.navigate(StackNavigation.EditClothing);
+										},
+									})
 								: undefined,
 						})}
 					/>
@@ -116,7 +116,7 @@ const OutfitViewPage = ({ route }: any) => {
 						options={{
 							headerTitle: 'Edit',
 							headerRight: () =>
-								headerRight({
+								headerButton({
 									type: StepOverTypes.done,
 									handlePress: handleSubmitOutfit,
 								}),

@@ -44,12 +44,14 @@ import Animated, {
 
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
+import { StackNavigation } from '../../constants/Enums';
 
 interface CameraPropType {
-	data: Dispatch<SetStateAction<string>>;
+	data: (photo: string) => void;
+	returnToNavigation: NativeStackNavigationProp<StackTypes>;
 }
 
-export default function CameraComponent({ data }: any) {
+export default function CameraComponent({ data, returnToNavigation }: CameraPropType) {
 	const [orientation, setOrientation] = useState(CameraType.front);
 	const [flash, setFlash] = useState(FlashMode.auto);
 	const [cameraPermission, requestCameraPermission] =
@@ -146,7 +148,11 @@ export default function CameraComponent({ data }: any) {
 	if (photo != null && photo.base64 != undefined) {
 		const savePhoto = () => {
 			// console.log('Test: ', photo.base64);
-			data(photo.base64);
+			if (photo.base64) {
+				data(photo.base64);
+			} else {
+				console.log('photo.base64 is undefined!')
+			}
 			// navigation.goBack();
 			MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
 				setPhoto(undefined);
@@ -213,7 +219,11 @@ export default function CameraComponent({ data }: any) {
 		if (result.canceled) return;
 
 		// console.log('Test2: ', result.assets[0].base64);
-		data(result.assets[0].base64);
+		if (result.assets[0].base64) {
+			data(result.assets[0].base64);
+		} else {
+			console.log('result.assets[0].base64 is undefined!')
+		}
 		// navigation.goBack();
 	};
 
@@ -244,7 +254,7 @@ export default function CameraComponent({ data }: any) {
 					<Text>
 						<Pressable
 							onPress={() => {
-								navigation.goBack();
+								returnToNavigation.goBack();
 							}}
 						>
 							<Icon

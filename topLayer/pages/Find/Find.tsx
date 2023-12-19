@@ -11,10 +11,12 @@ import { type StackTypes } from '../../utils/StackNavigation';
 
 import Header from '../../components/Header/Header';
 
-import Marked from './Marked';
+import MarkedBar from './Marked';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchUsers from '../../components/Bar/SearchUsers';
 import { User } from '../../pages/Main';
+
+import { screenHeight } from '../../utils/modalMaxShow';
 
 interface FindPropsType {
 	foreignUserIDs: (string | User)[];
@@ -74,8 +76,16 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 					handleNonEmptyString={handleNonEmptyString}
 				/>
 				{isComponentVisible && (
-					<Pressable onPress={handlePress}>
-						<Marked foreignUserIDs={foreignUserIDs} />
+					// This 'style={{ top: -screenHeight * 0.20 }}' is SUPER HACKY and should be fixed ASAP
+					// Basically, the Flatlist on SearchUsers.tsx won't fully scroll down for some reason
+					// I can add ListFooterComponent padding on the bottom of that flatlist
+					// But then it'll leave that padding over this Marked component
+					// This 'style={{ top: -screenHeight * 0.20 }}' is meant to offset that padding from the Flatlist
+					// If you can find a cleaner way to fully scroll down in SearchUsers.tsx, please use that instead!
+					// Before this chage the bottom 3 users outside the screen can't be seen
+					// currently this solution does fail sometimes
+					<Pressable onPress={handlePress} style={{ top: -screenHeight * 0.2 }}>
+						<MarkedBar foreignUserIDs={foreignUserIDs} />
 					</Pressable>
 				)}
 			</View>
@@ -86,6 +96,7 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 const styles = StyleSheet.create({
 	container: {
 		gap: 15,
+		flex: 1,
 	},
 	content: {
 		marginHorizontal: GlobalStyles.layout.xGap,

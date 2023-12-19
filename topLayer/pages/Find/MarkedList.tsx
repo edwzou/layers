@@ -81,7 +81,7 @@ const MarkedList = ({
 		}
 	};
 
-	const renderProfile = ({ item }: { item: User | string }) => {
+	const renderProfile = ({ item }: { item: User | string; index: number }) => {
 		console.log('Item', item);
 		if (typeof item !== 'string') {
 			return (

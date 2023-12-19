@@ -1,4 +1,4 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { UserClothing } from '../pages/Match';
 import { UserOutfit } from '../pages/OutfitView';
 
@@ -15,6 +15,7 @@ export type StackNavigatorType = {
 		bottoms?: UserClothing;
 		shoes?: UserClothing;
 	};
+	returnTo?: NativeStackNavigationProp<StackTypes>;
 	setMatchName?: (text: string) => void;
 	setImage?: (base64: string) => void;
 	setMarked?: () => void;
@@ -32,7 +33,8 @@ export type StackTypes = {
 	OutfitView: StackNavigatorType;
 	Feedback: StackNavigatorType;
 	Find: StackNavigatorType;
-	Camera: StackNavigatorType;
+	CameraWrapper: StackNavigatorType;
+	CameraComponents: StackNavigatorType;
 	Settings: StackNavigatorType;
 	MarkedList: StackNavigatorType;
 	OutfitPreview: StackNavigatorType;

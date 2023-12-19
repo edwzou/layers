@@ -37,6 +37,7 @@ const getAllOutfitsHandler = async (
 
 		if (status === 200) {
 			console.log('Successfully Fetched Outfits');
+			console.log(data.data);
 			return updateOutfits(data.data);
 		} else {
 			throw new Error(`An Get All Outfits Error Has Occurred: ${status}`);
@@ -92,7 +93,7 @@ const getAllClothingItemsHandler = async (
 
 		if (status === 200) {
 			console.log('Successfully Fetched Clothing Items');
-			console.log(data.data);
+			// console.log(data.data);
 			return (
 				setAllOuterwear(data.data['outerwear']),
 				setAllTops(data.data['tops']),
