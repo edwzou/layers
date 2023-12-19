@@ -9,7 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { headerRight } from '../../components/Modal/HeaderRight';
+import { headerButton } from '../../components/Modal/HeaderButton';
 
 const ItemViewPage = ({ route }: any) => {
 
@@ -35,7 +35,7 @@ const ItemViewPage = ({ route }: any) => {
                         component={ItemViewComponent}
                         options={({ navigation }) => ({
                             headerTitle: item.title,
-                            headerRight: editable ? (() => headerRight({
+                            headerRight: editable ? (() => headerButton({
                                 type: StepOverTypes.edit,
                                 handlePress: () => {
                                     navigation.navigate(StackNavigation.EditClothing);
@@ -48,7 +48,7 @@ const ItemViewPage = ({ route }: any) => {
                         component={EditClothingComponent}
                         options={{
                             headerTitle: "Edit",
-                            headerRight: () => headerRight({
+                            headerRight: () => headerButton({
                                 type: StepOverTypes.done,
                                 handlePress: () => {
                                     console.log("Done tapped")

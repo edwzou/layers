@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
 
-import { headerRight } from '../../components/Modal/HeaderRight';
+import { headerButton } from '../../components/Modal/HeaderButton';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
@@ -18,7 +18,7 @@ import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
 export const MatchPageContext = createContext({
-	setMatch: (_?: any) => {},
+	setMatch: (_?: any) => { },
 	dismissal: false,
 });
 
@@ -92,11 +92,10 @@ const MatchPage = () => {
 								backgroundColor: GlobalStyles.colorPalette.background,
 							},
 							headerShadowVisible: false,
-							headerRight: () =>
-								headerRight({
-									type: StepOverTypes.done,
-									handlePress: handleSubmitOutfit,
-								}),
+							headerRight: () => headerButton({
+								type: StepOverTypes.done,
+								handlePress: handleSubmitOutfit,
+							}),
 						}}
 						name={StackNavigation.OutfitPreview}
 						component={OutfitPreview}

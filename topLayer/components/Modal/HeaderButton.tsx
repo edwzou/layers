@@ -4,12 +4,12 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { StepOverTypes } from '../../constants/Enums';
 import Icon from 'react-native-remix-icon';
 
-export interface HeaderRightPropsType {
+export interface HeaderButtonPropsType {
     type: string;
     handlePress: () => void;
 }
 
-export function headerRight({ type, handlePress }: HeaderRightPropsType) {
+export function headerButton({ type, handlePress }: HeaderButtonPropsType) {
     switch (type) {
         case StepOverTypes.send: {
             return (
@@ -35,7 +35,7 @@ export function headerRight({ type, handlePress }: HeaderRightPropsType) {
                             GlobalStyles.typography.body,
                         ]}
                     >
-                        Edit
+                        {StepOverTypes.edit}
                     </Text>
                 </Pressable>
             );
@@ -51,7 +51,7 @@ export function headerRight({ type, handlePress }: HeaderRightPropsType) {
                             GlobalStyles.typography.body,
                         ]}
                     >
-                        Done
+                        {StepOverTypes.done}
                     </Text>
                 </Pressable>
             );
@@ -67,7 +67,23 @@ export function headerRight({ type, handlePress }: HeaderRightPropsType) {
                             GlobalStyles.typography.body,
                         ]}
                     >
-                        Update
+                        {StepOverTypes.update}
+                    </Text>
+                </Pressable>
+            );
+        }
+        case StepOverTypes.logout: {
+            return (
+                <Pressable
+                    onPress={handlePress}
+                >
+                    <Text
+                        style={[
+                            { color: GlobalStyles.colorPalette.info[500] },
+                            GlobalStyles.typography.body,
+                        ]}
+                    >
+                        {StepOverTypes.logout}
                     </Text>
                 </Pressable>
             );

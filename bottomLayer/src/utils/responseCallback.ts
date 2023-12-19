@@ -141,24 +141,25 @@ export const responseCallbackDelete = (
 
 export const responseCallbackUpdate = (
   error: any,
-  id: string,
+  userData: any,
   res: Response,
   target: string = '',
   rowCount: number = 1
 ): Callback<any> => {
   if (rowCount === 0) {
-    throw new NotFoundError(target + ' Not Found, id: ' + id);
+    throw new NotFoundError(target + ' Not Found, id: ' + userData.uid);
   } else if (error != null) {
     console.log(error);
     res.status(500).json({
-      message: 'Internal Server Error, Failed to Update ' + target + ': ' + id,
+      message: 'Internal Server Error, Failed to Update ' + target + ': ' + userData.uid,
       err: error
     });
     return error;
   } else {
-    res
-      .status(200)
-      .json({ message: 'Successfully Updated ' + target + ': ' + id });
+    res.status(200).json({
+      message: 'Successfully Updated ' + target + ': ' + userData.uid,
+      data: userData
+    });
     return error;
   }
 };

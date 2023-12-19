@@ -20,3 +20,8 @@ export const outfitEdit = {
 	outfitName: 'Outfit name',
 	remove: 'Remove'
 } as const;
+
+export const settings = {
+	pleaseEnterAValidEmail: 'Please enter a valid email.',
+	passwordMustBe5CharactersOrMore: 'Password must be 8 characters or more.'
+} as const;

@@ -7,14 +7,14 @@ import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import { previewLength } from '../../constants/Find';
 
 interface MarkedPropsType {
-	foreignUserIDs: (string | User)[];
+	foreignUserIDs?: string[]; // foreignUserIDs is now optional
 }
 
 function isUserArray(arr: any[]): arr is User[] {
 	return arr.every((item) => typeof item === 'object');
 }
 
-const MarkedBar = ({ foreignUserIDs }: MarkedPropsType) => {
+const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType) => { // Default to an empty array if foreignUserIDs is undefined
 	const [users, setUsers] = useState<User[]>([]);
 
 	useEffect(() => {

@@ -1,14 +1,15 @@
 import React, { createContext, useState } from 'react';
 import CameraComponent from './Camera';
 import EditClothing from '../../pages/ItemView/EditClothing';
-import { Stack } from '../../utils/StackNavigation';
-import { NavigationContainer } from '@react-navigation/native';
+import { Stack, StackTypes } from '../../utils/StackNavigation';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 
-import { headerRight } from '../../components/Modal/HeaderRight';
+import { headerButton } from '../Modal/HeaderButton';
 import bottoms1 from '../../assets/bottoms1.png';
 import { ColorTags } from '../../constants/Enums';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const dummyId = 'createID: ';
 let createCount = 0;
@@ -19,6 +20,9 @@ type PhotoType = {
 };
 
 const CameraWrapper = ({ route }: any) => {
+
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
 	const [data, setData] = useState<string>('');
 	const [clothingItem, setClothingItem] = useState({
 		ciid: '',
@@ -49,7 +53,7 @@ const CameraWrapper = ({ route }: any) => {
 		<EditClothing clothingItem={clothingItem} />
 	);
 
-	const CameraComponentS = () => <CameraComponent data={updatePhoto} />;
+	const CameraComponents = () => <CameraComponent data={updatePhoto} returnToNavigation={navigation} />;
 
 	return (
 		<NavigationContainer independent={true}>
@@ -65,8 +69,8 @@ const CameraWrapper = ({ route }: any) => {
 				>
 					{!data ? (
 						<Stack.Screen
-							name={StackNavigation.Camera}
-							component={CameraComponentS}
+							name={StackNavigation.CameraComponents}
+							component={CameraComponents}
 							options={{
 								headerShown: false,
 							}}
@@ -78,7 +82,7 @@ const CameraWrapper = ({ route }: any) => {
 							options={{
 								headerTitle: 'Edit',
 								headerRight: () =>
-									headerRight({
+									headerButton({
 										type: StepOverTypes.done,
 										handlePress: () => {
 											console.log('Done tapped');
