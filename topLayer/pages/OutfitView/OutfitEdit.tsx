@@ -2,8 +2,6 @@ import { View, StyleSheet, Pressable } from 'react-native';
 import React, {
 	useEffect,
 	useState,
-	type Dispatch,
-	type SetStateAction,
 	useContext,
 	MutableRefObject,
 } from 'react';
@@ -26,9 +24,8 @@ import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
-import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from 'utils/StackNavigation';
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings'
 
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
@@ -83,6 +80,7 @@ const OutfitEdit = ({
 				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
 				setShouldRefreshOutfitEdit(true);
 				navigateToProfile();
+				showSuccessDeleteToast()
 			} else {
 				throw new Error('An error has occurred while deleting outfit');
 			}
@@ -91,6 +89,15 @@ const OutfitEdit = ({
 			alert(error);
 		}
 	};
+
+	const showSuccessDeleteToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourOutfitHasBeenDeleted,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
 
 	return (
 		<View style={styles.container}>

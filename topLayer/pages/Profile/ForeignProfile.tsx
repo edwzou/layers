@@ -67,7 +67,6 @@ const ForeignProfile = ({ route }: any) => {
 	];
 
 	useEffect(() => {
-		console.log('Load');
 		void getForeignAllOutfits(user.uid, setAllOutfits);
 		void getForeignAllClothingItems(
 			user.uid,

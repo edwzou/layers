@@ -17,6 +17,9 @@ import { UserClothing } from '.';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings'
+
 export const MatchPageContext = createContext({
 	setMatch: (_?: any) => { },
 	dismissal: false,
@@ -63,8 +66,9 @@ const MatchPage = () => {
 				//alert(`You have created: ${JSON.stringify(response.data)}`);
 				setDismissal(true);
 				setShouldRefreshMatchPage(true);
-				navigationArray[0]();
+				//navigationArray[0](); // Uncomment this to navigate to profile page
 				setDismissal(false);
+				showSuccessCreateToast()
 			} else {
 				throw new Error('An error has occurred while submitting outfit');
 			}
@@ -72,6 +76,15 @@ const MatchPage = () => {
 			void axiosEndpointErrorHandler(error);
 		}
 	};
+
+	const showSuccessCreateToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourOutfitHasBeenCreated,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
 
 	return (
 		<MatchPageContext.Provider value={{ setMatch, dismissal }}>

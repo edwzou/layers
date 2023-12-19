@@ -19,17 +19,16 @@ import { UserAllItems, UserClothing } from '../../pages/Match';
 import { getAllClothingItems, getAllOutfits } from '../../endpoints/wardrobe';
 
 export const MainPageContext = createContext({
-	navigationArray: [() => {}],
+	navigationArray: [() => { }],
 	allItems: [] as UserAllItems[],
-	setShouldRefreshMatchPage: (() => {}) as Dispatch<SetStateAction<boolean>>,
-	setShouldRefreshOutfitEdit: (() => {}) as Dispatch<SetStateAction<boolean>>,
-	setShouldRefreshOutfitViewPage: (() => {}) as Dispatch<
+	setShouldRefreshMatchPage: (() => { }) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshOutfitEdit: (() => { }) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshOutfitViewPage: (() => { }) as Dispatch<
 		SetStateAction<boolean>
 	>,
 });
 
 const MainPage: React.FC = () => {
-	console.log('rendered');
 	const [refresh, setRefresh] = useState(false);
 	let prevPage = 1;
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
@@ -110,9 +109,7 @@ const MainPage: React.FC = () => {
 
 	const onPageScroll = (event: any) => {
 		const { position } = event.nativeEvent;
-		console.log(` Position: ${position}`);
 		if (prevPage === 2) {
-			console.log('working');
 			setRefresh(!refresh);
 		}
 		prevPage = position;

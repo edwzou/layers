@@ -23,6 +23,9 @@ import { Control, FieldValues, SubmitHandler } from 'react-hook-form';
 import { AppContext } from '../../App';
 import CameraWrapper from '../../components/Camera/CameraWrapper';
 
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings'
+
 interface FormValues {
 	first_name: string,
 	last_name: string,
@@ -41,6 +44,8 @@ type ProfilePageContextType = {
 	setFormData: Dispatch<SetStateAction<FormValues>>;
 	pp_url: string;
 	errors: FieldErrors<FormValues>;
+	showSuccessUpdate: boolean;
+	setShowSuccessUpdate: Dispatch<SetStateAction<boolean>>;
 };
 
 // Create the context with the defined type
@@ -50,7 +55,9 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 	setValue: {} as UseFormSetValue<FormValues>,
 	setFormData: () => { },
 	pp_url: '',
-	errors: {} as FieldErrors<FormValues>
+	errors: {} as FieldErrors<FormValues>,
+	showSuccessUpdate: false,
+	setShowSuccessUpdate: () => { }
 });
 
 const ProfilePage = () => {
@@ -60,6 +67,8 @@ const ProfilePage = () => {
 	const { data, updateData } = useContext(UserContext);
 
 	const { first_name, last_name, email, username, private_option, pp_url } = data as User;
+
+	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 
 	const [formData, setFormData] = useState<FormValues>({
 		first_name: first_name,
@@ -121,8 +130,6 @@ const ProfilePage = () => {
 			return;
 		}
 
-		console.log(updatedFields)
-
 		try {
 			const response = await axios.put(`${baseUrl}/api/private/users`, updatedFields, {
 				headers: {
@@ -136,7 +143,9 @@ const ProfilePage = () => {
 					// const sessionData = JSON.stringify(response.data.data);
 					// await AsyncStorage.setItem('session', sessionData);
 					// updateData(sessionData);
+					setShowSuccessUpdate(true)
 					setShouldRefreshProfilePage(true)
+					showSuccessUpdateToast()
 				} catch (error) {
 					console.log(error);
 				}
@@ -148,8 +157,17 @@ const ProfilePage = () => {
 		}
 	};
 
+	const showSuccessUpdateToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourProfileHasBeenUpdated,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
 	return (
-		<ProfilePageContext.Provider value={{ control, handleSubmit, setValue, setFormData, pp_url, errors }}>
+		<ProfilePageContext.Provider value={{ control, handleSubmit, setValue, setFormData, pp_url, errors, showSuccessUpdate, setShowSuccessUpdate }}>
 			<NavigationContainer
 				independent={true}>
 				<Stack.Navigator>

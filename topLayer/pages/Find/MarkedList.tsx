@@ -24,7 +24,6 @@ const MarkedList = ({
 	updateFollowed,
 }: MarkedListPropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	console.log('New Load2');
 	const [preLoad, setPreLoad] = useState(false);
 	const unmarked = useRef<string[]>([]);
 	const [count, setCount] = useState<number>(foreignUserIDs.length);
@@ -43,7 +42,6 @@ const MarkedList = ({
 				.slice(0, previewLength)
 				.some((user) => typeof user === 'string')
 		) {
-			console.log('New Load');
 			setPreLoad(true);
 		}
 	}, [foreignUserIDs]);
@@ -82,7 +80,6 @@ const MarkedList = ({
 	};
 
 	const renderProfile = ({ item }: { item: User | string; index: number }) => {
-		console.log('Item', item);
 		if (typeof item !== 'string') {
 			return (
 				<ProfileCell

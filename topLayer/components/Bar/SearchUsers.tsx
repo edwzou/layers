@@ -30,7 +30,6 @@ const SearchUsers = ({
 
 	useEffect(() => {
 		return () => {
-			console.log('cleanup', userRelations);
 			handleSearch('');
 		};
 	}, []);

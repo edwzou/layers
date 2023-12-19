@@ -13,7 +13,7 @@ export const feedback = {
 
 export const match = {
 	preview: 'Preview',
-	matchName: 'Match name',
+	matchName: 'Outfit name',
 } as const;
 
 export const outfitEdit = {
@@ -25,3 +25,11 @@ export const settings = {
 	pleaseEnterAValidEmail: 'Please enter a valid email.',
 	passwordMustBe5CharactersOrMore: 'Password must be 8 characters or more.'
 } as const;
+
+export const toast = {
+	success: 'Success',
+	yourProfileHasBeenUpdated: 'Your profile has been updated.',
+	yourOutfitHasBeenCreated: 'Your outfit has been created.',
+	yourOutfitHasBeenDeleted: 'Your outfit has been deleted.',
+	yourOutfitHasBeenUpdated: 'Your outfit has been updated.',
+}

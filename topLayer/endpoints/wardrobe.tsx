@@ -11,7 +11,6 @@ export const getForeignAllOutfits = async (
 	uid: string,
 	updateOutfits: (outfit: UserOutfit[]) => void
 ) => {
-	console.log('Foreign Outfits');
 	getAllOutfitsHandler(
 		updateOutfits,
 		`${baseUrl}/api/outfits/u/${uid}?parse=categories`
@@ -21,7 +20,6 @@ export const getForeignAllOutfits = async (
 export const getAllOutfits = async (
 	updateOutfits: (outfit: UserOutfit[]) => void
 ) => {
-	console.log('User Outfits');
 	getAllOutfitsHandler(
 		updateOutfits,
 		`${baseUrl}/api/private/outfits?parse=categories`
@@ -37,7 +35,6 @@ const getAllOutfitsHandler = async (
 
 		if (status === 200) {
 			console.log('Successfully Fetched Outfits');
-			console.log(data.data);
 			return updateOutfits(data.data);
 		} else {
 			throw new Error(`An Get All Outfits Error Has Occurred: ${status}`);
@@ -71,7 +68,6 @@ export const getAllClothingItems = async (
 	setAllBottoms: (wear: UserClothing[]) => void,
 	setAllShoes: (wear: UserClothing[]) => void
 ) => {
-	console.log('User Clothing Items');
 	getAllClothingItemsHandler(
 		setAllOuterwear,
 		setAllTops,

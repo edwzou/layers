@@ -36,7 +36,6 @@ const CategorySlides = ({
             ref={categorySlidesRef}
             data={allItemsData}
             renderItem={({ item }) => {
-                console.log('categoryslide: ', item.data);
                 return (
                     // {/* <Text */}
                     // {/* 	style={{ */}

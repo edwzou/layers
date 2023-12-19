@@ -70,6 +70,7 @@ const layout = {
 	gap: 16,
 	highTranslateYBottomMargin: 120,
 	pageStateTopMargin: 180,
+	toastTopOffset: 60
 };
 
 const typography = StyleSheet.create({

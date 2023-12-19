@@ -26,8 +26,6 @@ const SignIn = () => {
 	});
 
 	const onSubmit = (formData: any) => {
-		console.log('Button Pressed');
-		console.log('data: ', formData);
 		let formValues: Record<string, string> = {};
 		if (formData.username !== '') {
 			formValues = {
@@ -42,7 +40,6 @@ const SignIn = () => {
 		} else {
 			throw new Error('No Username or Email');
 		}
-		console.log('values: ', formValues);
 
 		const onSubmitInner = async (): Promise<any> => {
 			try {

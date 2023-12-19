@@ -22,6 +22,9 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings'
+
 const OutfitViewPage = ({ route }: any) => {
 	const { setShouldRefreshOutfitViewPage } = useContext(MainPageContext);
 
@@ -69,6 +72,7 @@ const OutfitViewPage = ({ route }: any) => {
 			if (response.status === 200) {
 				//alert(`You have updated: ${JSON.stringify(response.data)}`);
 				setShouldRefreshOutfitViewPage(true);
+				showSuccessUpdateToast()
 			} else {
 				throw new Error('An error has occurred while updating outfit');
 			}
@@ -81,6 +85,15 @@ const OutfitViewPage = ({ route }: any) => {
 		void updateOutfit();
 		redirectToProfile();
 	};
+
+	const showSuccessUpdateToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourOutfitHasBeenUpdated,
+			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
+	}
 
 	return (
 		<NavigationContainer independent={true}>
