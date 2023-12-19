@@ -7,7 +7,7 @@ import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import { previewLength } from '../../constants/Find';
 
 interface MarkedPropsType {
-	foreignUserIDs?: string[]; // foreignUserIDs is now optional
+	foreignUserIDs?: (string | User)[]; // foreignUserIDs is now optional
 }
 
 function isUserArray(arr: any[]): arr is User[] {

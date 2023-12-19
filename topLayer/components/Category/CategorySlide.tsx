@@ -25,10 +25,6 @@ const CategorySlide = ({
 }: CategorySlidePropsType) => {
 	const windowWidth = Dimensions.get('window').width;
 
-	// useEffect(() => {
-	// 	console.log(itemsData)
-	// }, []);
-
 	const slide = () => {
 		if (itemsData.category === 'outfits') {
 			return (

@@ -12,24 +12,27 @@ interface ProfilePicturePropsType {
 
 const ProfilePicture = ({ imageUrl, base64 = false, shadow = true, size = GlobalStyles.sizing.pfp.regular }: ProfilePicturePropsType) => {
 	const imgString = imageUrl ? (base64 ? `data:image/jpg;base64,${imageUrl}` : imageUrl) : '';
-	const [isValidImage, setIsValidImage] = useState<boolean | undefined>(undefined);
+	const [isValidImage, setIsValidImage] = useState<boolean>(false);
 
 	// Function to check if the image URL is valid
-	const isImageValid = (url: string) => {
-		if (!url) {
-			setIsValidImage(false); // Handle the case where imageUrl is not defined
-			return;
+	const isValidImageUrl = (imageUrl: string): boolean => {
+		// Check if the imageUrl is empty
+		if (imageUrl === '') {
+			return false;
 		}
 
-		Image.getSize(url, () => {
-			setIsValidImage(true); // Image dimensions were retrieved successfully
-		}, () => {
-			setIsValidImage(false); // Image dimensions could not be retrieved (invalid or missing image)
-		});
+		// Regular expression to check the pattern
+		const regex = /^https:\/\/.*\.s3\..*\.amazonaws\.com\/.+$/;
+		return regex.test(imageUrl);
+	};
+
+	const checkImageUrl = (imageUrl: string) => {
+		const isValid = isValidImageUrl(imageUrl);
+		setIsValidImage(isValid);
 	};
 
 	useEffect(() => {
-		isImageValid(imgString);
+		checkImageUrl(imgString);
 	}, [imgString]);
 
 	const renderProfilePicture = () => {

@@ -9,6 +9,8 @@ import { baseUrl } from '../../utils/apiUtils';
 import { markedPrivateUser, markedUser, User } from '../../pages/Main';
 import SearchBar from './SearchBar';
 
+import { screenHeight } from '../../utils/modalMaxShow';
+
 interface SearchBarPropsType {
 	placeholder: string;
 	handleEmptyString?: (changes: (string | User)[]) => void;
@@ -107,6 +109,10 @@ const SearchUsers = ({
 				data={searchResults}
 				renderItem={renderProfile}
 				keyExtractor={(item) => item.uid}
+				showsVerticalScrollIndicator={false}
+				ListFooterComponent={
+					<View style={{ padding: screenHeight * 0.10 }} />
+				}
 			/>
 		</View>
 	);
