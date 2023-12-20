@@ -26,7 +26,7 @@ export const outfitEdit = {
 
 export const settings = {
 	pleaseEnterAValidEmail: 'Please enter a valid email.',
-	passwordMustBe5CharactersOrMore: 'Password must be 8 characters or more.'
+	passwordMustBe8CharactersOrMore: 'Password must be 8 characters or more.'
 } as const;
 
 export const toast = {
@@ -38,5 +38,6 @@ export const toast = {
 	yourOutfitHasBeenUpdated: 'Your outfit has been updated.',
 	theEmailOrPasswordYouveEnteredIsIncorrect: 'The email or password you\'ve entered is incorrect.',
 	anErrorHasOccurredWhileCreatingOutfit: 'An error has occurred while creating outfit.',
+	anErrorHasOccurredWhilDeletingOutfit: 'An error has occurred while deleting outfit.',
 	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating profile.'
 }

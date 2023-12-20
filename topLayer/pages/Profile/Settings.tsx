@@ -185,7 +185,7 @@ const Settings = () => {
 				)}
 				{errors.password != null && (
 					<Text style={styles.error}>
-						{settings.passwordMustBe5CharactersOrMore}
+						{settings.passwordMustBe8CharactersOrMore}
 					</Text>
 				)}
 			</View>

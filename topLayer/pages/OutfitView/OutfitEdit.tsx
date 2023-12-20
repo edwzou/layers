@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable, Alert } from 'react-native';
+import { View, StyleSheet, Pressable, Alert, ActivityIndicator } from 'react-native';
 import React, {
 	useEffect,
 	useState,
@@ -55,6 +55,8 @@ const OutfitEdit = ({
 	const [text, setText] = useState(title);
 	const [rawData, setRawData] = useState<UserOutfit[]>([]);
 	const [outfitData, setOutfitData] = useState<UserOutfit[]>([]);
+	const [isLoading, setIsLoading] = useState(false); // Add loading state
+
 	const onInputChange = (text: string) => {
 		setText(text);
 		titleRef.current = text;
@@ -71,6 +73,7 @@ const OutfitEdit = ({
 	}, [rawData]);
 
 	const handleDelete = async () => {
+		setIsLoading(true); // Start loading
 		try {
 			const response = await axios.delete(
 				`${baseUrl}/api/private/outfits/${id}`
@@ -82,9 +85,12 @@ const OutfitEdit = ({
 				navigateToProfile();
 				showSuccessDeleteToast()
 			} else {
-				throw new Error('An error has occurred while deleting outfit');
+				showErrorDeleteToast()
+				// throw new Error('An error has occurred while deleting outfit');
 			}
+			setIsLoading(false); // Stop loading on success
 		} catch (error) {
+			setIsLoading(false); // Stop loading on error
 			void axiosEndpointErrorHandler(error);
 			alert(error);
 		}
@@ -95,6 +101,15 @@ const OutfitEdit = ({
 			type: 'success',
 			text1: toast.success,
 			text2: toast.yourOutfitHasBeenDeleted,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
+	const showErrorDeleteToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhilDeletingOutfit,
 			topOffset: GlobalStyles.layout.toastTopOffset
 		});
 	}
@@ -153,6 +168,12 @@ const OutfitEdit = ({
 					</View>
 				</Pressable>
 			</View>
+
+			{isLoading && (
+				<View style={styles.overlay}>
+					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+				</View>
+			)}
 		</View>
 	);
 };
@@ -177,6 +198,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		shadowColor: GlobalStyles.colorPalette.primary[300],
 		...GlobalStyles.utils.deleteShadow,
+	},
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'transparent', // Set to transparent
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 
