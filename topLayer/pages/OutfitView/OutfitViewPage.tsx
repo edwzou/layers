@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React, { useRef, useContext } from 'react';
+import React, { useRef, useContext, useState } from 'react';
 
 import OutfitView from './OutfitView';
 import OutfitEdit from './OutfitEdit';
@@ -34,6 +34,8 @@ const OutfitViewPage = ({ route }: any) => {
 
 	const outfitTitleRef = useRef(item.title);
 
+	const [isLoading, setIsLoading] = useState(false); // Add loading state
+
 	const getFlatArrayOfValues = (
 		clothingList: UserClothingList
 	): UserClothing[] => {
@@ -54,6 +56,7 @@ const OutfitViewPage = ({ route }: any) => {
 			clothingItems={getFlatArrayOfValues(item.clothing_items)}
 			titleRef={outfitTitleRef}
 			navigateToProfile={redirectToProfile}
+			updateIsLoading={isLoading}
 		/>
 	);
 
@@ -61,6 +64,7 @@ const OutfitViewPage = ({ route }: any) => {
 	const updateOutfit = async () => {
 		const updatedTitle = outfitTitleRef.current;
 
+		setIsLoading(true); // Start loading
 		try {
 			const response = await axios.put(
 				`${baseUrl}/api/private/outfits/${item.oid}`,
@@ -72,18 +76,17 @@ const OutfitViewPage = ({ route }: any) => {
 			if (response.status === 200) {
 				//alert(`You have updated: ${JSON.stringify(response.data)}`);
 				setShouldRefreshOutfitViewPage(true);
+				redirectToProfile();
 				showSuccessUpdateToast()
 			} else {
-				throw new Error('An error has occurred while updating outfit');
+				showErrorUpdateToast()
+				// throw new Error('An error has occurred while updating outfit');
 			}
+			setIsLoading(false); // Stop loading on success
 		} catch (error) {
+			setIsLoading(false); // Stop loading on error
 			void axiosEndpointErrorHandler(error);
 		}
-	};
-
-	const handleSubmitOutfit = () => {
-		void updateOutfit();
-		redirectToProfile();
 	};
 
 	const showSuccessUpdateToast = () => {
@@ -92,6 +95,15 @@ const OutfitViewPage = ({ route }: any) => {
 			text1: toast.success,
 			text2: toast.yourOutfitHasBeenUpdated,
 			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
+	}
+
+	const showErrorUpdateToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileUpdatingOutfit,
+			topOffset: GlobalStyles.layout.toastTopOffset
 		});
 	}
 
@@ -131,7 +143,7 @@ const OutfitViewPage = ({ route }: any) => {
 							headerRight: () =>
 								headerButton({
 									type: StepOverTypes.done,
-									handlePress: handleSubmitOutfit,
+									handlePress: updateOutfit,
 								}),
 						}}
 					/>

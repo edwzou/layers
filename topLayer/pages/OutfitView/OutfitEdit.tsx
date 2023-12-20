@@ -41,6 +41,7 @@ interface OutfitViewPropsType {
 	clothingItems: UserClothing[];
 	titleRef: MutableRefObject<string>;
 	navigateToProfile: () => void;
+	updateIsLoading: boolean;
 }
 
 const OutfitEdit = ({
@@ -49,6 +50,7 @@ const OutfitEdit = ({
 	clothingItems,
 	titleRef,
 	navigateToProfile,
+	updateIsLoading
 }: OutfitViewPropsType) => {
 	const { setShouldRefreshOutfitEdit } = useContext(MainPageContext);
 
@@ -71,6 +73,10 @@ const OutfitEdit = ({
 	useEffect(() => {
 		setOutfitData(rawData.filter(Boolean));
 	}, [rawData]);
+
+	useEffect(() => {
+		setIsLoading(updateIsLoading)
+	}, [updateIsLoading])
 
 	const handleDelete = async () => {
 		setIsLoading(true); // Start loading
@@ -109,7 +115,7 @@ const OutfitEdit = ({
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhilDeletingOutfit,
+			text2: toast.anErrorHasOccurredWhileDeletingOutfit,
 			topOffset: GlobalStyles.layout.toastTopOffset
 		});
 	}
