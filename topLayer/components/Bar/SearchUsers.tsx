@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { axiosEndpointErrorHandlerNoAlert } from '../../utils/ErrorHandlers';
 import axios from 'axios';
 import ProfileCell from '../../components/Cell/ProfileCell';
@@ -9,7 +9,6 @@ import { baseUrl } from '../../utils/apiUtils';
 import { markedPrivateUser, markedUser, User } from '../../pages/Main';
 import SearchBar from './SearchBar';
 
-import { screenHeight } from '../../utils/modalMaxShow';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 interface SearchBarPropsType {
@@ -119,16 +118,26 @@ const SearchUsers = ({
 					handleSearch={handleSearch}
 				/>
 			</View>
+			<View
+				style={{
+					height: 10,
+					width: '100%',
+					backgroundColor: GlobalStyles.colorPalette.primary[100],
+				}}
+			></View>
 
 			<FlatList
 				data={searchResults}
 				renderItem={renderProfile}
 				keyExtractor={(item) => item.uid}
 				showsVerticalScrollIndicator={false}
-				ListHeaderComponent={<View style={{ height: 30 }}></View>}
-				// ListFooterComponent={
-				// 	<View style={{ padding: screenHeight * 0.10 }} />
-				// }
+				ListHeaderComponent={<View style={{ height: 34 }} />}
+				ListFooterComponent={() => {
+					if (searchQuery === '') {
+						return null;
+					}
+					return <View style={{ height: 41 }}></View>;
+				}}
 			/>
 		</View>
 	);
