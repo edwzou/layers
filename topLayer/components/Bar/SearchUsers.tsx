@@ -10,6 +10,7 @@ import { markedPrivateUser, markedUser, User } from '../../pages/Main';
 import SearchBar from './SearchBar';
 
 import { screenHeight } from '../../utils/modalMaxShow';
+import GlobalStyles from '../../constants/GlobalStyles';
 
 interface SearchBarPropsType {
 	placeholder: string;
@@ -99,20 +100,35 @@ const SearchUsers = ({
 	};
 
 	return (
-		<View style={{ gap: 0 }}>
-			<SearchBar
-				placeholder={placeholder}
-				searchQuery={searchQuery}
-				handleSearch={handleSearch}
-			/>
+		<View
+			style={{
+				gap: 0,
+			}}
+		>
+			<View
+				style={{
+					width: '100%',
+					position: 'absolute',
+					zIndex: 2,
+					backgroundColor: 'rgba(0, 0, 0, 0)',
+				}}
+			>
+				<SearchBar
+					placeholder={placeholder}
+					searchQuery={searchQuery}
+					handleSearch={handleSearch}
+				/>
+			</View>
+
 			<FlatList
 				data={searchResults}
 				renderItem={renderProfile}
 				keyExtractor={(item) => item.uid}
 				showsVerticalScrollIndicator={false}
-				ListFooterComponent={
-					<View style={{ padding: screenHeight * 0.10 }} />
-				}
+				ListHeaderComponent={<View style={{ height: 30 }}></View>}
+				// ListFooterComponent={
+				// 	<View style={{ padding: screenHeight * 0.10 }} />
+				// }
 			/>
 		</View>
 	);

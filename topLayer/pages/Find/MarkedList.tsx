@@ -109,6 +109,7 @@ const MarkedList = ({
 			{preLoad && isComponentVisible && (
 				<FlatList
 					data={foreignUserIDs}
+					ListFooterComponent={<View style={{ height: 65 }}></View>}
 					renderItem={renderProfile}
 					keyExtractor={(item) => {
 						if (typeof item === 'string') {

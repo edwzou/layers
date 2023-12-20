@@ -70,11 +70,14 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 		<SafeAreaView style={styles.container}>
 			<Header text={StackNavigation.Find} leftArrow={true} />
 			<View style={styles.content}>
-				<SearchUsers
-					placeholder={find.searchProfiles}
-					handleEmptyString={handleEmptyString}
-					handleNonEmptyString={handleNonEmptyString}
-				/>
+				<View style={{ paddingBottom: 24, marginBottom: 5 }}>
+					<SearchUsers
+						placeholder={find.searchProfiles}
+						handleEmptyString={handleEmptyString}
+						handleNonEmptyString={handleNonEmptyString}
+					/>
+				</View>
+
 				{isComponentVisible && (
 					// This 'style={{ top: -screenHeight * 0.20 }}' is SUPER HACKY and should be fixed ASAP
 					// Basically, the Flatlist on SearchUsers.tsx won't fully scroll down for some reason
@@ -84,7 +87,7 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 					// If you can find a cleaner way to fully scroll down in SearchUsers.tsx, please use that instead!
 					// Before this chage the bottom 3 users outside the screen can't be seen
 					// currently this solution does fail sometimes
-					<Pressable onPress={handlePress} style={{ top: -screenHeight * 0.2 }}>
+					<Pressable onPress={handlePress}>
 						<MarkedBar foreignUserIDs={foreignUserIDs} />
 					</Pressable>
 				)}
@@ -95,12 +98,12 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 
 const styles = StyleSheet.create({
 	container: {
-		gap: 15,
 		flex: 1,
+		gap: 15,
 	},
 	content: {
 		marginHorizontal: GlobalStyles.layout.xGap,
-		gap: 15,
+		// gap: 15,
 	},
 });
 
