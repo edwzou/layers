@@ -31,7 +31,7 @@ router.post('/', (req: Request, res: Response): void => {
         [ciid, imgRef, category, title, brands, size, color, uid]
       );
 
-      responseCallbackPost(null, res, 'Clothing Item');
+      responseCallbackPost(null, res, 'Clothing Item: ' + ciid);
     } catch (error) {
       responseCallbackPost(error, res);
     }
@@ -80,6 +80,7 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
 router.put('/:ciid', (req: any, res: any): void => {
   const uid = req.user as string;
   const { ciid } = req.params;
+
   // Extract clothing_item data from the request body
   const { image, category, title, brands, size, color } = req.body;
   const updateItem = async (ciid: string): Promise<void> => {
