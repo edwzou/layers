@@ -1,5 +1,5 @@
 import { Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Keyboard, ActivityIndicator } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -32,7 +32,7 @@ const Settings = () => {
 	const [image, setImage] = useState('');
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const { control, setValue, setFormData, pp_url, errors, showSuccessUpdate, setShowSuccessUpdate } = useContext(ProfilePageContext);
+	const { control, setValue, setFormData, pp_url, errors, showSuccessUpdate, setShowSuccessUpdate, isLoading } = useContext(ProfilePageContext);
 
 	useEffect(() => {
 		setValue('pp_url', image);
@@ -189,6 +189,12 @@ const Settings = () => {
 					</Text>
 				)}
 			</View>
+
+			{isLoading && (
+				<View style={styles.overlay}>
+					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+				</View>
+			)}
 		</Pressable>
 	);
 };
@@ -218,6 +224,12 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[100],
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		padding: 15,
+	},
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'transparent', // Set to transparent
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 

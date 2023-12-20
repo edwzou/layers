@@ -44,6 +44,7 @@ type ProfilePageContextType = {
 	errors: FieldErrors<FormValues>;
 	showSuccessUpdate: boolean;
 	setShowSuccessUpdate: Dispatch<SetStateAction<boolean>>;
+	isLoading: boolean;
 };
 
 // Create the context with the defined type
@@ -55,7 +56,8 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 	pp_url: '',
 	errors: {} as FieldErrors<FormValues>,
 	showSuccessUpdate: false,
-	setShowSuccessUpdate: () => { }
+	setShowSuccessUpdate: () => { },
+	isLoading: false,
 });
 
 const ProfilePage = () => {
@@ -67,6 +69,7 @@ const ProfilePage = () => {
 	const { first_name, last_name, email, username, private_option, pp_url } = data as User;
 
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
+	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const [formData, setFormData] = useState<FormValues>({
 		first_name: first_name,
@@ -93,8 +96,6 @@ const ProfilePage = () => {
 	};
 
 	const onSubmit = async (formValues: FormValues | any) => {
-
-
 
 		if (!data) {
 			console.log('User data is not available.');
@@ -130,6 +131,8 @@ const ProfilePage = () => {
 			return;
 		}
 
+		setIsLoading(true); // Start loading
+
 		try {
 			const response = await axios.put(`${baseUrl}/api/private/users`, updatedFields, {
 				headers: {
@@ -146,8 +149,11 @@ const ProfilePage = () => {
 					setShowSuccessUpdate(true)
 					setShouldRefreshProfilePage(true)
 					showSuccessUpdateToast()
+					setIsLoading(false); // Stop loading on success
 				} catch (error) {
+					setIsLoading(false); // Stop loading on error
 					console.log(error);
+					showErrorUpdateToast()
 				}
 			} else {
 				throw new Error('An error has occurred');
@@ -166,8 +172,27 @@ const ProfilePage = () => {
 		});
 	}
 
+	const showErrorUpdateToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileUpdatingProfile,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
 	return (
-		<ProfilePageContext.Provider value={{ control, handleSubmit, setValue, setFormData, pp_url, errors, showSuccessUpdate, setShowSuccessUpdate }}>
+		<ProfilePageContext.Provider value={{
+			control,
+			handleSubmit,
+			setValue,
+			setFormData,
+			pp_url,
+			errors,
+			showSuccessUpdate,
+			setShowSuccessUpdate,
+			isLoading
+		}}>
 			<NavigationContainer
 				independent={true}>
 				<Stack.Navigator>

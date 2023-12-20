@@ -37,5 +37,6 @@ export const toast = {
 	yourOutfitHasBeenDeleted: 'Your outfit has been deleted.',
 	yourOutfitHasBeenUpdated: 'Your outfit has been updated.',
 	theEmailOrPasswordYouveEnteredIsIncorrect: 'The email or password you\'ve entered is incorrect.',
-	anErrorHasOccurredWhileSubmittingOutfit: 'An error has occurred while submitting outfit',
+	anErrorHasOccurredWhileCreatingOutfit: 'An error has occurred while creating outfit.',
+	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating profile.'
 }

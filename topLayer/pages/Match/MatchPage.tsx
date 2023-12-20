@@ -97,7 +97,7 @@ const MatchPage = () => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileSubmittingOutfit,
+			text2: toast.anErrorHasOccurredWhileCreatingOutfit,
 			topOffset: GlobalStyles.layout.toastTopOffset
 		});
 	}
