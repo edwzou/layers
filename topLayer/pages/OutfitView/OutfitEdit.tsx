@@ -101,15 +101,15 @@ const OutfitEdit = ({
 
 	const confirmDeletion = () => {
 		Alert.alert(
-			`Delete "${title}"?`,
-			'You cannot undo this action.',
+			outfitEdit.deleteOutfit,
+			outfitEdit.youCannotUndoThisAction,
 			[
 				{
-					text: 'Cancel',
+					text: outfitEdit.cancel,
 					onPress: () => { }
 				},
 				{
-					text: 'Delete',
+					text: outfitEdit.delete,
 					onPress: handleDelete,
 					style: 'destructive'
 				}

@@ -18,7 +18,10 @@ export const match = {
 
 export const outfitEdit = {
 	outfitName: 'Outfit name',
-	remove: 'Remove'
+	deleteOutfit: 'Delete outfit?',
+	youCannotUndoThisAction: 'You cannot undo this action.',
+	cancel: 'Cancel',
+	delete: 'Delete',
 } as const;
 
 export const settings = {
