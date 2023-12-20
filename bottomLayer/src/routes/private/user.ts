@@ -1,4 +1,4 @@
-import express, { query, type Request, type Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import {
   responseCallbackDelete,

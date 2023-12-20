@@ -101,7 +101,6 @@ router.put('/:ciid', (req: any, res: any): void => {
       `,
         [imgRef, category, title, brands, size, color, ciid, uid]
       );
-      console.log('result: ', updateItem);
       // responds with successful update even when no changes are made
       responseCallbackUpdate(
         null,
