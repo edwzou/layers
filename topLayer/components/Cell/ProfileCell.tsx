@@ -129,9 +129,6 @@ const styles = StyleSheet.create({
 		paddingTop: 20,
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderColor: GlobalStyles.colorPalette.primary[900],
-		borderStyle: 'solid',
-		borderWidth: 1,
 	},
 	textContainer: {
 		flex: 1,

@@ -98,6 +98,18 @@ const SearchUsers = ({
 		return <ProfileCell user={item} handleRelationRender={handleMarking} />;
 	};
 
+	const whiteSpaceBG = () => {
+		return (
+			<View
+				style={{
+					height: 10,
+					width: '100%',
+					backgroundColor: GlobalStyles.colorPalette.primary[100],
+				}}
+			></View>
+		);
+	};
+
 	return (
 		<View
 			style={{
@@ -118,13 +130,8 @@ const SearchUsers = ({
 					handleSearch={handleSearch}
 				/>
 			</View>
-			<View
-				style={{
-					height: 10,
-					width: '100%',
-					backgroundColor: GlobalStyles.colorPalette.primary[100],
-				}}
-			></View>
+
+			{whiteSpaceBG()}
 
 			<FlatList
 				data={searchResults}
