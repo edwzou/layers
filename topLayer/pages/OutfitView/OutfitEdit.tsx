@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable, Alert } from 'react-native';
 import React, {
 	useEffect,
 	useState,
@@ -99,6 +99,24 @@ const OutfitEdit = ({
 		});
 	}
 
+	const confirmDeletion = () => {
+		Alert.alert(
+			`Delete "${title}"?`,
+			'You cannot undo this action.',
+			[
+				{
+					text: 'Cancel',
+					onPress: () => { }
+				},
+				{
+					text: 'Delete',
+					onPress: handleDelete,
+					style: 'destructive'
+				}
+			]
+		)
+	}
+
 	return (
 		<View style={styles.container}>
 			<StackedTextbox
@@ -125,7 +143,7 @@ const OutfitEdit = ({
 				style={{ height: screenHeight - 350, padding: 6 }}
 			/>
 			<View style={styles.deleteButtonContainer}>
-				<Pressable onPress={handleDelete}>
+				<Pressable onPress={confirmDeletion}>
 					<View style={styles.deleteButton}>
 						<Icon
 							name={GlobalStyles.icons.closeOutline}

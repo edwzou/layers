@@ -81,7 +81,7 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 					// If you can find a cleaner way to fully scroll down in SearchUsers.tsx, please use that instead!
 					// Before this chage the bottom 3 users outside the screen can't be seen
 					// currently this solution does fail sometimes
-					<Pressable onPress={handlePress} style={{ top: -screenHeight * 0.2 }}>
+					<Pressable onPress={handlePress} style={{ top: -screenHeight * 0.16 }}>
 						<MarkedBar foreignUserIDs={foreignUserIDs} />
 					</Pressable>
 				)}

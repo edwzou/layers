@@ -11,15 +11,13 @@ import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { headerButton } from '../../components/Modal/HeaderButton';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { UserContext } from '../../utils/UserContext';
 import { FieldErrors, UseFormHandleSubmit, UseFormSetValue, useForm } from 'react-hook-form';
 import { User } from '../../pages/Main';
 
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Control, FieldValues, SubmitHandler } from 'react-hook-form';
+import { Control } from 'react-hook-form';
 import { AppContext } from '../../App';
 import CameraWrapper from '../../components/Camera/CameraWrapper';
 
@@ -95,6 +93,8 @@ const ProfilePage = () => {
 	};
 
 	const onSubmit = async (formValues: FormValues | any) => {
+
+
 
 		if (!data) {
 			console.log('User data is not available.');

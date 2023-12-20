@@ -110,7 +110,7 @@ const SearchUsers = ({
 				keyExtractor={(item) => item.uid}
 				showsVerticalScrollIndicator={false}
 				ListFooterComponent={
-					<View style={{ padding: screenHeight * 0.10 }} />
+					<View style={{ padding: screenHeight * 0.08 }} />
 				}
 			/>
 		</View>
