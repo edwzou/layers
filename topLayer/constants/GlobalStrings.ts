@@ -31,8 +31,11 @@ export const settings = {
 
 export const toast = {
 	success: 'Success',
+	error: 'Error',
 	yourProfileHasBeenUpdated: 'Your profile has been updated.',
 	yourOutfitHasBeenCreated: 'Your outfit has been created.',
 	yourOutfitHasBeenDeleted: 'Your outfit has been deleted.',
 	yourOutfitHasBeenUpdated: 'Your outfit has been updated.',
+	theEmailOrPasswordYouveEnteredIsIncorrect: 'The email or password you\'ve entered is incorrect.',
+	anErrorHasOccurredWhileSubmittingOutfit: 'An error has occurred while submitting outfit',
 }
