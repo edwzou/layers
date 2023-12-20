@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -23,7 +23,7 @@ const OutfitPreview = ({ route }: any) => {
 	// const { matchItems, setMatchName } = route.params;
 	const { matchItems } = route.params;
 
-	const { setMatch, dismissal } = useContext(MatchPageContext);
+	const { setMatch, dismissal, isLoading } = useContext(MatchPageContext);
 
 	const [text, setText] = useState('');
 	const [rawData, setRawData] = useState<UserClothing[]>([]);
@@ -85,6 +85,12 @@ const OutfitPreview = ({ route }: any) => {
 				columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 				style={{ height: screenHeight - 350 }}
 			/>
+
+			{isLoading && (
+				<View style={styles.overlay}>
+					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+				</View>
+			)}
 		</View>
 	);
 };
@@ -93,6 +99,12 @@ const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: GlobalStyles.layout.xGap,
 		gap: GlobalStyles.layout.gap,
+	},
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'transparent', // Set to transparent
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 

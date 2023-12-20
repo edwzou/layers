@@ -19,6 +19,8 @@ import axios from 'axios';
 import { baseUrl } from './utils/apiUtils';
 import { User } from './pages/Main';
 
+import Toast from 'react-native-toast-message';
+
 export const AppContext = createContext({
 	setShouldRefreshProfilePage: (() => { }) as Dispatch<SetStateAction<boolean>>,
 });
@@ -105,6 +107,7 @@ export default function App() {
 					</UserContext.Provider>
 				</View>
 			</NavigationContainer>
+			<Toast />
 		</AppContext.Provider>
 	);
 }

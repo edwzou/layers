@@ -1,27 +1,16 @@
-import axios from 'axios';
-
-import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import { Controller } from 'react-hook-form';
+import { View, Text, StyleSheet, Pressable, Keyboard, ActivityIndicator } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
-import Button from '../../components/Button/Button';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
-
-import * as ImagePicker from 'expo-image-picker';
-import { base64Prefix } from '../../utils/Base64Prefix';
-import { baseUrl } from '../../utils/apiUtils';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserContext } from '../../utils/UserContext';
-import { User } from '../../pages/Main';
 import { ProfilePageContext } from './ProfilePage';
-
 import { settings } from '../../constants/GlobalStrings'
 
 interface FormValues {
@@ -41,15 +30,20 @@ interface PrivacyOption {
 
 const Settings = () => {
 	const [image, setImage] = useState('');
-	const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const { data, updateData } = useContext(UserContext);
-	const { control, setValue, setFormData, pp_url, errors } = useContext(ProfilePageContext);
+	const { control, setValue, setFormData, pp_url, errors, showSuccessUpdate, setShowSuccessUpdate, isLoading } = useContext(ProfilePageContext);
 
 	useEffect(() => {
 		setValue('pp_url', image);
 	}, [image]);
+
+	useEffect(() => {
+		if (showSuccessUpdate) {
+			navigation.goBack()
+			setShowSuccessUpdate(false)
+		}
+	}, [showSuccessUpdate]);
 
 	const privacyOptions: PrivacyOption[] = [
 		{ value: 'Public', boolean: false },
@@ -191,10 +185,16 @@ const Settings = () => {
 				)}
 				{errors.password != null && (
 					<Text style={styles.error}>
-						{settings.passwordMustBe5CharactersOrMore}
+						{settings.passwordMustBe8CharactersOrMore}
 					</Text>
 				)}
 			</View>
+
+			{isLoading && (
+				<View style={styles.overlay}>
+					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+				</View>
+			)}
 		</Pressable>
 	);
 };
@@ -224,6 +224,12 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[100],
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		padding: 15,
+	},
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'transparent', // Set to transparent
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 

@@ -12,7 +12,7 @@ const LoginPage: React.FC = () => {
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={styles.container}>
 			<Text style={[GlobalStyles.typography.header, GlobalStyles.utils.font]}>
-				Layers
+				LAYERS
 			</Text>
 			<SignIn />
 			<Text>

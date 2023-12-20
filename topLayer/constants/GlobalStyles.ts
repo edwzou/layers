@@ -62,6 +62,7 @@ const colorPalette = {
 		800: '#832040',
 		900: '#6C183B',
 	},
+	activityIndicator: '#B7B7B7'
 };
 
 const layout = {
@@ -70,6 +71,7 @@ const layout = {
 	gap: 16,
 	highTranslateYBottomMargin: 120,
 	pageStateTopMargin: 180,
+	toastTopOffset: 60
 };
 
 const typography = StyleSheet.create({
