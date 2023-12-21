@@ -25,6 +25,13 @@ const CategorySlide = ({
 }: CategorySlidePropsType) => {
 	const windowWidth = Dimensions.get('window').width;
 
+	console.log(' ')
+	console.log(' ')
+	console.log('itemsData')
+	console.log(itemsData);
+	console.log(' ')
+	console.log(' ')
+
 	const slide = () => {
 		if (itemsData.category === 'outfits') {
 			return (
@@ -45,10 +52,8 @@ const CategorySlide = ({
 					keyExtractor={(item) => {
 						return item.oid;
 					}}
-					numColumns={2}
 					showsVerticalScrollIndicator={false}
 					contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-					columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 					ListFooterComponent={
 						<View style={{ padding: screenHeight * 0.15 }} />
 					}
