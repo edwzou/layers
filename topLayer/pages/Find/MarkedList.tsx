@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import Header from '../../components/Header/Header';
+import { screenHeight } from '../../utils/modalMaxShow';
 
 interface MarkedListPropsType {
 	foreignUserIDs: (User | string)[];
@@ -109,7 +110,8 @@ const MarkedList = ({
 			{preLoad && isComponentVisible && (
 				<FlatList
 					data={foreignUserIDs}
-					ListFooterComponent={<View style={{ height: 60 }}></View>}
+					ListFooterComponent={<View style={{ height: screenHeight * 0.15 }}></View>}
+					showsVerticalScrollIndicator={false}
 					renderItem={renderProfile}
 					keyExtractor={(item) => {
 						if (typeof item === 'string') {

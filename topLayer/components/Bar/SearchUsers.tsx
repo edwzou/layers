@@ -10,6 +10,7 @@ import { markedPrivateUser, markedUser, User } from '../../pages/Main';
 import SearchBar from './SearchBar';
 
 import GlobalStyles from '../../constants/GlobalStyles';
+import { screenHeight } from '../../utils/modalMaxShow';
 
 interface SearchBarPropsType {
 	placeholder: string;
@@ -111,19 +112,8 @@ const SearchUsers = ({
 	};
 
 	return (
-		<View
-			style={{
-				gap: 0,
-			}}
-		>
-			<View
-				style={{
-					width: '100%',
-					position: 'absolute',
-					zIndex: 2,
-					backgroundColor: 'rgba(0, 0, 0, 0)',
-				}}
-			>
+		<View style={{ gap: 0 }}>
+			<View style={styles.searchBar}>
 				<SearchBar
 					placeholder={placeholder}
 					searchQuery={searchQuery}
@@ -138,18 +128,25 @@ const SearchUsers = ({
 				renderItem={renderProfile}
 				keyExtractor={(item) => item.uid}
 				showsVerticalScrollIndicator={false}
-				ListHeaderComponent={<View style={{ height: 34 }} />}
+				ListHeaderComponent={<View style={{ height: 35 }} />}
 				ListFooterComponent={() => {
 					if (searchQuery === '') {
 						return null;
 					}
-					return <View style={{ height: 41 }}></View>;
+					return <View style={{ height: screenHeight * 0.13 }}></View>;
 				}}
 			/>
 		</View>
 	);
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	searchBar: {
+		width: '100%',
+		position: 'absolute',
+		zIndex: 2,
+		backgroundColor: 'rgba(0, 0, 0, 0)',
+	}
+});
 
 export default SearchUsers;
