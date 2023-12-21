@@ -17,15 +17,20 @@ import { UserClothing } from '.';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings'
+
 export const MatchPageContext = createContext({
 	setMatch: (_?: any) => { },
 	dismissal: false,
+	isLoading: false,
 });
 
 const MatchPage = () => {
 	const { navigationArray, setShouldRefreshMatchPage } =
 		useContext(MainPageContext);
 	const [dismissal, setDismissal] = useState(false);
+	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const [match, setMatch] = useState({
 		previewData: {
@@ -53,6 +58,8 @@ const MatchPage = () => {
 				: null,
 		].filter((item) => item !== null);
 
+		setIsLoading(true); // Start loading
+
 		try {
 			const response = await axios.post(`${baseUrl}/api/private/outfits`, {
 				title: match.matchName,
@@ -63,18 +70,40 @@ const MatchPage = () => {
 				//alert(`You have created: ${JSON.stringify(response.data)}`);
 				setDismissal(true);
 				setShouldRefreshMatchPage(true);
-				navigationArray[0]();
+				//navigationArray[0](); // Uncomment this to navigate to profile page
 				setDismissal(false);
+				showSuccessMatchToast()
 			} else {
-				throw new Error('An error has occurred while submitting outfit');
+				showErrorMatchToast()
+				//throw new Error('An error has occurred while submitting outfit');
 			}
+			setIsLoading(false); // Stop loading on success
 		} catch (error) {
+			setIsLoading(false); // Stop loading on error
 			void axiosEndpointErrorHandler(error);
 		}
 	};
 
+	const showSuccessMatchToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourOutfitHasBeenCreated,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
+	const showErrorMatchToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileCreatingOutfit,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
 	return (
-		<MatchPageContext.Provider value={{ setMatch, dismissal }}>
+		<MatchPageContext.Provider value={{ setMatch, dismissal, isLoading }}>
 			<NavigationContainer independent={true}>
 				<Stack.Navigator>
 					<Stack.Screen

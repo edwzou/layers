@@ -1,9 +1,7 @@
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable, Alert, ActivityIndicator } from 'react-native';
 import React, {
 	useEffect,
 	useState,
-	type Dispatch,
-	type SetStateAction,
 	useContext,
 	MutableRefObject,
 } from 'react';
@@ -26,9 +24,8 @@ import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
-import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from 'utils/StackNavigation';
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings'
 
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
@@ -44,6 +41,7 @@ interface OutfitViewPropsType {
 	clothingItems: UserClothing[];
 	titleRef: MutableRefObject<string>;
 	navigateToProfile: () => void;
+	updateIsLoading: boolean;
 }
 
 const OutfitEdit = ({
@@ -52,12 +50,15 @@ const OutfitEdit = ({
 	clothingItems,
 	titleRef,
 	navigateToProfile,
+	updateIsLoading
 }: OutfitViewPropsType) => {
 	const { setShouldRefreshOutfitEdit } = useContext(MainPageContext);
 
 	const [text, setText] = useState(title);
 	const [rawData, setRawData] = useState<UserOutfit[]>([]);
 	const [outfitData, setOutfitData] = useState<UserOutfit[]>([]);
+	const [isLoading, setIsLoading] = useState(false); // Add loading state
+
 	const onInputChange = (text: string) => {
 		setText(text);
 		titleRef.current = text;
@@ -73,7 +74,12 @@ const OutfitEdit = ({
 		setOutfitData(rawData.filter(Boolean));
 	}, [rawData]);
 
+	useEffect(() => {
+		setIsLoading(updateIsLoading)
+	}, [updateIsLoading])
+
 	const handleDelete = async () => {
+		setIsLoading(true); // Start loading
 		try {
 			const response = await axios.delete(
 				`${baseUrl}/api/private/outfits/${id}`
@@ -83,14 +89,54 @@ const OutfitEdit = ({
 				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
 				setShouldRefreshOutfitEdit(true);
 				navigateToProfile();
+				showSuccessDeleteToast()
 			} else {
-				throw new Error('An error has occurred while deleting outfit');
+				showErrorDeleteToast()
+				// throw new Error('An error has occurred while deleting outfit');
 			}
+			setIsLoading(false); // Stop loading on success
 		} catch (error) {
+			setIsLoading(false); // Stop loading on error
 			void axiosEndpointErrorHandler(error);
 			alert(error);
 		}
 	};
+
+	const showSuccessDeleteToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourOutfitHasBeenDeleted,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
+	const showErrorDeleteToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileDeletingOutfit,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
+	const confirmDeletion = () => {
+		Alert.alert(
+			outfitEdit.deleteOutfit,
+			outfitEdit.youCannotUndoThisAction,
+			[
+				{
+					text: outfitEdit.cancel,
+					onPress: () => { }
+				},
+				{
+					text: outfitEdit.delete,
+					onPress: handleDelete,
+					style: 'destructive'
+				}
+			]
+		)
+	}
 
 	return (
 		<View style={styles.container}>
@@ -118,7 +164,7 @@ const OutfitEdit = ({
 				style={{ height: screenHeight - 350, padding: 6 }}
 			/>
 			<View style={styles.deleteButtonContainer}>
-				<Pressable onPress={handleDelete}>
+				<Pressable onPress={confirmDeletion}>
 					<View style={styles.deleteButton}>
 						<Icon
 							name={GlobalStyles.icons.closeOutline}
@@ -128,6 +174,12 @@ const OutfitEdit = ({
 					</View>
 				</Pressable>
 			</View>
+
+			{isLoading && (
+				<View style={styles.overlay}>
+					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+				</View>
+			)}
 		</View>
 	);
 };
@@ -152,6 +204,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		shadowColor: GlobalStyles.colorPalette.primary[300],
 		...GlobalStyles.utils.deleteShadow,
+	},
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'transparent', // Set to transparent
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 

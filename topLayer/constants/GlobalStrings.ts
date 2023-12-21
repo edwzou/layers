@@ -13,15 +13,32 @@ export const feedback = {
 
 export const match = {
 	preview: 'Preview',
-	matchName: 'Match name',
+	matchName: 'Outfit name',
 } as const;
 
 export const outfitEdit = {
 	outfitName: 'Outfit name',
-	remove: 'Remove'
+	deleteOutfit: 'Delete outfit?',
+	youCannotUndoThisAction: 'You cannot undo this action.',
+	cancel: 'Cancel',
+	delete: 'Delete',
 } as const;
 
 export const settings = {
 	pleaseEnterAValidEmail: 'Please enter a valid email.',
-	passwordMustBe5CharactersOrMore: 'Password must be 8 characters or more.'
+	passwordMustBe8CharactersOrMore: 'Password must be 8 characters or more.'
 } as const;
+
+export const toast = {
+	success: 'Success',
+	error: 'Error',
+	yourProfileHasBeenUpdated: 'Your profile has been updated.',
+	yourOutfitHasBeenCreated: 'Your outfit has been created.',
+	yourOutfitHasBeenDeleted: 'Your outfit has been deleted.',
+	yourOutfitHasBeenUpdated: 'Your outfit has been updated.',
+	theEmailOrPasswordYouveEnteredIsIncorrect: 'The email or password you\'ve entered is incorrect.',
+	anErrorHasOccurredWhileCreatingOutfit: 'An error has occurred while creating outfit.',
+	anErrorHasOccurredWhileDeletingOutfit: 'An error has occurred while deleting outfit.',
+	anErrorHasOccurredWhileUpdatingOutfit: 'An error has occurred while updating outfit.',
+	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating profile.'
+}
