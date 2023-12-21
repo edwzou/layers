@@ -35,10 +35,15 @@ const SearchUsers = ({
 		};
 	}, []);
 
+	// Create an instance of AbortController
+	let abortController = useRef(new AbortController());
 	const allSearch = async (text: string) => {
 		try {
 			const { data, status } = await axios.get(
-				`${baseUrl}/api/private/search/${text}`
+				`${baseUrl}/api/private/search/${text}`,
+				{
+					signal: abortController.current.signal,
+				}
 			);
 
 			if (status === 200) {
@@ -75,6 +80,7 @@ const SearchUsers = ({
 	};
 
 	const handleSearch = (text: string) => {
+		abortController.current.abort();
 		setSearchQuery(text);
 		if (text === '') {
 			setSearchResults([]);
@@ -83,6 +89,7 @@ const SearchUsers = ({
 			}
 			userRelations.current = [];
 		} else {
+			abortController.current = new AbortController();
 			void allSearch(text);
 			if (handleNonEmptyString != null) {
 				handleNonEmptyString();
@@ -110,9 +117,7 @@ const SearchUsers = ({
 				renderItem={renderProfile}
 				keyExtractor={(item) => item.uid}
 				showsVerticalScrollIndicator={false}
-				ListFooterComponent={
-					<View style={{ padding: screenHeight * 0.10 }} />
-				}
+				ListFooterComponent={<View style={{ padding: screenHeight * 0.1 }} />}
 			/>
 		</View>
 	);

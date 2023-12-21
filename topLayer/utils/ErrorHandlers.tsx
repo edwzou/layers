@@ -17,6 +17,7 @@ export const axiosEndpointErrorHandler = (err: unknown): void => {
 };
 
 export const axiosEndpointErrorHandlerNoAlert = (err: unknown): void => {
+	console.log(err);
 	const error = err as Error | AxiosError;
 	if (axios.isAxiosError(error) && error.response) {
 		console.log(error.response.data);
