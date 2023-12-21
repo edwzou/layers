@@ -15,7 +15,7 @@ async function downloadURLFromS3(objectKey: string): Promise<string> {
   };
 
   try {
-    const signedUrl = await getSignedUrl(s3, new GetObjectCommand(params), { expiresIn: 300 }); // TTL for presigned URL: 300 seconds
+    const signedUrl = await getSignedUrl(s3, new GetObjectCommand(params), { expiresIn: 10800 }); // TTL for presigned URL: 3 hours
     console.log('Download successful:', signedUrl);
     return signedUrl;
   } catch (error) {
