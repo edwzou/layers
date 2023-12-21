@@ -21,7 +21,7 @@ async function removeBackground(imageData: Buffer): Promise<Buffer> {
 
     const formData = new FormData();
     formData.append('image_file', imageData, {
-      filename: 'image.jpg', // Set the desired filename
+      filename: 'image.jpeg', // Set the desired filename
       contentType: 'image/jpeg' // Set the content type of the image
     });
 

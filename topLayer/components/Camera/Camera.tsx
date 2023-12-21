@@ -149,6 +149,7 @@ export default function CameraComponent({ data, returnToNavigation }: CameraProp
 		const savePhoto = () => {
 			// console.log('Test: ', photo.base64);
 			if (photo.base64) {
+				// console.log('Base64 String:', photo.base64.substring(0, 10)); <-- DELETE THIS
 				data(photo.base64);
 			} else {
 				console.log('photo.base64 is undefined!')
@@ -220,6 +221,7 @@ export default function CameraComponent({ data, returnToNavigation }: CameraProp
 
 		// console.log('Test2: ', result.assets[0].base64);
 		if (result.assets[0].base64) {
+			// console.log('Base64 String:', result.assets[0].base64.substring(0, 10)); <-------- DELETE THIS
 			data(result.assets[0].base64);
 		} else {
 			console.log('result.assets[0].base64 is undefined!')
