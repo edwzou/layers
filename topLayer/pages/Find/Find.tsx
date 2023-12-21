@@ -37,7 +37,6 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 		const length = foreignUserIDs.length;
 		for (const user of relationChanges) {
 			if (typeof user === 'string') {
-				console.log('unfollow: ', user);
 				foreignUserIDs = foreignUserIDs.filter((value) => {
 					if (typeof value === 'string') {
 						return value !== user;
@@ -46,7 +45,6 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 					}
 				});
 			} else {
-				console.log('follow: ', user);
 				if (user.pp_url !== '') {
 					usersToAdd.push(user);
 				} else {
@@ -55,7 +53,6 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 			}
 		}
 		if (usersToAdd.length > 0 || length !== foreignUserIDs.length) {
-			console.log('called', usersToAdd, length, foreignUserIDs.length);
 			usersToAdd.push(...foreignUserIDs);
 			updateFollowed(usersToAdd);
 		}
@@ -84,7 +81,7 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 					// If you can find a cleaner way to fully scroll down in SearchUsers.tsx, please use that instead!
 					// Before this chage the bottom 3 users outside the screen can't be seen
 					// currently this solution does fail sometimes
-					<Pressable onPress={handlePress} style={{ top: -screenHeight * 0.2 }}>
+					<Pressable onPress={handlePress} style={{ top: -screenHeight * 0.16 }}>
 						<MarkedBar foreignUserIDs={foreignUserIDs} />
 					</Pressable>
 				)}

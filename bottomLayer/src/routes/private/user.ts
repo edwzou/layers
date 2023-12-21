@@ -9,6 +9,7 @@ import { hash } from 'bcrypt';
 import { convertImage } from '../../s3/convert-image';
 import { upload } from '../../utils/multer';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
+import { type User } from '../../types/user';
 const router = express.Router();
 
 // Endpooint for getting the current user
@@ -52,79 +53,99 @@ router.delete('/', (req: Request, res: Response): void => {
 });
 
 // Endpoints for updating a specific user
-router.put('/', upload.single('profile_picture'), async (req: Request, res: Response) => {
-  const userId = req.user as string;
-  const fieldsToUpdate = req.body;
-  let queryParams = [];
-  let queryFields = [];
+router.put(
+  '/',
+  upload.single('profile_picture'),
+  (req: Request, res: Response): void => {
+    const userId = req.user as string;
+    const fieldsToUpdate: User = req.body;
 
-  if (fieldsToUpdate.first_name) {
-      queryFields.push('first_name = $' + (queryParams.length + 1));
-      queryParams.push(fieldsToUpdate.first_name);
+    const updateUser = async (): Promise<void> => {
+      let query = 'UPDATE backend_schema.user SET';
+
+      let passAsync = null;
+      let ppAsync = null;
+
+      try {
+        if (fieldsToUpdate.profile_picture !== undefined) {
+          ppAsync = convertImage(fieldsToUpdate.profile_picture, userId, false);
+        }
+
+        if (fieldsToUpdate.password !== undefined) {
+          passAsync = hash(fieldsToUpdate.password, 10);
+        }
+
+        if (fieldsToUpdate.first_name !== undefined) {
+          query += ` first_name = '${fieldsToUpdate.first_name}',`;
+        }
+
+        if (fieldsToUpdate.last_name !== undefined) {
+          query += ` last_name = '${fieldsToUpdate.last_name}',`;
+        }
+
+        if (fieldsToUpdate.email !== undefined) {
+          query += ` email = '${fieldsToUpdate.email.toLowerCase()}',`;
+        }
+
+        if (fieldsToUpdate.username !== undefined) {
+          query += ` username = '${fieldsToUpdate.username}',`;
+        }
+
+        if (fieldsToUpdate.password !== undefined) {
+          const hashedPass = await passAsync;
+          if (hashedPass === null) {
+            throw new Error('Impossible Null value occured');
+          }
+          query += ` password = '${hashedPass}',`;
+        }
+
+        if (fieldsToUpdate.private_option !== undefined) {
+          query += ` private_option = '${fieldsToUpdate.private_option.toString()}',`;
+        }
+        if (fieldsToUpdate.profile_picture !== undefined) {
+          const pp_url = await ppAsync;
+          if (pp_url === null) {
+            throw new Error('Impossible Null value occured');
+          }
+          query += ` pp_url = '${pp_url}',`;
+        }
+
+        if (fieldsToUpdate.followers !== undefined) {
+          query +=
+            ' followers = ' +
+            'ARRAY[' +
+            fieldsToUpdate.followers.join(', ') +
+            ']::UUID[]' +
+            ',';
+        }
+
+        if (fieldsToUpdate.following !== undefined) {
+          query +=
+            ' following = ' +
+            'ARRAY[' +
+            fieldsToUpdate.following.join(', ') +
+            ']::UUID[]' +
+            ',';
+        }
+
+        if (query === 'UPDATE backend_schema.user SET') {
+          throw new Error('No Fields To Update');
+        }
+
+        query = query.slice(0, -1);
+        query += ` WHERE uid = '${userId}'`;
+
+        const update = await pool.query(query);
+
+        // Not sure if this returns updated user data also not sure if returning the new user data is needed
+        responseCallbackUpdate(null, userId, res, 'User', update.rowCount);
+      } catch (error) {
+        responseCallbackUpdate(error, userId, res, 'User');
+      }
+    };
+
+    void updateUser();
   }
-
-  if (fieldsToUpdate.last_name) {
-      queryFields.push('last_name = $' + (queryParams.length + 1));
-      queryParams.push(fieldsToUpdate.last_name);
-  }
-
-  if (fieldsToUpdate.email) {
-      queryFields.push('email = $' + (queryParams.length + 1));
-      queryParams.push(fieldsToUpdate.email.toLowerCase());
-  }
-
-  if (fieldsToUpdate.username) {
-      queryFields.push('username = $' + (queryParams.length + 1));
-      queryParams.push(fieldsToUpdate.username);
-  }
-
-  if (fieldsToUpdate.password) {
-      const hashedPass = await hash(fieldsToUpdate.password, 10);
-      queryFields.push('password = $' + (queryParams.length + 1));
-      queryParams.push(hashedPass);
-  }
-
-  if (fieldsToUpdate.private_option !== undefined) {  // assuming private_option is a boolean
-      queryFields.push('private_option = $' + (queryParams.length + 1));
-      queryParams.push(fieldsToUpdate.private_option);
-  }
-
-  if (fieldsToUpdate.profile_picture) {
-      const imgRef = await convertImage(fieldsToUpdate.profile_picture, userId, false);
-      queryFields.push('pp_url = $' + (queryParams.length + 1));
-      queryParams.push(imgRef);
-  }
-
-  if (fieldsToUpdate.followers) {
-      queryFields.push('followers = $' + (queryParams.length + 1));
-      queryParams.push(fieldsToUpdate.followers);
-  }
-
-  if (fieldsToUpdate.following) {
-      queryFields.push('following = $' + (queryParams.length + 1));
-      queryParams.push(fieldsToUpdate.following);
-  }
-
-  if (queryFields.length === 0) {
-      return res.status(400).send('No fields provided for update');
-  }
-
-  let query = `UPDATE backend_schema.user SET ${queryFields.join(', ')} WHERE uid = $${queryParams.length + 1}`;
-  queryParams.push(userId);
-
-  try {
-      const updateUser = await pool.query(query, queryParams);
-
-      // Fetch the updated user data
-      const updatedUser = await pool.query(
-        'SELECT * FROM backend_schema.user WHERE uid = $1',
-        [userId]
-      );
-      responseCallbackUpdate(null, updatedUser.rows[0], res, 'User', updateUser.rowCount);
-  } catch (error) {
-      responseCallbackUpdate(error, userId, res, 'User');
-  }
-});
-
+);
 
 export { router as default, router as privateUserRoute };

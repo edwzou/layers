@@ -30,7 +30,6 @@ const SearchUsers = ({
 
 	useEffect(() => {
 		return () => {
-			console.log('cleanup', userRelations);
 			handleSearch('');
 		};
 	}, []);
@@ -117,7 +116,7 @@ const SearchUsers = ({
 				renderItem={renderProfile}
 				keyExtractor={(item) => item.uid}
 				showsVerticalScrollIndicator={false}
-				ListFooterComponent={<View style={{ padding: screenHeight * 0.1 }} />}
+				ListFooterComponent={<View style={{ padding: screenHeight * 0.08 }} />}
 			/>
 		</View>
 	);
