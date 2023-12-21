@@ -15,8 +15,6 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import Header from '../../components/Header/Header';
 import { screenHeight } from '../../utils/modalMaxShow';
 
-import { screenHeight } from '../../utils/modalMaxShow';
-
 interface MarkedListPropsType {
 	foreignUserIDs: (User | string)[];
 	updateFollowed: (followed: (string | User)[]) => void;
@@ -119,10 +117,6 @@ const MarkedList = ({
 							return item.uid;
 						}
 					}}
-					showsVerticalScrollIndicator={false}
-					ListFooterComponent={
-						<View style={{ padding: screenHeight * 0.05 }} />
-					}
 				/>
 			)}
 		</View>
