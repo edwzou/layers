@@ -12,17 +12,10 @@ export const StepOverTypes = {
 	send: 'Send',
 	next: 'Next',
 	update: 'Update',
-	logout: 'Logout'
+	logout: 'Logout',
+	rightArrow: 'Right Arrow',
+	leftArrow: 'Left Arrow',
 } as const;
-
-// export interface ClothingCategoryTypes {
-// 	// !!! Change these types
-// 	outfits: any;
-// 	outerwear: any;
-// 	tops: any;
-// 	bottoms: any;
-// 	shoes: any;
-// }
 
 export const ClothingTypes = {
 	outfits: outfits,

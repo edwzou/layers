@@ -3,12 +3,11 @@ import React from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Header from '../../components/Header/Header';
 import SignUp from './SignUp';
-import { NavigationBack } from '../../constants/Enums';
 
 const SignUpPage = () => {
 	return (
 		<View style={{ gap: 40 }}>
-			<Header text="Sign up" back={NavigationBack.back} />
+			<Header text="Sign up" back={true} leftButton={true} />
 			<View style={styles.container}>
 				<SignUp />
 			</View>

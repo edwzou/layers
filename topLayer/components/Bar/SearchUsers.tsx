@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { axiosEndpointErrorHandlerNoAlert } from '../../utils/ErrorHandlers';
 import axios from 'axios';
 import ProfileCell from '../../components/Cell/ProfileCell';
@@ -9,6 +9,7 @@ import { baseUrl } from '../../utils/apiUtils';
 import { markedPrivateUser, markedUser, User } from '../../pages/Main';
 import SearchBar from './SearchBar';
 
+import GlobalStyles from '../../constants/GlobalStyles';
 import { screenHeight } from '../../utils/modalMaxShow';
 
 interface SearchBarPropsType {
@@ -34,10 +35,15 @@ const SearchUsers = ({
 		};
 	}, []);
 
+	// Create an instance of AbortController
+	let abortController = useRef(new AbortController());
 	const allSearch = async (text: string) => {
 		try {
 			const { data, status } = await axios.get(
-				`${baseUrl}/api/private/search/${text}`
+				`${baseUrl}/api/private/search/${text}`,
+				{
+					signal: abortController.current.signal,
+				}
 			);
 
 			if (status === 200) {
@@ -74,6 +80,7 @@ const SearchUsers = ({
 	};
 
 	const handleSearch = (text: string) => {
+		abortController.current.abort();
 		setSearchQuery(text);
 		if (text === '') {
 			setSearchResults([]);
@@ -82,6 +89,7 @@ const SearchUsers = ({
 			}
 			userRelations.current = [];
 		} else {
+			abortController.current = new AbortController();
 			void allSearch(text);
 			if (handleNonEmptyString != null) {
 				handleNonEmptyString();
@@ -97,26 +105,54 @@ const SearchUsers = ({
 		return <ProfileCell user={item} handleRelationRender={handleMarking} />;
 	};
 
+	const whiteSpaceBG = () => {
+		return (
+			<View
+				style={{
+					height: 10,
+					width: '100%',
+					backgroundColor: GlobalStyles.colorPalette.primary[100],
+				}}
+			></View>
+		);
+	};
+
 	return (
 		<View style={{ gap: 0 }}>
-			<SearchBar
-				placeholder={placeholder}
-				searchQuery={searchQuery}
-				handleSearch={handleSearch}
-			/>
+			<View style={styles.searchBar}>
+				<SearchBar
+					placeholder={placeholder}
+					searchQuery={searchQuery}
+					handleSearch={handleSearch}
+				/>
+			</View>
+
+			{whiteSpaceBG()}
+
 			<FlatList
 				data={searchResults}
 				renderItem={renderProfile}
 				keyExtractor={(item) => item.uid}
 				showsVerticalScrollIndicator={false}
-				ListFooterComponent={
-					<View style={{ padding: screenHeight * 0.08 }} />
-				}
+				ListHeaderComponent={<View style={{ height: 35 }} />}
+				ListFooterComponent={() => {
+					if (searchQuery === '') {
+						return null;
+					}
+					return <View style={{ height: screenHeight * 0.13 }}></View>;
+				}}
 			/>
 		</View>
 	);
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	searchBar: {
+		width: '100%',
+		position: 'absolute',
+		zIndex: 2,
+		backgroundColor: 'rgba(0, 0, 0, 0)',
+	}
+});
 
 export default SearchUsers;

@@ -17,7 +17,6 @@ const ItemCell = ({
 	onPress,
 	base64,
 }: ItemCellPropsType) => {
-
 	//const img = base64 ? `data:image/jpg;base64,${image}` : image;
 
 	// const handleDeletePress = () => {
@@ -27,8 +26,19 @@ const ItemCell = ({
 	//console.log(imageUrl)
 
 	return (
-		<Pressable disabled={disablePress} style={[styles.container]} onPress={onPress}>
-			<Image source={{ uri: imageUrl }} style={[styles.image, imageStyle]} resizeMode="contain" />
+		<Pressable
+			disabled={disablePress}
+			style={[styles.container]}
+			onPress={onPress}
+		>
+			{imageUrl && imageUrl !== '' && (
+				<Image
+					source={{ uri: imageUrl }}
+					style={[styles.image, imageStyle]}
+					resizeMode="contain"
+				/>
+			)}
+
 			{/* {canDelete && (
 				<View style={styles.deleteButtonContainer}>
 					<Pressable onPress={handleDeletePress}>

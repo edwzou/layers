@@ -62,7 +62,7 @@ const colorPalette = {
 		800: '#832040',
 		900: '#6C183B',
 	},
-	activityIndicator: '#B7B7B7'
+	activityIndicator: '#B7B7B7',
 };
 
 const layout = {
@@ -71,7 +71,7 @@ const layout = {
 	gap: 16,
 	highTranslateYBottomMargin: 120,
 	pageStateTopMargin: 180,
-	toastTopOffset: 60
+	toastTopOffset: 60,
 };
 
 const typography = StyleSheet.create({
@@ -98,6 +98,10 @@ const typography = StyleSheet.create({
 	body3: {
 		fontSize: 10,
 		fontWeight: '300',
+	},
+	paragraph: {
+		fontSize: 16,
+		fontWeight: '500',
 	},
 });
 
@@ -132,8 +136,8 @@ const utils = StyleSheet.create({
 	},
 	pfpShadow: {
 		shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.10,
-        shadowRadius: 10,
+		shadowOpacity: 0.1,
+		shadowRadius: 10,
 	},
 	smallRadius: {
 		borderRadius: 10,
@@ -146,20 +150,20 @@ const utils = StyleSheet.create({
 	},
 	tagShape: {
 		flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 30,
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 30,
 		borderRadius: 100,
 		paddingHorizontal: 12,
 	},
 	buttonShape: {
 		flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 33,
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 33,
 		borderRadius: 10,
 		paddingHorizontal: layout.xGap,
-	}
+	},
 });
 
 const sizing = {
@@ -176,8 +180,8 @@ const sizing = {
 	},
 	tagHeight: utils.tagShape.height,
 	bottomSpacingPadding: {
-		paddingBottom: 100
-	}
+		paddingBottom: 100,
+	},
 };
 
 const icons = {
