@@ -7,7 +7,7 @@ import { type StackTypes } from 'utils/StackNavigation';
 import { StepOverTypes } from '../../constants/Enums';
 
 import { MainPageContext } from '../../pages/Main/MainPage';
-import { headerButtons } from './headerButtons';
+import { headerButtons } from './HeaderButtons';
 
 interface HeaderPropType {
 	text: string;
