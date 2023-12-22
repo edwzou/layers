@@ -81,6 +81,7 @@ async function removeBackground(imageData: Buffer): Promise<Buffer> {
       },
       responseType: 'arraybuffer',
     });
+    
     return Buffer.from(response.data);
   } catch (error) {
     console.error('Error removing background:', error);

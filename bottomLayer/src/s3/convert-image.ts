@@ -22,8 +22,7 @@ async function convertImage(
   remove: boolean
 ): Promise<string> {
   if (base64 === '' || !(await isValidBase64String(base64))) {
-    console.error('Invalid base64 string:', base64);
-    return '';
+    throw new Error(`Invalid base64 string: ${base64}`);
   }
 
   try {
