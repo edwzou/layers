@@ -1,79 +1,55 @@
-import { View, Text, StyleSheet, Pressable, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import React, { useContext } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
-import Icon from 'react-native-remix-icon';
-import { NavigationBack } from '../../constants/Enums';
+import { StepOverTypes } from '../../constants/Enums';
 
 import { MainPageContext } from '../../pages/Main/MainPage';
+import { headerButtons } from './HeaderButtons';
 
 interface HeaderPropType {
 	text: string;
-	back?: string;
-	rightArrow?: boolean;
-	leftArrow?: boolean;
+	back?: boolean;
+	rightButton?: boolean;
+	leftButton?: boolean;
+	rightStepOverType?: string;
+	leftStepOverType?: string;
 }
 
 const Header: React.FC<HeaderPropType> = ({
 	text,
 	back,
-	rightArrow,
-	leftArrow,
+	rightButton,
+	leftButton,
+	rightStepOverType = StepOverTypes.rightArrow,
+	leftStepOverType = StepOverTypes.leftArrow,
 }: HeaderPropType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { navigationArray } = useContext(MainPageContext);
+	const handlePress = (): void => {
+		if (back) {
+			return navigation.goBack();
+		}
+		navigationArray[0]();
+	};
 	return (
 		<SafeAreaView>
 			<View style={styles.header}>
-				{back ? (
-					<Pressable
-						onPress={() => {
-							navigation.goBack();
-						}}
-						style={{ position: 'absolute', left: 10, paddingRight: 20 }}
-					>
-						<Icon
-							name={
-								back === NavigationBack.back
-									? GlobalStyles.icons.backOutline
-									: GlobalStyles.icons.closeOutline
-							}
-							size={GlobalStyles.sizing.icon.regular}
-						/>
-					</Pressable>
-				) : null}
+				{leftButton &&
+					headerButtons({
+						type: leftStepOverType,
+						left: true,
+						handlePress: handlePress,
+					})}
 
-				{leftArrow ? (
-					<Pressable
-						onPress={() => {
-							navigationArray[0]();
-						}}
-						style={{ position: 'absolute', left: 10, paddingRight: 20 }}
-					>
-						<Icon
-							name={GlobalStyles.icons.backOutline}
-							color={GlobalStyles.colorPalette.primary[900]}
-							size={GlobalStyles.sizing.icon.regular}
-						/>
-					</Pressable>
-				) : null}
-
-				{rightArrow ? (
-					<Pressable
-						onPress={() => {
-							navigationArray[0]();
-						}}
-						style={{ position: 'absolute', right: 10, paddingLeft: 20 }}
-					>
-						<Icon
-							name={GlobalStyles.icons.nextOutline}
-							color={GlobalStyles.colorPalette.primary[900]}
-							size={GlobalStyles.sizing.icon.regular}
-						/>
-					</Pressable>
-				) : null}
+				{rightButton &&
+					headerButtons({
+						type: rightStepOverType,
+						left: false,
+						handlePress: handlePress,
+					})}
 
 				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
 			</View>

@@ -1,4 +1,10 @@
-import React, { useState, useContext, createContext, Dispatch, SetStateAction } from 'react';
+import React, {
+	useState,
+	useContext,
+	createContext,
+	Dispatch,
+	SetStateAction,
+} from 'react';
 
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
@@ -12,7 +18,12 @@ import { headerButton } from '../../components/Modal/HeaderButton';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { UserContext } from '../../utils/UserContext';
-import { FieldErrors, UseFormHandleSubmit, UseFormSetValue, useForm } from 'react-hook-form';
+import {
+	FieldErrors,
+	UseFormHandleSubmit,
+	UseFormSetValue,
+	useForm,
+} from 'react-hook-form';
 import { User } from '../../pages/Main';
 
 import axios from 'axios';
@@ -22,16 +33,16 @@ import { AppContext } from '../../App';
 import CameraWrapper from '../../components/Camera/CameraWrapper';
 
 import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings'
+import { toast } from '../../constants/GlobalStrings';
 
 interface FormValues {
-	first_name: string,
-	last_name: string,
-	email: string,
-	username: string,
-	password: string,
-	private_option: boolean,
-	pp_url: string,
+	first_name: string;
+	last_name: string;
+	email: string;
+	username: string;
+	password: string;
+	private_option: boolean;
+	pp_url: string;
 }
 
 // Define the context type
@@ -52,21 +63,21 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 	control: {} as Control<FormValues>,
 	handleSubmit: {} as UseFormHandleSubmit<FormValues>,
 	setValue: {} as UseFormSetValue<FormValues>,
-	setFormData: () => { },
+	setFormData: () => {},
 	pp_url: '',
 	errors: {} as FieldErrors<FormValues>,
 	showSuccessUpdate: false,
-	setShowSuccessUpdate: () => { },
+	setShowSuccessUpdate: () => {},
 	isLoading: false,
 });
 
 const ProfilePage = () => {
-
 	const { setShouldRefreshProfilePage } = useContext(AppContext);
 
 	const { data, updateData } = useContext(UserContext);
 
-	const { first_name, last_name, email, username, private_option, pp_url } = data as User;
+	const { first_name, last_name, email, username, private_option, pp_url } =
+		data as User;
 
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
@@ -85,7 +96,7 @@ const ProfilePage = () => {
 		control,
 		handleSubmit,
 		setValue,
-		formState: { dirtyFields, errors }
+		formState: { dirtyFields, errors },
 	} = useForm({
 		defaultValues: formData,
 	});
@@ -96,7 +107,6 @@ const ProfilePage = () => {
 	};
 
 	const onSubmit = async (formValues: FormValues | any) => {
-
 		if (!data) {
 			console.log('User data is not available.');
 			return;
@@ -134,11 +144,15 @@ const ProfilePage = () => {
 		setIsLoading(true); // Start loading
 
 		try {
-			const response = await axios.put(`${baseUrl}/api/private/users`, updatedFields, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
+			const response = await axios.put(
+				`${baseUrl}/api/private/users`,
+				updatedFields,
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
 
 			if (response.status === 200) {
 				try {
@@ -146,14 +160,14 @@ const ProfilePage = () => {
 					// const sessionData = JSON.stringify(response.data.data);
 					// await AsyncStorage.setItem('session', sessionData);
 					// updateData(sessionData);
-					setShowSuccessUpdate(true)
-					setShouldRefreshProfilePage(true)
-					showSuccessUpdateToast()
+					setShowSuccessUpdate(true);
+					setShouldRefreshProfilePage(true);
+					showSuccessUpdateToast();
 					setIsLoading(false); // Stop loading on success
 				} catch (error) {
 					setIsLoading(false); // Stop loading on error
 					console.log(error);
-					showErrorUpdateToast()
+					showErrorUpdateToast();
 				}
 			} else {
 				throw new Error('An error has occurred');
@@ -168,33 +182,34 @@ const ProfilePage = () => {
 			type: 'success',
 			text1: toast.success,
 			text2: toast.yourProfileHasBeenUpdated,
-			topOffset: GlobalStyles.layout.toastTopOffset
+			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	const showErrorUpdateToast = () => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
 			text2: toast.anErrorHasOccurredWhileUpdatingProfile,
-			topOffset: GlobalStyles.layout.toastTopOffset
+			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	return (
-		<ProfilePageContext.Provider value={{
-			control,
-			handleSubmit,
-			setValue,
-			setFormData,
-			pp_url,
-			errors,
-			showSuccessUpdate,
-			setShowSuccessUpdate,
-			isLoading
-		}}>
-			<NavigationContainer
-				independent={true}>
+		<ProfilePageContext.Provider
+			value={{
+				control,
+				handleSubmit,
+				setValue,
+				setFormData,
+				pp_url,
+				errors,
+				showSuccessUpdate,
+				setShowSuccessUpdate,
+				isLoading,
+			}}
+		>
+			<NavigationContainer independent={true}>
 				<Stack.Navigator>
 					<Stack.Screen
 						options={{
@@ -211,31 +226,29 @@ const ProfilePage = () => {
 								backgroundColor: GlobalStyles.colorPalette.background,
 							},
 							headerShadowVisible: false,
-						}}>
+						}}
+					>
 						<Stack.Screen
 							name={StackNavigation.Feedback}
 							component={FeedbackPage}
 							options={{
-								headerRight: () => headerButton({
-									type: StepOverTypes.send,
-									handlePress: () => {
-										console.log("Hello")
-									},
-								}),
+								headerShown: false,
 							}}
 						/>
 						<Stack.Screen
 							name={StackNavigation.Settings}
 							component={SettingsPage}
 							options={{
-								headerLeft: () => headerButton({
-									type: StepOverTypes.logout,
-									handlePress: handleLogout
-								}),
-								headerRight: () => headerButton({
-									type: StepOverTypes.update,
-									handlePress: handleSubmit(() => onSubmit(formData)),
-								}),
+								headerLeft: () =>
+									headerButton({
+										type: StepOverTypes.logout,
+										handlePress: handleLogout,
+									}),
+								headerRight: () =>
+									headerButton({
+										type: StepOverTypes.update,
+										handlePress: handleSubmit(() => onSubmit(formData)),
+									}),
 							}}
 						/>
 						<Stack.Screen
@@ -260,7 +273,7 @@ const ProfilePage = () => {
 								animation: 'slide_from_bottom',
 								gestureEnabled: true,
 								gestureDirection: 'vertical',
-								headerShown: false
+								headerShown: false,
 							}}
 						/>
 					</Stack.Group>

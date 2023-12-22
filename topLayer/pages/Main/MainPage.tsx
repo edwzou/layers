@@ -19,11 +19,11 @@ import { UserAllItems, UserClothing } from '../../pages/Match';
 import { getAllClothingItems, getAllOutfits } from '../../endpoints/wardrobe';
 
 export const MainPageContext = createContext({
-	navigationArray: [() => { }],
+	navigationArray: [() => {}],
 	allItems: [] as UserAllItems[],
-	setShouldRefreshMatchPage: (() => { }) as Dispatch<SetStateAction<boolean>>,
-	setShouldRefreshOutfitEdit: (() => { }) as Dispatch<SetStateAction<boolean>>,
-	setShouldRefreshOutfitViewPage: (() => { }) as Dispatch<
+	setShouldRefreshMatchPage: (() => {}) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshOutfitEdit: (() => {}) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshOutfitViewPage: (() => {}) as Dispatch<
 		SetStateAction<boolean>
 	>,
 });

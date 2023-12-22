@@ -65,7 +65,7 @@ const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<Header text={StackNavigation.Find} leftArrow={true} />
+			<Header text={StackNavigation.Find} leftButton={true} />
 			<View style={styles.content}>
 				<SearchUsers
 					placeholder={find.searchProfiles}
