@@ -7,7 +7,7 @@ import SignUp from './SignUp';
 const SignUpPage = () => {
 	return (
 		<View style={{ gap: 40 }}>
-			<Header text="Sign up" back={true} leftButton={true} />
+			<Header text="Sign up" leftBack={true} leftButton={true} />
 			<View style={styles.container}>
 				<SignUp />
 			</View>
