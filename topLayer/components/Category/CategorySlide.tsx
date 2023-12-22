@@ -45,10 +45,8 @@ const CategorySlide = ({
 					keyExtractor={(item) => {
 						return item.oid;
 					}}
-					numColumns={2}
 					showsVerticalScrollIndicator={false}
 					contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-					columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 					ListFooterComponent={
 						<View style={{ padding: screenHeight * 0.15 }} />
 					}

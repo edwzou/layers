@@ -29,7 +29,6 @@ const CategorySlides = ({
     handleViewableItemsChanged,
 }: CategorySlidesPropsType) => {
     const windowWidth = Dimensions.get('window').width;
-    // console.log('data: ', allItemsData);
 
     return (
         <FlatList
