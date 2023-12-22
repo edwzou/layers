@@ -13,6 +13,8 @@ import { feedback } from '../../constants/GlobalStrings';
 import Header from '../../components/Header/Header';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import { Controller, useForm } from 'react-hook-form';
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings';
 
 interface FormValues {
 	feedback: string;
@@ -29,30 +31,25 @@ const FeedbackPage = () => {
 		},
 	});
 
-	const handleLinkPress = () => {
-		console.log('OPEN EMAIL DRAFT TO team@layers.com');
-	};
-
-	// const launchURL = (url) => {
-	// 	Linking.canOpenURL(url)
-	// 		.then((supported) => {
-	// 			if (!supported) {
-	// 				console.log("Can't handle url: " + url);
-	// 			} else {
-	// 				Linking.openURL(url).catch((err) => {
-	// 					console.warn('openURL error', err);
-	// 				});
-	// 			}
-	// 		})
-	// 		.catch((err) => console.warn('An unexpected error happened', err));
+	// const handleLinkPress = () => {
+	// 	console.log('OPEN EMAIL DRAFT TO team@layers.com');
 	// };
 
+	const showErrorUpdateToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileUpdatingProfile,
+			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
+	};
 	const handleEmail = (values: FormValues) => {
-		const email_address = 'joegbu@gmail.com';
-		// const encodedEmailAddress = encodeURIComponent(email_address);
+		const email_address = 'layersapplication@gmail.com';
 		const mail = `mailto:${email_address}` + '?body=' + values.feedback;
-		// launchURL('google.com');
-		Linking.openURL(mail).catch(console.error);
+		Linking.openURL(mail).catch((err) => {
+			console.log(err);
+			showErrorUpdateToast();
+		});
 	};
 
 	return (
@@ -81,12 +78,12 @@ const FeedbackPage = () => {
 					)}
 					name="feedback"
 				/>
-				<View style={styles.label}>
-					<Text style={styles.text}>{feedback.wereHappyToHelpAt}</Text>
-					<Pressable onPress={handleLinkPress}>
-						<Text style={styles.link}>{feedback.teamAtLayersDotCom}</Text>
-					</Pressable>
-				</View>
+				{/* <View style={styles.label}> */}
+				{/* 	<Text style={styles.text}>{feedback.wereHappyToHelpAt}</Text> */}
+				{/* 	<Pressable onPress={handleLinkPress}> */}
+				{/* 		<Text style={styles.link}>{feedback.teamAtLayersDotCom}</Text> */}
+				{/* 	</Pressable> */}
+				{/* </View> */}
 			</View>
 		</Pressable>
 	);
@@ -97,7 +94,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: GlobalStyles.layout.xGap,
 		alignItems: 'center',
 		gap: 15,
-		// flex: 1,
 	},
 	container: {
 		flex: 1,
