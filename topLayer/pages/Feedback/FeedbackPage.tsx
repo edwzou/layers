@@ -16,7 +16,7 @@ const FeedbackPage = () => {
 			<Header
 				text={StackNavigation.Feedback}
 				rightButton={true}
-				rightStepOverType={StepOverTypes.update}
+				rightStepOverType={StepOverTypes.done}
 			/>
 			<View style={styles.content}>
 				<SquareTextbox placeholder={feedback.tellUsWhatYouThink} />

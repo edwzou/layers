@@ -6,14 +6,22 @@ import Icon from 'react-native-remix-icon';
 
 export interface HeaderButtonPropsType {
 	type: string;
+	left: boolean; // determines the side of the button. True is left. False is right.
 	handlePress: () => void;
 }
 
-export function headerButton({ type, handlePress }: HeaderButtonPropsType) {
+export function headerButtons({
+	type,
+	left,
+	handlePress,
+}: HeaderButtonPropsType) {
 	switch (type) {
 		case StepOverTypes.send: {
 			return (
-				<Pressable onPress={handlePress}>
+				<Pressable
+					onPress={handlePress}
+					style={left ? styles.leftButton : styles.rightButton}
+				>
 					<Icon
 						name={GlobalStyles.icons.sendOutline}
 						color={GlobalStyles.colorPalette.info[500]}
@@ -24,28 +32,40 @@ export function headerButton({ type, handlePress }: HeaderButtonPropsType) {
 		}
 		case StepOverTypes.edit: {
 			return (
-				<Pressable onPress={handlePress}>
+				<Pressable
+					onPress={handlePress}
+					style={left ? styles.leftButton : styles.rightButton}
+				>
 					<Text style={styles.textButton}>{StepOverTypes.edit}</Text>
 				</Pressable>
 			);
 		}
 		case StepOverTypes.done: {
 			return (
-				<Pressable onPress={handlePress}>
+				<Pressable
+					onPress={handlePress}
+					style={left ? styles.leftButton : styles.rightButton}
+				>
 					<Text style={styles.textButton}>{StepOverTypes.done}</Text>
 				</Pressable>
 			);
 		}
 		case StepOverTypes.update: {
 			return (
-				<Pressable onPress={handlePress}>
+				<Pressable
+					onPress={handlePress}
+					style={left ? styles.leftButton : styles.rightButton}
+				>
 					<Text style={styles.textButton}>{StepOverTypes.update}</Text>
 				</Pressable>
 			);
 		}
 		case StepOverTypes.logout: {
 			return (
-				<Pressable onPress={handlePress}>
+				<Pressable
+					onPress={handlePress}
+					style={left ? styles.leftButton : styles.rightButton}
+				>
 					<Text style={styles.textButton}>{StepOverTypes.logout}</Text>
 				</Pressable>
 			);
@@ -82,7 +102,16 @@ const styles = StyleSheet.create({
 		color: GlobalStyles.colorPalette.info[500],
 		...GlobalStyles.typography.body,
 	},
-
+	leftButton: {
+		position: 'absolute',
+		left: 20,
+		paddingRight: 20,
+	},
+	rightButton: {
+		position: 'absolute',
+		right: 20,
+		paddingLeft: 20,
+	},
 	leftArrow: {
 		position: 'absolute',
 		left: 10,

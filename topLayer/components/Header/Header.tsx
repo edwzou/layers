@@ -1,14 +1,13 @@
-import { View, Text, StyleSheet, Pressable, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import React, { useContext } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
-import Icon from 'react-native-remix-icon';
-import { NavigationBack, StepOverTypes } from '../../constants/Enums';
+import { StepOverTypes } from '../../constants/Enums';
 
 import { MainPageContext } from '../../pages/Main/MainPage';
-import { headerButton } from '../../components/Modal/HeaderButton';
+import { headerButtons } from './headerButtons';
 
 interface HeaderPropType {
 	text: string;
@@ -39,14 +38,16 @@ const Header: React.FC<HeaderPropType> = ({
 		<SafeAreaView>
 			<View style={styles.header}>
 				{leftButton &&
-					headerButton({
+					headerButtons({
 						type: leftStepOverType,
+						left: true,
 						handlePress: handlePress,
 					})}
 
 				{rightButton &&
-					headerButton({
+					headerButtons({
 						type: rightStepOverType,
+						left: false,
 						handlePress: handlePress,
 					})}
 
