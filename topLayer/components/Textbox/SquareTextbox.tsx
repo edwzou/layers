@@ -4,15 +4,16 @@ import {
 	StyleSheet,
 	Text,
 	TouchableWithoutFeedback,
+	Pressable,
 } from 'react-native';
 import React, { useState, useRef } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 interface StackedTextboxPropsType {
-	label: string;
+	placeholder: string;
 }
 
-const SquareTextbox = ({ label }: StackedTextboxPropsType) => {
+const SquareTextbox = ({ placeholder }: StackedTextboxPropsType) => {
 	const [fieldText, setFieldText] = useState('');
 	const textInputRef = useRef<TextInput | null>(null);
 
@@ -23,24 +24,18 @@ const SquareTextbox = ({ label }: StackedTextboxPropsType) => {
 	};
 
 	return (
-		<View style={styles.container}>
-			<Text style={{ color: GlobalStyles.colorPalette.primary[400] }}>
-				{label}
-			</Text>
-			<TouchableWithoutFeedback onPress={handlePress}>
-				<View style={{ flex: 1 }}>
-					<TextInput
-						ref={textInputRef}
-						value={fieldText}
-						onChangeText={(text) => {
-							setFieldText(text);
-						}}
-						multiline={true}
-						style={{ flex: 1 }}
-					/>
-				</View>
-			</TouchableWithoutFeedback>
-		</View>
+		<Pressable style={styles.container} onPress={handlePress}>
+			<TextInput
+				ref={textInputRef}
+				style={[styles.input, GlobalStyles.typography.paragraph]}
+				value={fieldText}
+				onChangeText={(text) => {
+					setFieldText(text);
+				}}
+				multiline={true}
+				placeholder={placeholder}
+			/>
+		</Pressable>
 	);
 };
 
@@ -51,8 +46,9 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		padding: 10,
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
+	},
+	input: {
 		color: GlobalStyles.colorPalette.primary[500],
-		gap: 5,
 	},
 });
 
