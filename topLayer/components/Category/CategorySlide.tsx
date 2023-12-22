@@ -25,13 +25,6 @@ const CategorySlide = ({
 }: CategorySlidePropsType) => {
 	const windowWidth = Dimensions.get('window').width;
 
-	console.log(' ')
-	console.log(' ')
-	console.log('itemsData')
-	console.log(itemsData);
-	console.log(' ')
-	console.log(' ')
-
 	const slide = () => {
 		if (itemsData.category === 'outfits') {
 			return (
