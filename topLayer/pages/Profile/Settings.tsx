@@ -1,5 +1,12 @@
 import { Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable, Keyboard, ActivityIndicator } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	Pressable,
+	Keyboard,
+	ActivityIndicator,
+} from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -11,16 +18,16 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { ProfilePageContext } from './ProfilePage';
-import { settings } from '../../constants/GlobalStrings'
+import { settings } from '../../constants/GlobalStrings';
 
 interface FormValues {
-	first_name: string,
-	last_name: string,
-	email: string,
-	username: string,
-	password: string,
-	private_option: boolean,
-	pp_url: string,
+	first_name: string;
+	last_name: string;
+	email: string;
+	username: string;
+	password: string;
+	private_option: boolean;
+	pp_url: string;
 }
 
 interface PrivacyOption {
@@ -32,7 +39,16 @@ const Settings = () => {
 	const [image, setImage] = useState('');
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const { control, setValue, setFormData, pp_url, errors, showSuccessUpdate, setShowSuccessUpdate, isLoading } = useContext(ProfilePageContext);
+	const {
+		control,
+		setValue,
+		setFormData,
+		pp_url,
+		errors,
+		showSuccessUpdate,
+		setShowSuccessUpdate,
+		isLoading,
+	} = useContext(ProfilePageContext);
 
 	useEffect(() => {
 		setValue('pp_url', image);
@@ -40,8 +56,8 @@ const Settings = () => {
 
 	useEffect(() => {
 		if (showSuccessUpdate) {
-			navigation.goBack()
-			setShowSuccessUpdate(false)
+			navigation.goBack();
+			setShowSuccessUpdate(false);
 		}
 	}, [showSuccessUpdate]);
 
@@ -175,13 +191,10 @@ const Settings = () => {
 						handleFieldChange('private_option', selectedOption.boolean);
 					}}
 				/>
-
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
-					<Text style={styles.error}>
-						{settings.pleaseEnterAValidEmail}
-					</Text>
+					<Text style={styles.error}>{settings.pleaseEnterAValidEmail}</Text>
 				)}
 				{errors.password != null && (
 					<Text style={styles.error}>
@@ -192,7 +205,10 @@ const Settings = () => {
 
 			{isLoading && (
 				<View style={styles.overlay}>
-					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+					<ActivityIndicator
+						size="large"
+						color={GlobalStyles.colorPalette.activityIndicator}
+					/>
 				</View>
 			)}
 		</Pressable>
