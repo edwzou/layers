@@ -35,11 +35,11 @@ const FeedbackPage = () => {
 	// 	console.log('OPEN EMAIL DRAFT TO team@layers.com');
 	// };
 
-	const showErrorUpdateToast = () => {
+	const showErrorSendToast = () => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileUpdatingProfile,
+			text2: toast.anErrorHasOccurredWhileSendingFeedback,
 			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
 	};
@@ -48,7 +48,7 @@ const FeedbackPage = () => {
 		const mail = `mailto:${email_address}` + '?body=' + values.feedback;
 		Linking.openURL(mail).catch((err) => {
 			console.log(err);
-			showErrorUpdateToast();
+			showErrorSendToast();
 		});
 	};
 
@@ -58,7 +58,7 @@ const FeedbackPage = () => {
 				text={StackNavigation.Feedback}
 				rightButton={true}
 				rightBack={true}
-				rightStepOverType={StepOverTypes.done}
+				rightStepOverType={StepOverTypes.send}
 				rightButtonAction={handleSubmit(handleEmail)}
 				rightButtonDisabled={Object.keys(dirtyFields).length < 1}
 			/>

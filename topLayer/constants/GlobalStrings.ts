@@ -40,5 +40,6 @@ export const toast = {
 	anErrorHasOccurredWhileCreatingOutfit: 'An error has occurred while creating outfit.',
 	anErrorHasOccurredWhileDeletingOutfit: 'An error has occurred while deleting outfit.',
 	anErrorHasOccurredWhileUpdatingOutfit: 'An error has occurred while updating outfit.',
-	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating profile.'
+	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating profile.',
+	anErrorHasOccurredWhileSendingFeedback: 'An error has occurred while sending feedback.',
 }
