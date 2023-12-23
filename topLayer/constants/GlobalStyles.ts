@@ -111,7 +111,7 @@ const utils = StyleSheet.create({
 	},
 	tagShadow: {
 		shadowOffset: { width: 0, height: 0 },
-		shadowOpacity: 0.25,
+		shadowOpacity: 0.40,
 		shadowRadius: 5,
 	},
 	buttonShadow: {
@@ -121,7 +121,7 @@ const utils = StyleSheet.create({
 	},
 	deleteShadow: {
 		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.4,
+		shadowOpacity: 0.3,
 		shadowRadius: 4,
 	},
 	dropdownShadow: {

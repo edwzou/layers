@@ -57,7 +57,7 @@ const Profile = () => {
 
 	const handleIndexChange = (index: number) => {
 		if (flatListRef.current != null) {
-			flatListRef.current?.scrollToIndex({ index, animated: true });
+			flatListRef.current?.scrollToIndex({ index, animated: false });
 		}
 	};
 

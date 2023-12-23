@@ -78,12 +78,9 @@ const FeedbackPage = () => {
 					)}
 					name="feedback"
 				/>
-				{/* <View style={styles.label}> */}
-				{/* 	<Text style={styles.text}>{feedback.wereHappyToHelpAt}</Text> */}
-				{/* 	<Pressable onPress={handleLinkPress}> */}
-				{/* 		<Text style={styles.link}>{feedback.teamAtLayersDotCom}</Text> */}
-				{/* 	</Pressable> */}
-				{/* </View> */}
+				<View style={styles.label}>
+					<Text style={styles.text}>{feedback.madeWithLoveFromCanada}</Text>
+				</View>
 			</View>
 		</Pressable>
 	);
@@ -106,7 +103,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		...GlobalStyles.typography.body2,
-		color: GlobalStyles.colorPalette.primary[900],
+		color: GlobalStyles.colorPalette.primary[400],
 	},
 	link: {
 		...GlobalStyles.typography.body2,

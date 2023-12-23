@@ -29,7 +29,7 @@ export default function OutfitCard({
 			<View style={styles.infoBox}>
 				<Text style={styles.title}>{truncatedTitle}</Text>
 				<Text>
-					<View style={[styles.label, GlobalStyles.utils.tagShadow]}>
+					<View style={[styles.label]}>
 						<Text style={styles.labelText}>{clothingArray.length} items</Text>
 					</View>
 				</Text>
@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
 	label: {
 		backgroundColor: GlobalStyles.colorPalette.primary[500],
 		...GlobalStyles.utils.tagShape,
-		...GlobalStyles.utils.tagShadow,
 		shadowColor: GlobalStyles.colorPalette.primary[400],
 	},
 	labelText: {
