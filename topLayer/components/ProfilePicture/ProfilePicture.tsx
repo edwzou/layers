@@ -24,7 +24,6 @@ const ProfilePicture = ({
 
 	return (
 		// <View style={shadow && GlobalStyles.utils.pfpShadow}> // uncomment for pfp shadow
-
 		<>
 			{imgString !== '' ? (
 				<Image

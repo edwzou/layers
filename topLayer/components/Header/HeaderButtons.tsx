@@ -8,12 +8,14 @@ export interface HeaderButtonPropsType {
 	type: string;
 	left: boolean; // determines the side of the button. True is left. False is right.
 	handlePress: () => void;
+	disabled?: boolean;
 }
 
 export function headerButtons({
 	type,
 	left,
 	handlePress,
+	disabled = false,
 }: HeaderButtonPropsType) {
 	switch (type) {
 		case StepOverTypes.send: {
@@ -44,9 +46,14 @@ export function headerButtons({
 			return (
 				<Pressable
 					onPress={handlePress}
+					disabled={disabled}
 					style={left ? styles.leftButton : styles.rightButton}
 				>
-					<Text style={styles.textButton}>{StepOverTypes.done}</Text>
+					<Text
+						style={disabled ? styles.disabledTextButton : styles.textButton}
+					>
+						{StepOverTypes.done}
+					</Text>
 				</Pressable>
 			);
 		}
@@ -100,6 +107,10 @@ export function headerButtons({
 const styles = StyleSheet.create({
 	textButton: {
 		color: GlobalStyles.colorPalette.info[500],
+		...GlobalStyles.typography.body,
+	},
+	disabledTextButton: {
+		color: GlobalStyles.colorPalette.info[900],
 		...GlobalStyles.typography.body,
 	},
 	leftButton: {

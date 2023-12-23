@@ -22,7 +22,7 @@ const ItemView = ({ clothingItem }: ItemViewPropsType) => {
                     <ItemCell imageUrl={clothingItem.image_url} disablePress />
                 </View>
                 <View style={styles.categoryContainer}>
-                    <Text style={styles.subheader}>Colors</Text>
+                    {clothingItem.color.length > 0 && <Text style={styles.subheader}>Colors</Text>}
                     <ColorTagsList data={clothingItem.color} tagAction={TagAction.static} />
                 </View>
             </ View>
