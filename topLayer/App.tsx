@@ -1,4 +1,9 @@
-import { StyleSheet, StatusBar, View, SafeAreaView } from 'react-native';
+import { StyleSheet, StatusBar, View, LogBox } from 'react-native';
+LogBox.ignoreLogs(['Require cycle:']);
+// ^ Ignores require cycle warnings. We decided to ignore these warnings for 2 reasons:
+// 1. Require cycles are technically not errors. It's just React Native telling us that this is an area of potential danger (which we should keep in mind)
+// 2. There's rarely a fix for require cycles, especially if it involves more than 2 components (which is our case)
+
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
