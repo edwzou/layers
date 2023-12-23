@@ -44,7 +44,7 @@ const OutfitView = ({ clothingItems }: OutfitViewPropsType) => {
 			ListFooterComponent={
 				<View style={{ gap: 20 }}>
 					<View style={[styles.categoryContainer, { top: 4 }]}>
-						<Text style={styles.subheader}>Colors</Text>
+						{uniqueColors.length > 0 && <Text style={styles.subheader}>Colors</Text>}
 						<ColorTagsList data={uniqueColors} tagAction={TagAction.static} />
 					</View>
 					{/* <View style={styles.categoryContainer}>

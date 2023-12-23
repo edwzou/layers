@@ -7,8 +7,7 @@ export const find = {
 
 export const feedback = {
 	tellUsWhatYouThink: 'Tell us what you think.',
-	wereHappyToHelpAt: "We're happy to help at",
-	teamAtLayersDotCom: 'team@layers.com',
+	madeWithLoveFromCanada: 'Made with ❤️ from 🇨🇦',
 } as const;
 
 export const match = {
