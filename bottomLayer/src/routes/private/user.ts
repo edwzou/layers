@@ -68,7 +68,7 @@ router.put(
 
       try {
         if (fieldsToUpdate.profile_picture !== undefined) {
-          ppAsync = convertImage(fieldsToUpdate.profile_picture, userId, true); // CHANGE THIS TO FALSE
+          ppAsync = convertImage(fieldsToUpdate.profile_picture, userId, false);
         }
 
         if (fieldsToUpdate.password !== undefined) {

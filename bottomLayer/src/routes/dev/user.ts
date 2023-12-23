@@ -25,7 +25,7 @@ router.post(
     } = req.body;
     const insertUser = async (): Promise<void> => {
       try {
-        const imgRef = await convertImage(profile_picture, username, true); // CHANGE THIS TO FALSE
+        const imgRef = await convertImage(profile_picture, username, false);
         await pool.query(
           `
       INSERT INTO backend_schema.user (
