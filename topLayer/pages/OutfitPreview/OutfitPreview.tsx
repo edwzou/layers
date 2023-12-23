@@ -20,7 +20,6 @@ import { type StackTypes } from 'utils/StackNavigation';
 const OutfitPreview = ({ route }: any) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	// const { matchItems, setMatchName } = route.params;
 	const { matchItems } = route.params;
 
 	const { setMatch, dismissal, isLoading } = useContext(MatchPageContext);
@@ -30,7 +29,6 @@ const OutfitPreview = ({ route }: any) => {
 	const [data, setData] = useState<UserClothing[]>([]);
 	const onInputChange = (text: string) => {
 		setText(text);
-		// setMatchName(text);
 	};
 
 	useEffect(() => {
