@@ -19,79 +19,79 @@ import { User } from '../../pages/Main';
 import { screenHeight } from '../../utils/modalMaxShow';
 
 interface FindPropsType {
-	foreignUserIDs: (string | User)[];
-	updateFollowed: (followed: (string | User)[]) => void;
+  foreignUserIDs: (string | User)[];
+  updateFollowed: (followed: (string | User)[]) => void;
 }
 
 const Find = ({ foreignUserIDs, updateFollowed }: FindPropsType) => {
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+  const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const [isComponentVisible, setComponentVisible] = useState(true);
+  const [isComponentVisible, setComponentVisible] = useState(true);
 
-	const handlePress = () => {
-		navigation.navigate(StackNavigation.MarkedList, {});
-	};
+  const handlePress = () => {
+    navigation.navigate(StackNavigation.MarkedList, {});
+  };
 
-	const handleEmptyString = (relationChanges: (string | User)[]) => {
-		const usersToAdd = [];
-		const length = foreignUserIDs.length;
-		for (const user of relationChanges) {
-			if (typeof user === 'string') {
-				foreignUserIDs = foreignUserIDs.filter((value) => {
-					if (typeof value === 'string') {
-						return value !== user;
-					} else {
-						return value.uid !== user;
-					}
-				});
-			} else {
-				if (user.pp_url !== '') {
-					usersToAdd.push(user);
-				} else {
-					foreignUserIDs.push(user);
-				}
-			}
-		}
-		if (usersToAdd.length > 0 || length !== foreignUserIDs.length) {
-			usersToAdd.push(...foreignUserIDs);
-			updateFollowed(usersToAdd);
-		}
-		setComponentVisible(true);
-	};
+  const handleEmptyString = (relationChanges: (string | User)[]) => {
+    const usersToAdd = [];
+    const length = foreignUserIDs.length;
+    for (const user of relationChanges) {
+      if (typeof user === 'string') {
+        foreignUserIDs = foreignUserIDs.filter((value) => {
+          if (typeof value === 'string') {
+            return value !== user;
+          } else {
+            return value.uid !== user;
+          }
+        });
+      } else {
+        if (user.pp_url !== '') {
+          usersToAdd.push(user);
+        } else {
+          foreignUserIDs.push(user);
+        }
+      }
+    }
+    if (usersToAdd.length > 0 || length !== foreignUserIDs.length) {
+      usersToAdd.push(...foreignUserIDs);
+      updateFollowed(usersToAdd);
+    }
+    setComponentVisible(true);
+  };
 
-	const handleNonEmptyString = () => {
-		setComponentVisible(false);
-	};
+  const handleNonEmptyString = () => {
+    setComponentVisible(false);
+  };
 
-	return (
-		<SafeAreaView style={styles.container}>
-			<Header text={StackNavigation.Find} leftButton={true} />
-			<View style={styles.content}>
-				<SearchUsers
-					placeholder={find.searchProfiles}
-					handleEmptyString={handleEmptyString}
-					handleNonEmptyString={handleNonEmptyString}
-				/>
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header text={StackNavigation.Find} leftButton={true} />
+      <View style={styles.content}>
+        <SearchUsers
+          placeholder={find.searchProfiles}
+          handleEmptyString={handleEmptyString}
+          handleNonEmptyString={handleNonEmptyString}
+        />
 
-				{isComponentVisible && (
-					<Pressable onPress={handlePress}>
-						<MarkedBar foreignUserIDs={foreignUserIDs} />
-					</Pressable>
-				)}
-			</View>
-		</SafeAreaView>
-	);
+        {isComponentVisible && (
+          <Pressable onPress={handlePress}>
+            <MarkedBar foreignUserIDs={foreignUserIDs} />
+          </Pressable>
+        )}
+      </View>
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		gap: 15,
-	},
-	content: {
-		marginHorizontal: GlobalStyles.layout.xGap,
-		gap: 15,
-	},
+  container: {
+    flex: 1,
+    gap: 15,
+  },
+  content: {
+    marginHorizontal: GlobalStyles.layout.xGap,
+    gap: 15,
+  },
 });
 
 export default Find;

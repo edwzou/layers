@@ -11,6 +11,9 @@
     "src/**/*.ts", // Adjust the path to match your TypeScript source files
     "src/**/*.tsx", // TypeScript JSX files
     ".eslintrc.cjs", // Path to your ESLint configuration file
-    "server.ts"
+    "RootNavigation.tsx",
+    "App.tsx",
+    "i.d.ts",
+    "index.ts"
   ]
 }
