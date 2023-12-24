@@ -2,8 +2,6 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import {
   responseCallbackDelete,
-  responseCallbackGet,
-  responseCallbackGetAll,
   responseCallbackPost,
   responseCallbackUpdate
 } from '../../utils/responseCallback';

@@ -1,7 +1,7 @@
 import { getBucketName, s3 } from '../utils/awsImport';
 import {
   PutObjectCommand,
-  type PutObjectCommandInput
+  type PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
 
 async function uploadBufferToS3(imageContent: Buffer, fileName: string) {
@@ -10,7 +10,7 @@ async function uploadBufferToS3(imageContent: Buffer, fileName: string) {
       Bucket: getBucketName(),
       Key: fileName,
       Body: imageContent,
-      ContentType: 'image/jpeg'
+      ContentType: 'image/jpeg',
     };
 
     const result = await s3.send(new PutObjectCommand(params));

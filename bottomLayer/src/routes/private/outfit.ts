@@ -1,7 +1,5 @@
 import {
   responseCallbackDelete,
-  responseCallbackGet,
-  responseCallbackGetAll,
   responseCallbackPost,
   responseCallbackUpdate
 } from '../../utils/responseCallback';
@@ -68,36 +66,32 @@ router.put('/:oid', (req: Request, res: Response): void => {
   const uid = req.user as string;
   const { oid } = req.params;
   // Extract outfit data from the request body
-  const { title, clothing_items } = req.body;
+  const { title, clothing_items }: { title: string; clothing_items: string[] } = req.body;
 
   const updateOutfit = async (oid: string): Promise<void> => {
     // Initialize query parts
-    let query = 'UPDATE backend_schema.outfit SET ';
-    let queryParams = [];
-    let paramCounter = 1;
+    let query = 'UPDATE backend_schema.outfit SET';
 
     // Append title to the query if provided
     if (title !== undefined) {
-      query += `title = $${paramCounter}`;
-      queryParams.push(title);
-      paramCounter++;
+      query += ` title = '${title}',`;
     }
 
     // Append clothing_items to the query if provided
     if (clothing_items !== undefined) {
-      if (queryParams.length > 0) query += ', ';
-      query += `clothing_items = $${paramCounter}`;
-      queryParams.push(clothing_items);
-      paramCounter++;
+      query += `clothing_items = ARRAY[${clothing_items.join(', ')}]::UUID[],`;
     }
 
     // Finalize the query
-    query += ` WHERE oid = $${paramCounter} AND uid = $${paramCounter + 1}`;
-    queryParams.push(oid, uid);
+    if (query === 'UPDATE backend_schema.user SET') {
+      throw new Error('No Fields To Update');
+    }
+    query = query.slice(0, -1);
+    query += ` WHERE oid = '${oid}' AND uid = '${uid}'`;
 
     // Update the outfit in the database
     try {
-      const updateOutfit = await pool.query(query, queryParams);
+      const updateOutfit = await pool.query(query);
 
       // responds with successful update even when no changes are made
       responseCallbackUpdate(null, oid, res, 'Outfit', updateOutfit.rowCount);

@@ -1,4 +1,4 @@
-import { type Request, type Response } from 'express';
+import { type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 import { AsyncManager } from '../../utils/event-emitters/asyncManager';

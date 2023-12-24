@@ -1,4 +1,4 @@
-import { type Request, type Response } from 'express';
+import { type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { AsyncManager } from '../../utils/event-emitters/asyncManager';
 import { urlDownloadHandlerOutfits } from '../../utils/event-emitters/asyncHandlers';

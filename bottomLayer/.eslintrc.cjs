@@ -1,11 +1,22 @@
 module.exports = {
   env: {
-    browser: true,
-    commonjs: true,
-    es2021: true
+    es2024: true
   },
   extends: 'standard-with-typescript',
-  overrides: [],
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/comma-dangle': 'off'
+      }
+    },
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/space-before-function-paren': 'off'
+      }
+    }
+  ],
   parserOptions: {
     ecmaVersion: 'latest',
     project: ['./tsconfig.json'],
