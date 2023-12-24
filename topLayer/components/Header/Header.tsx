@@ -11,26 +11,46 @@ import { headerButtons } from './HeaderButtons';
 
 interface HeaderPropType {
 	text: string;
-	back?: boolean;
+	rightBack?: boolean;
+	leftBack?: boolean;
 	rightButton?: boolean;
 	leftButton?: boolean;
 	rightStepOverType?: string;
 	leftStepOverType?: string;
+	rightButtonAction?: any;
+	leftButtonAction?: any;
+	rightButtonDisabled?: boolean;
 }
 
 const Header: React.FC<HeaderPropType> = ({
 	text,
-	back,
+	rightBack,
+	leftBack,
 	rightButton,
 	leftButton,
 	rightStepOverType = StepOverTypes.rightArrow,
 	leftStepOverType = StepOverTypes.leftArrow,
+	rightButtonAction,
+	leftButtonAction,
+	rightButtonDisabled = false,
 }: HeaderPropType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { navigationArray } = useContext(MainPageContext);
-	const handlePress = (): void => {
-		if (back) {
-			return navigation.goBack();
+	const handleRightPress = (): void => {
+		if (rightButtonAction) {
+			rightButtonAction();
+		}
+		if (rightBack) {
+			navigation.goBack();
+		}
+		navigationArray[0]();
+	};
+	const handleLeftPress = (): void => {
+		if (leftButtonAction) {
+			leftButtonAction();
+		}
+		if (leftBack) {
+			navigation.goBack();
 		}
 		navigationArray[0]();
 	};
@@ -41,14 +61,16 @@ const Header: React.FC<HeaderPropType> = ({
 					headerButtons({
 						type: leftStepOverType,
 						left: true,
-						handlePress: handlePress,
+						handlePress: handleLeftPress,
+						disabled: false,
 					})}
 
 				{rightButton &&
 					headerButtons({
 						type: rightStepOverType,
 						left: false,
-						handlePress: handlePress,
+						handlePress: handleRightPress,
+						disabled: rightButtonDisabled,
 					})}
 
 				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>

@@ -7,8 +7,7 @@ export const find = {
 
 export const feedback = {
 	tellUsWhatYouThink: 'Tell us what you think.',
-	wereHappyToHelpAt: "We're happy to help at",
-	teamAtLayersDotCom: 'team@layers.com',
+	madeWithLoveFromCanada: 'Made with ❤️ from 🇨🇦',
 } as const;
 
 export const match = {
@@ -40,5 +39,6 @@ export const toast = {
 	anErrorHasOccurredWhileCreatingOutfit: 'An error has occurred while creating outfit.',
 	anErrorHasOccurredWhileDeletingOutfit: 'An error has occurred while deleting outfit.',
 	anErrorHasOccurredWhileUpdatingOutfit: 'An error has occurred while updating outfit.',
-	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating profile.'
+	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating profile.',
+	anErrorHasOccurredWhileSendingFeedback: 'An error has occurred while sending feedback.',
 }

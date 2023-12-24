@@ -36,19 +36,6 @@ const CategorySlides = ({
             data={allItemsData}
             renderItem={({ item }) => {
                 return (
-                    // {/* <Text */}
-                    // {/* 	style={{ */}
-                    // {/* 		width: screenWidth, */}
-                    // {/* 		// width: GlobalStyles.layout.gap, */}
-                    // {/* 		backgroundColor: 'red', */}
-                    // {/* 		// borderColor: 'black', */}
-                    // {/* 		// borderWidth: 10, */}
-                    // {/* 		// borderStyle: 'solid', */}
-                    // {/* 	}} */}
-                    // {/* > */}
-                    // {/* 	Empty */}
-                    // {/* </Text> */}
-                    // <Empty />
                     <CategorySlide itemsData={item} handleItemChange={handleItemChange} />
                 );
             }}
@@ -60,7 +47,7 @@ const CategorySlides = ({
             snapToAlignment="center"
             showsHorizontalScrollIndicator={false}
             onViewableItemsChanged={handleViewableItemsChanged}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
             initialScrollIndex={CategoryToIndex[selectedCategory]}
             getItemLayout={(data, index) => ({
                 length: windowWidth,

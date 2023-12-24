@@ -11,10 +11,16 @@ import GlobalStyles from '../../constants/GlobalStyles';
 
 interface StackedTextboxPropsType {
 	placeholder: string;
+	value?: string;
+	onFieldChange: (text: string) => void;
 }
 
-const SquareTextbox = ({ placeholder }: StackedTextboxPropsType) => {
-	const [fieldText, setFieldText] = useState('');
+const SquareTextbox = ({
+	placeholder,
+	value,
+	onFieldChange,
+}: StackedTextboxPropsType) => {
+	const [fieldText, setFieldText] = useState(value || '');
 	const textInputRef = useRef<TextInput | null>(null);
 
 	const handlePress = () => {
@@ -31,6 +37,7 @@ const SquareTextbox = ({ placeholder }: StackedTextboxPropsType) => {
 				value={fieldText}
 				onChangeText={(text) => {
 					setFieldText(text);
+					onFieldChange(text);
 				}}
 				multiline={true}
 				placeholder={placeholder}

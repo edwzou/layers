@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
         backgroundColor: GlobalStyles.colorPalette.primary[500],
         marginHorizontal: 5,
         ...GlobalStyles.utils.tagShape,
-        ...GlobalStyles.utils.tagShadow,
         shadowColor: GlobalStyles.colorPalette.primary[400]
     },
     currentTitleText: {
