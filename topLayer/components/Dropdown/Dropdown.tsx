@@ -4,6 +4,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Icon from 'react-native-remix-icon';
 
+DropDownPicker.setListMode("SCROLLVIEW");
+
 interface DropdownType {
 	// !!! Fix Types
 	label: string;

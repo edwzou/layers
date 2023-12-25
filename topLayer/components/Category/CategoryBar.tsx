@@ -55,7 +55,7 @@ export default function CategoryBar({ selectedCategory, handleCategoryChange }: 
 
 const styles = StyleSheet.create({
     titleContainer: {
-        marginHorizontal: 5,
+        marginHorizontal: 3,
         ...GlobalStyles.utils.tagShape,
     },
     title: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     },
     currentTitle: {
         backgroundColor: GlobalStyles.colorPalette.primary[500],
-        marginHorizontal: 5,
+        // marginHorizontal: 5,
         ...GlobalStyles.utils.tagShape,
         shadowColor: GlobalStyles.colorPalette.primary[400]
     },
