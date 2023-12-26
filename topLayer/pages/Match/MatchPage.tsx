@@ -27,7 +27,7 @@ export const MatchPageContext = createContext({
 });
 
 const MatchPage = () => {
-	const { navigationArray, setShouldRefreshMatchPage } =
+	const { navigationArray, setShouldRefreshMainPage } =
 		useContext(MainPageContext);
 	const [dismissal, setDismissal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
@@ -69,7 +69,7 @@ const MatchPage = () => {
 			if (response.status === 200) {
 				//alert(`You have created: ${JSON.stringify(response.data)}`);
 				setDismissal(true);
-				setShouldRefreshMatchPage(true);
+				setShouldRefreshMainPage(true);
 				//navigationArray[0](); // Uncomment this to navigate to profile page
 				setDismissal(false);
 				showSuccessMatchToast()

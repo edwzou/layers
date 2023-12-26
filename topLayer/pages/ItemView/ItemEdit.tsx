@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { View, StyleSheet, Pressable, Keyboard, Text } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Pressable, Keyboard, Text, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import Button from '../../components/Button/Button';
 import {
     ClothingTypes,
@@ -30,9 +30,13 @@ import { type StackTypes } from 'utils/StackNavigation';
 
 import Header from '../../components/Header/Header';
 import { StepOverTypes } from '../../constants/Enums';
+import { MainPageContext } from '../../pages/Main/MainPage';
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings';
 
 interface ItemEditPropsType {
     clothingItem: UserClothing;
+    navigateToProfile: () => void;
 }
 
 interface FormValues {
@@ -51,9 +55,14 @@ type UpdateData = {
     color?: string[];
 };
 
-const ItemEdit = ({ clothingItem }: ItemEditPropsType) => {
+const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
+
+    const { setShouldRefreshMainPage } = useContext(MainPageContext);
+
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const colorPickerRef = useRef<refPropType>(null);
+
+    const [isLoading, setIsLoading] = useState(false); // Add loading state
 
     const [currentColorTags, setColorTags] = useState(clothingItem.color);
 
@@ -219,8 +228,26 @@ const ItemEdit = ({ clothingItem }: ItemEditPropsType) => {
         setValue('color', currentColorTags);
     }, [currentColorTags])
 
-    const onSubmit = async (values: FormValues | any) => {
-        console.log(values)
+    const showSuccessUpdateToast = () => {
+        Toast.show({
+            type: 'success',
+            text1: toast.success,
+            text2: toast.yourItemHasBeenUpdated,
+            topOffset: GlobalStyles.layout.toastTopOffset,
+        });
+    }
+
+    const showErrorUpdateToast = () => {
+        Toast.show({
+            type: 'error',
+            text1: toast.error,
+            text2: toast.anErrorHasOccurredWhileUpdatingItem,
+            topOffset: GlobalStyles.layout.toastTopOffset
+        });
+    }
+
+    const updateItem = async (values: FormValues | any) => {
+
         const dataToUpdate: UpdateData = {};
 
         // Add fields to dataToUpdate only if they have been set
@@ -229,6 +256,7 @@ const ItemEdit = ({ clothingItem }: ItemEditPropsType) => {
         if (values.size !== clothingItem.size) dataToUpdate.size = values.size;
         if (values.color !== clothingItem.color) dataToUpdate.color = values.color;
 
+        setIsLoading(true); // Start loading
         try {
             const response = await axios.put(
                 `${baseUrl}/api/private/clothing_items/${clothingItem.ciid}`,
@@ -240,12 +268,16 @@ const ItemEdit = ({ clothingItem }: ItemEditPropsType) => {
                 }
             );
             if (response.status === 200) {
-                console.log('YES FKN SIR')
+                setShouldRefreshMainPage(true);
+                navigateToProfile();
+                showSuccessUpdateToast();
             } else {
-                console.log('Nice try pissin')
+                showErrorUpdateToast();
             }
 
+            setIsLoading(false); // Stop loading on success
         } catch (error) {
+            setIsLoading(false); // Stop loading on error
             alert(error);
         }
     };
@@ -276,7 +308,7 @@ const ItemEdit = ({ clothingItem }: ItemEditPropsType) => {
                 leftButton={true}
                 rightButton={true}
                 rightStepOverType={StepOverTypes.done}
-                rightButtonAction={handleSubmit(onSubmit)}
+                rightButtonAction={handleSubmit(updateItem)}
             />
             <>
                 <ScrollView
@@ -360,6 +392,11 @@ const ItemEdit = ({ clothingItem }: ItemEditPropsType) => {
                     dim={false}
                 />
             </>
+            {isLoading && (
+                <View style={styles.overlay}>
+                    <ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+                </View>
+            )}
         </View>
     );
 };
@@ -384,6 +421,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         shadowColor: GlobalStyles.colorPalette.primary[300],
         ...GlobalStyles.utils.deleteShadow,
+    },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'transparent', // Set to transparent
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 

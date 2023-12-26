@@ -28,12 +28,12 @@ import { User } from './pages/Main';
 import Toast from 'react-native-toast-message';
 
 export const AppContext = createContext({
-	setShouldRefreshProfilePage: (() => { }) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshApp: (() => { }) as Dispatch<SetStateAction<boolean>>,
 });
 
 export default function App() {
 
-	const [shouldRefreshProfilePage, setShouldRefreshProfilePage] = useState(false)
+	const [shouldRefreshApp, setShouldRefreshApp] = useState(false)
 
 	const [user, setUser] = useState<User | null>(null);
 
@@ -60,16 +60,16 @@ export default function App() {
 
 	// refetches user after updating info in settings
 	useEffect(() => {
-		if (shouldRefreshProfilePage) {
+		if (shouldRefreshApp) {
 			void getUser();
-			setShouldRefreshProfilePage(false);
+			setShouldRefreshApp(false);
 		}
-	}, [shouldRefreshProfilePage]);
+	}, [shouldRefreshApp]);
 
 	return (
 		<AppContext.Provider
 			value={{
-				setShouldRefreshProfilePage: setShouldRefreshProfilePage,
+				setShouldRefreshApp: setShouldRefreshApp,
 			}}
 		>
 			<NavigationContainer ref={navigationRef}>

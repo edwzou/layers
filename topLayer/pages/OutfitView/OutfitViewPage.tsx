@@ -26,7 +26,7 @@ import Toast from 'react-native-toast-message';
 import { toast } from '../../constants/GlobalStrings'
 
 const OutfitViewPage = ({ route }: any) => {
-	const { setShouldRefreshOutfitViewPage } = useContext(MainPageContext);
+	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
@@ -75,7 +75,7 @@ const OutfitViewPage = ({ route }: any) => {
 
 			if (response.status === 200) {
 				//alert(`You have updated: ${JSON.stringify(response.data)}`);
-				setShouldRefreshOutfitViewPage(true);
+				setShouldRefreshMainPage(true);
 				redirectToProfile();
 				showSuccessUpdateToast()
 			} else {

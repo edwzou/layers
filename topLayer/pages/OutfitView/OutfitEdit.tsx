@@ -52,7 +52,7 @@ const OutfitEdit = ({
 	navigateToProfile,
 	updateIsLoading
 }: OutfitViewPropsType) => {
-	const { setShouldRefreshOutfitEdit } = useContext(MainPageContext);
+	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
 	const [text, setText] = useState(title);
 	const [rawData, setRawData] = useState<UserOutfit[]>([]);
@@ -87,7 +87,7 @@ const OutfitEdit = ({
 
 			if (response.status === 200) {
 				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
-				setShouldRefreshOutfitEdit(true);
+				setShouldRefreshMainPage(true);
 				navigateToProfile();
 				showSuccessDeleteToast()
 			} else {

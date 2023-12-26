@@ -19,13 +19,9 @@ import { UserAllItems, UserClothing } from '../../pages/Match';
 import { getAllClothingItems, getAllOutfits } from '../../endpoints/wardrobe';
 
 export const MainPageContext = createContext({
-	navigationArray: [() => {}],
+	navigationArray: [() => { }],
 	allItems: [] as UserAllItems[],
-	setShouldRefreshMatchPage: (() => {}) as Dispatch<SetStateAction<boolean>>,
-	setShouldRefreshOutfitEdit: (() => {}) as Dispatch<SetStateAction<boolean>>,
-	setShouldRefreshOutfitViewPage: (() => {}) as Dispatch<
-		SetStateAction<boolean>
-	>,
+	setShouldRefreshMainPage: (() => { }) as Dispatch<SetStateAction<boolean>>,
 });
 
 const MainPage: React.FC = () => {
@@ -37,10 +33,7 @@ const MainPage: React.FC = () => {
 	const [allBottoms, setAllBottoms] = useState<UserClothing[]>([]);
 	const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
 
-	const [shouldRefreshMatchPage, setShouldRefreshMatchPage] = useState(true);
-	const [shouldRefreshOutfitEdit, setShouldRefreshOutfitEdit] = useState(true);
-	const [shouldRefreshOutfitViewPage, setShouldRefreshOutfitViewPage] =
-		useState(true);
+	const [shouldRefreshMainPage, setShouldRefreshMainPage] = useState(true);
 
 	// initializes an array of clothing categories and their data
 	const allItems: UserAllItems[] = [
@@ -68,11 +61,7 @@ const MainPage: React.FC = () => {
 
 	// fetched all the outfits and clothings
 	useEffect(() => {
-		if (
-			shouldRefreshMatchPage ||
-			shouldRefreshOutfitEdit ||
-			shouldRefreshOutfitViewPage
-		) {
+		if (shouldRefreshMainPage) {
 			void getAllOutfits(setAllOutfits);
 			void getAllClothingItems(
 				setAllOuterwear,
@@ -81,19 +70,11 @@ const MainPage: React.FC = () => {
 				setAllShoes
 			);
 		}
-		if (shouldRefreshMatchPage) {
-			setShouldRefreshMatchPage(false);
-		}
-		if (shouldRefreshOutfitEdit) {
-			setShouldRefreshOutfitEdit(false);
-		}
-		if (shouldRefreshOutfitViewPage) {
-			setShouldRefreshOutfitViewPage(false);
+		if (shouldRefreshMainPage) {
+			setShouldRefreshMainPage(false);
 		}
 	}, [
-		shouldRefreshMatchPage,
-		shouldRefreshOutfitEdit,
-		shouldRefreshOutfitViewPage,
+		shouldRefreshMainPage,
 	]);
 
 	const ref = useRef<PagerView>(null);
@@ -120,9 +101,7 @@ const MainPage: React.FC = () => {
 			value={{
 				navigationArray: [navigateToProfile, navigateToMatch, navigateToFind],
 				allItems: allItems,
-				setShouldRefreshMatchPage: setShouldRefreshMatchPage,
-				setShouldRefreshOutfitEdit: setShouldRefreshOutfitEdit,
-				setShouldRefreshOutfitViewPage: setShouldRefreshOutfitViewPage,
+				setShouldRefreshMainPage: setShouldRefreshMainPage
 			}}
 		>
 			<PagerView

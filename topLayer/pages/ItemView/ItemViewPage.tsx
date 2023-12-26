@@ -3,20 +3,33 @@ import { StyleSheet } from 'react-native'
 import ItemView from './ItemView'
 import ItemEdit from './ItemEdit';
 
-import { Stack } from '../../utils/StackNavigation';
-import { NavigationContainer } from '@react-navigation/native';
+import { Stack, StackTypes } from '../../utils/StackNavigation';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import { headerButton } from '../../components/Modal/HeaderButton';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useState } from 'react';
 
 const ItemViewPage = ({ route }: any) => {
 
     const { item, editable } = route.params;
 
+    const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
+    const redirectToProfile = () => {
+        navigation.navigate(StackNavigation.Profile, {});
+    };
+
     const ItemViewComponent = () => (<ItemView clothingItem={item} />)
-    const ItemEditComponent = () => (<ItemEdit clothingItem={item} />)
+    const ItemEditComponent = () => (
+        <ItemEdit
+            clothingItem={item}
+            navigateToProfile={redirectToProfile}
+        />
+    )
 
     return (
         <NavigationContainer
