@@ -51,13 +51,15 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	);
 
 	const [sizeOpen, setSizeOpen] = useState(false);
+	// sets the size stored in the database
 	const [sizeValue, setSizeValue] = useState(
 		clothingItem.size ? clothingItem.size : ''
 	);
-	const [sizes, setSizes] = useState(() => {
+	// shows the possible size options for a given clothing category
+	const showSizeOptions = (category: string) => {
 		if (
-			clothingItem.category === ClothingTypes.outerwear ||
-			clothingItem.category === ClothingTypes.tops
+			category === ClothingTypes.outerwear ||
+			category === ClothingTypes.tops
 		) {
 			return [
 				{
@@ -89,7 +91,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 					value: 'xxl',
 				},
 			];
-		} else if (clothingItem.category === ClothingTypes.bottoms) {
+		} else if (category === ClothingTypes.bottoms) {
 			return [
 				{
 					label: 'US 28',
@@ -152,13 +154,15 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 				},
 			];
 		}
-	});
+	}
+	const [sizes, setSizes] = useState(showSizeOptions(clothingItem.category));
 
 	const [itemTypeOpen, setItemTypeOpen] = useState(false);
 	const [itemTypeValue, setItemTypeValue] = useState(
 		clothingItem.category ? clothingItem.category : ''
 	);
-	const [itemType, setItemType] = useState([
+
+	const [itemTypes, setItemTypes] = useState([
 		{
 			label: capitalizeFirstLetter(ClothingTypes.outerwear),
 			value: ClothingTypes.outerwear,
@@ -176,6 +180,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 			value: ClothingTypes.shoes,
 		},
 	]);
+
 	const {
 		control,
 		handleSubmit,
@@ -194,6 +199,10 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 			created_at: '',
 		},
 	});
+
+	useEffect(() => {
+		setSizes(showSizeOptions(itemTypeValue))
+	}, [itemTypeValue])
 
 	useEffect(() => {
 		setValue('image_url', clothingItem.image_url);
@@ -280,12 +289,12 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 								label="Item type"
 								open={itemTypeOpen}
 								setOpen={setItemTypeOpen}
-								setItems={setItemType}
+								setItems={setItemTypes}
 								setValue={(value) => {
 									setItemTypeValue(value);
 									setValue('category', itemTypeValue);
 								}}
-								items={itemType}
+								items={itemTypes}
 								value={itemTypeValue}
 							/>
 						</View>
