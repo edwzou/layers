@@ -26,6 +26,8 @@ import { MainPageContext } from '../../pages/Main/MainPage';
 
 import Toast from 'react-native-toast-message';
 import { toast } from '../../constants/GlobalStrings'
+import Header from '../../components/Header/Header';
+import { StepOverTypes } from '../../constants/Enums';
 
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
@@ -41,7 +43,6 @@ interface OutfitViewPropsType {
 	clothingItems: UserClothing[];
 	titleRef: MutableRefObject<string>;
 	navigateToProfile: () => void;
-	updateIsLoading: boolean;
 }
 
 const OutfitEdit = ({
@@ -49,8 +50,7 @@ const OutfitEdit = ({
 	title,
 	clothingItems,
 	titleRef,
-	navigateToProfile,
-	updateIsLoading
+	navigateToProfile
 }: OutfitViewPropsType) => {
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
@@ -74,39 +74,29 @@ const OutfitEdit = ({
 		setOutfitData(rawData.filter(Boolean));
 	}, [rawData]);
 
-	useEffect(() => {
-		setIsLoading(updateIsLoading)
-	}, [updateIsLoading])
-
-	const handleDelete = async () => {
-		setIsLoading(true); // Start loading
-		try {
-			const response = await axios.delete(
-				`${baseUrl}/api/private/outfits/${id}`
-			);
-
-			if (response.status === 200) {
-				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
-				setShouldRefreshMainPage(true);
-				navigateToProfile();
-				showSuccessDeleteToast()
-			} else {
-				showErrorDeleteToast()
-				// throw new Error('An error has occurred while deleting outfit');
-			}
-			setIsLoading(false); // Stop loading on success
-		} catch (error) {
-			setIsLoading(false); // Stop loading on error
-			void axiosEndpointErrorHandler(error);
-			alert(error);
-		}
-	};
-
 	const showSuccessDeleteToast = () => {
 		Toast.show({
 			type: 'success',
 			text1: toast.success,
 			text2: toast.yourOutfitHasBeenDeleted,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
+	const showSuccessUpdateToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourOutfitHasBeenUpdated,
+			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
+	}
+
+	const showErrorUpdateToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileUpdatingOutfit,
 			topOffset: GlobalStyles.layout.toastTopOffset
 		});
 	}
@@ -138,54 +128,122 @@ const OutfitEdit = ({
 		)
 	}
 
+	// Only updates title
+	const updateOutfit = async () => {
+		const updatedTitle = titleRef.current;
+
+		setIsLoading(true); // Start loading
+		try {
+			const response = await axios.put(
+				`${baseUrl}/api/private/outfits/${id}`,
+				{
+					title: updatedTitle,
+				}
+			);
+
+			if (response.status === 200) {
+				//alert(`You have updated: ${JSON.stringify(response.data)}`);
+				setShouldRefreshMainPage(true);
+				navigateToProfile();
+				showSuccessUpdateToast()
+			} else {
+				showErrorUpdateToast()
+				// throw new Error('An error has occurred while updating outfit');
+			}
+			setIsLoading(false); // Stop loading on success
+		} catch (error) {
+			setIsLoading(false); // Stop loading on error
+			void axiosEndpointErrorHandler(error);
+		}
+	};
+
+	const handleDelete = async () => {
+		setIsLoading(true); // Start loading
+		try {
+			const response = await axios.delete(
+				`${baseUrl}/api/private/outfits/${id}`
+			);
+
+			if (response.status === 200) {
+				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
+				setShouldRefreshMainPage(true);
+				navigateToProfile();
+				showSuccessDeleteToast()
+			} else {
+				showErrorDeleteToast()
+				// throw new Error('An error has occurred while deleting outfit');
+			}
+			setIsLoading(false); // Stop loading on success
+		} catch (error) {
+			setIsLoading(false); // Stop loading on error
+			void axiosEndpointErrorHandler(error);
+			alert(error);
+		}
+	};
+
 	return (
 		<View style={styles.container}>
-			<StackedTextbox
-				label={outfitEdit.outfitName}
-				onFieldChange={onInputChange}
-				value={title ? title : text}
+			<Header
+				text={"Edit"}
+				leftBack={true}
+				leftButton={true}
+				rightButton={true}
+				rightStepOverType={StepOverTypes.done}
+				rightButtonAction={updateOutfit}
 			/>
-			<FlatList
-				data={clothingItems}
-				renderItem={({ item }) => {
-					return (
-						<View style={{ width: ITEM_SIZE(2) }}>
-							<ItemCell
-								imageUrl={item.image_url}
-								disablePress={false}
-								key={item.ciid}
+			<View style={styles.editContainer}>
+				<StackedTextbox
+					label={outfitEdit.outfitName}
+					onFieldChange={onInputChange}
+					value={title ? title : text}
+				/>
+				<FlatList
+					data={clothingItems}
+					renderItem={({ item }) => {
+						return (
+							<View style={{ width: ITEM_SIZE(2) }}>
+								<ItemCell
+									imageUrl={item.image_url}
+									disablePress={false}
+									key={item.ciid}
+								/>
+							</View>
+						);
+					}}
+					numColumns={2}
+					contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
+					columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
+					style={{ height: screenHeight - 350, padding: 6 }}
+				/>
+				<View style={styles.deleteButtonContainer}>
+					<Pressable onPress={confirmDeletion}>
+						<View style={styles.deleteButton}>
+							<Icon
+								name={GlobalStyles.icons.closeOutline}
+								color={GlobalStyles.colorPalette.primary[300]}
+								size={GlobalStyles.sizing.icon.regular}
 							/>
 						</View>
-					);
-				}}
-				numColumns={2}
-				contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-				columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
-				style={{ height: screenHeight - 350, padding: 6 }}
-			/>
-			<View style={styles.deleteButtonContainer}>
-				<Pressable onPress={confirmDeletion}>
-					<View style={styles.deleteButton}>
-						<Icon
-							name={GlobalStyles.icons.closeOutline}
-							color={GlobalStyles.colorPalette.primary[300]}
-							size={GlobalStyles.sizing.icon.regular}
-						/>
-					</View>
-				</Pressable>
-			</View>
-
-			{isLoading && (
-				<View style={styles.overlay}>
-					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+					</Pressable>
 				</View>
-			)}
+
+				{isLoading && (
+					<View style={styles.overlay}>
+						<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+					</View>
+				)}
+			</View>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
+		gap: 15,
+		paddingTop: 20,
+	},
+	editContainer: {
 		marginHorizontal: GlobalStyles.layout.xGap - 6, // Gives extra room for the item cell delete button to render
 		gap: GlobalStyles.layout.gap,
 		flex: 1,
