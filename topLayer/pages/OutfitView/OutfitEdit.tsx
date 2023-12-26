@@ -217,10 +217,10 @@ const OutfitEdit = ({
 				/>
 				<View style={styles.deleteButtonContainer}>
 					<Pressable onPress={confirmDeletion}>
-						<View style={styles.deleteButton}>
+						<View style={GlobalStyles.utils.deleteButton}>
 							<Icon
 								name={GlobalStyles.icons.closeOutline}
-								color={GlobalStyles.colorPalette.primary[300]}
+								color={GlobalStyles.colorPalette.background}
 								size={GlobalStyles.sizing.icon.regular}
 							/>
 						</View>
@@ -252,16 +252,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: GlobalStyles.layout.gap * 2.5,
 		alignSelf: 'center',
-	},
-	deleteButton: {
-		width: 40,
-		height: 40,
-		...GlobalStyles.utils.fullRadius,
-		backgroundColor: GlobalStyles.colorPalette.primary[200],
-		alignItems: 'center',
-		justifyContent: 'center',
-		shadowColor: GlobalStyles.colorPalette.primary[300],
-		...GlobalStyles.utils.deleteShadow,
 	},
 	overlay: {
 		...StyleSheet.absoluteFillObject,
