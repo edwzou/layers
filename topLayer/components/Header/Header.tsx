@@ -38,7 +38,7 @@ const Header: React.FC<HeaderPropType> = ({
 	const { navigationArray } = useContext(MainPageContext);
 	const handleRightPress = (): void => {
 		if (rightButtonAction) {
-			rightButtonAction();
+			rightButtonAction;
 		}
 		if (rightBack) {
 			navigation.goBack();
@@ -47,7 +47,7 @@ const Header: React.FC<HeaderPropType> = ({
 	};
 	const handleLeftPress = (): void => {
 		if (leftButtonAction) {
-			leftButtonAction();
+			leftButtonAction;
 		}
 		if (leftBack) {
 			navigation.goBack();
@@ -72,7 +72,6 @@ const Header: React.FC<HeaderPropType> = ({
 						handlePress: handleRightPress,
 						disabled: rightButtonDisabled,
 					})}
-
 				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
 			</View>
 		</SafeAreaView>

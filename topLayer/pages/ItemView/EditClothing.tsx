@@ -6,6 +6,7 @@ import Button from '../../components/Button/Button';
 import {
 	ClothingTypes,
 	StackNavigation,
+	StepOverTypes,
 	TagAction,
 } from '../../constants/Enums';
 import Dropdown from '../../components/Dropdown/Dropdown';
@@ -27,6 +28,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
+import Header from '../../components/Header/Header';
 
 interface EditClothingPropsType {
 	clothingItem: UserClothing;
@@ -200,9 +202,8 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	}, [clothingItem.image_url]);
 
 	const onSubmit = async (values: FormValues | any) => {
+		console.log('submit handling');
 		if (values.category == '') {
-			//console.log('Category: ', values.category);
-			//console.log(itemTypeValue);
 			throw new Error('Category Value Not Filled Out.');
 		}
 		if (values.title == '') {
@@ -252,8 +253,19 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		navigation.navigate(StackNavigation.OutfitView, {});
 	};
 
+	const redirectToProfile = () => {
+		navigation.navigate(StackNavigation.Profile, {});
+	};
+
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={[{ flex: 1 }, styles.container]}>
+			<Header
+				text={StackNavigation.CreateClothing}
+				rightButton={true}
+				rightBack={true}
+				rightStepOverType={StepOverTypes.done}
+				rightButtonAction={handleSubmit(onSubmit)}
+			/>
 			<ScrollView
 				contentContainerStyle={GlobalStyles.sizing.bottomSpacingPadding}
 			>
@@ -271,7 +283,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						}}
 						value={itemName}
 					/>
-					<ItemCell imageUrl={clothingItem.image_url} />
+					<ItemCell imageUrl={clothingItem.image_url} base64={true} />
 					<View
 						style={{ flexDirection: 'row', justifyContent: 'space-between' }}
 					>
@@ -359,6 +371,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		shadowColor: GlobalStyles.colorPalette.primary[300],
 		...GlobalStyles.utils.deleteShadow,
+	},
+	container: {
+		flex: 1,
+		gap: 15,
+		paddingTop: 20,
 	},
 });
 

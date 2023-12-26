@@ -23,7 +23,7 @@ import { type StackTypes } from 'utils/StackNavigation';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
 import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings'
+import { toast } from '../../constants/GlobalStrings';
 
 const OutfitViewPage = ({ route }: any) => {
 	const { setShouldRefreshOutfitViewPage } = useContext(MainPageContext);
@@ -77,9 +77,9 @@ const OutfitViewPage = ({ route }: any) => {
 				//alert(`You have updated: ${JSON.stringify(response.data)}`);
 				setShouldRefreshOutfitViewPage(true);
 				redirectToProfile();
-				showSuccessUpdateToast()
+				showSuccessUpdateToast();
 			} else {
-				showErrorUpdateToast()
+				showErrorUpdateToast();
 				// throw new Error('An error has occurred while updating outfit');
 			}
 			setIsLoading(false); // Stop loading on success
@@ -96,16 +96,16 @@ const OutfitViewPage = ({ route }: any) => {
 			text2: toast.yourOutfitHasBeenUpdated,
 			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	const showErrorUpdateToast = () => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
 			text2: toast.anErrorHasOccurredWhileUpdatingOutfit,
-			topOffset: GlobalStyles.layout.toastTopOffset
+			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	return (
 		<NavigationContainer independent={true}>
@@ -126,12 +126,12 @@ const OutfitViewPage = ({ route }: any) => {
 							headerTitle: item.title,
 							headerRight: editable
 								? () =>
-									headerButton({
-										type: StepOverTypes.edit,
-										handlePress: () => {
-											navigation.navigate(StackNavigation.EditClothing);
-										},
-									})
+										headerButton({
+											type: StepOverTypes.edit,
+											handlePress: () => {
+												navigation.navigate(StackNavigation.EditClothing);
+											},
+										})
 								: undefined,
 						})}
 					/>
@@ -156,4 +156,3 @@ const OutfitViewPage = ({ route }: any) => {
 export default OutfitViewPage;
 
 const styles = StyleSheet.create({});
-

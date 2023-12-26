@@ -43,6 +43,7 @@ export const StackNavigation = {
 	MarkedList: 'MarkedList',
 	OutfitPreview: 'Preview',
 	ForeignProfile: 'ForeignProfile',
+	CreateClothing: 'Create',
 } as const;
 
 export const NavigationBack = {
