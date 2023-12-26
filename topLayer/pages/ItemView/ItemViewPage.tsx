@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 import ItemView from './ItemView'
-import EditClothing from './EditClothing';
+import ItemEdit from './ItemEdit';
 
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer } from '@react-navigation/native';
@@ -16,7 +16,7 @@ const ItemViewPage = ({ route }: any) => {
     const { item, editable } = route.params;
 
     const ItemViewComponent = () => (<ItemView clothingItem={item} />)
-    const EditClothingComponent = () => (<EditClothing clothingItem={item} />)
+    const ItemEditComponent = () => (<ItemEdit clothingItem={item} />)
 
     return (
         <NavigationContainer
@@ -45,15 +45,9 @@ const ItemViewPage = ({ route }: any) => {
                     />
                     <Stack.Screen
                         name={StackNavigation.EditClothing}
-                        component={EditClothingComponent}
+                        component={ItemEditComponent}
                         options={{
-                            headerTitle: "Edit",
-                            headerRight: () => headerButton({
-                                type: StepOverTypes.done,
-                                handlePress: () => {
-                                    console.log("Done tapped")
-                                },
-                            }),
+                            headerShown: false,
                         }}
                     />
                 </Stack.Group>

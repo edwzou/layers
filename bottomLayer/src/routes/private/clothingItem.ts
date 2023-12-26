@@ -2,8 +2,8 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import {
   responseCallbackDelete,
-  responseCallbackGet,
-  responseCallbackGetAll,
+  // responseCallbackGet,
+  // responseCallbackGetAll,
   responseCallbackPost,
   responseCallbackUpdate
 } from '../../utils/responseCallback';
@@ -47,16 +47,16 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
     const client = pool.connect();
     try {
       const async1 = deleteObjectFromS3(ciid);
-      const cli = await client;
+      // const cli = await client;
       const async2 = pool.query(
         'DELETE FROM backend_schema.clothing_item WHERE ciid = $1 AND uid = $2',
         [ciid, uid]
       );
-      const async3 = cli.query(
-        `UPDATE backend_schema.outfit SET clothing_items = array_remove(clothing_items, '${ciid}')`
-      );
+      // const async3 = cli.query(
+      //   `UPDATE backend_schema.outfit SET clothing_items = array_remove(clothing_items, '${ciid}')`
+      // );
 
-      const removeFromOutfit = await async3;
+      // const removeFromOutfit = await async3;
       const deleteItem = await async2;
       await async1;
 
@@ -80,39 +80,53 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
 router.put('/:ciid', (req: any, res: any): void => {
   const uid = req.user as string;
   const { ciid } = req.params;
+  const { category, title, size, color } = req.body;
 
-  // Extract clothing_item data from the request body
-  const { image, category, title, brands, size, color } = req.body;
   const updateItem = async (ciid: string): Promise<void> => {
-    // Update the outfit in the database
     try {
-      const imgRef = await convertImage(image, ciid, false);
+      let query = 'UPDATE backend_schema.clothing_item SET ';
+      const fieldsToUpdate = [];
+      const values = [];
 
-      const updateItem = await pool.query(
-        `
-      UPDATE backend_schema.clothing_item
-      SET image_url = $1,
-          category = $2,
-          title = $3,
-          brands = $4,
-          size = $5,
-          color = $6
-      WHERE ciid = $7 AND uid = $8
-      `,
-        [imgRef, category, title, brands, size, color, ciid, uid]
-      );
-      // responds with successful update even when no changes are made
+      if (category !== undefined) {
+        fieldsToUpdate.push(`category = $${values.length + 1}`);
+        values.push(category);
+      }
+      if (title !== undefined) {
+        fieldsToUpdate.push(`title = $${values.length + 1}`);
+        values.push(title);
+      }
+      if (size !== undefined) {
+        fieldsToUpdate.push(`size = $${values.length + 1}`);
+        values.push(size);
+      }
+      if (color !== undefined) {
+        fieldsToUpdate.push(`color = $${values.length + 1}`);
+        values.push(color); // Assuming color is already an array of strings
+      }
+
+      // Check if at least one field is provided
+      if (fieldsToUpdate.length === 0) {
+        return res.status(400).send({ error: 'No valid fields provided for update.' });
+      }
+
+      query += fieldsToUpdate.join(', ') + ` WHERE ciid = $${values.length + 1} AND uid = $${values.length + 2}`;
+      values.push(ciid, uid);
+
+      // Execute the update query
+      const updateResult = await pool.query(query, values);
       responseCallbackUpdate(
         null,
         ciid,
         res,
         'Clothing Item',
-        updateItem.rowCount
+        updateResult.rowCount
       );
     } catch (error) {
       responseCallbackUpdate(error, ciid, res, 'Clothing Item');
     }
   };
+
   void updateItem(ciid);
 });
 
