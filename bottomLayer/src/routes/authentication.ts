@@ -100,7 +100,7 @@ const signupStrate = new LocalStrategy(
         // Can optimize the following awaits to call run them at the same time
         const uid = uuidv4();
         const pp = profile_picture !== undefined ? profile_picture : '';
-        const async1 = convertImage(pp, uid, true); // Change this to false
+        const async1 = convertImage(pp, uid, false);
         const async2 = hash(password, 10);
         const emailLower = email.toLowerCase();
         const hashedPass = await async2;

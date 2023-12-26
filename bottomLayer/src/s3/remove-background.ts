@@ -22,7 +22,7 @@ async function removeBackground(imageData: Buffer): Promise<Buffer> {
     const formData = new FormData();
     formData.append('image_file', imageData, {
       filename: 'image', // Set the desired filename
-      contentType: 'image/jpg' // Set the content type of the image.
+      contentType: 'image/jpeg' // Set the content type of the image.
     });
 
     const response = await axios.post(process.env.CLIPDROP_ENDPOINT, formData, {
