@@ -60,7 +60,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 
     const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
-    const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+    // const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
     const colorPickerRef = useRef<refPropType>(null);
 
     const [isLoading, setIsLoading] = useState(false); // Add loading state

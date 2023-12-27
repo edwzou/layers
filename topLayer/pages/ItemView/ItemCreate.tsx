@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { View, StyleSheet, Pressable, Keyboard, Text } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Pressable, Keyboard, Text, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import Button from '../../components/Button/Button';
 import {
 	ClothingTypes,
@@ -29,6 +29,9 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
 import Header from '../../components/Header/Header';
+import { MainPageContext } from '../../pages/Main/MainPage';
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings';
 
 interface FormValues {
 	image: string;
@@ -41,11 +44,16 @@ interface FormValues {
 
 interface ItemCreatePropsType {
 	clothingItem: UserClothing;
+	navigateToProfile: () => void;
 }
 
-const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
+const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const colorPickerRef = useRef<refPropType>(null);
+
+	const { setShouldRefreshMainPage } = useContext(MainPageContext);
+
+	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const [currentColorTags, setColorTags] = useState(clothingItem.color);
 	const [itemName, setItemName] = useState(
@@ -219,7 +227,25 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 		setValue('image', clothingItem.image_url);
 	}, [clothingItem.image_url]);
 
-	const onSubmit = async (values: FormValues | any) => {
+	const showSuccessCreateToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourItemHasBeenCreated,
+			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
+	}
+
+	const showErrorCreateToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileCreatingItem,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
+	const handleCreate = async (values: FormValues | any) => {
 		console.log(values);
 		if (values.category == '') {
 			throw new Error('Category Value Not Filled Out.');
@@ -233,6 +259,7 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 		if (values.image_url == '') {
 			throw new Error('Image Value Not Filled Out.');
 		}
+		setIsLoading(true); // Start loading
 		try {
 			const { data, status } = await axios.post(
 				`${baseUrl}/api/private/clothing_items`,
@@ -240,15 +267,15 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 			);
 
 			if (status === 200) {
-				try {
-					console.log('Successfully created a new item');
-				} catch (error) {
-					console.log(error);
-				}
+				setShouldRefreshMainPage(true);
+				navigateToProfile();
+				showSuccessCreateToast()
 			} else {
-				throw new Error('Not Authorized.');
+				showErrorCreateToast()
 			}
+			setIsLoading(false); // Stop loading on success
 		} catch (error) {
+			setIsLoading(false); // Stop loading on error
 			alert(error);
 		}
 	};
@@ -284,7 +311,7 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 				leftButtonAction={redirectToCamera}
 				rightButton={true}
 				rightStepOverType={StepOverTypes.done}
-				rightButtonAction={handleSubmit(onSubmit)}
+				rightButtonAction={handleSubmit(handleCreate)}
 			/>
 			<ScrollView
 				contentContainerStyle={GlobalStyles.sizing.bottomSpacingPadding}
@@ -356,6 +383,11 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
 				dim={false}
 			/>
+			{isLoading && (
+				<View style={styles.overlay}>
+					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+				</View>
+			)}
 		</View>
 	);
 };
@@ -370,6 +402,12 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: GlobalStyles.layout.gap * 2.5,
 		alignSelf: 'center',
+	},
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'transparent', // Set to transparent
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 

@@ -48,8 +48,12 @@ const CameraWrapper = ({ route }: any) => {
 		updateClothingItem(photo);
 	};
 
+	const redirectToProfile = () => {
+		navigation.navigate(StackNavigation.Profile, {});
+	};
+
 	const ItemCreateComponent = () => (
-		<ItemCreate clothingItem={clothingItem} />
+		<ItemCreate clothingItem={clothingItem} navigateToProfile={redirectToProfile} />
 	);
 
 	const CameraComponents = () => (
