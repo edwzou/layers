@@ -86,6 +86,11 @@ export default function CameraComponent({
 	const takePicture = useCallback(async () => {
 		if (cameraRef.current == null) return;
 		const newPhoto = await cameraRef.current.takePictureAsync(takePhotoOptions);
+		if (newPhoto.base64) {
+			data(newPhoto.base64);
+		} else {
+			console.log('photo.base64 is undefined!');
+		}
 		navigation.navigate(StackNavigation.ItemCreate, {});
 		// console.log('Photo taken: ', newPhoto);
 	}, []);
