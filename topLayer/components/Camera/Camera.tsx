@@ -156,6 +156,7 @@ export default function CameraComponent({
 			// console.log('Test: ', photo.base64);
 			if (photo.base64) {
 				data(photo.base64);
+				console.log(photo.base64.substring(0, 10)); // Select image from camera
 			} else {
 				console.log('photo.base64 is undefined!');
 			}
@@ -227,6 +228,7 @@ export default function CameraComponent({
 		// console.log('Test2: ', result.assets[0].base64);
 		if (result.assets[0].base64) {
 			data(result.assets[0].base64);
+			console.log(result.assets[0].base64.substring(0, 10)); // Select image from library
 			navigation.navigate(StackNavigation.ItemCreate, {});
 		} else {
 			console.log('result.assets[0].base64 is undefined!');

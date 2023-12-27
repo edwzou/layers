@@ -15,8 +15,8 @@ import {
   getAllClothing,
   getAllClothingCate
 } from '../helper/clothingItem';
-import { itemCategories } from '../../utils/constants/itemCategories';
-import { colors } from '../../utils/constants/colors';
+import { type itemCategories } from '../../utils/constants/itemCategories';
+import { type colors } from '../../utils/constants/colors';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -26,7 +26,7 @@ router.post('/', (req: Request, res: Response): void => {
   const insertClothingItem = async (): Promise<any> => {
     try {
       const ciid = uuidv4();
-      const imgRef = await convertImage(image, ciid, false);
+      const imgRef = await convertImage(image, ciid, true);
       await pool.query(
         `INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
