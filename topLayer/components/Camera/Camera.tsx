@@ -5,6 +5,7 @@ import {
 	SafeAreaView,
 	Image,
 	Pressable,
+	ViewStyle,
 } from 'react-native';
 import React, {
 	type Dispatch,
@@ -33,6 +34,7 @@ import {
 	type TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
+	AnimatedStyleProp,
 	measure,
 	runOnJS,
 	useAnimatedGestureHandler,
@@ -128,7 +130,7 @@ export default function CameraComponent({
 					scale: scale.value,
 				},
 			],
-		};
+		} as AnimatedStyleProp<ViewStyle>;
 	});
 
 	if (cameraPermission == null) {
