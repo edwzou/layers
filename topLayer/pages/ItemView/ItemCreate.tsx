@@ -30,7 +30,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
 import Header from '../../components/Header/Header';
 
-interface EditClothingPropsType {
+interface ItemCreatePropsType {
 	clothingItem: UserClothing;
 }
 
@@ -43,7 +43,7 @@ interface FormValues {
 	brands: string[];
 }
 
-const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
+const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const colorPickerRef = useRef<refPropType>(null);
 
@@ -269,7 +269,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	return (
 		<View style={[{ flex: 1 }, styles.container]}>
 			<Header
-				text={StackNavigation.CreateClothing}
+				text={StackNavigation.ItemCreate}
 				rightButton={true}
 				rightBack={true}
 				rightStepOverType={StepOverTypes.done}
@@ -378,4 +378,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default EditClothing;
+export default ItemCreate;

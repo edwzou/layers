@@ -50,13 +50,13 @@ const ItemViewPage = ({ route }: any) => {
                             headerRight: editable ? (() => headerButton({
                                 type: StepOverTypes.edit,
                                 handlePress: () => {
-                                    navigation.navigate(StackNavigation.EditClothing);
+                                    navigation.navigate(StackNavigation.ItemCreate);
                                 },
                             })) : undefined,
                         })}
                     />
                     <Stack.Screen
-                        name={StackNavigation.EditClothing}
+                        name={StackNavigation.ItemCreate}
                         component={ItemEditComponent}
                         options={{
                             headerShown: false,

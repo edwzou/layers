@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import CameraComponent from './Camera';
-import EditClothing from '../../pages/ItemView/EditClothing';
+import ItemCreate from '../../pages/ItemView/ItemCreate';
 import { Stack, StackTypes } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -48,8 +48,8 @@ const CameraWrapper = ({ route }: any) => {
 		updateClothingItem(photo);
 	};
 
-	const EditClothingComponent = () => (
-		<EditClothing clothingItem={clothingItem} />
+	const ItemCreateComponent = () => (
+		<ItemCreate clothingItem={clothingItem} />
 	);
 
 	const CameraComponents = () => (
@@ -78,8 +78,8 @@ const CameraWrapper = ({ route }: any) => {
 						/>
 					) : (
 						<Stack.Screen
-							name={StackNavigation.EditClothing}
-							component={EditClothingComponent}
+							name={StackNavigation.ItemCreate}
+							component={ItemCreate}
 							options={{
 								headerShown: false,
 							}}

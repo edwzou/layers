@@ -28,7 +28,7 @@ export type StackTypes = {
 	Preview: StackNavigatorType;
 	Match: StackNavigatorType;
 	ItemView: StackNavigatorType;
-	EditClothing: StackNavigatorType;
+	ItemCreate: StackNavigatorType;
 	OutfitView: StackNavigatorType;
 	Feedback: StackNavigatorType;
 	Find: StackNavigatorType;

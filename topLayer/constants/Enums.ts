@@ -35,7 +35,7 @@ export const StackNavigation = {
 	Feedback: 'Feedback',
 	Find: 'Find',
 	ItemView: 'ItemView',
-	EditClothing: 'EditClothing',
+	ItemCreate: 'ItemCreate',
 	OutfitView: 'OutfitView',
 	CameraWrapper: 'CameraWrapper',
 	CameraComponents: 'CameraComponents',
@@ -43,7 +43,6 @@ export const StackNavigation = {
 	MarkedList: 'MarkedList',
 	OutfitPreview: 'Preview',
 	ForeignProfile: 'ForeignProfile',
-	CreateClothing: 'Create',
 } as const;
 
 export const NavigationBack = {

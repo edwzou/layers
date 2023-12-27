@@ -78,14 +78,14 @@ const OutfitViewPage = ({ route }: any) => {
 									headerButton({
 										type: StepOverTypes.edit,
 										handlePress: () => {
-											navigation.navigate(StackNavigation.EditClothing);
+											navigation.navigate(StackNavigation.ItemCreate);
 										},
 									})
 								: undefined,
 						})}
 					/>
 					<Stack.Screen
-						name={StackNavigation.EditClothing} // FIX THIS
+						name={StackNavigation.ItemCreate} // FIX THIS
 						component={OutfitEditComponent}
 						options={{
 							headerShown: false,

@@ -99,15 +99,6 @@ export default function App() {
 									/>
 								</>
 							)}
-							<Stack.Screen
-								name={StackNavigation.CameraWrapper}
-								component={CameraWrapper}
-								options={{
-									animation: 'slide_from_bottom',
-									gestureEnabled: true,
-									gestureDirection: 'vertical',
-								}}
-							/>
 						</Stack.Navigator>
 						<ExpoStatusBar style="auto" />
 					</UserContext.Provider>
