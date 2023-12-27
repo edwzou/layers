@@ -23,6 +23,14 @@ export const outfitEdit = {
 	delete: 'Delete',
 } as const;
 
+export const itemEdit = {
+	itemName: 'Item name',
+	deleteItem: 'Delete item?',
+	youCannotUndoThisAction: 'You cannot undo this action.',
+	cancel: 'Cancel',
+	delete: 'Delete',
+} as const;
+
 export const settings = {
 	pleaseEnterAValidEmail: 'Please enter a valid email.',
 	passwordMustBe8CharactersOrMore: 'Password must be 8 characters or more.'
@@ -35,12 +43,16 @@ export const toast = {
 	yourOutfitHasBeenCreated: 'Your outfit has been created.',
 	yourOutfitHasBeenDeleted: 'Your outfit has been deleted.',
 	yourOutfitHasBeenUpdated: 'Your outfit has been updated.',
+	yourItemHasBeenCreated: `Your item has been created.`,
 	yourItemHasBeenUpdated: `Your item has been updated.`,
+	yourItemHasBeenDeleted: `Your item has been deleted.`,
 	theEmailOrPasswordYouveEnteredIsIncorrect: 'The email or password you\'ve entered is incorrect.',
 	anErrorHasOccurredWhileCreatingOutfit: 'An error has occurred while creating your outfit.',
 	anErrorHasOccurredWhileDeletingOutfit: 'An error has occurred while deleting your outfit.',
 	anErrorHasOccurredWhileUpdatingOutfit: 'An error has occurred while updating your outfit.',
+	anErrorHasOccurredWhileCreatingItem: 'An error has occurred while creating your item.',
 	anErrorHasOccurredWhileUpdatingItem: 'An error has occurred while updating your item.',
+	anErrorHasOccurredWhileDeletingItem: 'An error has occurred while deleting your item.',
 	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating your profile.',
 	anErrorHasOccurredWhileSendingFeedback: 'An error has occurred while sending your feedback.',
 }

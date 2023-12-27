@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { View, StyleSheet, Pressable, Keyboard, Text, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Pressable, Keyboard, Text, ActivityIndicator, Alert } from 'react-native';
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Button from '../../components/Button/Button';
 import {
@@ -32,7 +32,8 @@ import Header from '../../components/Header/Header';
 import { StepOverTypes } from '../../constants/Enums';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings';
+import { toast, itemEdit } from '../../constants/GlobalStrings';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 interface ItemEditPropsType {
     clothingItem: UserClothing;
@@ -246,7 +247,43 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
         });
     }
 
-    const onUpdate = async (values: FormValues | any) => {
+    const showSuccessDeleteToast = () => {
+        Toast.show({
+            type: 'success',
+            text1: toast.success,
+            text2: toast.yourItemHasBeenDeleted,
+            topOffset: GlobalStyles.layout.toastTopOffset
+        });
+    }
+
+    const showErrorDeleteToast = () => {
+        Toast.show({
+            type: 'error',
+            text1: toast.error,
+            text2: toast.anErrorHasOccurredWhileDeletingItem,
+            topOffset: GlobalStyles.layout.toastTopOffset
+        });
+    }
+
+    const confirmDeletion = () => {
+        Alert.alert(
+            itemEdit.deleteItem,
+            itemEdit.youCannotUndoThisAction,
+            [
+                {
+                    text: itemEdit.cancel,
+                    onPress: () => { }
+                },
+                {
+                    text: itemEdit.delete,
+                    onPress: handleDelete,
+                    style: 'destructive'
+                }
+            ]
+        )
+    }
+
+    const handleUpdate = async (values: FormValues | any) => {
 
         const dataToUpdate: UpdateData = {};
 
@@ -282,6 +319,30 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
         }
     };
 
+    const handleDelete = async () => {
+        setIsLoading(true); // Start loading
+        try {
+            const response = await axios.delete(
+                `${baseUrl}/api/private/clothing_items/${clothingItem.ciid}`
+            );
+
+            if (response.status === 200) {
+                //alert(`You have deleted: ${JSON.stringify(response.data)}`);
+                setShouldRefreshMainPage(true);
+                navigateToProfile();
+                showSuccessDeleteToast()
+            } else {
+                showErrorDeleteToast()
+                // throw new Error('An error has occurred while deleting outfit');
+            }
+            setIsLoading(false); // Stop loading on success
+        } catch (error) {
+            setIsLoading(false); // Stop loading on error
+            void axiosEndpointErrorHandler(error);
+            alert(error);
+        }
+    };
+
     const handleOnRemovePress = (colorToDelete: string) => {
         const updatedColorTags = currentColorTags.filter(
             (color: string) => color !== colorToDelete
@@ -296,10 +357,6 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
         colorPickerRef.current?.scrollTo(0);
     };
 
-    const handlePress = () => {
-        navigation.navigate(StackNavigation.OutfitView, {});
-    };
-
     return (
         <View style={styles.container}>
             <Header
@@ -308,7 +365,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
                 leftButton={true}
                 rightButton={true}
                 rightStepOverType={StepOverTypes.done}
-                rightButtonAction={handleSubmit(onUpdate)}
+                rightButtonAction={handleSubmit(handleUpdate)}
             />
             <>
                 <ScrollView
@@ -324,7 +381,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <StackedTextBox
-                                    label="Item name"
+                                    label={itemEdit.itemName}
                                     onFieldChange={(value) => {
                                         onChange(value)
                                         setValue('title', value);
@@ -376,7 +433,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
                     </View>
                 </ScrollView>
                 <View style={styles.deleteButtonContainer}>
-                    <Pressable onPress={handlePress}>
+                    <Pressable onPress={confirmDeletion}>
                         <View style={GlobalStyles.utils.deleteButton}>
                             <Icon
                                 name={GlobalStyles.icons.closeOutline}

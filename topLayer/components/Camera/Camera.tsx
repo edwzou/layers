@@ -254,7 +254,6 @@ export default function CameraComponent({
 					<Text>
 						<Pressable
 							onPress={() => {
-								console.log('CAMERA GO BACK')
 								returnToNavigation.goBack();
 							}}
 						>

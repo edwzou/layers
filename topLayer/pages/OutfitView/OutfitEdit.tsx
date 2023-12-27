@@ -74,15 +74,6 @@ const OutfitEdit = ({
 		setOutfitData(rawData.filter(Boolean));
 	}, [rawData]);
 
-	const showSuccessDeleteToast = () => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourOutfitHasBeenDeleted,
-			topOffset: GlobalStyles.layout.toastTopOffset
-		});
-	}
-
 	const showSuccessUpdateToast = () => {
 		Toast.show({
 			type: 'success',
@@ -97,6 +88,15 @@ const OutfitEdit = ({
 			type: 'error',
 			text1: toast.error,
 			text2: toast.anErrorHasOccurredWhileUpdatingOutfit,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
+	const showSuccessDeleteToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourOutfitHasBeenDeleted,
 			topOffset: GlobalStyles.layout.toastTopOffset
 		});
 	}
@@ -129,7 +129,7 @@ const OutfitEdit = ({
 	}
 
 	// Only updates title
-	const updateOutfit = async () => {
+	const handleUpdate = async () => {
 		const updatedTitle = titleRef.current;
 
 		setIsLoading(true); // Start loading
@@ -189,7 +189,7 @@ const OutfitEdit = ({
 				leftButton={true}
 				rightButton={true}
 				rightStepOverType={StepOverTypes.done}
-				rightButtonAction={updateOutfit}
+				rightButtonAction={handleUpdate}
 			/>
 			<View style={styles.editContainer}>
 				<StackedTextbox
