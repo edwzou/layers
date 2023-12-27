@@ -23,18 +23,15 @@ import { type StackTypes } from 'utils/StackNavigation';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
 import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings'
+import { toast } from '../../constants/GlobalStrings';
 
 const OutfitViewPage = ({ route }: any) => {
-	const { setShouldRefreshOutfitViewPage } = useContext(MainPageContext);
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const { item, editable } = route.params;
 
 	const outfitTitleRef = useRef(item.title);
-
-	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const getFlatArrayOfValues = (
 		clothingList: UserClothingList
@@ -56,56 +53,8 @@ const OutfitViewPage = ({ route }: any) => {
 			clothingItems={getFlatArrayOfValues(item.clothing_items)}
 			titleRef={outfitTitleRef}
 			navigateToProfile={redirectToProfile}
-			updateIsLoading={isLoading}
 		/>
 	);
-
-	// Only updates title
-	const updateOutfit = async () => {
-		const updatedTitle = outfitTitleRef.current;
-
-		setIsLoading(true); // Start loading
-		try {
-			const response = await axios.put(
-				`${baseUrl}/api/private/outfits/${item.oid}`,
-				{
-					title: updatedTitle,
-				}
-			);
-
-			if (response.status === 200) {
-				//alert(`You have updated: ${JSON.stringify(response.data)}`);
-				setShouldRefreshOutfitViewPage(true);
-				redirectToProfile();
-				showSuccessUpdateToast()
-			} else {
-				showErrorUpdateToast()
-				// throw new Error('An error has occurred while updating outfit');
-			}
-			setIsLoading(false); // Stop loading on success
-		} catch (error) {
-			setIsLoading(false); // Stop loading on error
-			void axiosEndpointErrorHandler(error);
-		}
-	};
-
-	const showSuccessUpdateToast = () => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourOutfitHasBeenUpdated,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	}
-
-	const showErrorUpdateToast = () => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileUpdatingOutfit,
-			topOffset: GlobalStyles.layout.toastTopOffset
-		});
-	}
 
 	return (
 		<NavigationContainer independent={true}>
@@ -120,7 +69,7 @@ const OutfitViewPage = ({ route }: any) => {
 					}}
 				>
 					<Stack.Screen
-						name={StackNavigation.ItemView}
+						name={StackNavigation.OutfitView} // FIX THIS
 						component={OutfitViewComponent}
 						options={({ navigation }) => ({
 							headerTitle: item.title,
@@ -129,22 +78,17 @@ const OutfitViewPage = ({ route }: any) => {
 									headerButton({
 										type: StepOverTypes.edit,
 										handlePress: () => {
-											navigation.navigate(StackNavigation.EditClothing);
+											navigation.navigate(StackNavigation.OutfitEdit);
 										},
 									})
 								: undefined,
 						})}
 					/>
 					<Stack.Screen
-						name={StackNavigation.EditClothing}
+						name={StackNavigation.OutfitEdit} // FIX THIS
 						component={OutfitEditComponent}
 						options={{
-							headerTitle: 'Edit',
-							headerRight: () =>
-								headerButton({
-									type: StepOverTypes.done,
-									handlePress: updateOutfit,
-								}),
+							headerShown: false,
 						}}
 					/>
 				</Stack.Group>
@@ -156,4 +100,3 @@ const OutfitViewPage = ({ route }: any) => {
 export default OutfitViewPage;
 
 const styles = StyleSheet.create({});
-

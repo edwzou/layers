@@ -1,17 +1,18 @@
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { View, StyleSheet, Pressable, Keyboard, Text } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Pressable, Keyboard, Text, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import Button from '../../components/Button/Button';
 import {
 	ClothingTypes,
 	StackNavigation,
+	StepOverTypes,
 	TagAction,
 } from '../../constants/Enums';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
-import { lowTranslateY } from '../../utils/modalMaxShow';
+import { fullscreenLowTranslateY } from '../../utils/modalMaxShow';
 import ColorPicker from '../../components/ColorManager/ColorPicker';
 import GeneralModal, {
 	type refPropType,
@@ -27,10 +28,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
-
-interface EditClothingPropsType {
-	clothingItem: UserClothing;
-}
+import Header from '../../components/Header/Header';
+import { MainPageContext } from '../../pages/Main/MainPage';
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings';
 
 interface FormValues {
 	image: string;
@@ -41,9 +42,18 @@ interface FormValues {
 	brands: string[];
 }
 
-const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
+interface ItemCreatePropsType {
+	clothingItem: UserClothing;
+	navigateToProfile: () => void;
+}
+
+const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const colorPickerRef = useRef<refPropType>(null);
+
+	const { setShouldRefreshMainPage } = useContext(MainPageContext);
+
+	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const [currentColorTags, setColorTags] = useState(clothingItem.color);
 	const [itemName, setItemName] = useState(
@@ -55,8 +65,8 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 	const [sizeValue, setSizeValue] = useState(
 		clothingItem.size ? clothingItem.size : ''
 	);
-	// shows the possible size options for a given clothing category
-	const showSizeOptions = (category: string) => {
+	// helper function for setting the size options based on given clothing category
+	const helpSetSizes = (category: string) => {
 		if (
 			category === ClothingTypes.outerwear ||
 			category === ClothingTypes.tops
@@ -155,13 +165,15 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 			];
 		}
 	}
-	const [sizes, setSizes] = useState(showSizeOptions(clothingItem.category));
+	// sets the size options (ex. {S, M, L}, {US 10, US 11, US 12}, etc.)
+	const [sizes, setSizes] = useState(helpSetSizes(clothingItem.category));
 
 	const [itemTypeOpen, setItemTypeOpen] = useState(false);
+	// sets the item type value to be stored in the database
 	const [itemTypeValue, setItemTypeValue] = useState(
 		clothingItem.category ? clothingItem.category : ''
 	);
-
+	// sets the item type options
 	const [itemTypes, setItemTypes] = useState([
 		{
 			label: capitalizeFirstLetter(ClothingTypes.outerwear),
@@ -188,30 +200,54 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		formState: { dirtyFields, errors },
 	} = useForm({
 		defaultValues: {
-			ciid: '',
-			image_url: '',
-			category: '',
-			title: '',
-			uid: '',
-			brands: [],
-			size: '',
-			color: [],
-			created_at: '',
+			image: clothingItem.image_url,
+			category: clothingItem.category,
+			title: clothingItem.title,
+			brands: clothingItem.brands,
+			size: clothingItem.size,
+			color: clothingItem.color,
 		},
 	});
 
+	// sets new sizing options when a new item type (ex. outerwear) is selected
 	useEffect(() => {
-		setSizes(showSizeOptions(itemTypeValue))
+		setSizes(helpSetSizes(itemTypeValue))
+		setValue('category', itemTypeValue);
 	}, [itemTypeValue])
 
 	useEffect(() => {
-		setValue('image_url', clothingItem.image_url);
+		setValue('size', sizeValue);
+	}, [sizeValue])
+
+	useEffect(() => {
+		setValue('color', currentColorTags);
+	}, [currentColorTags])
+
+	useEffect(() => {
+		setValue('image', clothingItem.image_url);
 	}, [clothingItem.image_url]);
 
-	const onSubmit = async (values: FormValues | any) => {
+	const showSuccessCreateToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourItemHasBeenCreated,
+			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
+	}
+
+	const showErrorCreateToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileCreatingItem,
+			topOffset: GlobalStyles.layout.toastTopOffset
+		});
+	}
+
+	const handleCreate = async (values: FormValues | any) => {
+		console.log(values);
 		if (values.category == '') {
-			//console.log('Category: ', values.category);
-			//console.log(itemTypeValue);
 			throw new Error('Category Value Not Filled Out.');
 		}
 		if (values.title == '') {
@@ -223,6 +259,7 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		if (values.image_url == '') {
 			throw new Error('Image Value Not Filled Out.');
 		}
+		setIsLoading(true); // Start loading
 		try {
 			const { data, status } = await axios.post(
 				`${baseUrl}/api/private/clothing_items`,
@@ -230,15 +267,15 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 			);
 
 			if (status === 200) {
-				try {
-					console.log('Successfully created a new item');
-				} catch (error) {
-					console.log(error);
-				}
+				setShouldRefreshMainPage(true);
+				navigateToProfile();
+				showSuccessCreateToast()
 			} else {
-				throw new Error('Not Authorized.');
+				showErrorCreateToast()
 			}
+			setIsLoading(false); // Stop loading on success
 		} catch (error) {
+			setIsLoading(false); // Stop loading on error
 			alert(error);
 		}
 	};
@@ -257,12 +294,25 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 		colorPickerRef.current?.scrollTo(0);
 	};
 
-	const handlePress = () => {
-		navigation.navigate(StackNavigation.OutfitView, {});
+	// const handlePress = () => {
+	// 	navigation.navigate(StackNavigation.OutfitView, {});
+	// };
+
+	const redirectToCamera = () => {
+		navigation.navigate(StackNavigation.CameraComponents, {});
 	};
 
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={styles.container}>
+			<Header
+				text={"Create"}
+				leftButton={true}
+				leftStepOverType={StepOverTypes.leftArrow}
+				leftButtonAction={redirectToCamera}
+				rightButton={true}
+				rightStepOverType={StepOverTypes.done}
+				rightButtonAction={handleSubmit(handleCreate)}
+			/>
 			<ScrollView
 				contentContainerStyle={GlobalStyles.sizing.bottomSpacingPadding}
 			>
@@ -272,15 +322,21 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						gap: GlobalStyles.layout.gap,
 					}}
 				>
-					<StackedTextBox
-						label="Item name"
-						onFieldChange={(value) => {
-							setItemName(value);
-							setValue('title', itemName);
-						}}
-						value={itemName}
+					<Controller
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<StackedTextBox
+								label="Item name"
+								onFieldChange={(value) => {
+									onChange(value)
+									setValue('title', value);
+								}}
+								value={value.trim()}
+							/>
+						)}
+						name="title"
 					/>
-					<ItemCell imageUrl={clothingItem.image_url} />
+					<ItemCell imageUrl={clothingItem.image_url} base64={true} />
 					<View
 						style={{ flexDirection: 'row', justifyContent: 'space-between' }}
 					>
@@ -292,7 +348,6 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 								setItems={setItemTypes}
 								setValue={(value) => {
 									setItemTypeValue(value);
-									setValue('category', itemTypeValue);
 								}}
 								items={itemTypes}
 								value={itemTypeValue}
@@ -306,7 +361,6 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 								setItems={setSizes}
 								setValue={(value) => {
 									setSizeValue(value);
-									setValue('size', sizeValue);
 								}}
 								items={sizes}
 								value={sizeValue}
@@ -317,58 +371,44 @@ const EditClothing = ({ clothingItem }: EditClothingPropsType) => {
 						data={currentColorTags}
 						tagAction={TagAction.remove}
 						onAddPress={() => {
-							colorPickerRef.current?.scrollTo(lowTranslateY);
+							colorPickerRef.current?.scrollTo(fullscreenLowTranslateY);
 						}}
 						onRemovePress={handleOnRemovePress}
 					/>
 				</View>
 			</ScrollView>
-			{/* <Button
-				text="Create/Update Item"
-				onPress={handleSubmit(onSubmit)}
-				bgColor={GlobalStyles.colorPalette.primary[500]}
-				style={{
-					position: 'absolute',
-					bottom: GlobalStyles.layout.gap * 7,
-					alignSelf: 'center',
-				}}
-			/> */}
-			<View style={styles.deleteButtonContainer}>
-				<Pressable onPress={handlePress}>
-					<View style={styles.deleteButton}>
-						<Icon
-							name={GlobalStyles.icons.closeOutline}
-							color={GlobalStyles.colorPalette.primary[300]}
-							size={GlobalStyles.sizing.icon.regular}
-						/>
-					</View>
-				</Pressable>
-			</View>
 			<GeneralModal
 				ref={colorPickerRef}
+				height={fullscreenLowTranslateY}
 				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
 				dim={false}
 			/>
+			{isLoading && (
+				<View style={styles.overlay}>
+					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+				</View>
+			)}
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		gap: 15,
+		paddingTop: 20,
+	},
 	deleteButtonContainer: {
 		position: 'absolute',
 		bottom: GlobalStyles.layout.gap * 2.5,
 		alignSelf: 'center',
 	},
-	deleteButton: {
-		width: 40,
-		height: 40,
-		...GlobalStyles.utils.fullRadius,
-		backgroundColor: GlobalStyles.colorPalette.primary[200],
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'transparent', // Set to transparent
 		alignItems: 'center',
 		justifyContent: 'center',
-		shadowColor: GlobalStyles.colorPalette.primary[300],
-		...GlobalStyles.utils.deleteShadow,
 	},
 });
 
-export default EditClothing;
+export default ItemCreate;

@@ -1,22 +1,34 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native';
 
 import ItemView from './ItemView'
-import EditClothing from './EditClothing';
+import ItemEdit from './ItemEdit';
 
-import { Stack } from '../../utils/StackNavigation';
-import { NavigationContainer } from '@react-navigation/native';
+import { Stack, StackTypes } from '../../utils/StackNavigation';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import { headerButton } from '../../components/Modal/HeaderButton';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useState } from 'react';
 
 const ItemViewPage = ({ route }: any) => {
-
     const { item, editable } = route.params;
 
+    const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
+    const redirectToProfile = () => {
+        navigation.navigate(StackNavigation.Profile, {});
+    };
+
     const ItemViewComponent = () => (<ItemView clothingItem={item} />)
-    const EditClothingComponent = () => (<EditClothing clothingItem={item} />)
+    const ItemEditComponent = () => (
+        <ItemEdit
+            clothingItem={item}
+            navigateToProfile={redirectToProfile}
+        />
+    )
 
     return (
         <NavigationContainer
@@ -38,22 +50,16 @@ const ItemViewPage = ({ route }: any) => {
                             headerRight: editable ? (() => headerButton({
                                 type: StepOverTypes.edit,
                                 handlePress: () => {
-                                    navigation.navigate(StackNavigation.EditClothing);
+                                    navigation.navigate(StackNavigation.ItemEdit);
                                 },
                             })) : undefined,
                         })}
                     />
                     <Stack.Screen
-                        name={StackNavigation.EditClothing}
-                        component={EditClothingComponent}
+                        name={StackNavigation.ItemEdit}
+                        component={ItemEditComponent}
                         options={{
-                            headerTitle: "Edit",
-                            headerRight: () => headerButton({
-                                type: StepOverTypes.done,
-                                handlePress: () => {
-                                    console.log("Done tapped")
-                                },
-                            }),
+                            headerShown: false,
                         }}
                     />
                 </Stack.Group>
@@ -62,6 +68,4 @@ const ItemViewPage = ({ route }: any) => {
     )
 }
 
-export default ItemViewPage
-
-const styles = StyleSheet.create({})
+export default ItemViewPage;

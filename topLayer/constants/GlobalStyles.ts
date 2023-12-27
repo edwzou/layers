@@ -68,6 +68,7 @@ const colorPalette = {
 const layout = {
 	modalTopPadding: 20,
 	xGap: 16,
+	buttonGap: 25,
 	gap: 16,
 	highTranslateYBottomMargin: 120,
 	pageStateTopMargin: 180,
@@ -119,11 +120,6 @@ const utils = StyleSheet.create({
 		shadowOpacity: 0.2,
 		shadowRadius: 8,
 	},
-	deleteShadow: {
-		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.3,
-		shadowRadius: 4,
-	},
 	dropdownShadow: {
 		shadowOffset: { width: 0, height: 0 },
 		shadowOpacity: 0.13,
@@ -160,10 +156,22 @@ const utils = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		height: 33,
+		height: 42,
 		borderRadius: 10,
-		paddingHorizontal: layout.xGap,
+		paddingHorizontal: layout.buttonGap,
 	},
+	deleteButton: {
+		width: 40,
+		height: 40,
+		borderRadius: 100,
+		backgroundColor: colorPalette.danger[500],
+		alignItems: 'center',
+		justifyContent: 'center',
+		shadowColor: colorPalette.danger[500],
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.2,
+		shadowRadius: 8,
+	}
 });
 
 const sizing = {

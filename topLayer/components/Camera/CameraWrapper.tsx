@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import CameraComponent from './Camera';
-import EditClothing from '../../pages/ItemView/EditClothing';
+import ItemCreate from '../../pages/ItemView/ItemCreate';
 import { Stack, StackTypes } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -20,10 +20,8 @@ type PhotoType = {
 };
 
 const CameraWrapper = ({ route }: any) => {
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const [data, setData] = useState<string>('');
 	const [clothingItem, setClothingItem] = useState({
 		ciid: '',
 		image_url: '',
@@ -33,8 +31,9 @@ const CameraWrapper = ({ route }: any) => {
 		brands: [],
 		size: '',
 		color: [],
-		created_at: ''
+		created_at: '',
 	});
+
 	const updateClothingItem = (image: string) => {
 		createCount += 1;
 		const newId = dummyId + createCount;
@@ -44,16 +43,22 @@ const CameraWrapper = ({ route }: any) => {
 			ciid: newId,
 		});
 	};
+
 	const updatePhoto = (photo: string) => {
-		setData(photo);
 		updateClothingItem(photo);
 	};
 
-	const EditClothingComponent = () => (
-		<EditClothing clothingItem={clothingItem} />
+	const redirectToProfile = () => {
+		navigation.navigate(StackNavigation.Profile, {});
+	};
+
+	const ItemCreateComponent = () => (
+		<ItemCreate clothingItem={clothingItem} navigateToProfile={redirectToProfile} />
 	);
 
-	const CameraComponents = () => <CameraComponent data={updatePhoto} returnToNavigation={navigation} />;
+	const CameraComponents = () => (
+		<CameraComponent data={updatePhoto} returnToNavigation={navigation} />
+	);
 
 	return (
 		<NavigationContainer independent={true}>
@@ -67,30 +72,20 @@ const CameraWrapper = ({ route }: any) => {
 						headerShadowVisible: false,
 					}}
 				>
-					{!data ? (
-						<Stack.Screen
-							name={StackNavigation.CameraComponents}
-							component={CameraComponents}
-							options={{
-								headerShown: false,
-							}}
-						/>
-					) : (
-						<Stack.Screen
-							name={StackNavigation.EditClothing}
-							component={EditClothingComponent}
-							options={{
-								headerTitle: 'Edit',
-								headerRight: () =>
-									headerButton({
-										type: StepOverTypes.done,
-										handlePress: () => {
-											console.log('Done tapped');
-										},
-									}),
-							}}
-						/>
-					)}
+					<Stack.Screen
+						name={StackNavigation.CameraComponents}
+						component={CameraComponents}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.ItemCreate}
+						component={ItemCreateComponent}
+						options={{
+							headerShown: false,
+						}}
+					/>
 				</Stack.Group>
 			</Stack.Navigator>
 		</NavigationContainer>

@@ -33,12 +33,11 @@ LogBox.ignoreLogs(['Require cycle:']);
 LogBox.ignoreLogs(['Constants.platform.ios.model has been deprecated']);
 
 export const AppContext = createContext({
-	setShouldRefreshProfilePage: (() => {}) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshApp: (() => {}) as Dispatch<SetStateAction<boolean>>,
 });
 
 export default function App() {
-	const [shouldRefreshProfilePage, setShouldRefreshProfilePage] =
-		useState(false);
+	const [shouldRefreshApp, setShouldRefreshApp] = useState(false);
 
 	const [user, setUser] = useState<User | null>(null);
 
@@ -65,16 +64,16 @@ export default function App() {
 
 	// refetches user after updating info in settings
 	useEffect(() => {
-		if (shouldRefreshProfilePage) {
+		if (shouldRefreshApp) {
 			void getUser();
-			setShouldRefreshProfilePage(false);
+			setShouldRefreshApp(false);
 		}
-	}, [shouldRefreshProfilePage]);
+	}, [shouldRefreshApp]);
 
 	return (
 		<AppContext.Provider
 			value={{
-				setShouldRefreshProfilePage: setShouldRefreshProfilePage,
+				setShouldRefreshApp: setShouldRefreshApp,
 			}}
 		>
 			<NavigationContainer ref={navigationRef}>
@@ -104,15 +103,6 @@ export default function App() {
 									/>
 								</>
 							)}
-							<Stack.Screen
-								name={StackNavigation.CameraWrapper}
-								component={CameraWrapper}
-								options={{
-									animation: 'slide_from_bottom',
-									gestureEnabled: true,
-									gestureDirection: 'vertical',
-								}}
-							/>
 						</Stack.Navigator>
 						<ExpoStatusBar style="auto" />
 					</UserContext.Provider>

@@ -1,4 +1,3 @@
-// export const baseUrl = 'http://localhost:1234'; // for dev endpoints
-// export const baseUrl = 'https://layers-server-cc44f.ondigitalocean.app'; // for testing on mobile
-// export const baseUrl = 'https://whale-app-3sy55.ondigitalocean.app'; // Dev endpoint testing
-export const baseUrl = 'https://layers-server-i85vf.ondigitalocean.app';
+export const baseUrl = 'http://localhost:1234'; // local on your machine
+// export const baseUrl = 'https://sea-lion-app-8nfxs.ondigitalocean.app' // digital ocean server to test backend
+// export const baseUrl = 'https://layers-server-rngnt.ondigitalocean.app' // the server
