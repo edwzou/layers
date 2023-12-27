@@ -14,10 +14,10 @@ import Icon from 'react-native-remix-icon';
 import img from '../../assets/icon.png';
 //import { ClothingCategoryTypes } from 'constants/Enums';
 
-const SNAP_ITEM_SIZE = ITEM_SIZE() * 1.25; // Cell gap
-const SPACING = 0;
+const SNAP_ITEM_SIZE = ITEM_SIZE() * 1.15;
+const HORIZONTAL_SPACING = ITEM_SIZE() * 0.15; // Cell gap
+const VERTICAL_SPACING = SNAP_ITEM_SIZE + HORIZONTAL_SPACING;
 const EMPTY_ITEM_SIZE = (screenWidth - ITEM_SIZE()) / 2;
-const CURRENT_ITEM_SCALE = 5; // Height of the Slider
 
 interface SliderPropsType {
 	data: Array<UserClothing | Record<string, number>> | null;
@@ -94,7 +94,12 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 					});
 
 					return (
-						<View style={{ width: SNAP_ITEM_SIZE }}>
+						<View style={[
+							{
+								width: ITEM_SIZE(),
+							},
+							data && index !== data?.length - 1 && { marginRight: HORIZONTAL_SPACING } // adds a horizontal spacing to the right of every component EXCEPT for the last oen
+						]}>
 							<Animated.View
 								style={[
 									{
@@ -154,11 +159,10 @@ export default Slider;
 
 const styles = StyleSheet.create({
 	flatListContent: {
-		height: CURRENT_ITEM_SCALE * 2 + SNAP_ITEM_SIZE,
+		height: VERTICAL_SPACING,
 		alignItems: 'center',
 	},
 	itemContent: {
-		marginHorizontal: SPACING,
 		alignItems: 'center',
 		justifyContent: 'center',
 		alignContent: 'center',

@@ -16,7 +16,6 @@ export type StackNavigatorType = {
 		shoes?: UserClothing;
 	};
 	returnTo?: NativeStackNavigationProp<StackTypes>;
-	setMatchName?: (text: string) => void;
 	setImage?: (base64: string) => void;
 	setMarked?: () => void;
 };
