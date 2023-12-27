@@ -2,7 +2,6 @@ import { getBucketName, s3 } from '../utils/awsImport';
 import { GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-// Function to retrieve the URL of an S3 object
 async function downloadURLFromS3(objectKey: string): Promise<string> {
   if (objectKey === '') {
     console.log('Object key is empty. Returning an empty string.');

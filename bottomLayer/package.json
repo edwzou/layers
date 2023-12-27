@@ -30,6 +30,7 @@
     "passport-local": "^1.0.0",
     "pg": "^8.11.2",
     "session-file-store": "^1.5.0",
+    "sharp": "^0.33.1",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.1"
   },

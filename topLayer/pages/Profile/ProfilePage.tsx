@@ -63,16 +63,16 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 	control: {} as Control<FormValues>,
 	handleSubmit: {} as UseFormHandleSubmit<FormValues>,
 	setValue: {} as UseFormSetValue<FormValues>,
-	setFormData: () => {},
+	setFormData: () => { },
 	pp_url: '',
 	errors: {} as FieldErrors<FormValues>,
 	showSuccessUpdate: false,
-	setShowSuccessUpdate: () => {},
+	setShowSuccessUpdate: () => { },
 	isLoading: false,
 });
 
 const ProfilePage = () => {
-	const { setShouldRefreshProfilePage } = useContext(AppContext);
+	const { setShouldRefreshApp } = useContext(AppContext);
 
 	const { data, updateData } = useContext(UserContext);
 
@@ -161,7 +161,7 @@ const ProfilePage = () => {
 					// await AsyncStorage.setItem('session', sessionData);
 					// updateData(sessionData);
 					setShowSuccessUpdate(true);
-					setShouldRefreshProfilePage(true);
+					setShouldRefreshApp(true);
 					showSuccessUpdateToast();
 					setIsLoading(false); // Stop loading on success
 				} catch (error) {

@@ -2,8 +2,8 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import {
   responseCallbackDelete,
-  responseCallbackGet,
-  responseCallbackGetAll,
+  // responseCallbackGet,
+  // responseCallbackGetAll,
   responseCallbackPost,
   responseCallbackUpdate
 } from '../../utils/responseCallback';
@@ -15,6 +15,8 @@ import {
   getAllClothing,
   getAllClothingCate
 } from '../helper/clothingItem';
+import { type itemCategories } from '../../utils/constants/itemCategories';
+import { type colors } from '../../utils/constants/colors';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -80,39 +82,58 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
 router.put('/:ciid', (req: any, res: any): void => {
   const uid = req.user as string;
   const { ciid } = req.params;
+  const {
+    category,
+    title,
+    size,
+    color
+  }: {
+    category: itemCategories;
+    title: string;
+    size: string;
+    color: colors[];
+  } = req.body;
 
-  // Extract clothing_item data from the request body
-  const { image, category, title, brands, size, color } = req.body;
   const updateItem = async (ciid: string): Promise<void> => {
-    // Update the outfit in the database
     try {
-      const imgRef = await convertImage(image, ciid, false);
+      let query = 'UPDATE backend_schema.clothing_item SET';
 
-      const updateItem = await pool.query(
-        `
-      UPDATE backend_schema.clothing_item
-      SET image_url = $1,
-          category = $2,
-          title = $3,
-          brands = $4,
-          size = $5,
-          color = $6
-      WHERE ciid = $7 AND uid = $8
-      `,
-        [imgRef, category, title, brands, size, color, ciid, uid]
-      );
-      // responds with successful update even when no changes are made
+      if (category !== undefined) {
+        query += ` category = '${category}',`;
+      }
+      if (title !== undefined) {
+        query += ` title = '${title}',`;
+      }
+      if (size !== undefined) {
+        query += ` size = '${size}',`;
+      }
+      if (color !== undefined) {
+        const formattedUuidArray = color.map((col) => `'${col}'::color_enum`);
+        query += ` color = ARRAY[${formattedUuidArray.join(', ')}],`;
+      }
+
+      // Check if at least one field is provided
+      if (query === 'UPDATE backend_schema.clothing_item SET') {
+        throw new Error('No Fields To Update');
+      }
+
+      query = query.slice(0, -1);
+      query += ` WHERE ciid = '${ciid}' AND uid = '${uid}'`;
+
+      // Execute the update query
+      const updateResult = await pool.query(query);
       responseCallbackUpdate(
         null,
         ciid,
         res,
         'Clothing Item',
-        updateItem.rowCount
+        updateResult.rowCount
       );
     } catch (error) {
       responseCallbackUpdate(error, ciid, res, 'Clothing Item');
     }
   };
+
   void updateItem(ciid);
 });
 

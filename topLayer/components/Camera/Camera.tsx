@@ -5,6 +5,7 @@ import {
 	SafeAreaView,
 	Image,
 	Pressable,
+	ViewStyle,
 } from 'react-native';
 import React, {
 	type Dispatch,
@@ -33,6 +34,7 @@ import {
 	type TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
+	AnimatedStyleProp,
 	measure,
 	runOnJS,
 	useAnimatedGestureHandler,
@@ -51,7 +53,10 @@ interface CameraPropType {
 	returnToNavigation: NativeStackNavigationProp<StackTypes>;
 }
 
-export default function CameraComponent({ data, returnToNavigation }: CameraPropType) {
+export default function CameraComponent({
+	data,
+	returnToNavigation
+}: CameraPropType) {
 	const [orientation, setOrientation] = useState(CameraType.front);
 	const [flash, setFlash] = useState(FlashMode.auto);
 	const [cameraPermission, requestCameraPermission] =
@@ -74,20 +79,21 @@ export default function CameraComponent({ data, returnToNavigation }: CameraProp
 		exif: false, // Exchangeable Image File Format. It's a standard that specifies the formats for images, sound, and ancillary tags used by digital cameras
 	};
 
-	useEffect(() => {
-		// console.log(screenHeight, screenWidth);
-	}, []);
-
 	const flipCamera = () => {
 		setOrientation((current) =>
-			current === CameraType.back ? CameraType.front : CameraType.back
+			current === CameraType.front ? CameraType.back : CameraType.front
 		);
 	};
 
 	const takePicture = useCallback(async () => {
 		if (cameraRef.current == null) return;
 		const newPhoto = await cameraRef.current.takePictureAsync(takePhotoOptions);
-		setPhoto(newPhoto);
+		if (newPhoto.base64) {
+			data(newPhoto.base64);
+		} else {
+			console.log('photo.base64 is undefined!');
+		}
+		navigation.navigate(StackNavigation.ItemCreate, {});
 		// console.log('Photo taken: ', newPhoto);
 	}, []);
 
@@ -124,7 +130,7 @@ export default function CameraComponent({ data, returnToNavigation }: CameraProp
 					scale: scale.value,
 				},
 			],
-		};
+		} as AnimatedStyleProp<ViewStyle>;
 	});
 
 	if (cameraPermission == null) {
@@ -145,13 +151,14 @@ export default function CameraComponent({ data, returnToNavigation }: CameraProp
 		return <></>;
 	}
 
-	if (photo != null && photo.base64 != undefined) {
+	if (photo && photo.base64 != undefined) {
 		const savePhoto = () => {
 			// console.log('Test: ', photo.base64);
 			if (photo.base64) {
 				data(photo.base64);
+				console.log(photo.base64.substring(0, 10)); // Select image from camera
 			} else {
-				console.log('photo.base64 is undefined!')
+				console.log('photo.base64 is undefined!');
 			}
 			// navigation.goBack();
 			MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
@@ -221,8 +228,10 @@ export default function CameraComponent({ data, returnToNavigation }: CameraProp
 		// console.log('Test2: ', result.assets[0].base64);
 		if (result.assets[0].base64) {
 			data(result.assets[0].base64);
+			console.log(result.assets[0].base64.substring(0, 10)); // Select image from library
+			navigation.navigate(StackNavigation.ItemCreate, {});
 		} else {
-			console.log('result.assets[0].base64 is undefined!')
+			console.log('result.assets[0].base64 is undefined!');
 		}
 		// navigation.goBack();
 	};

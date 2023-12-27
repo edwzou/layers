@@ -72,7 +72,6 @@ const Header: React.FC<HeaderPropType> = ({
 						handlePress: handleRightPress,
 						disabled: rightButtonDisabled,
 					})}
-
 				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
 			</View>
 		</SafeAreaView>

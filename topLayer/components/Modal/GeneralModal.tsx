@@ -15,7 +15,6 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {
-	lowTranslateY,
 	screenHeight,
 	screenWidth,
 } from '../../utils/modalMaxShow';
@@ -29,7 +28,7 @@ export interface refPropType {
 export interface ModalPropTypes {
 	title?: string;
 	back?: boolean;
-	height?: number;
+	height: number;
 	stepOver?: { type: string; handlePress: () => void };
 	content: ReactElement;
 	dim?: boolean;
@@ -37,7 +36,7 @@ export interface ModalPropTypes {
 
 const GeneralModal = forwardRef(
 	(
-		{ title, height = lowTranslateY, content, dim = true }: ModalPropTypes,
+		{ title, height, content, dim = true }: ModalPropTypes,
 		ref
 	) => {
 		const active = useSharedValue(false);
