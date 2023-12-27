@@ -246,7 +246,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
         });
     }
 
-    const updateItem = async (values: FormValues | any) => {
+    const onUpdate = async (values: FormValues | any) => {
 
         const dataToUpdate: UpdateData = {};
 
@@ -308,7 +308,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
                 leftButton={true}
                 rightButton={true}
                 rightStepOverType={StepOverTypes.done}
-                rightButtonAction={handleSubmit(updateItem)}
+                rightButtonAction={handleSubmit(onUpdate)}
             />
             <>
                 <ScrollView

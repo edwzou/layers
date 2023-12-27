@@ -30,10 +30,6 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
 import Header from '../../components/Header/Header';
 
-interface ItemCreatePropsType {
-	clothingItem: UserClothing;
-}
-
 interface FormValues {
 	image: string;
 	category: string;
@@ -41,6 +37,10 @@ interface FormValues {
 	size: string;
 	color: string[];
 	brands: string[];
+}
+
+interface ItemCreatePropsType {
+	clothingItem: UserClothing;
 }
 
 const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
@@ -52,17 +52,13 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 		clothingItem.title ? clothingItem.title : ''
 	);
 
-	useEffect(() => {
-		console.log("ITEM CREATE RENDERED")
-	}, [])
-
 	const [sizeOpen, setSizeOpen] = useState(false);
 	// sets the size stored in the database
 	const [sizeValue, setSizeValue] = useState(
 		clothingItem.size ? clothingItem.size : ''
 	);
-	// shows the possible size options for a given clothing category
-	const showSizeOptions = (category: string) => {
+	// helper function for setting the size options based on given clothing category
+	const helpSetSizes = (category: string) => {
 		if (
 			category === ClothingTypes.outerwear ||
 			category === ClothingTypes.tops
@@ -161,13 +157,15 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 			];
 		}
 	}
-	const [sizes, setSizes] = useState(showSizeOptions(clothingItem.category));
+	// sets the size options (ex. {S, M, L}, {US 10, US 11, US 12}, etc.)
+	const [sizes, setSizes] = useState(helpSetSizes(clothingItem.category));
 
 	const [itemTypeOpen, setItemTypeOpen] = useState(false);
+	// sets the item type value to be stored in the database
 	const [itemTypeValue, setItemTypeValue] = useState(
 		clothingItem.category ? clothingItem.category : ''
 	);
-
+	// sets the item type options
 	const [itemTypes, setItemTypes] = useState([
 		{
 			label: capitalizeFirstLetter(ClothingTypes.outerwear),
@@ -194,28 +192,35 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 		formState: { dirtyFields, errors },
 	} = useForm({
 		defaultValues: {
-			ciid: '',
-			image_url: '',
-			category: '',
-			title: '',
-			uid: '',
-			brands: [],
-			size: '',
-			color: [],
-			created_at: '',
+			image: clothingItem.image_url,
+			category: clothingItem.category,
+			title: clothingItem.title,
+			brands: clothingItem.brands,
+			size: clothingItem.size,
+			color: clothingItem.color,
 		},
 	});
 
+	// sets new sizing options when a new item type (ex. outerwear) is selected
 	useEffect(() => {
-		setSizes(showSizeOptions(itemTypeValue))
+		setSizes(helpSetSizes(itemTypeValue))
+		setValue('category', itemTypeValue);
 	}, [itemTypeValue])
 
 	useEffect(() => {
-		setValue('image_url', clothingItem.image_url);
+		setValue('size', sizeValue);
+	}, [sizeValue])
+
+	useEffect(() => {
+		setValue('color', currentColorTags);
+	}, [currentColorTags])
+
+	useEffect(() => {
+		setValue('image', clothingItem.image_url);
 	}, [clothingItem.image_url]);
 
 	const onSubmit = async (values: FormValues | any) => {
-		console.log('submit handling');
+		console.log(values);
 		if (values.category == '') {
 			throw new Error('Category Value Not Filled Out.');
 		}
@@ -267,12 +272,11 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 	// };
 
 	const redirectToCamera = () => {
-		console.log('ITEMCREATE LEFT PRESSED')
 		navigation.navigate(StackNavigation.CameraComponents, {});
 	};
 
 	return (
-		<View style={[{ flex: 1 }, styles.container]}>
+		<View style={styles.container}>
 			<Header
 				text={"Create"}
 				leftButton={true}
@@ -291,13 +295,19 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 						gap: GlobalStyles.layout.gap,
 					}}
 				>
-					<StackedTextBox
-						label="Item name"
-						onFieldChange={(value) => {
-							setItemName(value);
-							setValue('title', itemName);
-						}}
-						value={itemName}
+					<Controller
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<StackedTextBox
+								label="Item name"
+								onFieldChange={(value) => {
+									onChange(value)
+									setValue('title', value);
+								}}
+								value={value.trim()}
+							/>
+						)}
+						name="title"
 					/>
 					<ItemCell imageUrl={clothingItem.image_url} base64={true} />
 					<View
@@ -311,7 +321,6 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 								setItems={setItemTypes}
 								setValue={(value) => {
 									setItemTypeValue(value);
-									setValue('category', itemTypeValue);
 								}}
 								items={itemTypes}
 								value={itemTypeValue}
@@ -325,7 +334,6 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 								setItems={setSizes}
 								setValue={(value) => {
 									setSizeValue(value);
-									setValue('size', sizeValue);
 								}}
 								items={sizes}
 								value={sizeValue}

@@ -25,8 +25,6 @@ const ItemCell = ({
 }: ItemCellPropsType) => {
 	const url = base64 ? `data:image/jpeg;base64,${imageUrl}` : imageUrl;
 
-	console.log(url.slice(0, 20));
-
 	return (
 		<Pressable
 			style={[styles.container]}

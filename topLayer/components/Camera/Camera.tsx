@@ -77,10 +77,6 @@ export default function CameraComponent({
 		exif: false, // Exchangeable Image File Format. It's a standard that specifies the formats for images, sound, and ancillary tags used by digital cameras
 	};
 
-	useEffect(() => {
-		console.log("CAMERA RENDERED")
-	}, [])
-
 	const flipCamera = () => {
 		setOrientation((current) =>
 			current === CameraType.front ? CameraType.back : CameraType.front
