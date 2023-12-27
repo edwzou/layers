@@ -120,7 +120,7 @@ export const responseCallbackDelete = (
   id: string,
   res: Response,
   target: string = '',
-  rowCount: number = 1
+  rowCount: number | null = 1
 ): Callback<any> => {
   if (rowCount === 0) {
     throw new NotFoundError(target + ' Not Found, id: ' + id);
@@ -144,7 +144,7 @@ export const responseCallbackUpdate = (
   id: string,
   res: Response,
   target: string = '',
-  rowCount: number = 1
+  rowCount: number | null = 1
 ): Callback<any> => {
   if (rowCount === 0) {
     throw new NotFoundError(target + ' Not Found, id: ' + id);

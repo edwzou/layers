@@ -15,6 +15,8 @@ import {
   getAllClothing,
   getAllClothingCate
 } from '../helper/clothingItem';
+import { itemCategories } from '../../utils/constants/itemCategories';
+import { colors } from '../../utils/constants/colors';
 const router = express.Router();
 
 // Endpoint for creating a specific clothing item
@@ -47,16 +49,16 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
     const client = pool.connect();
     try {
       const async1 = deleteObjectFromS3(ciid);
-      // const cli = await client;
+      const cli = await client;
       const async2 = pool.query(
         'DELETE FROM backend_schema.clothing_item WHERE ciid = $1 AND uid = $2',
         [ciid, uid]
       );
-      // const async3 = cli.query(
-      //   `UPDATE backend_schema.outfit SET clothing_items = array_remove(clothing_items, '${ciid}')`
-      // );
+      const async3 = cli.query(
+        `UPDATE backend_schema.outfit SET clothing_items = array_remove(clothing_items, '${ciid}')`
+      );
 
-      // const removeFromOutfit = await async3;
+      const removeFromOutfit = await async3;
       const deleteItem = await async2;
       await async1;
 
@@ -80,41 +82,46 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
 router.put('/:ciid', (req: any, res: any): void => {
   const uid = req.user as string;
   const { ciid } = req.params;
-  const { category, title, size, color } = req.body;
+  const {
+    category,
+    title,
+    size,
+    color
+  }: {
+    category: itemCategories;
+    title: string;
+    size: string;
+    color: colors[];
+  } = req.body;
 
   const updateItem = async (ciid: string): Promise<void> => {
     try {
-      let query = 'UPDATE backend_schema.clothing_item SET ';
-      const fieldsToUpdate = [];
-      const values = [];
+      let query = 'UPDATE backend_schema.clothing_item SET';
 
       if (category !== undefined) {
-        fieldsToUpdate.push(`category = $${values.length + 1}`);
-        values.push(category);
+        query += ` category = '${category}',`;
       }
       if (title !== undefined) {
-        fieldsToUpdate.push(`title = $${values.length + 1}`);
-        values.push(title);
+        query += ` title = '${title}',`;
       }
       if (size !== undefined) {
-        fieldsToUpdate.push(`size = $${values.length + 1}`);
-        values.push(size);
+        query += ` size = '${size}',`;
       }
       if (color !== undefined) {
-        fieldsToUpdate.push(`color = $${values.length + 1}`);
-        values.push(color); // Assuming color is already an array of strings
+        const formattedUuidArray = color.map((col) => `'${col}'::color_enum`);
+        query += ` color = ARRAY[${formattedUuidArray.join(', ')}],`;
       }
 
       // Check if at least one field is provided
-      if (fieldsToUpdate.length === 0) {
-        return res.status(400).send({ error: 'No valid fields provided for update.' });
+      if (query === 'UPDATE backend_schema.clothing_item SET') {
+        throw new Error('No Fields To Update');
       }
 
-      query += fieldsToUpdate.join(', ') + ` WHERE ciid = $${values.length + 1} AND uid = $${values.length + 2}`;
-      values.push(ciid, uid);
+      query = query.slice(0, -1);
+      query += ` WHERE ciid = '${ciid}' AND uid = '${uid}'`;
 
       // Execute the update query
-      const updateResult = await pool.query(query, values);
+      const updateResult = await pool.query(query);
       responseCallbackUpdate(
         null,
         ciid,
