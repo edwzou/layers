@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { SafeAreaView } from 'react-native';
 
-import { type refPropType } from '../../components/Modal/GeneralModal';
 import Header from '../../components/Header/Header';
 import Selector from './Selector';
 import Button from '../../components/Button/Button';

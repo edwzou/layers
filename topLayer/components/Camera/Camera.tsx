@@ -53,7 +53,7 @@ interface CameraPropType {
 
 export default function CameraComponent({
 	data,
-	returnToNavigation,
+	returnToNavigation
 }: CameraPropType) {
 	const [orientation, setOrientation] = useState(CameraType.front);
 	const [flash, setFlash] = useState(FlashMode.auto);
@@ -77,16 +77,20 @@ export default function CameraComponent({
 		exif: false, // Exchangeable Image File Format. It's a standard that specifies the formats for images, sound, and ancillary tags used by digital cameras
 	};
 
+	useEffect(() => {
+		console.log("CAMERA RENDERED")
+	}, [])
+
 	const flipCamera = () => {
 		setOrientation((current) =>
-			current === CameraType.back ? CameraType.front : CameraType.back
+			current === CameraType.front ? CameraType.back : CameraType.front
 		);
 	};
 
 	const takePicture = useCallback(async () => {
 		if (cameraRef.current == null) return;
 		const newPhoto = await cameraRef.current.takePictureAsync(takePhotoOptions);
-		setPhoto(newPhoto);
+		navigation.navigate(StackNavigation.ItemCreate, {});
 		// console.log('Photo taken: ', newPhoto);
 	}, []);
 
@@ -220,6 +224,7 @@ export default function CameraComponent({
 		// console.log('Test2: ', result.assets[0].base64);
 		if (result.assets[0].base64) {
 			data(result.assets[0].base64);
+			navigation.navigate(StackNavigation.ItemCreate, {});
 		} else {
 			console.log('result.assets[0].base64 is undefined!');
 		}
@@ -253,6 +258,7 @@ export default function CameraComponent({
 					<Text>
 						<Pressable
 							onPress={() => {
+								console.log('CAMERA GO BACK')
 								returnToNavigation.goBack();
 							}}
 						>

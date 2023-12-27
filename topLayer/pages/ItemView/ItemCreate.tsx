@@ -12,7 +12,7 @@ import {
 import Dropdown from '../../components/Dropdown/Dropdown';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
-import { lowTranslateY } from '../../utils/modalMaxShow';
+import { fullscreenLowTranslateY } from '../../utils/modalMaxShow';
 import ColorPicker from '../../components/ColorManager/ColorPicker';
 import GeneralModal, {
 	type refPropType,
@@ -51,6 +51,10 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 	const [itemName, setItemName] = useState(
 		clothingItem.title ? clothingItem.title : ''
 	);
+
+	useEffect(() => {
+		console.log("ITEM CREATE RENDERED")
+	}, [])
 
 	const [sizeOpen, setSizeOpen] = useState(false);
 	// sets the size stored in the database
@@ -258,20 +262,23 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 		colorPickerRef.current?.scrollTo(0);
 	};
 
-	const handlePress = () => {
-		navigation.navigate(StackNavigation.OutfitView, {});
-	};
+	// const handlePress = () => {
+	// 	navigation.navigate(StackNavigation.OutfitView, {});
+	// };
 
-	const redirectToProfile = () => {
-		navigation.navigate(StackNavigation.Profile, {});
+	const redirectToCamera = () => {
+		console.log('ITEMCREATE LEFT PRESSED')
+		navigation.navigate(StackNavigation.CameraComponents, {});
 	};
 
 	return (
 		<View style={[{ flex: 1 }, styles.container]}>
 			<Header
-				text={StackNavigation.ItemCreate}
+				text={"Create"}
+				leftButton={true}
+				leftStepOverType={StepOverTypes.leftArrow}
+				leftButtonAction={redirectToCamera}
 				rightButton={true}
-				rightBack={true}
 				rightStepOverType={StepOverTypes.done}
 				rightButtonAction={handleSubmit(onSubmit)}
 			/>
@@ -329,35 +336,15 @@ const ItemCreate = ({ clothingItem }: ItemCreatePropsType) => {
 						data={currentColorTags}
 						tagAction={TagAction.remove}
 						onAddPress={() => {
-							colorPickerRef.current?.scrollTo(lowTranslateY);
+							colorPickerRef.current?.scrollTo(fullscreenLowTranslateY);
 						}}
 						onRemovePress={handleOnRemovePress}
 					/>
 				</View>
 			</ScrollView>
-			{/* <Button
-				text="Create/Update Item"
-				onPress={handleSubmit(onSubmit)}
-				bgColor={GlobalStyles.colorPalette.primary[500]}
-				style={{
-					position: 'absolute',
-					bottom: GlobalStyles.layout.gap * 7,
-					alignSelf: 'center',
-				}}
-			/> */}
-			<View style={styles.deleteButtonContainer}>
-				<Pressable onPress={handlePress}>
-					<View style={GlobalStyles.utils.deleteButton}>
-						<Icon
-							name={GlobalStyles.icons.closeOutline}
-							color={GlobalStyles.colorPalette.background}
-							size={GlobalStyles.sizing.icon.regular}
-						/>
-					</View>
-				</Pressable>
-			</View>
 			<GeneralModal
 				ref={colorPickerRef}
+				height={fullscreenLowTranslateY}
 				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
 				dim={false}
 			/>

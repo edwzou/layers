@@ -11,7 +11,7 @@ import {
 import Dropdown from '../../components/Dropdown/Dropdown';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
-import { lowTranslateY } from '../../utils/modalMaxShow';
+import { modalLowTranslateY } from '../../utils/modalMaxShow';
 import ColorPicker from '../../components/ColorManager/ColorPicker';
 import GeneralModal, {
     type refPropType,
@@ -369,7 +369,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
                             data={currentColorTags}
                             tagAction={TagAction.remove}
                             onAddPress={() => {
-                                colorPickerRef.current?.scrollTo(lowTranslateY);
+                                colorPickerRef.current?.scrollTo(modalLowTranslateY);
                             }}
                             onRemovePress={handleOnRemovePress}
                         />
@@ -388,6 +388,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
                 </View>
                 <GeneralModal
                     ref={colorPickerRef}
+                    height={modalLowTranslateY}
                     content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
                     dim={false}
                 />

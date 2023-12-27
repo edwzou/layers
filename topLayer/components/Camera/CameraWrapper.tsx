@@ -22,7 +22,6 @@ type PhotoType = {
 const CameraWrapper = ({ route }: any) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const [data, setData] = useState<string>('');
 	const [clothingItem, setClothingItem] = useState({
 		ciid: '',
 		image_url: '',
@@ -34,6 +33,7 @@ const CameraWrapper = ({ route }: any) => {
 		color: [],
 		created_at: '',
 	});
+
 	const updateClothingItem = (image: string) => {
 		createCount += 1;
 		const newId = dummyId + createCount;
@@ -43,8 +43,8 @@ const CameraWrapper = ({ route }: any) => {
 			ciid: newId,
 		});
 	};
+
 	const updatePhoto = (photo: string) => {
-		setData(photo);
 		updateClothingItem(photo);
 	};
 
@@ -68,23 +68,20 @@ const CameraWrapper = ({ route }: any) => {
 						headerShadowVisible: false,
 					}}
 				>
-					{!data ? (
-						<Stack.Screen
-							name={StackNavigation.CameraComponents}
-							component={CameraComponents}
-							options={{
-								headerShown: false,
-							}}
-						/>
-					) : (
-						<Stack.Screen
-							name={StackNavigation.ItemCreate}
-							component={ItemCreate}
-							options={{
-								headerShown: false,
-							}}
-						/>
-					)}
+					<Stack.Screen
+						name={StackNavigation.CameraComponents}
+						component={CameraComponents}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.ItemCreate}
+						component={ItemCreateComponent}
+						options={{
+							headerShown: false,
+						}}
+					/>
 				</Stack.Group>
 			</Stack.Navigator>
 		</NavigationContainer>
