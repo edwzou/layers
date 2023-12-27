@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native';
 
 import ItemView from './ItemView'
 import ItemEdit from './ItemEdit';
@@ -14,7 +14,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useState } from 'react';
 
 const ItemViewPage = ({ route }: any) => {
-
     const { item, editable } = route.params;
 
     const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -69,6 +68,4 @@ const ItemViewPage = ({ route }: any) => {
     )
 }
 
-export default ItemViewPage
-
-const styles = StyleSheet.create({})
+export default ItemViewPage;

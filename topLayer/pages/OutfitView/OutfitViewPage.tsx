@@ -23,7 +23,7 @@ import { type StackTypes } from 'utils/StackNavigation';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
 import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings'
+import { toast } from '../../constants/GlobalStrings';
 
 const OutfitViewPage = ({ route }: any) => {
 
@@ -100,4 +100,3 @@ const OutfitViewPage = ({ route }: any) => {
 export default OutfitViewPage;
 
 const styles = StyleSheet.create({});
-

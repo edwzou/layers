@@ -20,7 +20,6 @@ type PhotoType = {
 };
 
 const CameraWrapper = ({ route }: any) => {
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [data, setData] = useState<string>('');
@@ -33,7 +32,7 @@ const CameraWrapper = ({ route }: any) => {
 		brands: [],
 		size: '',
 		color: [],
-		created_at: ''
+		created_at: '',
 	});
 	const updateClothingItem = (image: string) => {
 		createCount += 1;
@@ -53,7 +52,9 @@ const CameraWrapper = ({ route }: any) => {
 		<EditClothing clothingItem={clothingItem} />
 	);
 
-	const CameraComponents = () => <CameraComponent data={updatePhoto} returnToNavigation={navigation} />;
+	const CameraComponents = () => (
+		<CameraComponent data={updatePhoto} returnToNavigation={navigation} />
+	);
 
 	return (
 		<NavigationContainer independent={true}>
@@ -80,14 +81,7 @@ const CameraWrapper = ({ route }: any) => {
 							name={StackNavigation.EditClothing}
 							component={EditClothingComponent}
 							options={{
-								headerTitle: 'Edit',
-								headerRight: () =>
-									headerButton({
-										type: StepOverTypes.done,
-										handlePress: () => {
-											console.log('Done tapped');
-										},
-									}),
+								headerShown: false,
 							}}
 						/>
 					)}
