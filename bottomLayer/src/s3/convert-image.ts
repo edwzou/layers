@@ -6,7 +6,7 @@ async function isValidBase64String(base64: string): Promise<boolean> {
     return false;
   }
 
-  if (base64.startsWith('R0lGOD')) {
+  if (base64.startsWith('R0lGOD')) { // GIF checker
     throw new Error('This is a GIF image. Please input JPEG or PNG image.');
   }
   
