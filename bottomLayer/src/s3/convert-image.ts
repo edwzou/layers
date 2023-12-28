@@ -28,7 +28,7 @@ async function convertImage(
 	}
 
 	try {
-		let imageBuffer = await Buffer.from(base64, 'base64');
+		let imageBuffer = Buffer.from(base64, 'base64');
 
 		if (remove) {
 			imageBuffer = await removeBackground(imageBuffer);
