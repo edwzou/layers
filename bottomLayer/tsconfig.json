@@ -12,5 +12,11 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "typeRoots": ["./node_modules/@types", "./src/types"]
-  }
+  },
+    "include": [
+    "src/**/*.ts", // Adjust the path to match your TypeScript source files
+    "src/**/*.tsx", // TypeScript JSX files
+    ".eslintrc.cjs", // Path to your ESLint configuration file
+    "server.ts"
+  ]
 }

@@ -1,13 +1,13 @@
 import { StyleSheet, StatusBar, View, LogBox } from 'react-native';
-LogBox.ignoreLogs(['Require cycle:']);
-// ^ Ignores require cycle warnings. We decided to ignore these warnings for 2 reasons:
-// 1. Require cycles are technically not errors. It's just React Native telling us that this is an area of potential danger (which we should keep in mind)
-// 2. There's rarely a fix for require cycles, especially if it involves more than 2 components (which is our case)
-LogBox.ignoreLogs(['Constants.platform.ios.model has been deprecated']);
-
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
+import {
+	type Dispatch,
+	type SetStateAction,
+	createContext,
+	useEffect,
+	useState,
+} from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from './utils/StackNavigation';
@@ -23,17 +23,21 @@ import CameraWrapper from './components/Camera/CameraWrapper';
 import { UserContext } from './utils/UserContext';
 import axios from 'axios';
 import { baseUrl } from './utils/apiUtils';
-import { User } from './pages/Main';
-
+import { type User } from './pages/Main';
 import Toast from 'react-native-toast-message';
 
+LogBox.ignoreLogs(['Require cycle:']);
+// ^ Ignores require cycle warnings. We decided to ignore these warnings for 2 reasons:
+// 1. Require cycles are technically not errors. It's just React Native telling us that this is an area of potential danger (which we should keep in mind)
+// 2. There's rarely a fix for require cycles, especially if it involves more than 2 components (which is our case)
+LogBox.ignoreLogs(['Constants.platform.ios.model has been deprecated']);
+
 export const AppContext = createContext({
-	setShouldRefreshApp: (() => { }) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshApp: (() => {}) as Dispatch<SetStateAction<boolean>>,
 });
 
 export default function App() {
-
-	const [shouldRefreshApp, setShouldRefreshApp] = useState(false)
+	const [shouldRefreshApp, setShouldRefreshApp] = useState(false);
 
 	const [user, setUser] = useState<User | null>(null);
 

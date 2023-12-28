@@ -63,11 +63,11 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 	control: {} as Control<FormValues>,
 	handleSubmit: {} as UseFormHandleSubmit<FormValues>,
 	setValue: {} as UseFormSetValue<FormValues>,
-	setFormData: () => { },
+	setFormData: () => {},
 	pp_url: '',
 	errors: {} as FieldErrors<FormValues>,
 	showSuccessUpdate: false,
-	setShowSuccessUpdate: () => { },
+	setShowSuccessUpdate: () => {},
 	isLoading: false,
 });
 
