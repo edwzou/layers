@@ -11,12 +11,12 @@ async function isValidBase64String(base64: string): Promise<boolean> {
 	return true;
 }
 
-async function convertToJpegBase64Buffer(base64: string): Promise<Buffer> {
-	const buffer = Buffer.from(base64, 'base64'); // Convert the base64 string to a buffer
-	return sharp(buffer) // Use sharp to convert the image to JPEG
-		.toFormat('jpeg')
-		.toBuffer();
-}
+// async function convertToJpegBase64Buffer(base64: string): Promise<Buffer> {
+// 	const buffer = Buffer.from(base64, 'base64'); // Convert the base64 string to a buffer
+// 	return sharp(buffer) // Use sharp to convert the image to JPEG
+// 		.toFormat('jpeg')
+// 		.toBuffer();
+// }
 
 async function convertImage(
 	base64: string,
@@ -28,7 +28,7 @@ async function convertImage(
 	}
 
 	try {
-		let imageBuffer = await convertToJpegBase64Buffer(base64);
+		let imageBuffer = await Buffer.from(base64, 'base64');
 
 		if (remove) {
 			imageBuffer = await removeBackground(imageBuffer);
