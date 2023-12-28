@@ -100,11 +100,14 @@ const signupStrate = new LocalStrategy(
 				// Can optimize the following awaits to call run them at the same time
 				const uid = uuidv4();
 				const pp = profile_picture !== undefined ? profile_picture : '';
+				console.log('before fail');
 				const async1 = convertImage(pp, uid, false);
+				console.log('after fail', async1);
 				const async2 = hash(password, 10);
 				const emailLower = email.toLowerCase();
 				const hashedPass = await async2;
 				const imgRef = await async1;
+				console.log('after fail promise');
 				const result = await pool.query(
 					`
         INSERT INTO backend_schema.user (
@@ -141,6 +144,7 @@ const signupStrate = new LocalStrategy(
 
 				done(null, user);
 			} catch (err) {
+				console.log('fail2');
 				console.log('test: ', err);
 				done(err);
 			}
