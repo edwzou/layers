@@ -3,16 +3,20 @@ import { uploadBufferToS3 } from './upload-buffer-to-s3';
 import sharp from 'sharp';
 
 async function isValidBase64String(base64: string): Promise<boolean> {
-  return typeof base64 === 'string' &&
-    (base64.startsWith('/9j/') || base64.startsWith('iVBORw0KGgo') || base64.startsWith('R0lGOD')); // JPEG, PNG, GIF checker
+	return (
+		typeof base64 === 'string' &&
+		(base64.startsWith('/9j/') ||
+			base64.startsWith('iVBORw0KGgo') ||
+			base64.startsWith('R0lGOD'))
+	); // JPEG, PNG, GIF checker
 }
 
 async function convertToJpegBase64Buffer(base64: string): Promise<Buffer> {
-  const buffer = Buffer.from(base64, 'base64'); // Convert the base64 string to a buffer
-  return sharp(buffer) // Use sharp to convert the image to JPEG
-      .rotate() // Rotate the image
-      .toFormat('jpeg')
-      .toBuffer();
+	const buffer = Buffer.from(base64, 'base64'); // Convert the base64 string to a buffer
+	return sharp(buffer) // Use sharp to convert the image to JPEG
+		.rotate() // Rotate the image
+		.toFormat('jpeg')
+		.toBuffer();
 }
 
 async function convertImage(
@@ -20,7 +24,10 @@ async function convertImage(
 	key: string,
 	remove: boolean
 ): Promise<string> {
-	if (base64 === '' || !(await isValidBase64String(base64))) {
+	if (base64 === '') {
+		return '';
+	}
+	if (!(await isValidBase64String(base64))) {
 		throw new Error(`Invalid base64 string: ${base64}`);
 	}
 
