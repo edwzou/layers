@@ -62,7 +62,6 @@ CREATE TABLE backend_schema.clothing_item (
     size VARCHAR(50),
     color color_enum[] NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT unique_ci_per_user UNIQUE (title, category, uid),
     CONSTRAINT item
       FOREIGN KEY (uid) 
       REFERENCES backend_schema.user(uid)
