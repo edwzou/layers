@@ -22,9 +22,11 @@ async function convertImage(
 	base64: string,
 	key: string,
 	remove: boolean
-): Promise<any> {
-	if (base64 === '' || !(await isValidBase64String(base64))) {
-		console.log('fail');
+): Promise<string> {
+	if (base64 === '') {
+		return '';
+	}
+	if (!(await isValidBase64String(base64))) {
 		throw new Error(`Invalid base64 string: ${base64}`);
 	}
 
@@ -43,7 +45,7 @@ async function convertImage(
 		return key;
 	} catch (error) {
 		console.error('Error converting base64:', error);
-		return error;
+		throw error;
 	}
 }
 
