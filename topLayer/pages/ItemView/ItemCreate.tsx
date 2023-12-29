@@ -27,7 +27,7 @@ import Icon from 'react-native-remix-icon';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from 'utils/StackNavigation';
+import { type StackTypes } from '../../utils/StackNavigation';
 import Header from '../../components/Header/Header';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import Toast from 'react-native-toast-message';

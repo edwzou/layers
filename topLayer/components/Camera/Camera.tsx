@@ -48,6 +48,8 @@ import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
 import { StackNavigation } from '../../constants/Enums';
 
+import ImageCropPicker from 'react-native-image-crop-picker';
+
 interface CameraPropType {
 	data: (photo: string) => void;
 	returnToNavigation: NativeStackNavigationProp<StackTypes>;
@@ -88,13 +90,26 @@ export default function CameraComponent({
 	const takePicture = useCallback(async () => {
 		if (cameraRef.current == null) return;
 		const newPhoto = await cameraRef.current.takePictureAsync(takePhotoOptions);
-		if (newPhoto.base64) {
-			data(newPhoto.base64);
+
+		if (newPhoto.uri) {
+			ImageCropPicker.openCropper({
+				path: newPhoto.uri,
+				width: 2000, // set your desired width
+				height: 2000, // set your desired height
+				cropping: true,
+				includeBase64: true,
+				mediaType: 'photo', // specify media type as 'photo'
+			}).then(croppedImage => {
+				if (croppedImage.data) {
+					data(croppedImage.data); // use the base64 string
+					navigation.navigate(StackNavigation.ItemCreate, {});
+				}
+			}).catch(error => {
+				console.log('Cropping failed', error);
+			});
 		} else {
-			console.log('photo.base64 is undefined!');
+			console.log('photo.uri is undefined!');
 		}
-		navigation.navigate(StackNavigation.ItemCreate, {});
-		// console.log('Photo taken: ', newPhoto);
 	}, []);
 
 	const tapGestureEvent =
