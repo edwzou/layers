@@ -98,9 +98,7 @@ const SignUp = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.CameraWrapper, {
-							setImage: setImage,
-						});
+						navigation.navigate(StackNavigation.CameraWrapper, {});
 					}}
 				>
 					<ProfilePicture imageUrl={image} base64 />

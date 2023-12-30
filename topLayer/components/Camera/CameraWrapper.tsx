@@ -1,25 +1,18 @@
-import React, { createContext, useState } from 'react';
+import React, { useState } from 'react';
 import CameraComponent from './Camera';
 import ItemCreate from '../../pages/ItemView/ItemCreate';
 import { Stack, StackTypes } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import { StackNavigation } from '../../constants/Enums';
 
-import { headerButton } from '../Modal/HeaderButton';
-import bottoms1 from '../../assets/bottoms1.png';
-import { ColorTags } from '../../constants/Enums';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const dummyId = 'createID: ';
 let createCount = 0;
 
-type PhotoType = {
-	base64: string;
-	updatePhoto: (photo: any) => void;
-};
+const CameraWrapper = () => {
 
-const CameraWrapper = ({ route }: any) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [clothingItem, setClothingItem] = useState({

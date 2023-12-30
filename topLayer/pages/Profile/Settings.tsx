@@ -36,23 +36,24 @@ interface PrivacyOption {
 }
 
 const Settings = () => {
-	const [image, setImage] = useState('');
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const {
 		control,
 		setValue,
 		setFormData,
-		pp_url,
 		errors,
 		showSuccessUpdate,
 		setShowSuccessUpdate,
 		isLoading,
+		pfpUrl,
+		setDidUpdatePfp
 	} = useContext(ProfilePageContext);
 
 	useEffect(() => {
-		setValue('pp_url', image);
-	}, [image]);
+		console.log("PFP SET!")
+		setValue('pp_url', pfpUrl);
+	}, [pfpUrl]);
 
 	useEffect(() => {
 		if (showSuccessUpdate) {
@@ -80,12 +81,11 @@ const Settings = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.CameraWrapper, {
-							setImage: setImage,
-						});
+						setDidUpdatePfp(true)
+						navigation.navigate(StackNavigation.CameraWrapper, {});
 					}}
 				>
-					<ProfilePicture imageUrl={pp_url} />
+					<ProfilePicture imageUrl={pfpUrl} base64={pfpUrl.slice(0, 5) == 'https' ? false : true} />
 				</Pressable>
 				<View
 					style={{

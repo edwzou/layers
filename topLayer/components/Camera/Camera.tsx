@@ -14,6 +14,7 @@ import React, {
 	useRef,
 	useState,
 	useEffect,
+	useContext,
 } from 'react';
 import {
 	Camera,
@@ -49,6 +50,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { StackNavigation } from '../../constants/Enums';
 
 import ImageCropPicker from 'react-native-image-crop-picker';
+import { ProfilePageContext } from '../../pages/Profile/ProfilePage';
 
 interface CameraPropType {
 	data: (photo: string) => void;
@@ -57,9 +59,16 @@ interface CameraPropType {
 
 export default function CameraComponent({
 	data,
-	returnToNavigation
+	returnToNavigation,
 }: CameraPropType) {
-	const [orientation, setOrientation] = useState(CameraType.front);
+
+	const {
+		didUpdatePfp,
+		setDidUpdatePfp,
+		setPfpUrl
+	} = useContext(ProfilePageContext);
+
+	const [orientation, setOrientation] = useState(CameraType.back);
 	const [flash, setFlash] = useState(FlashMode.auto);
 	const [cameraPermission, requestCameraPermission] =
 		Camera.useCameraPermissions();
@@ -101,6 +110,11 @@ export default function CameraComponent({
 				mediaType: 'photo', // specify media type as 'photo'
 			}).then(croppedImage => {
 				if (croppedImage.data) {
+					if (didUpdatePfp) {
+						setDidUpdatePfp(false)
+						setPfpUrl(croppedImage.data)
+						returnToNavigation.goBack()
+					}
 					data(croppedImage.data); // use the base64 string
 					navigation.navigate(StackNavigation.ItemCreate, {});
 				}
@@ -278,6 +292,7 @@ export default function CameraComponent({
 					<Text>
 						<Pressable
 							onPress={() => {
+								setDidUpdatePfp(false)
 								returnToNavigation.goBack();
 							}}
 						>

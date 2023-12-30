@@ -51,11 +51,14 @@ type ProfilePageContextType = {
 	handleSubmit: UseFormHandleSubmit<FormValues>;
 	setValue: UseFormSetValue<FormValues>;
 	setFormData: Dispatch<SetStateAction<FormValues>>;
-	pp_url: string;
 	errors: FieldErrors<FormValues>;
 	showSuccessUpdate: boolean;
 	setShowSuccessUpdate: Dispatch<SetStateAction<boolean>>;
 	isLoading: boolean;
+	pfpUrl: string;
+	setPfpUrl: Dispatch<SetStateAction<string>>;
+	didUpdatePfp: boolean;
+	setDidUpdatePfp: Dispatch<SetStateAction<boolean>>;
 };
 
 // Create the context with the defined type
@@ -63,12 +66,15 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 	control: {} as Control<FormValues>,
 	handleSubmit: {} as UseFormHandleSubmit<FormValues>,
 	setValue: {} as UseFormSetValue<FormValues>,
-	setFormData: () => {},
-	pp_url: '',
+	setFormData: () => { },
 	errors: {} as FieldErrors<FormValues>,
 	showSuccessUpdate: false,
-	setShowSuccessUpdate: () => {},
+	setShowSuccessUpdate: () => { },
 	isLoading: false,
+	pfpUrl: '',
+	setPfpUrl: () => { },
+	didUpdatePfp: false,
+	setDidUpdatePfp: () => { },
 });
 
 const ProfilePage = () => {
@@ -79,8 +85,11 @@ const ProfilePage = () => {
 	const { first_name, last_name, email, username, private_option, pp_url } =
 		data as User;
 
+	const [pfpUrl, setPfpUrl] = useState(pp_url)
+
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
+	const [didUpdatePfp, setDidUpdatePfp] = useState(false)
 
 	const [formData, setFormData] = useState<FormValues>({
 		first_name: first_name,
@@ -202,11 +211,14 @@ const ProfilePage = () => {
 				handleSubmit,
 				setValue,
 				setFormData,
-				pp_url,
 				errors,
 				showSuccessUpdate,
 				setShowSuccessUpdate,
 				isLoading,
+				pfpUrl,
+				setPfpUrl,
+				didUpdatePfp,
+				setDidUpdatePfp
 			}}
 		>
 			<NavigationContainer independent={true}>
