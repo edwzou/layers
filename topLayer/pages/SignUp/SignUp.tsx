@@ -252,11 +252,13 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 				/>
 			</View>
 			{isLoading && (
-				<View style={styles.overlay}>
-					<ActivityIndicator
-						size="large"
-						color={GlobalStyles.colorPalette.activityIndicator}
-					/>
+				<View style={GlobalStyles.utils.loadingOverlay}>
+					<View style={GlobalStyles.utils.loadingContainer}>
+						<ActivityIndicator
+							size="large"
+							color={GlobalStyles.colorPalette.activityIndicator}
+						/>
+					</View>
 				</View>
 			)}
 		</Pressable>
@@ -288,12 +290,6 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[100],
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		padding: 15,
-	},
-	overlay: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: 'transparent', // Set to transparent
-		alignItems: 'center',
-		justifyContent: 'center',
 	},
 });
 
