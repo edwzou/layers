@@ -50,7 +50,7 @@ const Settings = () => {
 	} = useContext(SettingsPageContext);
 
 	const {
-		pfpUrl,
+		pfpUrlForSettings,
 	} = useContext(ProfilePageContext);
 
 	// Update the state object when form fields change
@@ -62,10 +62,9 @@ const Settings = () => {
 	};
 
 	useEffect(() => {
-		console.log("PFP SET!")
-		setValue('profile_picture', pfpUrl);
-		handleFieldChange('profile_picture', pfpUrl)
-	}, [pfpUrl]);
+		setValue('profile_picture', pfpUrlForSettings);
+		handleFieldChange('profile_picture', pfpUrlForSettings)
+	}, [pfpUrlForSettings]);
 
 	useEffect(() => {
 		if (showSuccessUpdate) {
@@ -86,11 +85,11 @@ const Settings = () => {
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
 						navigation.navigate(StackNavigation.CameraWrapper, {
-							fromSettings: true,
+							returnToPfp: true,
 						});
 					}}
 				>
-					<ProfilePicture imageUrl={pfpUrl} base64={pfpUrl.slice(0, 5) == 'https' ? false : true} />
+					<ProfilePicture imageUrl={pfpUrlForSettings} base64={pfpUrlForSettings.slice(0, 5) == 'https' ? false : true} />
 				</Pressable>
 				<View
 					style={{
@@ -175,6 +174,7 @@ const Settings = () => {
 					rules={{
 						required: true,
 						minLength: 8,
+						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox

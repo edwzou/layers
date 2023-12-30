@@ -37,27 +37,27 @@ import { toast } from '../../constants/GlobalStrings';
 
 // Define the context type
 type ProfilePageContextType = {
-	pfpUrl: string;
-	setPfpUrl: Dispatch<SetStateAction<string>>;
+	pfpUrlForSettings: string;
+	setPfpUrlForSettings: Dispatch<SetStateAction<string>>;
 };
 
 // Create the context with the defined type
 export const ProfilePageContext = createContext<ProfilePageContextType>({
-	pfpUrl: '',
-	setPfpUrl: () => { },
+	pfpUrlForSettings: '',
+	setPfpUrlForSettings: () => { },
 });
 
 const ProfilePage = () => {
 
 	const { data } = useContext(UserContext);
 	const { pp_url } = data as User;
-	const [pfpUrl, setPfpUrl] = useState(pp_url)
+	const [pfpUrlForSettings, setPfpUrlForSettings] = useState(pp_url)
 
 	return (
 		<ProfilePageContext.Provider
 			value={{
-				pfpUrl,
-				setPfpUrl,
+				pfpUrlForSettings,
+				setPfpUrlForSettings,
 			}}
 		>
 			<NavigationContainer independent={true}>

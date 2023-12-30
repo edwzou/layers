@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import CameraComponent from './Camera';
 import ItemCreate from '../../pages/ItemView/ItemCreate';
 import { Stack, StackTypes } from '../../utils/StackNavigation';
@@ -11,11 +11,17 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 const dummyId = 'createID: ';
 let createCount = 0;
 
-const CameraWrapper = ({ route }: any) => {
+interface CameraWrapper {
+	route?: any,
+	setPfpUrlForSignUp?: Dispatch<SetStateAction<string>>
+	returnToSignUp?: boolean
+}
+
+const CameraWrapper = ({ route, setPfpUrlForSignUp, returnToSignUp }: CameraWrapper) => {
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const { fromSettings } = route.params;
+	const returnToPfp = route?.params?.param1;
 
 	const [clothingItem, setClothingItem] = useState({
 		ciid: '',
@@ -52,7 +58,13 @@ const CameraWrapper = ({ route }: any) => {
 	);
 
 	const CameraComponents = () => (
-		<CameraComponent data={updatePhoto} returnToNavigation={navigation} fromSettings={fromSettings ? fromSettings : false} />
+		<CameraComponent
+			data={updatePhoto}
+			returnToNavigation={navigation}
+			returnToPfp={returnToPfp ? returnToPfp : false}
+			setPfpUrlForSignUp={setPfpUrlForSignUp}
+			returnToSignUp={returnToSignUp ? returnToSignUp : false}
+		/>
 	);
 
 	return (

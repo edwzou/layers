@@ -55,17 +55,21 @@ import { ProfilePageContext } from '../../pages/Profile/ProfilePage';
 interface CameraPropType {
 	data: (photo: string) => void;
 	returnToNavigation: NativeStackNavigationProp<StackTypes>;
-	fromSettings: boolean;
+	returnToPfp: boolean;
+	setPfpUrlForSignUp?: Dispatch<SetStateAction<string>>;
+	returnToSignUp: boolean
 }
 
 export default function CameraComponent({
 	data,
 	returnToNavigation,
-	fromSettings
+	returnToPfp,
+	setPfpUrlForSignUp,
+	returnToSignUp
 }: CameraPropType) {
 
 	const {
-		setPfpUrl
+		setPfpUrlForSettings
 	} = useContext(ProfilePageContext);
 
 	const [orientation, setOrientation] = useState(CameraType.back);
@@ -110,8 +114,9 @@ export default function CameraComponent({
 				mediaType: 'photo', // specify media type as 'photo'
 			}).then(croppedImage => {
 				if (croppedImage.data) {
-					if (fromSettings) {
-						setPfpUrl(croppedImage.data)
+					if (returnToPfp || returnToSignUp) {
+						setPfpUrlForSettings && setPfpUrlForSettings(croppedImage.data)
+						setPfpUrlForSignUp && setPfpUrlForSignUp(croppedImage.data)
 						returnToNavigation.goBack()
 					}
 					data(croppedImage.data); // use the base64 string
@@ -255,8 +260,9 @@ export default function CameraComponent({
 
 		// console.log('Test2: ', result.assets[0].base64);
 		if (result.assets[0].base64) {
-			if (fromSettings) {
-				setPfpUrl(result.assets[0].base64)
+			if (returnToPfp || returnToSignUp) {
+				setPfpUrlForSettings && setPfpUrlForSettings(result.assets[0].base64)
+				setPfpUrlForSignUp && setPfpUrlForSignUp(result.assets[0].base64)
 				returnToNavigation.goBack()
 			}
 			data(result.assets[0].base64);

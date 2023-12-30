@@ -17,7 +17,7 @@ export type StackNavigatorType = {
 		shoes?: UserClothing;
 	};
 	returnTo?: NativeStackNavigationProp<StackTypes>;
-	fromSettings?: boolean;
+	returnToPfp?: boolean;
 	setImage?: (base64: string) => void; // REMOVE THIS
 	setMarked?: () => void; // REMOVE THIS
 };

@@ -4,12 +4,16 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import Header from '../../components/Header/Header';
 import SignUp from './SignUp';
 
-const SignUpPage = () => {
+interface SignUpPagePropsType {
+	pfpUrlForSignUp: string
+}
+
+const SignUpPage = ({ pfpUrlForSignUp }: SignUpPagePropsType) => {
 	return (
 		<View style={{ gap: 40 }}>
 			<Header text="Sign up" leftBack={true} leftButton={true} />
 			<View style={styles.container}>
-				<SignUp />
+				<SignUp pfpUrlForSignUp={pfpUrlForSignUp} />
 			</View>
 		</View>
 	);

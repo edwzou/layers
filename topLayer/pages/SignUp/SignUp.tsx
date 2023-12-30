@@ -30,8 +30,16 @@ interface FormValues {
 	profile_picture: string;
 }
 
-const SignUp = () => {
-	const [image, setImage] = useState('');
+interface PrivacyOption {
+	value: string;
+	boolean: boolean;
+}
+
+interface SignUpPropsType {
+	pfpUrlForSignUp: string
+}
+
+const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 	// const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { updateData } = useContext(UserContext);
@@ -54,13 +62,14 @@ const SignUp = () => {
 			email: '',
 			password: '',
 			private_option: false,
-			profile_picture: image,
+			profile_picture: '',
 		},
 	});
 
 	useEffect(() => {
-		setValue('profile_picture', image);
-	}, [image]);
+		setValue('profile_picture', pfpUrlForSignUp);
+		//handleFieldChange('profile_picture', pfpUrlForSettings)
+	}, [pfpUrlForSignUp]);
 
 	const onSubmit = (values: FormValues | any) => {
 		const formValues: Record<string, any> = {
@@ -98,10 +107,12 @@ const SignUp = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						navigation.navigate(StackNavigation.CameraWrapper, {});
+						navigation.navigate(StackNavigation.CameraWrapper, {
+							returnToPfp: true
+						});
 					}}
 				>
-					<ProfilePicture imageUrl={image} base64 />
+					<ProfilePicture imageUrl={pfpUrlForSignUp} base64 />
 				</Pressable>
 				<View
 					style={{
@@ -191,7 +202,9 @@ const SignUp = () => {
 					)}
 					name="password"
 				/>
-				<RadioButton privateData={privacyOptions} onSelect={setValue} />
+				<RadioButton privateData={privacyOptions} onSelect={(selectedOption: PrivacyOption) => {
+					setValue('private_option', selectedOption.boolean);
+				}} />
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
