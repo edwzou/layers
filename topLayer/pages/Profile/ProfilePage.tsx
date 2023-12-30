@@ -38,13 +38,13 @@ import { toast } from '../../constants/GlobalStrings';
 // Define the context type
 type ProfilePageContextType = {
 	pfpUrlForSettings: string;
-	setPfpUrlForSettings: Dispatch<SetStateAction<string>>;
+	setReturnToPfp: Dispatch<SetStateAction<boolean>>;
 };
 
 // Create the context with the defined type
 export const ProfilePageContext = createContext<ProfilePageContextType>({
 	pfpUrlForSettings: '',
-	setPfpUrlForSettings: () => { },
+	setReturnToPfp: () => { },
 });
 
 const ProfilePage = () => {
@@ -52,12 +52,17 @@ const ProfilePage = () => {
 	const { data } = useContext(UserContext);
 	const { pp_url } = data as User;
 	const [pfpUrlForSettings, setPfpUrlForSettings] = useState(pp_url)
+	const [returnToPfp, setReturnToPfp] = useState(false)
+
+	const CameraWrapperComponent = () => (
+		<CameraWrapper setPfpUrl={setPfpUrlForSettings} returnToPfp={returnToPfp} />
+	);
 
 	return (
 		<ProfilePageContext.Provider
 			value={{
 				pfpUrlForSettings,
-				setPfpUrlForSettings,
+				setReturnToPfp
 			}}
 		>
 			<NavigationContainer independent={true}>
@@ -109,7 +114,7 @@ const ProfilePage = () => {
 						/>
 						<Stack.Screen
 							name={StackNavigation.CameraWrapper}
-							component={CameraWrapper}
+							component={CameraWrapperComponent}
 							options={{
 								presentation: 'fullScreenModal',
 								animation: 'slide_from_bottom',

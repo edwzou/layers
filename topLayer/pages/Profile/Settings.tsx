@@ -51,6 +51,7 @@ const Settings = () => {
 
 	const {
 		pfpUrlForSettings,
+		setReturnToPfp
 	} = useContext(ProfilePageContext);
 
 	// Update the state object when form fields change
@@ -84,6 +85,7 @@ const Settings = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
+						setReturnToPfp(true);
 						navigation.navigate(StackNavigation.CameraWrapper, {
 							returnToPfp: true,
 						});

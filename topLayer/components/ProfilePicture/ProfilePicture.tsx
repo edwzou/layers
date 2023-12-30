@@ -8,6 +8,7 @@ interface ProfilePicturePropsType {
 	base64?: boolean;
 	shadow?: boolean;
 	size?: number;
+	border?: boolean;
 }
 
 const ProfilePicture = ({
@@ -15,6 +16,7 @@ const ProfilePicture = ({
 	base64 = false,
 	shadow = true,
 	size = GlobalStyles.sizing.pfp.regular,
+	border = false
 }: ProfilePicturePropsType) => {
 
 	const imgString: string = imageUrl
@@ -44,6 +46,8 @@ const ProfilePicture = ({
 							width: size,
 							height: size,
 							borderRadius: size / 2,
+							borderWidth: border ? 1 : 0,
+							borderColor: border ? 'white' : undefined
 						},
 					]}
 					source={{ uri: imgString }}
@@ -56,6 +60,8 @@ const ProfilePicture = ({
 							width: size,
 							height: size,
 							borderRadius: size / 2,
+							borderWidth: border ? 1 : 0,
+							borderColor: border ? 'white' : undefined
 						},
 					]}
 				>

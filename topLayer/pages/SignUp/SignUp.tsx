@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Keyboard, ActivityIndicator } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
@@ -19,6 +19,8 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { UserContext } from '../../utils/UserContext';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings';
 
 interface FormValues {
 	first_name: string;
@@ -43,6 +45,8 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 	// const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { updateData } = useContext(UserContext);
+
+	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const privacyOptions = [
 		{ value: 'Public', boolean: false },
@@ -83,6 +87,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 		};
 
 		const onSubmitInner = async (): Promise<any> => {
+			setIsLoading(true); // Start loading
 			try {
 				const { data: userData, status } = await axios.post(
 					`${baseUrl}/signup`,
@@ -94,11 +99,33 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 				} else {
 					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}
+				showSuccessCreateToast()
+				setIsLoading(false); // Stop loading on success
 			} catch (err: unknown) {
+				setIsLoading(false); // Stop loading on error
+				showErrorCreateToast()
 				void axiosEndpointErrorHandler(err);
 			}
 		};
 		void onSubmitInner();
+	};
+
+	const showSuccessCreateToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourProfileHasBeenCreated,
+			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
+	};
+
+	const showErrorCreateToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileCreatingProfile,
+			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
 	};
 
 	return (
@@ -224,6 +251,14 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 					bgColor={GlobalStyles.colorPalette.primary[500]}
 				/>
 			</View>
+			{isLoading && (
+				<View style={styles.overlay}>
+					<ActivityIndicator
+						size="large"
+						color={GlobalStyles.colorPalette.activityIndicator}
+					/>
+				</View>
+			)}
 		</Pressable>
 	);
 };
@@ -253,6 +288,12 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[100],
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		padding: 15,
+	},
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'transparent', // Set to transparent
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });
 

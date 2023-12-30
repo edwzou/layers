@@ -12,16 +12,13 @@ const dummyId = 'createID: ';
 let createCount = 0;
 
 interface CameraWrapper {
-	route?: any,
-	setPfpUrlForSignUp?: Dispatch<SetStateAction<string>>
-	returnToSignUp?: boolean
+	setPfpUrl?: Dispatch<SetStateAction<string>>
+	returnToPfp?: boolean
 }
 
-const CameraWrapper = ({ route, setPfpUrlForSignUp, returnToSignUp }: CameraWrapper) => {
+const CameraWrapper = ({ setPfpUrl, returnToPfp }: CameraWrapper) => {
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
-	const returnToPfp = route?.params?.param1;
 
 	const [clothingItem, setClothingItem] = useState({
 		ciid: '',
@@ -62,8 +59,7 @@ const CameraWrapper = ({ route, setPfpUrlForSignUp, returnToSignUp }: CameraWrap
 			data={updatePhoto}
 			returnToNavigation={navigation}
 			returnToPfp={returnToPfp ? returnToPfp : false}
-			setPfpUrlForSignUp={setPfpUrlForSignUp}
-			returnToSignUp={returnToSignUp ? returnToSignUp : false}
+			setPfpUrl={setPfpUrl}
 		/>
 	);
 

@@ -38,6 +38,7 @@ const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType) => { // Default to 
 						<ProfilePicture
 							imageUrl={user.pp_url ? user.pp_url : ''}
 							size={GlobalStyles.sizing.pfp.small}
+							border={true}
 						/>
 					</View>
 				))}
@@ -49,7 +50,7 @@ const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType) => { // Default to 
 const styles = StyleSheet.create({
 	container: {
 		padding: 20,
-		backgroundColor: GlobalStyles.colorPalette.card[100],
+		backgroundColor: GlobalStyles.colorPalette.primary[200],
 		borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
 		flexDirection: 'row',
 		alignItems: 'center',

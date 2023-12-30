@@ -77,7 +77,7 @@ export default function App() {
 	);
 
 	const CameraWrapperComponent = () => (
-		<CameraWrapper setPfpUrlForSignUp={setPfpUrlForSignUp} returnToSignUp={true} />
+		<CameraWrapper setPfpUrl={setPfpUrlForSignUp} returnToPfp={true} />
 	);
 
 	return (
