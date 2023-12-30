@@ -255,8 +255,12 @@ export default function CameraComponent({
 
 		// console.log('Test2: ', result.assets[0].base64);
 		if (result.assets[0].base64) {
+			if (fromSettings) {
+				setPfpUrl(result.assets[0].base64)
+				returnToNavigation.goBack()
+			}
 			data(result.assets[0].base64);
-			console.log(result.assets[0].base64.substring(0, 10)); // Select image from library
+			//console.log(result.assets[0].base64.substring(0, 10)); // Select image from library
 			navigation.navigate(StackNavigation.ItemCreate, {});
 		} else {
 			console.log('result.assets[0].base64 is undefined!');
