@@ -4,6 +4,7 @@ import { UserOutfit } from '../pages/OutfitView';
 
 import { markedUser, User } from '../pages/Main';
 
+// DO NOT ADD ANY FUNCTIONS UNDER StackNavigatorType
 export type StackNavigatorType = {
 	userID?: string;
 	markedUser?: markedUser;
@@ -16,8 +17,9 @@ export type StackNavigatorType = {
 		shoes?: UserClothing;
 	};
 	returnTo?: NativeStackNavigationProp<StackTypes>;
-	setImage?: (base64: string) => void;
-	setMarked?: () => void;
+	fromSettings?: boolean;
+	setImage?: (base64: string) => void; // REMOVE THIS
+	setMarked?: () => void; // REMOVE THIS
 };
 
 export type StackTypes = {

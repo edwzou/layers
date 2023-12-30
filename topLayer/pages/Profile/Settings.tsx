@@ -17,8 +17,9 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import { ProfilePageContext } from './ProfilePage';
 import { settings } from '../../constants/GlobalStrings';
+import { SettingsPageContext } from './SettingsPage';
+import { ProfilePageContext } from './ProfilePage';
 
 interface FormValues {
 	first_name: string;
@@ -27,7 +28,7 @@ interface FormValues {
 	username: string;
 	password: string;
 	private_option: boolean;
-	pp_url: string;
+	profile_picture: string;
 }
 
 interface PrivacyOption {
@@ -46,13 +47,24 @@ const Settings = () => {
 		showSuccessUpdate,
 		setShowSuccessUpdate,
 		isLoading,
+	} = useContext(SettingsPageContext);
+
+	const {
 		pfpUrl,
-		setDidUpdatePfp
 	} = useContext(ProfilePageContext);
+
+	// Update the state object when form fields change
+	const handleFieldChange = (fieldName: string, value: string | boolean) => {
+		setFormData((prevData: FormValues) => ({
+			...prevData,
+			[fieldName]: value,
+		}));
+	};
 
 	useEffect(() => {
 		console.log("PFP SET!")
-		setValue('pp_url', pfpUrl);
+		setValue('profile_picture', pfpUrl);
+		handleFieldChange('profile_picture', pfpUrl)
 	}, [pfpUrl]);
 
 	useEffect(() => {
@@ -67,22 +79,15 @@ const Settings = () => {
 		{ value: 'Private', boolean: true },
 	];
 
-	// Update the state object when form fields change
-	const handleFieldChange = (fieldName: string, value: string | boolean) => {
-		setFormData((prevData: FormValues) => ({
-			...prevData,
-			[fieldName]: value,
-		}));
-	};
-
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
 			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						setDidUpdatePfp(true)
-						navigation.navigate(StackNavigation.CameraWrapper, {});
+						navigation.navigate(StackNavigation.CameraWrapper, {
+							fromSettings: true,
+						});
 					}}
 				>
 					<ProfilePicture imageUrl={pfpUrl} base64={pfpUrl.slice(0, 5) == 'https' ? false : true} />

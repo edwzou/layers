@@ -11,9 +11,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 const dummyId = 'createID: ';
 let createCount = 0;
 
-const CameraWrapper = () => {
+const CameraWrapper = ({ route }: any) => {
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
+	const { fromSettings } = route.params;
 
 	const [clothingItem, setClothingItem] = useState({
 		ciid: '',
@@ -50,7 +52,7 @@ const CameraWrapper = () => {
 	);
 
 	const CameraComponents = () => (
-		<CameraComponent data={updatePhoto} returnToNavigation={navigation} />
+		<CameraComponent data={updatePhoto} returnToNavigation={navigation} fromSettings={fromSettings ? fromSettings : false} />
 	);
 
 	return (

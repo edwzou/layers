@@ -55,16 +55,16 @@ import { ProfilePageContext } from '../../pages/Profile/ProfilePage';
 interface CameraPropType {
 	data: (photo: string) => void;
 	returnToNavigation: NativeStackNavigationProp<StackTypes>;
+	fromSettings: boolean;
 }
 
 export default function CameraComponent({
 	data,
 	returnToNavigation,
+	fromSettings
 }: CameraPropType) {
 
 	const {
-		didUpdatePfp,
-		setDidUpdatePfp,
 		setPfpUrl
 	} = useContext(ProfilePageContext);
 
@@ -110,8 +110,7 @@ export default function CameraComponent({
 				mediaType: 'photo', // specify media type as 'photo'
 			}).then(croppedImage => {
 				if (croppedImage.data) {
-					if (didUpdatePfp) {
-						setDidUpdatePfp(false)
+					if (fromSettings) {
 						setPfpUrl(croppedImage.data)
 						returnToNavigation.goBack()
 					}
@@ -292,7 +291,6 @@ export default function CameraComponent({
 					<Text>
 						<Pressable
 							onPress={() => {
-								setDidUpdatePfp(false)
 								returnToNavigation.goBack();
 							}}
 						>
