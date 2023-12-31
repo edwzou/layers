@@ -14,6 +14,7 @@ import React, {
 	useRef,
 	useState,
 	useEffect,
+	useContext,
 } from 'react';
 import {
 	Camera,
@@ -48,22 +49,30 @@ import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
 import { StackNavigation } from '../../constants/Enums';
 
+import ImageCropPicker from 'react-native-image-crop-picker';
+import { ProfilePageContext } from '../../pages/Profile/ProfilePage';
+
 interface CameraPropType {
 	data: (photo: string) => void;
 	returnToNavigation: NativeStackNavigationProp<StackTypes>;
+	setPfpUrl?: Dispatch<SetStateAction<string>>;
+	returnToPfp: boolean;
 }
 
 export default function CameraComponent({
 	data,
-	returnToNavigation
+	returnToNavigation,
+	setPfpUrl,
+	returnToPfp,
 }: CameraPropType) {
-	const [orientation, setOrientation] = useState(CameraType.front);
+	const { setReturnToPfp } = useContext(ProfilePageContext);
+
+	const [orientation, setOrientation] = useState(CameraType.back);
 	const [flash, setFlash] = useState(FlashMode.auto);
 	const [cameraPermission, requestCameraPermission] =
 		Camera.useCameraPermissions();
 	const [mediaPermission, requestMediaPermission] =
 		MediaLibrary.usePermissions();
-	const [photo, setPhoto] = useState<CameraCapturedPicture>();
 	const scale = useSharedValue(0);
 	const shutterWidth = useSharedValue(0);
 	const rippleOpacity = useSharedValue(1);
@@ -76,7 +85,8 @@ export default function CameraComponent({
 	const takePhotoOptions: CameraPictureOptions = {
 		quality: 0,
 		base64: true,
-		exif: false, // Exchangeable Image File Format. It's a standard that specifies the formats for images, sound, and ancillary tags used by digital cameras
+		// Exchangeable Image File Format. It's a standard that specifies the formats for images, sound, and ancillary tags used by digital cameras
+		exif: false,
 	};
 
 	const flipCamera = () => {
@@ -88,13 +98,34 @@ export default function CameraComponent({
 	const takePicture = useCallback(async () => {
 		if (cameraRef.current == null) return;
 		const newPhoto = await cameraRef.current.takePictureAsync(takePhotoOptions);
-		if (newPhoto.base64) {
-			data(newPhoto.base64);
+
+		if (newPhoto.uri) {
+			ImageCropPicker.openCropper({
+				path: newPhoto.uri,
+				width: 2000, // set your desired width
+				height: 2000, // set your desired height
+				cropping: true,
+				includeBase64: true,
+				mediaType: 'photo', // specify media type as 'photo'
+			})
+				.then((croppedImage) => {
+					if (croppedImage.data) {
+						if (returnToPfp) {
+							setReturnToPfp(false);
+							setPfpUrl && setPfpUrl(croppedImage.data);
+							returnToNavigation.goBack();
+						} else {
+							data(croppedImage.data); // use the base64 string
+							navigation.navigate(StackNavigation.ItemCreate, {});
+						}
+					}
+				})
+				.catch((error) => {
+					console.log('Cropping failed', error);
+				});
 		} else {
-			console.log('photo.base64 is undefined!');
+			console.log('photo.uri is undefined!');
 		}
-		navigation.navigate(StackNavigation.ItemCreate, {});
-		// console.log('Photo taken: ', newPhoto);
 	}, []);
 
 	const tapGestureEvent =
@@ -151,70 +182,6 @@ export default function CameraComponent({
 		return <></>;
 	}
 
-	if (photo && photo.base64 != undefined) {
-		const savePhoto = () => {
-			// console.log('Test: ', photo.base64);
-			if (photo.base64) {
-				data(photo.base64);
-				console.log(photo.base64.substring(0, 10)); // Select image from camera
-			} else {
-				console.log('photo.base64 is undefined!');
-			}
-			// navigation.goBack();
-			MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-				setPhoto(undefined);
-			});
-		};
-
-		return (
-			<SafeAreaView style={styles.previewContainer}>
-				<Image
-					style={styles.preview}
-					source={{ uri: 'data:image/jpg;base64,' + photo.base64 }}
-				/>
-				<Pressable
-					onPress={() => {
-						setPhoto(undefined);
-					}}
-					style={[
-						styles.button,
-						{
-							position: 'absolute',
-							zIndex: 100,
-							top: 100,
-							left: GlobalStyles.layout.xGap,
-						},
-					]}
-				>
-					<Icon
-						name={GlobalStyles.icons.backOutline}
-						size={GlobalStyles.sizing.icon.regular}
-						color={GlobalStyles.colorPalette.background}
-					/>
-				</Pressable>
-				{mediaPermission.granted ? (
-					<Pressable
-						onPress={savePhoto}
-						style={[
-							styles.buttonInverse,
-							{
-								position: 'absolute',
-								bottom: 50,
-								right: GlobalStyles.layout.xGap,
-							},
-						]}
-					>
-						<Icon
-							name={GlobalStyles.icons.rightFillArrow}
-							color={GlobalStyles.colorPalette.primary[500]}
-							size={GlobalStyles.sizing.icon.regular}
-						/>
-					</Pressable>
-				) : undefined}
-			</SafeAreaView>
-		);
-	}
-
 	const pickImage = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -227,13 +194,17 @@ export default function CameraComponent({
 
 		// console.log('Test2: ', result.assets[0].base64);
 		if (result.assets[0].base64) {
+			if (returnToPfp) {
+				setReturnToPfp(false);
+				setPfpUrl && setPfpUrl(result.assets[0].base64);
+				returnToNavigation.goBack();
+			}
 			data(result.assets[0].base64);
-			console.log(result.assets[0].base64.substring(0, 10)); // Select image from library
+			//console.log(result.assets[0].base64.substring(0, 10)); // Select image from library
 			navigation.navigate(StackNavigation.ItemCreate, {});
 		} else {
 			console.log('result.assets[0].base64 is undefined!');
 		}
-		// navigation.goBack();
 	};
 
 	return (
@@ -260,19 +231,17 @@ export default function CameraComponent({
 						left: GlobalStyles.layout.xGap,
 					}}
 				>
-					<Text>
-						<Pressable
-							onPress={() => {
-								returnToNavigation.goBack();
-							}}
-						>
-							<Icon
-								name={GlobalStyles.icons.closeOutline}
-								color={GlobalStyles.colorPalette.background}
-								size={GlobalStyles.sizing.icon.regular}
-							/>
-						</Pressable>
-					</Text>
+					<Pressable
+						onPress={() => {
+							returnToNavigation.goBack();
+						}}
+					>
+						<Icon
+							name={GlobalStyles.icons.closeOutline}
+							color={GlobalStyles.colorPalette.background}
+							size={GlobalStyles.sizing.icon.regular}
+						/>
+					</Pressable>
 				</View>
 				<View style={styles.bottomContainer}>
 					<Pressable onPress={pickImage} style={styles.button}>

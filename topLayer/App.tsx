@@ -33,7 +33,7 @@ LogBox.ignoreLogs(['Require cycle:']);
 LogBox.ignoreLogs(['Constants.platform.ios.model has been deprecated']);
 
 export const AppContext = createContext({
-	setShouldRefreshApp: (() => {}) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshApp: (() => { }) as Dispatch<SetStateAction<boolean>>,
 });
 
 export default function App() {
@@ -70,6 +70,16 @@ export default function App() {
 		}
 	}, [shouldRefreshApp]);
 
+	const [pfpUrlForSignUp, setPfpUrlForSignUp] = useState('')
+
+	const SignUpPageComponent = () => (
+		<SignUpPage pfpUrlForSignUp={pfpUrlForSignUp} />
+	);
+
+	const CameraWrapperComponent = () => (
+		<CameraWrapper setPfpUrl={setPfpUrlForSignUp} returnToPfp={true} />
+	);
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -92,7 +102,11 @@ export default function App() {
 									/>
 									<Stack.Screen
 										name={StackNavigation.SignUp}
-										component={SignUpPage}
+										component={SignUpPageComponent}
+									/>
+									<Stack.Screen
+										name={StackNavigation.CameraWrapper}
+										component={CameraWrapperComponent}
 									/>
 								</>
 							) : (

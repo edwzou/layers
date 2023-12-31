@@ -17,8 +17,9 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import { ProfilePageContext } from './ProfilePage';
 import { settings } from '../../constants/GlobalStrings';
+import { SettingsPageContext } from './SettingsPage';
+import { ProfilePageContext } from './ProfilePage';
 
 interface FormValues {
 	first_name: string;
@@ -27,7 +28,7 @@ interface FormValues {
 	username: string;
 	password: string;
 	private_option: boolean;
-	pp_url: string;
+	profile_picture: string;
 }
 
 interface PrivacyOption {
@@ -36,23 +37,35 @@ interface PrivacyOption {
 }
 
 const Settings = () => {
-	const [image, setImage] = useState('');
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const {
 		control,
 		setValue,
 		setFormData,
-		pp_url,
 		errors,
 		showSuccessUpdate,
 		setShowSuccessUpdate,
 		isLoading,
+	} = useContext(SettingsPageContext);
+
+	const {
+		pfpUrlForSettings,
+		setReturnToPfp
 	} = useContext(ProfilePageContext);
 
+	// Update the state object when form fields change
+	const handleFieldChange = (fieldName: string, value: string | boolean) => {
+		setFormData((prevData: FormValues) => ({
+			...prevData,
+			[fieldName]: value,
+		}));
+	};
+
 	useEffect(() => {
-		setValue('pp_url', image);
-	}, [image]);
+		setValue('profile_picture', pfpUrlForSettings);
+		handleFieldChange('profile_picture', pfpUrlForSettings)
+	}, [pfpUrlForSettings]);
 
 	useEffect(() => {
 		if (showSuccessUpdate) {
@@ -66,26 +79,19 @@ const Settings = () => {
 		{ value: 'Private', boolean: true },
 	];
 
-	// Update the state object when form fields change
-	const handleFieldChange = (fieldName: string, value: string | boolean) => {
-		setFormData((prevData: FormValues) => ({
-			...prevData,
-			[fieldName]: value,
-		}));
-	};
-
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
 			<View style={{ gap: GlobalStyles.layout.gap }}>
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
+						setReturnToPfp(true);
 						navigation.navigate(StackNavigation.CameraWrapper, {
-							setImage: setImage,
+							returnToPfp: true,
 						});
 					}}
 				>
-					<ProfilePicture imageUrl={pp_url} />
+					<ProfilePicture imageUrl={pfpUrlForSettings} base64={pfpUrlForSettings.slice(0, 5) == 'https' ? false : true} />
 				</Pressable>
 				<View
 					style={{
@@ -170,6 +176,7 @@ const Settings = () => {
 					rules={{
 						required: true,
 						minLength: 8,
+						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -204,11 +211,13 @@ const Settings = () => {
 			</View>
 
 			{isLoading && (
-				<View style={styles.overlay}>
-					<ActivityIndicator
-						size="large"
-						color={GlobalStyles.colorPalette.activityIndicator}
-					/>
+				<View style={GlobalStyles.utils.loadingOverlay}>
+					<View style={GlobalStyles.utils.loadingContainer}>
+						<ActivityIndicator
+							size="large"
+							color={GlobalStyles.colorPalette.activityIndicator}
+						/>
+					</View>
 				</View>
 			)}
 		</Pressable>
@@ -240,12 +249,6 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.primary[100],
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		padding: 15,
-	},
-	overlay: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: 'transparent', // Set to transparent
-		alignItems: 'center',
-		justifyContent: 'center',
 	},
 });
 

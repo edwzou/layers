@@ -228,8 +228,10 @@ const OutfitEdit = ({
 				</View>
 
 				{isLoading && (
-					<View style={styles.overlay}>
-						<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+					<View style={GlobalStyles.utils.loadingOverlay}>
+						<View style={GlobalStyles.utils.loadingContainer}>
+							<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+						</View>
 					</View>
 				)}
 			</View>
@@ -252,12 +254,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: GlobalStyles.layout.gap * 2.5,
 		alignSelf: 'center',
-	},
-	overlay: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: 'transparent', // Set to transparent
-		alignItems: 'center',
-		justifyContent: 'center',
 	},
 });
 

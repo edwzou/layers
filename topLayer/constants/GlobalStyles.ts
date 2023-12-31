@@ -171,6 +171,24 @@ const utils = StyleSheet.create({
 		shadowOffset: { width: 0, height: 4 },
 		shadowOpacity: 0.2,
 		shadowRadius: 8,
+	},
+	loadingOverlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'transparent', // Set to transparent
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	loadingContainer: {
+		padding: 20,
+		backgroundColor: colorPalette.primary[100],
+		borderRadius: 10,
+		shadowColor: colorPalette.primary[300],
+		shadowOffset: {
+			width: 0,
+			height: 0,
+		},
+		shadowOpacity: 0.05,
+		shadowRadius: 5,
 	}
 });
 

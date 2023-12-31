@@ -1,6 +1,13 @@
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { View, StyleSheet, Pressable, Keyboard, Text, ActivityIndicator } from 'react-native';
+import {
+	View,
+	StyleSheet,
+	Pressable,
+	Keyboard,
+	Text,
+	ActivityIndicator,
+} from 'react-native';
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Button from '../../components/Button/Button';
 import {
@@ -27,7 +34,7 @@ import Icon from 'react-native-remix-icon';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from 'utils/StackNavigation';
+import { type StackTypes } from '../../utils/StackNavigation';
 import Header from '../../components/Header/Header';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import Toast from 'react-native-toast-message';
@@ -47,7 +54,10 @@ interface ItemCreatePropsType {
 	navigateToProfile: () => void;
 }
 
-const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) => {
+const ItemCreate = ({
+	clothingItem,
+	navigateToProfile,
+}: ItemCreatePropsType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const colorPickerRef = useRef<refPropType>(null);
 
@@ -164,7 +174,7 @@ const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) =>
 				},
 			];
 		}
-	}
+	};
 	// sets the size options (ex. {S, M, L}, {US 10, US 11, US 12}, etc.)
 	const [sizes, setSizes] = useState(helpSetSizes(clothingItem.category));
 
@@ -211,17 +221,17 @@ const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) =>
 
 	// sets new sizing options when a new item type (ex. outerwear) is selected
 	useEffect(() => {
-		setSizes(helpSetSizes(itemTypeValue))
+		setSizes(helpSetSizes(itemTypeValue));
 		setValue('category', itemTypeValue);
-	}, [itemTypeValue])
+	}, [itemTypeValue]);
 
 	useEffect(() => {
 		setValue('size', sizeValue);
-	}, [sizeValue])
+	}, [sizeValue]);
 
 	useEffect(() => {
 		setValue('color', currentColorTags);
-	}, [currentColorTags])
+	}, [currentColorTags]);
 
 	useEffect(() => {
 		setValue('image', clothingItem.image_url);
@@ -234,29 +244,29 @@ const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) =>
 			text2: toast.yourItemHasBeenCreated,
 			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	const showErrorCreateToast = () => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
 			text2: toast.anErrorHasOccurredWhileCreatingItem,
-			topOffset: GlobalStyles.layout.toastTopOffset
+			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	const handleCreate = async (values: FormValues | any) => {
 		console.log(values);
-		if (values.category == '') {
+		if (values.category === '') {
 			throw new Error('Category Value Not Filled Out.');
 		}
-		if (values.title == '') {
+		if (values.title === '') {
 			throw new Error('Title Value Not Filled Out.');
 		}
-		if (values.size == '') {
+		if (values.size === '') {
 			throw new Error('Size Value Not Filled Out.');
 		}
-		if (values.image_url == '') {
+		if (values.image_url === '') {
 			throw new Error('Image Value Not Filled Out.');
 		}
 		setIsLoading(true); // Start loading
@@ -269,9 +279,9 @@ const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) =>
 			if (status === 200) {
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
-				showSuccessCreateToast()
+				showSuccessCreateToast();
 			} else {
-				showErrorCreateToast()
+				showErrorCreateToast();
 			}
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {
@@ -294,10 +304,6 @@ const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) =>
 		colorPickerRef.current?.scrollTo(0);
 	};
 
-	// const handlePress = () => {
-	// 	navigation.navigate(StackNavigation.OutfitView, {});
-	// };
-
 	const redirectToCamera = () => {
 		navigation.navigate(StackNavigation.CameraComponents, {});
 	};
@@ -305,7 +311,7 @@ const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) =>
 	return (
 		<View style={styles.container}>
 			<Header
-				text={"Create"}
+				text={'Create'}
 				leftButton={true}
 				leftStepOverType={StepOverTypes.leftArrow}
 				leftButtonAction={redirectToCamera}
@@ -328,7 +334,7 @@ const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) =>
 							<StackedTextBox
 								label="Item name"
 								onFieldChange={(value) => {
-									onChange(value)
+									onChange(value);
 									setValue('title', value);
 								}}
 								value={value.trim()}
@@ -384,8 +390,13 @@ const ItemCreate = ({ clothingItem, navigateToProfile }: ItemCreatePropsType) =>
 				dim={false}
 			/>
 			{isLoading && (
-				<View style={styles.overlay}>
-					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+				<View style={GlobalStyles.utils.loadingOverlay}>
+					<View style={GlobalStyles.utils.loadingContainer}>
+						<ActivityIndicator
+							size="large"
+							color={GlobalStyles.colorPalette.activityIndicator}
+						/>
+					</View>
 				</View>
 			)}
 		</View>
@@ -402,12 +413,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: GlobalStyles.layout.gap * 2.5,
 		alignSelf: 'center',
-	},
-	overlay: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: 'transparent', // Set to transparent
-		alignItems: 'center',
-		justifyContent: 'center',
 	},
 });
 

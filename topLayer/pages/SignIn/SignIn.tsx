@@ -130,8 +130,10 @@ const SignIn = () => {
 			</View>
 
 			{isLoading && (
-				<View style={styles.overlay}>
-					<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+				<View style={GlobalStyles.utils.loadingOverlay}>
+					<View style={GlobalStyles.utils.loadingContainer}>
+						<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+					</View>
 				</View>
 			)}
 		</View>
@@ -139,12 +141,6 @@ const SignIn = () => {
 };
 
 const styles = StyleSheet.create({
-	overlay: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: 'transparent', // Set to transparent
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
 });
 
 export default SignIn;
