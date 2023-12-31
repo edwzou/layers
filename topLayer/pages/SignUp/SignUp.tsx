@@ -147,7 +147,7 @@ const SignUp = () => {
 					control={control}
 					rules={{
 						required: true,
-						maxLength: 63, // Just a random number
+						maxLength: 20,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -164,7 +164,7 @@ const SignUp = () => {
 					rules={{
 						required: true,
 						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-						maxLength: 63, // Just a random number
+						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -181,7 +181,7 @@ const SignUp = () => {
 					rules={{
 						required: true,
 						minLength: 8,
-						maxLength: 255,
+						maxLength: 72,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox

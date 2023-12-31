@@ -133,7 +133,7 @@ const Settings = () => {
 					control={control}
 					rules={{
 						required: true,
-						maxLength: 20, // Just a random number
+						maxLength: 20,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
