@@ -39,10 +39,12 @@ export const settings = {
 export const toast = {
 	success: 'Success',
 	error: 'Error',
-	yourProfileHasBeenUpdated: 'Your profile has been updated.',
 	yourOutfitHasBeenCreated: 'Your outfit has been created.',
 	yourOutfitHasBeenDeleted: 'Your outfit has been deleted.',
 	yourOutfitHasBeenUpdated: 'Your outfit has been updated.',
+	yourProfileHasBeenCreated: 'Your profile has been created.',
+	yourProfileHasBeenUpdated: 'Your profile has been updated.',
+	yourProfileHasBeenDeleted: `Your profile has been deleted.`,
 	yourItemHasBeenCreated: `Your item has been created.`,
 	yourItemHasBeenUpdated: `Your item has been updated.`,
 	yourItemHasBeenDeleted: `Your item has been deleted.`,
@@ -55,4 +57,5 @@ export const toast = {
 	anErrorHasOccurredWhileDeletingItem: 'An error has occurred while deleting your item.',
 	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating your profile.',
 	anErrorHasOccurredWhileSendingFeedback: 'An error has occurred while sending your feedback.',
+	anErrorHasOccurredWhileCreatingProfile: 'An error has occurred while creating your profile.',
 }

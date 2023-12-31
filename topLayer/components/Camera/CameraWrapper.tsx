@@ -1,25 +1,22 @@
-import React, { createContext, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import CameraComponent from './Camera';
 import ItemCreate from '../../pages/ItemView/ItemCreate';
-import { Stack, StackTypes } from '../../utils/StackNavigation';
+import { Stack, type StackTypes } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import { StackNavigation } from '../../constants/Enums';
 
-import { headerButton } from '../Modal/HeaderButton';
-import bottoms1 from '../../assets/bottoms1.png';
-import { ColorTags } from '../../constants/Enums';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const dummyId = 'createID: ';
 let createCount = 0;
 
-type PhotoType = {
-	base64: string;
-	updatePhoto: (photo: any) => void;
-};
+interface CameraWrapper {
+	setPfpUrl?: Dispatch<SetStateAction<string>>;
+	returnToPfp: boolean;
+}
 
-const CameraWrapper = ({ route }: any) => {
+const CameraWrapper = ({ setPfpUrl, returnToPfp }: CameraWrapper) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [clothingItem, setClothingItem] = useState({
@@ -36,7 +33,7 @@ const CameraWrapper = ({ route }: any) => {
 
 	const updateClothingItem = (image: string) => {
 		createCount += 1;
-		const newId = dummyId + createCount;
+		const newId = dummyId + createCount.toString();
 		setClothingItem({
 			...clothingItem,
 			image_url: image,
@@ -53,11 +50,19 @@ const CameraWrapper = ({ route }: any) => {
 	};
 
 	const ItemCreateComponent = () => (
-		<ItemCreate clothingItem={clothingItem} navigateToProfile={redirectToProfile} />
+		<ItemCreate
+			clothingItem={clothingItem}
+			navigateToProfile={redirectToProfile}
+		/>
 	);
 
 	const CameraComponents = () => (
-		<CameraComponent data={updatePhoto} returnToNavigation={navigation} />
+		<CameraComponent
+			data={updatePhoto}
+			returnToNavigation={navigation}
+			returnToPfp={returnToPfp}
+			setPfpUrl={setPfpUrl}
+		/>
 	);
 
 	return (

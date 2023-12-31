@@ -1,5 +1,5 @@
 import { Image, StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
@@ -8,6 +8,7 @@ interface ProfilePicturePropsType {
 	base64?: boolean;
 	shadow?: boolean;
 	size?: number;
+	border?: boolean;
 }
 
 const ProfilePicture = ({
@@ -15,10 +16,11 @@ const ProfilePicture = ({
 	base64 = false,
 	shadow = true,
 	size = GlobalStyles.sizing.pfp.regular,
+	border = false,
 }: ProfilePicturePropsType) => {
 	const imgString: string = imageUrl
 		? base64
-			? `data:image/jpg;base64,${imageUrl}`
+			? `data:image/jpeg;base64,${imageUrl}`
 			: imageUrl
 		: '';
 
@@ -33,9 +35,11 @@ const ProfilePicture = ({
 							width: size,
 							height: size,
 							borderRadius: size / 2,
+							borderWidth: border ? 1 : 0,
+							borderColor: border ? 'white' : undefined,
 						},
 					]}
-					source={{ uri: imageUrl }}
+					source={{ uri: imgString }}
 				/>
 			) : (
 				<View
@@ -45,6 +49,8 @@ const ProfilePicture = ({
 							width: size,
 							height: size,
 							borderRadius: size / 2,
+							borderWidth: border ? 1 : 0,
+							borderColor: border ? 'white' : undefined,
 						},
 					]}
 				>

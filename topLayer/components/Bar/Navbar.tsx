@@ -19,7 +19,6 @@ interface NavbarPropsType {
 const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
 	const { navigationArray } = useContext(MainPageContext);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const [image, setImage] = useState('');
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -50,9 +49,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
 			<View style={styles.icons}>
 				<Pressable
 					onPress={() => {
-						navigation.navigate(StackNavigation.CameraWrapper, {
-							setImage: setImage,
-						});
+						navigation.navigate(StackNavigation.CameraWrapper, {});
 					}}
 				>
 					<Icon

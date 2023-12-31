@@ -1,7 +1,14 @@
 import axios, { AxiosError } from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	Pressable,
+	Keyboard,
+	ActivityIndicator,
+} from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
@@ -19,6 +26,8 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { UserContext } from '../../utils/UserContext';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+import Toast from 'react-native-toast-message';
+import { toast } from '../../constants/GlobalStrings';
 
 interface FormValues {
 	first_name: string;
@@ -30,11 +39,21 @@ interface FormValues {
 	profile_picture: string;
 }
 
-const SignUp = () => {
-	const [image, setImage] = useState('');
+interface PrivacyOption {
+	value: string;
+	boolean: boolean;
+}
+
+interface SignUpPropsType {
+	pfpUrlForSignUp: string;
+}
+
+const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 	// const [modalVisible, setModalVisible] = useState(false);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { updateData } = useContext(UserContext);
+
+	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const privacyOptions = [
 		{ value: 'Public', boolean: false },
@@ -54,13 +73,14 @@ const SignUp = () => {
 			email: '',
 			password: '',
 			private_option: false,
-			profile_picture: image,
+			profile_picture: '',
 		},
 	});
 
 	useEffect(() => {
-		setValue('profile_picture', image);
-	}, [image]);
+		setValue('profile_picture', pfpUrlForSignUp);
+		//handleFieldChange('profile_picture', pfpUrlForSettings)
+	}, [pfpUrlForSignUp]);
 
 	const onSubmit = (values: FormValues | any) => {
 		const formValues: Record<string, any> = {
@@ -74,6 +94,7 @@ const SignUp = () => {
 		};
 
 		const onSubmitInner = async (): Promise<any> => {
+			setIsLoading(true); // Start loading
 			try {
 				const { data: userData, status } = await axios.post(
 					`${baseUrl}/signup`,
@@ -85,11 +106,33 @@ const SignUp = () => {
 				} else {
 					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}
+				showSuccessCreateToast();
+				setIsLoading(false); // Stop loading on success
 			} catch (err: unknown) {
-				void axiosEndpointErrorHandler(err);
+				setIsLoading(false); // Stop loading on error
+				showErrorCreateToast();
+				axiosEndpointErrorHandler(err);
 			}
 		};
 		void onSubmitInner();
+	};
+
+	const showSuccessCreateToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: toast.success,
+			text2: toast.yourProfileHasBeenCreated,
+			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
+	};
+
+	const showErrorCreateToast = () => {
+		Toast.show({
+			type: 'error',
+			text1: toast.error,
+			text2: toast.anErrorHasOccurredWhileCreatingProfile,
+			topOffset: GlobalStyles.layout.toastTopOffset,
+		});
 	};
 
 	return (
@@ -99,11 +142,11 @@ const SignUp = () => {
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
 						navigation.navigate(StackNavigation.CameraWrapper, {
-							setImage: setImage,
+							returnToPfp: true,
 						});
 					}}
 				>
-					<ProfilePicture imageUrl={image} base64 />
+					<ProfilePicture imageUrl={pfpUrlForSignUp} base64 />
 				</Pressable>
 				<View
 					style={{
@@ -193,7 +236,12 @@ const SignUp = () => {
 					)}
 					name="password"
 				/>
-				<RadioButton privateData={privacyOptions} onSelect={setValue} />
+				<RadioButton
+					privateData={privacyOptions}
+					onSelect={(selectedOption: PrivacyOption) => {
+						setValue('private_option', selectedOption.boolean);
+					}}
+				/>
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
@@ -209,10 +257,20 @@ const SignUp = () => {
 				<Button
 					text="Sign up"
 					onPress={handleSubmit(onSubmit)}
-					disabled={Object.keys(dirtyFields).length < 5}
+					disabled={isLoading || Object.keys(dirtyFields).length < 5}
 					bgColor={GlobalStyles.colorPalette.primary[500]}
 				/>
 			</View>
+			{isLoading && (
+				<View style={GlobalStyles.utils.loadingOverlay}>
+					<View style={GlobalStyles.utils.loadingContainer}>
+						<ActivityIndicator
+							size="large"
+							color={GlobalStyles.colorPalette.activityIndicator}
+						/>
+					</View>
+				</View>
+			)}
 		</Pressable>
 	);
 };
