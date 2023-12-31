@@ -88,6 +88,7 @@ const SignIn = () => {
 					control={control}
 					rules={{
 						required: true,
+						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
 						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
@@ -106,6 +107,7 @@ const SignIn = () => {
 					control={control}
 					rules={{
 						required: true,
+						minLength: 8,
 						maxLength: 100,
 					}}
 					render={({ field: { onChange, value } }) => (
