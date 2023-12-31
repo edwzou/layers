@@ -181,7 +181,7 @@ const SignUp = () => {
 					rules={{
 						required: true,
 						minLength: 8,
-						maxLength: 72,
+						maxLength: 100,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox

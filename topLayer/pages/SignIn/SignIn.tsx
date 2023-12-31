@@ -106,7 +106,7 @@ const SignIn = () => {
 					control={control}
 					rules={{
 						required: true,
-						maxLength: 72,
+						maxLength: 100,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<InlineTextbox
