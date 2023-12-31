@@ -42,7 +42,7 @@ const ProfileCell = ({
   if (isMarkedPrivateUser(user)) {
     userProcessed = {
       ...user,
-      first_name: '',
+      first_name: user.username,
       last_name: '',
       email: '',
       followers: [],

@@ -247,7 +247,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 				<Button
 					text="Sign up"
 					onPress={handleSubmit(onSubmit)}
-					disabled={Object.keys(dirtyFields).length < 5}
+					disabled={isLoading || Object.keys(dirtyFields).length < 5}
 					bgColor={GlobalStyles.colorPalette.primary[500]}
 				/>
 			</View>
