@@ -59,7 +59,7 @@ CREATE TABLE backend_schema.clothing_item (
     title VARCHAR(255) NOT NULL,
     uid UUID NOT NULL,
     brands VARCHAR[],
-    size VARCHAR(4),
+    size VARCHAR(50),
     color color_enum[] NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT item
