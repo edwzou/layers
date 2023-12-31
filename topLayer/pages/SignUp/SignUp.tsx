@@ -190,7 +190,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 					control={control}
 					rules={{
 						required: true,
-						maxLength: 63, // Just a random number
+						maxLength: 20,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -207,7 +207,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 					rules={{
 						required: true,
 						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-						maxLength: 63, // Just a random number
+						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -224,7 +224,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 					rules={{
 						required: true,
 						minLength: 8,
-						maxLength: 255,
+						maxLength: 100,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox

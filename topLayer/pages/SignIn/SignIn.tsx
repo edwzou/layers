@@ -88,7 +88,8 @@ const SignIn = () => {
 					control={control}
 					rules={{
 						required: true,
-						maxLength: 63,
+						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<InlineTextbox
@@ -106,7 +107,8 @@ const SignIn = () => {
 					control={control}
 					rules={{
 						required: true,
-						maxLength: 255,
+						minLength: 8,
+						maxLength: 100,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<InlineTextbox

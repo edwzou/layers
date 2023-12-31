@@ -104,6 +104,7 @@ const Settings = () => {
 						control={control}
 						rules={{
 							required: true,
+							maxLength: 50,
 						}}
 						render={({ field: { onChange, value } }) => (
 							<StackedTextBox
@@ -121,6 +122,7 @@ const Settings = () => {
 						control={control}
 						rules={{
 							required: true,
+							maxLength: 50,
 						}}
 						render={({ field: { onChange, value } }) => (
 							<StackedTextBox
@@ -139,7 +141,7 @@ const Settings = () => {
 					control={control}
 					rules={{
 						required: true,
-						maxLength: 20, // Just a random number
+						maxLength: 20,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -158,6 +160,7 @@ const Settings = () => {
 					rules={{
 						required: true,
 						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
@@ -176,7 +179,7 @@ const Settings = () => {
 					rules={{
 						required: true,
 						minLength: 8,
-						maxLength: 255,
+						maxLength: 100,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
