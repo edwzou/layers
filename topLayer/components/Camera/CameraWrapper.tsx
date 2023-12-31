@@ -1,23 +1,22 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import CameraComponent from './Camera';
 import ItemCreate from '../../pages/ItemView/ItemCreate';
-import { Stack, StackTypes } from '../../utils/StackNavigation';
+import { Stack, type StackTypes } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StackNavigation } from '../../constants/Enums';
 
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const dummyId = 'createID: ';
 let createCount = 0;
 
 interface CameraWrapper {
-	setPfpUrl?: Dispatch<SetStateAction<string>>
-	returnToPfp?: boolean
+	setPfpUrl?: Dispatch<SetStateAction<string>>;
+	returnToPfp: boolean;
 }
 
 const CameraWrapper = ({ setPfpUrl, returnToPfp }: CameraWrapper) => {
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [clothingItem, setClothingItem] = useState({
@@ -34,7 +33,7 @@ const CameraWrapper = ({ setPfpUrl, returnToPfp }: CameraWrapper) => {
 
 	const updateClothingItem = (image: string) => {
 		createCount += 1;
-		const newId = dummyId + createCount;
+		const newId = dummyId + createCount.toString();
 		setClothingItem({
 			...clothingItem,
 			image_url: image,
@@ -51,14 +50,17 @@ const CameraWrapper = ({ setPfpUrl, returnToPfp }: CameraWrapper) => {
 	};
 
 	const ItemCreateComponent = () => (
-		<ItemCreate clothingItem={clothingItem} navigateToProfile={redirectToProfile} />
+		<ItemCreate
+			clothingItem={clothingItem}
+			navigateToProfile={redirectToProfile}
+		/>
 	);
 
 	const CameraComponents = () => (
 		<CameraComponent
 			data={updatePhoto}
 			returnToNavigation={navigation}
-			returnToPfp={returnToPfp ? returnToPfp : false}
+			returnToPfp={returnToPfp}
 			setPfpUrl={setPfpUrl}
 		/>
 	);

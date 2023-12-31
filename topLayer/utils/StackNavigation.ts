@@ -1,4 +1,7 @@
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {
+	createNativeStackNavigator,
+	NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 import { UserClothing } from '../pages/Match';
 import { UserOutfit } from '../pages/OutfitView';
 
@@ -18,7 +21,6 @@ export type StackNavigatorType = {
 	};
 	returnTo?: NativeStackNavigationProp<StackTypes>;
 	returnToPfp?: boolean;
-	setImage?: (base64: string) => void; // REMOVE THIS
 	setMarked?: () => void; // REMOVE THIS
 };
 

@@ -16,24 +16,13 @@ const ProfilePicture = ({
 	base64 = false,
 	shadow = true,
 	size = GlobalStyles.sizing.pfp.regular,
-	border = false
+	border = false,
 }: ProfilePicturePropsType) => {
-
 	const imgString: string = imageUrl
 		? base64
 			? `data:image/jpeg;base64,${imageUrl}`
 			: imageUrl
 		: '';
-
-
-	useEffect(() => {
-		console.log(imgString?.slice(0, 50))
-	}, [imgString])
-
-	useEffect(() => {
-		console.log('base64')
-		console.log(base64)
-	}, [base64])
 
 	return (
 		// <View style={shadow && GlobalStyles.utils.pfpShadow}> // uncomment for pfp shadow
@@ -47,7 +36,7 @@ const ProfilePicture = ({
 							height: size,
 							borderRadius: size / 2,
 							borderWidth: border ? 1 : 0,
-							borderColor: border ? 'white' : undefined
+							borderColor: border ? 'white' : undefined,
 						},
 					]}
 					source={{ uri: imgString }}
@@ -61,7 +50,7 @@ const ProfilePicture = ({
 							height: size,
 							borderRadius: size / 2,
 							borderWidth: border ? 1 : 0,
-							borderColor: border ? 'white' : undefined
+							borderColor: border ? 'white' : undefined,
 						},
 					]}
 				>

@@ -1,7 +1,14 @@
 import axios, { AxiosError } from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable, Keyboard, ActivityIndicator } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	Pressable,
+	Keyboard,
+	ActivityIndicator,
+} from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
@@ -38,7 +45,7 @@ interface PrivacyOption {
 }
 
 interface SignUpPropsType {
-	pfpUrlForSignUp: string
+	pfpUrlForSignUp: string;
 }
 
 const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
@@ -99,12 +106,12 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 				} else {
 					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}
-				showSuccessCreateToast()
+				showSuccessCreateToast();
 				setIsLoading(false); // Stop loading on success
 			} catch (err: unknown) {
 				setIsLoading(false); // Stop loading on error
-				showErrorCreateToast()
-				void axiosEndpointErrorHandler(err);
+				showErrorCreateToast();
+				axiosEndpointErrorHandler(err);
 			}
 		};
 		void onSubmitInner();
@@ -135,7 +142,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
 						navigation.navigate(StackNavigation.CameraWrapper, {
-							returnToPfp: true
+							returnToPfp: true,
 						});
 					}}
 				>
@@ -229,9 +236,12 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 					)}
 					name="password"
 				/>
-				<RadioButton privateData={privacyOptions} onSelect={(selectedOption: PrivacyOption) => {
-					setValue('private_option', selectedOption.boolean);
-				}} />
+				<RadioButton
+					privateData={privacyOptions}
+					onSelect={(selectedOption: PrivacyOption) => {
+						setValue('private_option', selectedOption.boolean);
+					}}
+				/>
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				{errors.email != null && (
