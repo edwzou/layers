@@ -1,10 +1,4 @@
-import React, {
-	memo,
-	type ReactElement,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 
 import ProfileCell from '../../components/Cell/ProfileCell';

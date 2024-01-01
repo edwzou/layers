@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { type ReactElement, useState } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -17,8 +17,8 @@ import SearchUsers from '../../components/Bar/SearchUsers';
 import { type User } from '../../pages/Main';
 
 interface FindPropsType {
-	foreignUserIDs: (string | User)[];
-	updateFollowed: (followed: (string | User)[]) => void;
+	foreignUserIDs: Array<string | User>;
+	updateFollowed: (followed: Array<string | User>) => void;
 }
 
 const Find = ({

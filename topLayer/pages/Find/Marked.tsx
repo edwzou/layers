@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, type ReactElement } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
-import { User } from '../../pages/Main';
+import { type User } from '../../pages/Main';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import { previewLength } from '../../constants/Find';
 
 interface MarkedPropsType {
-	foreignUserIDs?: (string | User)[]; // foreignUserIDs is now optional
+	foreignUserIDs?: Array<string | User>; // foreignUserIDs is now optional
 }
 
 function isUserArray(arr: any[]): arr is User[] {
 	return arr.every((item) => typeof item === 'object');
 }
 
-const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType) => { // Default to an empty array if foreignUserIDs is undefined
+const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType): ReactElement => {
+	// Default to an empty array if foreignUserIDs is undefined
 	const [users, setUsers] = useState<User[]>([]);
 
 	useEffect(() => {
@@ -36,7 +37,7 @@ const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType) => { // Default to 
 				{users.slice(0, previewLength).map((user, index) => (
 					<View key={index} style={styles.profilePicture}>
 						<ProfilePicture
-							imageUrl={user.pp_url ? user.pp_url : ''}
+							imageUrl={user?.pp_url ?? ''}
 							size={GlobalStyles.sizing.pfp.small}
 							border={true}
 						/>

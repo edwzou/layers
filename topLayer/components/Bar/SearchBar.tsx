@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { type ReactElement, useRef } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -13,7 +13,7 @@ const SearchBar = ({
 	placeholder,
 	searchQuery,
 	handleSearch,
-}: SearchBarPropsType) => {
+}: SearchBarPropsType): ReactElement => {
 	const textInputRef = useRef<TextInput>(null);
 
 	return (
