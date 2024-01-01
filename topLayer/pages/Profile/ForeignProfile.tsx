@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect, ReactElement } from 'react';
+import React, {
+	useRef,
+	useState,
+	useEffect,
+	type ReactElement,
+	useContext,
+} from 'react';
 import { View, Pressable, StyleSheet, type FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -15,26 +21,25 @@ import {
 	ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserAllItems, type UserClothing } from '../Match';
 import { type UserOutfit } from '../OutfitView';
-
 import { type markedUser } from '../../pages/Main';
 import {
 	getForeignAllClothingItems,
 	getForeignAllOutfits,
 } from '../../endpoints/wardrobe';
+import { MarkUserFuncContext } from '../../Contexts/ForeignUserContext';
 
 const ForeignProfile = ({ route }: any): ReactElement => {
 	// console.log('Route: ', route, route.params);
 	// console.log('Params: ', route.params.markedUser);
 
 	const user: markedUser = route.params.markedUser;
-	const bookmarkUser: () => void = route.params.setMarked;
 
+	const markUserFunc = useContext(MarkUserFuncContext);
 	// const [user, setUser] = useState<markedUser>(fetchedUser);
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
 	const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
@@ -111,11 +116,12 @@ const ForeignProfile = ({ route }: any): ReactElement => {
 
 	const handleBookmarkPress = (): void => {
 		if (iconName === GlobalStyles.icons.bookmarkFill) {
-			bookmarkUser();
+			// bookmarkUser();
+			markUserFunc();
 			setIconName(GlobalStyles.icons.bookmarkOutline);
 			user.marked = false;
 		} else {
-			bookmarkUser();
+			markUserFunc();
 			setIconName(GlobalStyles.icons.bookmarkFill);
 			user.marked = true;
 		}
