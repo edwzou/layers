@@ -34,7 +34,7 @@ import {
 import { MarkUserFuncContext } from '../../Contexts/ForeignUserContext';
 
 const ForeignProfile = ({ route }: any): ReactElement => {
-	// console.log('Route: ', route, route.params);
+	console.log('Route: ', route, route.params);
 	// console.log('Params: ', route.params.markedUser);
 
 	const user: markedUser = route.params.markedUser;
@@ -116,7 +116,6 @@ const ForeignProfile = ({ route }: any): ReactElement => {
 
 	const handleBookmarkPress = (): void => {
 		if (iconName === GlobalStyles.icons.bookmarkFill) {
-			// bookmarkUser();
 			markUserFunc();
 			setIconName(GlobalStyles.icons.bookmarkOutline);
 			user.marked = false;
