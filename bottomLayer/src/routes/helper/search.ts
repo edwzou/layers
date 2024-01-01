@@ -79,7 +79,6 @@ export const userSearchMarked = async (
 					uid: user.uid,
 					username: user.username,
 					private_option: user.private_option,
-					// eslint-disable-next-line object-shorthand
 					marked: marked,
 				};
 				users[i] = dummy;

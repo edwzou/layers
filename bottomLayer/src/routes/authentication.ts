@@ -100,17 +100,15 @@ const signupStrate = new LocalStrategy(
 				// Can optimize the following awaits to call run them at the same time
 				const uid = uuidv4();
 				const pp = profile_picture !== undefined ? profile_picture : '';
-				console.log('before fail');
 
-				// I have no clue whats going on.
-				// Im running into an issue where in the following 2 async calls
-				// the order of then must be async1 -> async2 and the awaits have to match
-				// await 1 -> 2 otherwise errors aren't caught
-				const async1 = convertImage(pp, uid, false);
-				const async2 = hash(password, 10);
-				const emailLower = email.toLowerCase();
-				const imgRef = await async1;
-				const hashedPass = await async2;
+				const lowercase = async (email: string): Promise<string> => {
+					return email.toLowerCase();
+				};
+				const [imgRef, hashedPass, emailLower] = await Promise.all([
+					convertImage(pp, uid, false),
+					hash(password, 10),
+					lowercase(email),
+				]);
 
 				const result = await pool.query(
 					`

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, type ReactElement } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -7,8 +7,8 @@ import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 import {
 	isMarkedPrivateUser,
-	markedPrivateUser,
-	markedUser,
+	type markedPrivateUser,
+	type markedUser,
 } from '../../pages/Main';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -28,8 +28,8 @@ interface ProfileCellPropsType {
 
 const ProfileCell = ({
 	user,
-	handleRelationRender: handleRelationRender,
-}: ProfileCellPropsType) => {
+	handleRelationRender,
+}: ProfileCellPropsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const [iconName, setIconName] = useState(
 		user.marked
@@ -53,13 +53,13 @@ const ProfileCell = ({
 		userProcessed = user;
 	}
 
-	const handleIconPress = (user: markedUser) => {
+	const handleIconPress = (user: markedUser): void => {
 		if (user.uid !== '') {
 			handleBookmarkPress();
 		}
 	};
 
-	const handleBookmarkPress = () => {
+	const handleBookmarkPress = (): void => {
 		if (iconName === GlobalStyles.icons.bookmarkFill) {
 			void unFollowUser(userProcessed.uid);
 			setIconName(GlobalStyles.icons.bookmarkOutline);
@@ -83,7 +83,7 @@ const ProfileCell = ({
 		}
 	};
 
-	const handleProfilePress = (user: markedUser) => {
+	const handleProfilePress = (user: markedUser): void => {
 		if (user.uid !== '') {
 			navigation.navigate(StackNavigation.ForeignProfile, {
 				markedUser: user,
@@ -95,7 +95,9 @@ const ProfileCell = ({
 	return (
 		<Pressable
 			style={styles.container}
-			onPress={() => handleProfilePress(userProcessed)}
+			onPress={() => {
+				handleProfilePress(userProcessed);
+			}}
 		>
 			{/* Use the ProfilePicture component to render the user's profile picture */}
 			<View style={styles.profilePicture}>
@@ -112,7 +114,11 @@ const ProfileCell = ({
 					{`${userProcessed.first_name} ${userProcessed.last_name}`}
 				</Text>
 			</View>
-			<Pressable onPress={() => handleIconPress(userProcessed)}>
+			<Pressable
+				onPress={() => {
+					handleIconPress(userProcessed);
+				}}
+			>
 				<Icon
 					name={iconName}
 					color={GlobalStyles.colorPalette.primary[900]}

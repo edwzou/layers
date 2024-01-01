@@ -31,6 +31,7 @@ module.exports = {
 	},
 	plugins: ['react', 'react-native', '@typescript-eslint', 'prettier'],
 	rules: {
+		'object-shorthand': 'off',
 		'no-tabs': ['error', { allowIndentationTabs: true }],
 		semi: [2, 'always'],
 		indent: 'off',
@@ -39,6 +40,13 @@ module.exports = {
 		'@typescript-eslint/indent': 'off',
 		'@typescript-eslint/semi': [2, 'always'],
 		'@typescript-eslint/no-var-requires': 'off',
+		'@typescript-eslint/naming-convention': [
+			'error',
+			{
+				selector: 'variableLike',
+				format: ['snake_case', 'camelCase', 'UPPER_CASE', 'PascalCase'],
+			},
+		],
 		'@typescript-eslint/member-delimiter-style': [
 			'error',
 			{

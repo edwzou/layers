@@ -7,6 +7,7 @@ import {
 	createContext,
 	useEffect,
 	useState,
+	type ReactElement,
 } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -33,10 +34,10 @@ LogBox.ignoreLogs(['Require cycle:']);
 LogBox.ignoreLogs(['Constants.platform.ios.model has been deprecated']);
 
 export const AppContext = createContext({
-	setShouldRefreshApp: (() => { }) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshApp: (() => {}) as Dispatch<SetStateAction<boolean>>,
 });
 
-export default function App() {
+export default function App(): ReactElement {
 	const [shouldRefreshApp, setShouldRefreshApp] = useState(false);
 
 	const [user, setUser] = useState<User | null>(null);
@@ -48,14 +49,14 @@ export default function App() {
 		},
 	};
 
-	const getUser = async () => {
+	const getUser = async (): Promise<void> => {
 		const { data, status } = await axios.get(`${baseUrl}/api/private/users`);
 
 		if (status === 200) {
-			return setUser(data.data);
+			setUser(data.data);
+		} else {
+			setUser(null);
 		}
-
-		return setUser(null);
 	};
 
 	useEffect(() => {
@@ -70,13 +71,13 @@ export default function App() {
 		}
 	}, [shouldRefreshApp]);
 
-	const [pfpUrlForSignUp, setPfpUrlForSignUp] = useState('')
+	const [pfpUrlForSignUp, setPfpUrlForSignUp] = useState('');
 
-	const SignUpPageComponent = () => (
+	const SignUpPageComponent = (): ReactElement => (
 		<SignUpPage pfpUrlForSignUp={pfpUrlForSignUp} />
 	);
 
-	const CameraWrapperComponent = () => (
+	const CameraWrapperComponent = (): ReactElement => (
 		<CameraWrapper setPfpUrl={setPfpUrlForSignUp} returnToPfp={true} />
 	);
 
@@ -94,7 +95,7 @@ export default function App() {
 								headerShown: false,
 							}}
 						>
-							{!user ? (
+							{user === null || user === undefined ? (
 								<>
 									<Stack.Screen
 										name={StackNavigation.Login}

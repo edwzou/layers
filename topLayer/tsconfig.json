@@ -8,8 +8,8 @@
 		}
 	},
   "include": [
-    "src/**/*.ts", // Adjust the path to match your TypeScript source files
-    "src/**/*.tsx", // TypeScript JSX files
+    "./**/*.ts", // Adjust the path to match your TypeScript source files
+    "./**/*.tsx", // TypeScript JSX files
     ".eslintrc.cjs", // Path to your ESLint configuration file
     "RootNavigation.tsx",
     "App.tsx",

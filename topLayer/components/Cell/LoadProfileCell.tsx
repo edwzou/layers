@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, type ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
-import { markedUser, User } from '../../pages/Main';
+import { type markedUser, type User } from '../../pages/Main';
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandlerNoAlert } from '../../utils/ErrorHandlers';
@@ -33,13 +33,13 @@ const FetchProfileCell = ({
 	userID,
 	marked,
 	handleRelationRender,
-}: FetchProfileCellPropsType) => {
+}: FetchProfileCellPropsType): ReactElement => {
 	const [userProcessed, setUser] = useState<markedUser>({
 		...defaultUser,
 		marked: marked,
 	});
 
-	const getUser = async (id: string) => {
+	const getUser = async (id: string): Promise<void> => {
 		try {
 			const { data, status } = await axios.get(`${baseUrl}/api/users/${id}`);
 
@@ -55,7 +55,7 @@ const FetchProfileCell = ({
 				console.log('Failed to fetch foreign user ProfileCell');
 			}
 		} catch (error) {
-			void axiosEndpointErrorHandlerNoAlert(error);
+			axiosEndpointErrorHandlerNoAlert(error);
 		}
 	};
 

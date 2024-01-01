@@ -1,9 +1,12 @@
-import { User } from "../pages/Main";
-import { createContext } from "react";
+import { type User } from '../pages/Main';
+import { createContext } from 'react';
 
-type UserContextType = {
-    data: User | null
-    updateData: (user: any) => void
+interface UserContextType {
+	data: User | null;
+	updateData: (user: any) => void;
 }
 
-export const UserContext = createContext<UserContextType>({ data: null, updateData: (user) => { } });
+export const UserContext = createContext<UserContextType>({
+	data: null,
+	updateData: (user) => {},
+});

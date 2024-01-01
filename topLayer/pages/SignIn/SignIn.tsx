@@ -10,10 +10,10 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
 import { UserContext } from '../../utils/UserContext';
 
-import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings'
+import { toast } from '../../constants/GlobalStrings';
+import { showErrorToast } from '../../components/Toasts/Toasts';
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
 	const { updateData } = useContext(UserContext);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
@@ -29,7 +29,7 @@ const SignIn = () => {
 		},
 	});
 
-	const onSubmit = (formData: any) => {
+	const onSubmit = (formData: any): void => {
 		let formValues: Record<string, string> = {};
 		if (formData.username !== '') {
 			formValues = {
@@ -66,20 +66,11 @@ const SignIn = () => {
 				setIsLoading(false); // Stop loading on success
 			} catch (err: unknown) {
 				setIsLoading(false); // Stop loading on error
-				showErrorSignInToast()
+				showErrorToast(toast.theEmailOrPasswordYouveEnteredIsIncorrect);
 			}
 		};
 		void onSubmitInner();
 	};
-
-	const showErrorSignInToast = () => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.theEmailOrPasswordYouveEnteredIsIncorrect,
-			topOffset: GlobalStyles.layout.toastTopOffset
-		});
-	}
 
 	return (
 		<View style={{ gap: 40, width: '100%' }}>
@@ -88,7 +79,7 @@ const SignIn = () => {
 					control={control}
 					rules={{
 						required: true,
-						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+						pattern: /^\S+@\S+\.\S+$/,
 						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
@@ -125,7 +116,9 @@ const SignIn = () => {
 			<View style={{ alignSelf: 'center' }}>
 				<Button
 					text="Sign in"
-					onPress={handleSubmit(onSubmit)}
+					onPress={() => {
+						void handleSubmit(onSubmit)();
+					}}
 					disabled={isLoading || Object.keys(dirtyFields).length < 2}
 					bgColor={GlobalStyles.colorPalette.primary[500]}
 				/>
@@ -134,7 +127,10 @@ const SignIn = () => {
 			{isLoading && (
 				<View style={GlobalStyles.utils.loadingOverlay}>
 					<View style={GlobalStyles.utils.loadingContainer}>
-						<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+						<ActivityIndicator
+							size="large"
+							color={GlobalStyles.colorPalette.activityIndicator}
+						/>
 					</View>
 				</View>
 			)}
@@ -142,7 +138,6 @@ const SignIn = () => {
 	);
 };
 
-const styles = StyleSheet.create({
-});
+const styles = StyleSheet.create({});
 
 export default SignIn;

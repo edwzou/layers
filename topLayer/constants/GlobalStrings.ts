@@ -33,7 +33,7 @@ export const itemEdit = {
 
 export const settings = {
 	pleaseEnterAValidEmail: 'Please enter a valid email.',
-	passwordMustBe8CharactersOrMore: 'Password must be 8 characters or more.'
+	passwordMustBe8CharactersOrMore: 'Password must be 8 characters or more.',
 } as const;
 
 export const toast = {
@@ -44,18 +44,29 @@ export const toast = {
 	yourOutfitHasBeenUpdated: 'Your outfit has been updated.',
 	yourProfileHasBeenCreated: 'Your profile has been created.',
 	yourProfileHasBeenUpdated: 'Your profile has been updated.',
-	yourProfileHasBeenDeleted: `Your profile has been deleted.`,
-	yourItemHasBeenCreated: `Your item has been created.`,
-	yourItemHasBeenUpdated: `Your item has been updated.`,
-	yourItemHasBeenDeleted: `Your item has been deleted.`,
-	theEmailOrPasswordYouveEnteredIsIncorrect: 'The email or password you\'ve entered is incorrect.',
-	anErrorHasOccurredWhileCreatingOutfit: 'An error has occurred while creating your outfit.',
-	anErrorHasOccurredWhileDeletingOutfit: 'An error has occurred while deleting your outfit.',
-	anErrorHasOccurredWhileUpdatingOutfit: 'An error has occurred while updating your outfit.',
-	anErrorHasOccurredWhileCreatingItem: 'An error has occurred while creating your item.',
-	anErrorHasOccurredWhileUpdatingItem: 'An error has occurred while updating your item.',
-	anErrorHasOccurredWhileDeletingItem: 'An error has occurred while deleting your item.',
-	anErrorHasOccurredWhileUpdatingProfile: 'An error has occurred while updating your profile.',
-	anErrorHasOccurredWhileSendingFeedback: 'An error has occurred while sending your feedback.',
-	anErrorHasOccurredWhileCreatingProfile: 'An error has occurred while creating your profile.',
-}
+	yourProfileHasBeenDeleted: 'Your profile has been deleted.',
+	yourItemHasBeenCreated: 'Your item has been created.',
+	yourItemHasBeenUpdated: 'Your item has been updated.',
+	yourItemHasBeenDeleted: 'Your item has been deleted.',
+	theEmailOrPasswordYouveEnteredIsIncorrect:
+		"The email or password you've entered is incorrect.",
+	anErrorHasOccurredWhileCreatingOutfit:
+		'An error has occurred while creating your outfit.',
+	anErrorHasOccurredWhileDeletingOutfit:
+		'An error has occurred while deleting your outfit.',
+	anErrorHasOccurredWhileUpdatingOutfit:
+		'An error has occurred while updating your outfit.',
+	anErrorHasOccurredWhileCreatingItem:
+		'An error has occurred while creating your item.',
+	anErrorHasOccurredWhileUpdatingItem:
+		'An error has occurred while updating your item.',
+	anErrorHasOccurredWhileDeletingItem:
+		'An error has occurred while deleting your item.',
+	anErrorHasOccurredWhileUpdatingProfile:
+		'An error has occurred while updating your profile.',
+	anErrorHasOccurredWhileSendingFeedback:
+		'An error has occurred while sending your feedback.',
+	anErrorHasOccurredWhileCreatingProfile:
+		'An error has occurred while creating your profile.',
+};
+
