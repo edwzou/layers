@@ -1,3 +1,3 @@
 // export const baseUrl = 'http://localhost:1234'; // local on your machine
-export const baseUrl = 'https://sea-lion-app-8nfxs.ondigitalocean.app' // digital ocean server to test backend
-// export const baseUrl = 'https://layers-server-rngnt.ondigitalocean.app'; // the server
+// export const baseUrl = 'https://sea-lion-app-8nfxs.ondigitalocean.app'; // digital ocean server to test backend
+export const baseUrl = 'https://layers-server-rngnt.ondigitalocean.app'; // the server

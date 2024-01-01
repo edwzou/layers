@@ -18,6 +18,7 @@ module.exports = {
 		tsconfigRootDir: __dirname,
 	},
 	rules: {
+		'object-shorthand': 'off',
 		'no-tabs': ['error', { allowIndentationTabs: true }],
 		semi: [2, 'always'],
 		indent: 'off',

@@ -49,10 +49,7 @@ const Settings = () => {
 		isLoading,
 	} = useContext(SettingsPageContext);
 
-	const {
-		pfpUrlForSettings,
-		setReturnToPfp
-	} = useContext(ProfilePageContext);
+	const { pfpUrlForSettings, setReturnToPfp } = useContext(ProfilePageContext);
 
 	// Update the state object when form fields change
 	const handleFieldChange = (fieldName: string, value: string | boolean) => {
@@ -64,7 +61,7 @@ const Settings = () => {
 
 	useEffect(() => {
 		setValue('profile_picture', pfpUrlForSettings);
-		handleFieldChange('profile_picture', pfpUrlForSettings)
+		handleFieldChange('profile_picture', pfpUrlForSettings);
 	}, [pfpUrlForSettings]);
 
 	useEffect(() => {
@@ -91,7 +88,10 @@ const Settings = () => {
 						});
 					}}
 				>
-					<ProfilePicture imageUrl={pfpUrlForSettings} base64={pfpUrlForSettings.slice(0, 5) == 'https' ? false : true} />
+					<ProfilePicture
+						imageUrl={pfpUrlForSettings}
+						base64={pfpUrlForSettings.slice(0, 5) == 'https' ? false : true}
+					/>
 				</Pressable>
 				<View
 					style={{
@@ -159,7 +159,7 @@ const Settings = () => {
 					control={control}
 					rules={{
 						required: true,
-						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+						pattern: /^\S+@\S+\.\S+$/,
 						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (

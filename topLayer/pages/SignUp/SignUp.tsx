@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
 import {
@@ -9,16 +9,18 @@ import {
 	Keyboard,
 	ActivityIndicator,
 } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+	type ReactElement,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
-
-import * as ImagePicker from 'expo-image-picker';
-import { base64Prefix } from '../../utils/Base64Prefix';
 import { baseUrl } from '../../utils/apiUtils';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -26,7 +28,10 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { UserContext } from '../../utils/UserContext';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
-import Toast from 'react-native-toast-message';
+import {
+	showErrorCreateToast,
+	showSuccessCreateToast,
+} from '../../components/Toasts/Toasts';
 import { toast } from '../../constants/GlobalStrings';
 
 interface FormValues {
@@ -48,8 +53,7 @@ interface SignUpPropsType {
 	pfpUrlForSignUp: string;
 }
 
-const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
-	// const [modalVisible, setModalVisible] = useState(false);
+const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { updateData } = useContext(UserContext);
 
@@ -79,10 +83,9 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 
 	useEffect(() => {
 		setValue('profile_picture', pfpUrlForSignUp);
-		//handleFieldChange('profile_picture', pfpUrlForSettings)
 	}, [pfpUrlForSignUp]);
 
-	const onSubmit = (values: FormValues | any) => {
+	const onSubmit = (values: FormValues | any): void => {
 		const formValues: Record<string, any> = {
 			first_name: values.first_name,
 			last_name: values.last_name,
@@ -93,7 +96,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 			private_option: values.private_option,
 		};
 
-		const onSubmitInner = async (): Promise<any> => {
+		const onSubmitInner = async (): Promise<void> => {
 			setIsLoading(true); // Start loading
 			try {
 				const { data: userData, status } = await axios.post(
@@ -106,33 +109,16 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 				} else {
 					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}
-				showSuccessCreateToast();
+
+				showSuccessCreateToast(toast.yourProfileHasBeenCreated);
 				setIsLoading(false); // Stop loading on success
 			} catch (err: unknown) {
 				setIsLoading(false); // Stop loading on error
-				showErrorCreateToast();
+				showErrorCreateToast(toast.anErrorHasOccurredWhileCreatingProfile);
 				axiosEndpointErrorHandler(err);
 			}
 		};
 		void onSubmitInner();
-	};
-
-	const showSuccessCreateToast = () => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourProfileHasBeenCreated,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showErrorCreateToast = () => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileCreatingProfile,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
 	};
 
 	return (
@@ -206,7 +192,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 					control={control}
 					rules={{
 						required: true,
-						pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+						pattern: /^\S+@\S+\.\S+$/,
 						maxLength: 255,
 					}}
 					render={({ field: { onChange, value } }) => (
@@ -256,7 +242,9 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType) => {
 			<View style={{ alignSelf: 'center' }}>
 				<Button
 					text="Sign up"
-					onPress={handleSubmit(onSubmit)}
+					onPress={() => {
+						void handleSubmit(onSubmit)();
+					}}
 					disabled={isLoading || Object.keys(dirtyFields).length < 5}
 					bgColor={GlobalStyles.colorPalette.primary[500]}
 				/>
