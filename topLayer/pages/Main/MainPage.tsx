@@ -14,14 +14,14 @@ import ProfilePage from '../Profile/ProfilePage';
 import MatchPage from '../Match/MatchPage';
 import FindPage from '../Find/FindPage';
 
-import { UserOutfit } from '../../pages/OutfitView';
-import { UserAllItems, UserClothing } from '../../pages/Match';
+import { type UserOutfit } from '../../pages/OutfitView';
+import { type UserAllItems, type UserClothing } from '../../pages/Match';
 import { getAllClothingItems, getAllOutfits } from '../../endpoints/wardrobe';
 
 export const MainPageContext = createContext({
-	navigationArray: [() => { }],
+	navigationArray: [() => {}],
 	allItems: [] as UserAllItems[],
-	setShouldRefreshMainPage: (() => { }) as Dispatch<SetStateAction<boolean>>,
+	setShouldRefreshMainPage: (() => {}) as Dispatch<SetStateAction<boolean>>,
 });
 
 const MainPage: React.FC = () => {
@@ -73,9 +73,7 @@ const MainPage: React.FC = () => {
 		if (shouldRefreshMainPage) {
 			setShouldRefreshMainPage(false);
 		}
-	}, [
-		shouldRefreshMainPage,
-	]);
+	}, [shouldRefreshMainPage]);
 
 	const ref = useRef<PagerView>(null);
 	const navigateToMatch = (): void => {
@@ -88,7 +86,7 @@ const MainPage: React.FC = () => {
 		ref.current?.setPage(2);
 	};
 
-	const onPageScroll = (event: any) => {
+	const onPageScroll = (event: any): void => {
 		const { position } = event.nativeEvent;
 		if (prevPage === 2) {
 			setRefresh(!refresh);
@@ -101,7 +99,7 @@ const MainPage: React.FC = () => {
 			value={{
 				navigationArray: [navigateToProfile, navigateToMatch, navigateToFind],
 				allItems: allItems,
-				setShouldRefreshMainPage: setShouldRefreshMainPage
+				setShouldRefreshMainPage: setShouldRefreshMainPage,
 			}}
 		>
 			<PagerView

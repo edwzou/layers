@@ -1,11 +1,17 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, {
+	memo,
+	type ReactElement,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 
 import ProfileCell from '../../components/Cell/ProfileCell';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { markedUser, User } from '../../pages/Main';
+import { type markedUser, type User } from '../../pages/Main';
 import FetchProfileCell from '../../components/Cell/LoadProfileCell';
 import { find } from '../../constants/GlobalStrings';
 import { previewLength } from '../../constants/Find';
@@ -16,24 +22,24 @@ import Header from '../../components/Header/Header';
 import { screenHeight } from '../../utils/modalMaxShow';
 
 interface MarkedListPropsType {
-	foreignUserIDs: (User | string)[];
-	updateFollowed: (followed: (string | User)[]) => void;
+	foreignUserIDs: Array<User | string>;
+	updateFollowed: (followed: Array<string | User>) => void;
 }
 
 const MarkedList = ({
 	foreignUserIDs,
 	updateFollowed,
-}: MarkedListPropsType) => {
+}: MarkedListPropsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const [preLoad, setPreLoad] = useState(false);
 	const unmarked = useRef<string[]>([]);
 	const [count, setCount] = useState<number>(foreignUserIDs.length);
 	const [isComponentVisible, setComponentVisible] = useState(true);
-	const handleEmptyString = () => {
+	const handleEmptyString = (): void => {
 		setComponentVisible(true);
 	};
 
-	const handleNonEmptyString = () => {
+	const handleNonEmptyString = (): void => {
 		setComponentVisible(false);
 	};
 
@@ -68,7 +74,7 @@ const MarkedList = ({
 		marked: boolean,
 		index: number,
 		user: markedUser
-	) => {
+	): number => {
 		if (index !== -1) {
 			unmarked.current.splice(index, 1);
 			setCount(count + 1);
@@ -80,7 +86,12 @@ const MarkedList = ({
 		}
 	};
 
-	const renderProfile = ({ item }: { item: User | string; index: number }) => {
+	const renderProfile = ({
+		item,
+	}: {
+		item: User | string;
+		index: number;
+	}): ReactElement => {
 		if (typeof item !== 'string') {
 			return (
 				<ProfileCell
@@ -107,7 +118,9 @@ const MarkedList = ({
 			{preLoad && isComponentVisible && (
 				<FlatList
 					data={foreignUserIDs}
-					ListFooterComponent={<View style={{ height: screenHeight * 0.15 }}></View>}
+					ListFooterComponent={
+						<View style={{ height: screenHeight * 0.15 }}></View>
+					}
 					showsVerticalScrollIndicator={false}
 					renderItem={renderProfile}
 					keyExtractor={(item) => {

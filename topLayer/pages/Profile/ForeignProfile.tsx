@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { View, Pressable, StyleSheet, FlatList, Text } from 'react-native';
+import React, { useRef, useState, useEffect, ReactElement } from 'react';
+import { View, Pressable, StyleSheet, type FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
@@ -19,16 +19,16 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { UserAllItems, UserClothing } from '../Match';
-import { UserOutfit } from '../OutfitView';
+import { type UserAllItems, type UserClothing } from '../Match';
+import { type UserOutfit } from '../OutfitView';
 
-import { markedUser } from '../../pages/Main';
+import { type markedUser } from '../../pages/Main';
 import {
 	getForeignAllClothingItems,
 	getForeignAllOutfits,
 } from '../../endpoints/wardrobe';
 
-const ForeignProfile = ({ route }: any) => {
+const ForeignProfile = ({ route }: any): ReactElement => {
 	// console.log('Route: ', route, route.params);
 	// console.log('Params: ', route.params.markedUser);
 
@@ -90,7 +90,7 @@ const ForeignProfile = ({ route }: any) => {
 			: GlobalStyles.icons.bookmarkOutline
 	);
 
-	const handleItemChange = (item: UserClothing | UserOutfit) => {
+	const handleItemChange = (item: UserClothing | UserOutfit): void => {
 		if ('oid' in item) {
 			navigation.navigate(StackNavigation.OutfitView, {
 				item: item,
@@ -104,12 +104,12 @@ const ForeignProfile = ({ route }: any) => {
 		}
 	};
 
-	const handleCategoryChange = (category: string) => {
+	const handleCategoryChange = (category: string): void => {
 		setSelectedCategory(category);
 		handleIndexChange(CategoryToIndex[category]);
 	};
 
-	const handleBookmarkPress = () => {
+	const handleBookmarkPress = (): void => {
 		if (iconName === GlobalStyles.icons.bookmarkFill) {
 			bookmarkUser();
 			setIconName(GlobalStyles.icons.bookmarkOutline);
@@ -121,7 +121,7 @@ const ForeignProfile = ({ route }: any) => {
 		}
 	};
 
-	const handleIndexChange = (index: number) => {
+	const handleIndexChange = (index: number): void => {
 		if (flatListRef.current != null) {
 			flatListRef.current?.scrollToIndex({ index, animated: false });
 		}
@@ -137,24 +137,21 @@ const ForeignProfile = ({ route }: any) => {
 		}
 	}).current;
 
-	// !!! Display edit outfit on click
-	// !!! Empty Match page to account for no clothing
-
 	return (
 		<>
 			<View style={{ paddingVertical: GlobalStyles.layout.modalTopPadding }} />
 			<View style={{ flex: 1 }}>
 				<View style={styles.profilePicture}>
-					<ProfilePicture imageUrl={user ? user.pp_url : ''} />
+					<ProfilePicture imageUrl={user?.pp_url ?? ''} />
 					<View>
 						<FullName
-							firstName={user ? user.first_name : ''}
-							lastName={user ? user.last_name : ''}
+							firstName={user?.first_name ?? ''}
+							lastName={user?.last_name ?? ''}
 						/>
-						<Username username={user ? user.username : ''} />
+						<Username username={user?.username ?? ''} />
 					</View>
 				</View>
-				{user && user.private_option ? (
+				{user.private_option ? (
 					<View
 						style={{
 							alignItems: 'center',

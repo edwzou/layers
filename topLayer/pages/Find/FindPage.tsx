@@ -17,111 +17,111 @@ import { UserContext } from '../../utils/UserContext';
 
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { getUser } from '../../endpoints/endpoints';
-import { User } from '../../pages/Main';
+import { type User } from '../../pages/Main';
 import { previewLength } from '../../constants/Find';
 
-const FindPage = () => {
-  const { data } = useContext(UserContext);
-  // this only gets the foreignUsersData from UserContext on initial load
-  let foreignUsersIDs: string[] = data && data.following ? data.following : [];
-  const [followedUsersData, setFollowed] =
-    useState<(string | User)[]>(foreignUsersIDs);
+const FindPage: React.FC = () => {
+	const { data } = useContext(UserContext);
+	// this only gets the foreignUsersData from UserContext on initial load
+	const foreignUsersIDs: string[] = data?.following ?? [];
+	const [followedUsersData, setFollowed] =
+		useState<Array<string | User>>(foreignUsersIDs);
 
-  const updateFollowed = (followed: (string | User)[]) => {
-    setFollowed(followed);
-  };
+	const updateFollowed = (followed: Array<string | User>): void => {
+		setFollowed(followed);
+	};
 
-  useEffect(() => {
-    const get3Users = async () => {
-      try {
-        const top3Users = await Promise.all(
-          followedUsersData
-            .slice(0, previewLength)
-            .map((user: string | User) => {
-              if (typeof user === 'string') {
-                return getUser(user);
-              } else {
-                return user;
-              }
-            })
-        );
-        setFollowed(top3Users.concat(followedUsersData.slice(previewLength)));
-      } catch (error) {
-        void axiosEndpointErrorHandler(error);
-      }
-    };
+	useEffect(() => {
+		const get3Users = async (): Promise<void> => {
+			try {
+				const top3Users = await Promise.all(
+					followedUsersData
+						.slice(0, previewLength)
+						.map(async (user: string | User) => {
+							if (typeof user === 'string') {
+								return await getUser(user);
+							} else {
+								return user;
+							}
+						})
+				);
+				setFollowed(top3Users.concat(followedUsersData.slice(previewLength)));
+			} catch (error) {
+				axiosEndpointErrorHandler(error);
+			}
+		};
 
-    if (
-      followedUsersData
-        .slice(0, previewLength)
-        .some((user) => typeof user === 'string')
-    ) {
-      void get3Users();
-    }
-  }, [followedUsersData]);
+		if (
+			followedUsersData
+				.slice(0, previewLength)
+				.some((user) => typeof user === 'string')
+		) {
+			void get3Users();
+		}
+	}, [followedUsersData]);
 
-  const FindHomePage = () => {
-    return (
-      <Find
-        foreignUserIDs={followedUsersData}
-        updateFollowed={updateFollowed}
-      />
-    );
-  };
-  const MarkedListComponent = () => (
-    <MarkedList
-      foreignUserIDs={followedUsersData}
-      updateFollowed={updateFollowed}
-    />
-  );
+	const FindHomePage: React.FC = () => {
+		return (
+			<Find
+				foreignUserIDs={followedUsersData}
+				updateFollowed={updateFollowed}
+			/>
+		);
+	};
+	const MarkedListComponent: React.FC = () => (
+		<MarkedList
+			foreignUserIDs={followedUsersData}
+			updateFollowed={updateFollowed}
+		/>
+	);
 
-  return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name={StackNavigation.Find}
-          component={FindHomePage}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Group
-          screenOptions={{
-            presentation: 'modal',
-          }}
-        >
-          <Stack.Screen
-            name={StackNavigation.MarkedList}
-            component={MarkedListComponent}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name={StackNavigation.ForeignProfile}
-            component={ForeignProfile}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name={StackNavigation.ItemView}
-            component={ItemViewPage}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name={StackNavigation.OutfitView}
-            component={OutfitViewPage}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+	return (
+		<NavigationContainer independent={true}>
+			<Stack.Navigator>
+				<Stack.Screen
+					name={StackNavigation.Find}
+					component={FindHomePage}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Group
+					screenOptions={{
+						presentation: 'modal',
+					}}
+				>
+					<Stack.Screen
+						name={StackNavigation.MarkedList}
+						component={MarkedListComponent}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.ForeignProfile}
+						component={ForeignProfile}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.ItemView}
+						component={ItemViewPage}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.OutfitView}
+						component={OutfitViewPage}
+						options={{
+							headerShown: false,
+						}}
+					/>
+				</Stack.Group>
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
 };
 
 export default FindPage;

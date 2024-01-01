@@ -1,5 +1,5 @@
 import { Image, StyleSheet, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { type ReactElement } from 'react';
 import Icon from 'react-native-remix-icon';
 import GlobalStyles from '../../constants/GlobalStyles';
 
@@ -17,12 +17,13 @@ const ProfilePicture = ({
 	shadow = true,
 	size = GlobalStyles.sizing.pfp.regular,
 	border = false,
-}: ProfilePicturePropsType) => {
-	const imgString: string = imageUrl
-		? base64
-			? `data:image/jpeg;base64,${imageUrl}`
-			: imageUrl
-		: '';
+}: ProfilePicturePropsType): ReactElement => {
+	const imgString: string =
+		imageUrl !== undefined && imageUrl !== null && imageUrl !== ''
+			? base64
+				? `data:image/jpeg;base64,${imageUrl}`
+				: imageUrl
+			: '';
 
 	return (
 		// <View style={shadow && GlobalStyles.utils.pfpShadow}> // uncomment for pfp shadow
