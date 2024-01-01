@@ -1,14 +1,14 @@
 import {
 	createNativeStackNavigator,
-	NativeStackNavigationProp,
+	type NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import { UserClothing } from '../pages/Match';
-import { UserOutfit } from '../pages/OutfitView';
+import { type UserClothing } from '../pages/Match';
+import { type UserOutfit } from '../pages/OutfitView';
 
-import { markedUser, User } from '../pages/Main';
+import { type markedUser } from '../pages/Main';
 
 // DO NOT ADD ANY FUNCTIONS UNDER StackNavigatorType
-export type StackNavigatorType = {
+export interface StackNavigatorType {
 	userID?: string;
 	markedUser?: markedUser;
 	item?: UserClothing | UserOutfit;
@@ -21,10 +21,10 @@ export type StackNavigatorType = {
 	};
 	returnTo?: NativeStackNavigationProp<StackTypes>;
 	returnToPfp?: boolean;
-	setMarked?: () => void; // REMOVE THIS
-};
+}
 
-export type StackTypes = {
+export interface StackTypes {
+	[key: string]: StackNavigatorType;
 	Login: StackNavigatorType;
 	SignUp: StackNavigatorType;
 	Main: StackNavigatorType;
@@ -44,6 +44,6 @@ export type StackTypes = {
 	MarkedList: StackNavigatorType;
 	OutfitPreview: StackNavigatorType;
 	ForeignProfile: StackNavigatorType;
-};
+}
 
 export const Stack = createNativeStackNavigator<StackTypes>();

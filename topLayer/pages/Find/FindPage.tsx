@@ -19,6 +19,7 @@ import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { getUser } from '../../endpoints/endpoints';
 import { type User } from '../../pages/Main';
 import { previewLength } from '../../constants/Find';
+import { MarkUserFuncProvider } from '../../Contexts/ForeignUserContext';
 
 const FindPage: React.FC = () => {
 	const { data } = useContext(UserContext);
@@ -76,51 +77,53 @@ const FindPage: React.FC = () => {
 	);
 
 	return (
-		<NavigationContainer independent={true}>
-			<Stack.Navigator>
-				<Stack.Screen
-					name={StackNavigation.Find}
-					component={FindHomePage}
-					options={{
-						headerShown: false,
-					}}
-				/>
-				<Stack.Group
-					screenOptions={{
-						presentation: 'modal',
-					}}
-				>
+		<MarkUserFuncProvider>
+			<NavigationContainer independent={true}>
+				<Stack.Navigator>
 					<Stack.Screen
-						name={StackNavigation.MarkedList}
-						component={MarkedListComponent}
+						name={StackNavigation.Find}
+						component={FindHomePage}
 						options={{
 							headerShown: false,
 						}}
 					/>
-					<Stack.Screen
-						name={StackNavigation.ForeignProfile}
-						component={ForeignProfile}
-						options={{
-							headerShown: false,
+					<Stack.Group
+						screenOptions={{
+							presentation: 'modal',
 						}}
-					/>
-					<Stack.Screen
-						name={StackNavigation.ItemView}
-						component={ItemViewPage}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name={StackNavigation.OutfitView}
-						component={OutfitViewPage}
-						options={{
-							headerShown: false,
-						}}
-					/>
-				</Stack.Group>
-			</Stack.Navigator>
-		</NavigationContainer>
+					>
+						<Stack.Screen
+							name={StackNavigation.MarkedList}
+							component={MarkedListComponent}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name={StackNavigation.ForeignProfile}
+							component={ForeignProfile}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name={StackNavigation.ItemView}
+							component={ItemViewPage}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name={StackNavigation.OutfitView}
+							component={OutfitViewPage}
+							options={{
+								headerShown: false,
+							}}
+						/>
+					</Stack.Group>
+				</Stack.Navigator>
+			</NavigationContainer>
+		</MarkUserFuncProvider>
 	);
 };
 
