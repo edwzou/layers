@@ -1,5 +1,5 @@
-import { View, TextInput, StyleSheet, Text, Pressable } from 'react-native';
-import React, { useRef, useState } from 'react';
+import { TextInput, StyleSheet, Text, Pressable } from 'react-native';
+import React, { type ReactElement, useRef, useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 interface StackedTextboxPropsType {
@@ -16,11 +16,11 @@ const StackedTextBox = ({
 	secure,
 	onFieldChange,
 	autoCapitalize = 'sentences',
-}: StackedTextboxPropsType) => {
-	const [fieldText, setFieldText] = useState(value || '');
+}: StackedTextboxPropsType): ReactElement => {
+	const [fieldText, setFieldText] = useState(value ?? '');
 	const textRef = useRef<TextInput>(null);
 
-	const handlePress = () => {
+	const handlePress = (): void => {
 		if (textRef.current == null) return;
 		textRef.current.focus();
 	};
@@ -31,7 +31,7 @@ const StackedTextBox = ({
 				{label}
 			</Text>
 			<TextInput
-				autoCapitalize={"none"}
+				autoCapitalize={autoCapitalize}
 				value={fieldText}
 				onChangeText={(text) => {
 					setFieldText(text);

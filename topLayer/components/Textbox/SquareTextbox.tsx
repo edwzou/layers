@@ -1,12 +1,5 @@
-import {
-	View,
-	TextInput,
-	StyleSheet,
-	Text,
-	TouchableWithoutFeedback,
-	Pressable,
-} from 'react-native';
-import React, { useState, useRef } from 'react';
+import { TextInput, StyleSheet, Pressable } from 'react-native';
+import React, { useState, useRef, type ReactElement } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 interface StackedTextboxPropsType {
@@ -19,11 +12,11 @@ const SquareTextbox = ({
 	placeholder,
 	value,
 	onFieldChange,
-}: StackedTextboxPropsType) => {
-	const [fieldText, setFieldText] = useState(value || '');
+}: StackedTextboxPropsType): ReactElement => {
+	const [fieldText, setFieldText] = useState(value ?? '');
 	const textInputRef = useRef<TextInput | null>(null);
 
-	const handlePress = () => {
+	const handlePress = (): void => {
 		if (textInputRef.current != null) {
 			textInputRef.current.focus();
 		}
