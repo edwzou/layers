@@ -1,5 +1,5 @@
-import React, { useRef, useState, useContext, useEffect } from 'react';
-import { View, Pressable, StyleSheet, FlatList } from 'react-native';
+import React, { useRef, useState, useContext } from 'react';
+import { View, Pressable, StyleSheet, type FlatList } from 'react-native';
 
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
@@ -15,18 +15,17 @@ import {
 	ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-// import { mockItemsData } from '../../constants/testData';
 
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { UserAllItems, UserClothing, UserClothingList } from '../Match';
-import { UserOutfit } from '../OutfitView';
+import { type UserClothing } from '../Match';
+import { type UserOutfit } from '../OutfitView';
 import { UserContext } from '../../utils/UserContext';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const Profile = () => {
+const Profile: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const flatListRef = useRef<FlatList>(null);
 

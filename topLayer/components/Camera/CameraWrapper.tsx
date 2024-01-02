@@ -25,6 +25,7 @@ const CameraWrapper = ({
 	setPfpUrl,
 	returnToPfp,
 }: CameraWrapperProps): ReactElement => {
+	console.log('vars: ', setPfpUrl?.toString(), returnToPfp);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [clothingItem, setClothingItem] = useState({
