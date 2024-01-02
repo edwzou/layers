@@ -2,7 +2,7 @@ import { type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 import { AsyncManager } from '../../utils/event-emitters/asyncManager';
-import { urlDownloadHandler } from '../../utils/event-emitters/asyncHandlers';
+import { asyncHandler } from '../../utils/event-emitters/asyncHandler';
 import { once } from 'node:events';
 import {
   getUserCore,
@@ -11,6 +11,7 @@ import {
 } from '../../utils/responseCallback';
 import { itemCategories } from '../../utils/constants/itemCategories';
 import { type PoolClient } from 'pg';
+import { downloadConditions } from '../../utils/constants/downloadConditions';
 
 // Get Clothing Item By Id
 export const getClothingById = async (
@@ -54,7 +55,7 @@ export const getAllClothing = async (
     const asyncManager = new AsyncManager(items.length);
     const asyncTrigger = once(asyncManager, 'proceed');
     for (const item of items) {
-      void urlDownloadHandler(item.image_url, item, asyncManager);
+      void asyncHandler(item.image_url, item, asyncManager, downloadConditions.regular);
     }
     const resolution = await asyncTrigger;
     if (resolution[1] < 0) {
@@ -90,7 +91,7 @@ export const getAllClothingCate = async (
     const asyncManager = new AsyncManager(items.length);
     const asyncTrigger = once(asyncManager, 'proceed');
     for (const item of items) {
-      void urlDownloadHandler(item.image_url, item, asyncManager);
+      void asyncHandler(item.image_url, item, asyncManager, downloadConditions.regular);
     }
     const categories: Record<string, any> = {};
     Object.values(itemCategories).forEach((value) => {
