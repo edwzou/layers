@@ -1,13 +1,12 @@
 import { StyleSheet, StatusBar, View, LogBox } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import {
+import React, {
 	type Dispatch,
 	type SetStateAction,
 	createContext,
 	useEffect,
 	useState,
-	type ReactElement,
 } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -37,7 +36,7 @@ export const AppContext = createContext({
 	setShouldRefreshApp: (() => {}) as Dispatch<SetStateAction<boolean>>,
 });
 
-export default function App(): ReactElement {
+const App: React.FC = () => {
 	const [shouldRefreshApp, setShouldRefreshApp] = useState(false);
 
 	const [user, setUser] = useState<User | null>(null);
@@ -73,11 +72,11 @@ export default function App(): ReactElement {
 
 	const [pfpUrlForSignUp, setPfpUrlForSignUp] = useState('');
 
-	const SignUpPageComponent = (): ReactElement => (
+	const SignUpPageComponent: React.FC = () => (
 		<SignUpPage pfpUrlForSignUp={pfpUrlForSignUp} />
 	);
 
-	const CameraWrapperComponent = (): ReactElement => (
+	const CameraWrapperComponent: React.FC = () => (
 		<CameraWrapper setPfpUrl={setPfpUrlForSignUp} returnToPfp={true} />
 	);
 
@@ -126,7 +125,7 @@ export default function App(): ReactElement {
 			<Toast />
 		</AppContext.Provider>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -135,3 +134,5 @@ const styles = StyleSheet.create({
 		paddingTop: Device.osName === 'Android' ? StatusBar.currentHeight : 0,
 	},
 });
+
+export default App;

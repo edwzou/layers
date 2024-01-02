@@ -1,32 +1,22 @@
 import { StyleSheet } from 'react-native';
-import React, { useRef, useContext, useState } from 'react';
+import React, { useRef } from 'react';
 
 import OutfitView from './OutfitView';
 import OutfitEdit from './OutfitEdit';
 
 import { Stack } from '../../utils/StackNavigation';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 import { headerButton } from '../../components/Modal/HeaderButton';
-import { UserClothing, UserClothingList } from '../../pages/Match';
+import { type UserClothing, type UserClothingList } from '../../pages/Match';
 
-import { baseUrl } from '../../utils/apiUtils';
-import axios from 'axios';
-import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
-
-import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from 'utils/StackNavigation';
-import { MainPageContext } from '../../pages/Main/MainPage';
-
-import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings';
+import { type StackTypes } from '../../utils/StackNavigation';
 
 const OutfitViewPage = ({ route }: any) => {
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const { item, editable } = route.params;
@@ -75,12 +65,12 @@ const OutfitViewPage = ({ route }: any) => {
 							headerTitle: item.title,
 							headerRight: editable
 								? () =>
-									headerButton({
-										type: StepOverTypes.edit,
-										handlePress: () => {
-											navigation.navigate(StackNavigation.OutfitEdit);
-										},
-									})
+										headerButton({
+											type: StepOverTypes.edit,
+											handlePress: () => {
+												navigation.navigate(StackNavigation.OutfitEdit);
+											},
+										})
 								: undefined,
 						})}
 					/>

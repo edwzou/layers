@@ -1,9 +1,15 @@
-import { View, StyleSheet, Pressable, Alert, ActivityIndicator } from 'react-native';
+import {
+	View,
+	StyleSheet,
+	Pressable,
+	Alert,
+	ActivityIndicator,
+} from 'react-native';
 import React, {
 	useEffect,
 	useState,
 	useContext,
-	MutableRefObject,
+	type MutableRefObject,
 } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -14,10 +20,10 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserOutfit } from '.';
-import { outfitEdit } from '../../constants/GlobalStrings';
+import { outfitEdit, toast } from '../../constants/GlobalStrings';
 
 import Icon from 'react-native-remix-icon';
-import { UserClothing } from '../../pages/Match';
+import { type UserClothing } from '../../pages/Match';
 
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
@@ -25,7 +31,6 @@ import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
 import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings'
 import Header from '../../components/Header/Header';
 import { StepOverTypes } from '../../constants/Enums';
 
@@ -50,7 +55,7 @@ const OutfitEdit = ({
 	title,
 	clothingItems,
 	titleRef,
-	navigateToProfile
+	navigateToProfile,
 }: OutfitViewPropsType) => {
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
@@ -81,52 +86,48 @@ const OutfitEdit = ({
 			text2: toast.yourOutfitHasBeenUpdated,
 			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	const showErrorUpdateToast = () => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
 			text2: toast.anErrorHasOccurredWhileUpdatingOutfit,
-			topOffset: GlobalStyles.layout.toastTopOffset
+			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	const showSuccessDeleteToast = () => {
 		Toast.show({
 			type: 'success',
 			text1: toast.success,
 			text2: toast.yourOutfitHasBeenDeleted,
-			topOffset: GlobalStyles.layout.toastTopOffset
+			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	const showErrorDeleteToast = () => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
 			text2: toast.anErrorHasOccurredWhileDeletingOutfit,
-			topOffset: GlobalStyles.layout.toastTopOffset
+			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	const confirmDeletion = () => {
-		Alert.alert(
-			outfitEdit.deleteOutfit,
-			outfitEdit.youCannotUndoThisAction,
-			[
-				{
-					text: outfitEdit.cancel,
-					onPress: () => { }
-				},
-				{
-					text: outfitEdit.delete,
-					onPress: handleDelete,
-					style: 'destructive'
-				}
-			]
-		)
-	}
+		Alert.alert(outfitEdit.deleteOutfit, outfitEdit.youCannotUndoThisAction, [
+			{
+				text: outfitEdit.cancel,
+				onPress: () => {},
+			},
+			{
+				text: outfitEdit.delete,
+				onPress: handleDelete,
+				style: 'destructive',
+			},
+		]);
+	};
 
 	// Only updates title
 	const handleUpdate = async () => {
@@ -134,20 +135,17 @@ const OutfitEdit = ({
 
 		setIsLoading(true); // Start loading
 		try {
-			const response = await axios.put(
-				`${baseUrl}/api/private/outfits/${id}`,
-				{
-					title: updatedTitle,
-				}
-			);
+			const response = await axios.put(`${baseUrl}/api/private/outfits/${id}`, {
+				title: updatedTitle,
+			});
 
 			if (response.status === 200) {
 				//alert(`You have updated: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
-				showSuccessUpdateToast()
+				showSuccessUpdateToast();
 			} else {
-				showErrorUpdateToast()
+				showErrorUpdateToast();
 				// throw new Error('An error has occurred while updating outfit');
 			}
 			setIsLoading(false); // Stop loading on success
@@ -168,9 +166,9 @@ const OutfitEdit = ({
 				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
-				showSuccessDeleteToast()
+				showSuccessDeleteToast();
 			} else {
-				showErrorDeleteToast()
+				showErrorDeleteToast();
 				// throw new Error('An error has occurred while deleting outfit');
 			}
 			setIsLoading(false); // Stop loading on success
@@ -184,7 +182,7 @@ const OutfitEdit = ({
 	return (
 		<View style={styles.container}>
 			<Header
-				text={"Edit"}
+				text={'Edit'}
 				leftBack={true}
 				leftButton={true}
 				rightButton={true}
@@ -230,7 +228,10 @@ const OutfitEdit = ({
 				{isLoading && (
 					<View style={GlobalStyles.utils.loadingOverlay}>
 						<View style={GlobalStyles.utils.loadingContainer}>
-							<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
+							<ActivityIndicator
+								size="large"
+								color={GlobalStyles.colorPalette.activityIndicator}
+							/>
 						</View>
 					</View>
 				)}
