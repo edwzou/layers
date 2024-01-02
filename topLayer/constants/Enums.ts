@@ -1,4 +1,4 @@
-import { type TagActionType, type TagCategoryType } from 'components/Tag';
+import { type TagActionType, type TagCategoryType } from '../components/Tag';
 
 const outfits = 'outfits';
 const outerwear = 'outerwear';

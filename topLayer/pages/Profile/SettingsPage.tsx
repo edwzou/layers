@@ -43,7 +43,6 @@ interface FormValues {
 type SettingsPageContextType = {
 	control: Control<FormValues>;
 	setValue: UseFormSetValue<FormValues>;
-	setFormData: Dispatch<SetStateAction<FormValues>>;
 	errors: FieldErrors<FormValues>;
 	showSuccessUpdate: boolean;
 	setShowSuccessUpdate: Dispatch<SetStateAction<boolean>>;
@@ -54,7 +53,6 @@ type SettingsPageContextType = {
 export const SettingsPageContext = createContext<SettingsPageContextType>({
 	control: {} as Control<FormValues>,
 	setValue: {} as UseFormSetValue<FormValues>,
-	setFormData: () => {},
 	errors: {} as FieldErrors<FormValues>,
 	showSuccessUpdate: false,
 	setShowSuccessUpdate: () => {},
@@ -72,7 +70,7 @@ const SettingsPage: React.FC = () => {
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
-	const [formData, setFormData] = useState<FormValues>({
+	const defaultForm = {
 		first_name: first_name,
 		last_name: last_name,
 		email: email,
@@ -80,7 +78,7 @@ const SettingsPage: React.FC = () => {
 		password: '**********',
 		private_option: private_option,
 		profile_picture: pp_url,
-	});
+	};
 
 	const {
 		control,
@@ -88,7 +86,7 @@ const SettingsPage: React.FC = () => {
 		setValue,
 		formState: { errors },
 	} = useForm({
-		defaultValues: formData,
+		defaultValues: defaultForm,
 	});
 
 	const handleLogout = async (): Promise<void> => {
@@ -97,6 +95,7 @@ const SettingsPage: React.FC = () => {
 	};
 
 	const onSubmit = async (formValues: FormValues | any): Promise<void> => {
+		console.log('values: ', formValues.first_name, formValues.last_name);
 		if (data === null || data === undefined) {
 			console.log('User data is not available.');
 			return;
@@ -190,7 +189,6 @@ const SettingsPage: React.FC = () => {
 			value={{
 				control,
 				setValue,
-				setFormData,
 				errors,
 				showSuccessUpdate,
 				setShowSuccessUpdate,
@@ -205,9 +203,9 @@ const SettingsPage: React.FC = () => {
 					leftButtonAction={handleLogout}
 					rightButton={true}
 					rightStepOverType={StepOverTypes.update}
-					rightButtonAction={handleSubmit(() => {
-						void onSubmit(formData);
-					})}
+					rightButtonAction={() => {
+						void handleSubmit(onSubmit)();
+					}}
 				/>
 				<View style={{ gap: 40 }}>
 					<View style={styles.settingsContainer}>

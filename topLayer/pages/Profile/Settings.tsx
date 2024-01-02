@@ -20,21 +20,10 @@ import { StackNavigation } from '../../constants/Enums';
 import { settings } from '../../constants/GlobalStrings';
 import { SettingsPageContext } from './SettingsPage';
 import { ProfilePageContext } from './ProfilePage';
-
-interface FormValues {
-	first_name: string;
-	last_name: string;
-	email: string;
-	username: string;
-	password: string;
-	private_option: boolean;
-	profile_picture: string;
-}
-
-interface PrivacyOption {
-	value: string;
-	boolean: boolean;
-}
+import {
+	type PrivacyOption,
+	privacyOptions,
+} from '../../constants/PrivateOptions';
 
 const Settings: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -42,7 +31,6 @@ const Settings: React.FC = () => {
 	const {
 		control,
 		setValue,
-		setFormData,
 		errors,
 		showSuccessUpdate,
 		setShowSuccessUpdate,
@@ -51,20 +39,8 @@ const Settings: React.FC = () => {
 
 	const { pfpUrlForSettings, setReturnToPfp } = useContext(ProfilePageContext);
 
-	// Update the state object when form fields change
-	const handleFieldChange = (
-		fieldName: string,
-		value: string | boolean
-	): void => {
-		setFormData((prevData: FormValues) => ({
-			...prevData,
-			[fieldName]: value,
-		}));
-	};
-
 	useEffect(() => {
 		setValue('profile_picture', pfpUrlForSettings);
-		handleFieldChange('profile_picture', pfpUrlForSettings);
 	}, [pfpUrlForSettings]);
 
 	useEffect(() => {
@@ -73,11 +49,6 @@ const Settings: React.FC = () => {
 			setShowSuccessUpdate(false);
 		}
 	}, [showSuccessUpdate]);
-
-	const privacyOptions: PrivacyOption[] = [
-		{ value: 'Public', boolean: false },
-		{ value: 'Private', boolean: true },
-	];
 
 	return (
 		<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
@@ -112,10 +83,7 @@ const Settings: React.FC = () => {
 						render={({ field: { onChange, value } }) => (
 							<StackedTextBox
 								label="First Name"
-								onFieldChange={(newValue) => {
-									onChange(newValue);
-									handleFieldChange('first_name', newValue);
-								}}
+								onFieldChange={onChange}
 								value={value.trim()}
 							/>
 						)}
@@ -130,10 +98,7 @@ const Settings: React.FC = () => {
 						render={({ field: { onChange, value } }) => (
 							<StackedTextBox
 								label="Last Name"
-								onFieldChange={(newValue) => {
-									onChange(newValue);
-									handleFieldChange('last_name', newValue);
-								}}
+								onFieldChange={onChange}
 								value={value.trim()}
 							/>
 						)}
@@ -149,10 +114,7 @@ const Settings: React.FC = () => {
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
 							label="Username"
-							onFieldChange={(newValue) => {
-								onChange(newValue);
-								handleFieldChange('username', newValue);
-							}}
+							onFieldChange={onChange}
 							value={value.trim()}
 						/>
 					)}
@@ -168,10 +130,7 @@ const Settings: React.FC = () => {
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
 							label="Email"
-							onFieldChange={(newValue) => {
-								onChange(newValue);
-								handleFieldChange('email', newValue);
-							}}
+							onFieldChange={onChange}
 							value={value.trim()}
 						/>
 					)}
@@ -187,10 +146,7 @@ const Settings: React.FC = () => {
 					render={({ field: { onChange, value } }) => (
 						<StackedTextBox
 							label="Password"
-							onFieldChange={(newValue) => {
-								onChange(newValue);
-								handleFieldChange('password', newValue);
-							}}
+							onFieldChange={onChange}
 							value={value}
 							secure
 						/>
@@ -201,7 +157,6 @@ const Settings: React.FC = () => {
 					privateData={privacyOptions}
 					onSelect={(selectedOption: PrivacyOption) => {
 						setValue('private_option', selectedOption.boolean);
-						handleFieldChange('private_option', selectedOption.boolean);
 					}}
 					choice={
 						control._defaultValues.private_option === true
