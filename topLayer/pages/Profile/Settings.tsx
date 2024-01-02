@@ -36,7 +36,7 @@ interface PrivacyOption {
 	boolean: boolean;
 }
 
-const Settings = () => {
+const Settings: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const {
@@ -52,7 +52,10 @@ const Settings = () => {
 	const { pfpUrlForSettings, setReturnToPfp } = useContext(ProfilePageContext);
 
 	// Update the state object when form fields change
-	const handleFieldChange = (fieldName: string, value: string | boolean) => {
+	const handleFieldChange = (
+		fieldName: string,
+		value: string | boolean
+	): void => {
 		setFormData((prevData: FormValues) => ({
 			...prevData,
 			[fieldName]: value,
@@ -90,7 +93,7 @@ const Settings = () => {
 				>
 					<ProfilePicture
 						imageUrl={pfpUrlForSettings}
-						base64={pfpUrlForSettings.slice(0, 5) === 'https' ? false : true}
+						base64={pfpUrlForSettings.slice(0, 5) !== 'https'}
 					/>
 				</Pressable>
 				<View

@@ -42,7 +42,6 @@ interface FormValues {
 // Define the context type
 type SettingsPageContextType = {
 	control: Control<FormValues>;
-	handleSubmit: UseFormHandleSubmit<FormValues>;
 	setValue: UseFormSetValue<FormValues>;
 	setFormData: Dispatch<SetStateAction<FormValues>>;
 	errors: FieldErrors<FormValues>;
@@ -54,7 +53,6 @@ type SettingsPageContextType = {
 // Create the context with the defined type
 export const SettingsPageContext = createContext<SettingsPageContextType>({
 	control: {} as Control<FormValues>,
-	handleSubmit: {} as UseFormHandleSubmit<FormValues>,
 	setValue: {} as UseFormSetValue<FormValues>,
 	setFormData: () => {},
 	errors: {} as FieldErrors<FormValues>,
@@ -63,7 +61,7 @@ export const SettingsPageContext = createContext<SettingsPageContextType>({
 	isLoading: false,
 });
 
-const SettingsPage = () => {
+const SettingsPage: React.FC = () => {
 	const { setShouldRefreshApp } = useContext(AppContext);
 
 	const { data, updateData } = useContext(UserContext);
@@ -88,18 +86,18 @@ const SettingsPage = () => {
 		control,
 		handleSubmit,
 		setValue,
-		formState: { dirtyFields, errors },
+		formState: { errors },
 	} = useForm({
 		defaultValues: formData,
 	});
 
-	const handleLogout = async () => {
+	const handleLogout = async (): Promise<void> => {
 		await axios(`${baseUrl}/logout`);
 		updateData(null);
 	};
 
-	const onSubmit = async (formValues: FormValues | any) => {
-		if (!data) {
+	const onSubmit = async (formValues: FormValues | any): Promise<void> => {
+		if (data === null || data === undefined) {
 			console.log('User data is not available.');
 			return;
 		}
@@ -169,7 +167,7 @@ const SettingsPage = () => {
 		}
 	};
 
-	const showSuccessUpdateToast = () => {
+	const showSuccessUpdateToast = (): void => {
 		Toast.show({
 			type: 'success',
 			text1: toast.success,
@@ -178,7 +176,7 @@ const SettingsPage = () => {
 		});
 	};
 
-	const showErrorUpdateToast = () => {
+	const showErrorUpdateToast = (): void => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
@@ -191,7 +189,6 @@ const SettingsPage = () => {
 		<SettingsPageContext.Provider
 			value={{
 				control,
-				handleSubmit,
 				setValue,
 				setFormData,
 				errors,
@@ -208,7 +205,9 @@ const SettingsPage = () => {
 					leftButtonAction={handleLogout}
 					rightButton={true}
 					rightStepOverType={StepOverTypes.update}
-					rightButtonAction={handleSubmit(() => onSubmit(formData))}
+					rightButtonAction={handleSubmit(() => {
+						void onSubmit(formData);
+					})}
 				/>
 				<View style={{ gap: 40 }}>
 					<View style={styles.settingsContainer}>
