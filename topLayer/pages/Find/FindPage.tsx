@@ -17,7 +17,7 @@ import { UserContext } from '../../utils/UserContext';
 
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { getUser } from '../../endpoints/endpoints';
-import { type User } from '../../pages/Main';
+import { type User } from '../Main/UserTypes';
 import { previewLength } from '../../constants/Find';
 import { MarkUserFuncProvider } from '../../Contexts/ForeignUserContext';
 

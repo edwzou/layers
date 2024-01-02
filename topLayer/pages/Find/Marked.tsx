@@ -2,7 +2,7 @@ import React, { useState, useEffect, type ReactElement } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
-import { type User } from '../../pages/Main';
+import { type User } from '../Main/UserTypes';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import { previewLength } from '../../constants/Find';
 

@@ -1,4 +1,4 @@
-import { type User } from '../pages/Main';
+import { type User } from '../pages/Main/UserTypes';
 import { createContext } from 'react';
 
 interface UserContextType {

@@ -1,6 +1,4 @@
-import { Image } from 'react-native-svg';
-import { UserClothing } from '../../pages/Match';
-import { UserOutfit } from '../../pages/OutfitView';
+import { type UserClothing } from '../Match';
 
 export interface User {
 	uid: string;
@@ -12,6 +10,16 @@ export interface User {
 	followers: string[];
 	following: string[];
 	pp_url: string;
+}
+
+export interface formUser {
+	first_name: string;
+	last_name: string;
+	username: string;
+	email: string;
+	password: string;
+	private_option: boolean;
+	profile_picture: string;
 }
 
 export interface markedUser extends User {

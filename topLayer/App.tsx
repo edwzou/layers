@@ -23,7 +23,7 @@ import CameraWrapper from './components/Camera/CameraWrapper';
 import { UserContext } from './utils/UserContext';
 import axios from 'axios';
 import { baseUrl } from './utils/apiUtils';
-import { type User } from './pages/Main';
+import { type User } from './pages/Main/UserTypes';
 import Toast from 'react-native-toast-message';
 
 LogBox.ignoreLogs(['Require cycle:']);

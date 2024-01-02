@@ -1,38 +1,38 @@
-import pfp1 from '../assets/pfp1.jpg'
-import pfp2 from '../assets/pfp2.jpg'
-import pfp3 from '../assets/pfp3.jpg'
-import pfp4 from '../assets/pfp4.jpg'
+import pfp1 from '../assets/pfp1.jpg';
+import pfp2 from '../assets/pfp2.jpg';
+import pfp3 from '../assets/pfp3.jpg';
+import pfp4 from '../assets/pfp4.jpg';
 
 import outerwear1 from '../assets/outerwear1.png';
-import outerwear2 from '../assets/outerwear2.png'
-import outerwear3 from '../assets/outerwear3.png'
-import outerwear4 from '../assets/outerwear4.png'
-import outerwear5 from '../assets/outerwear5.png'
-import outerwear6 from '../assets/outerwear6.png'
+import outerwear2 from '../assets/outerwear2.png';
+import outerwear3 from '../assets/outerwear3.png';
+import outerwear4 from '../assets/outerwear4.png';
+import outerwear5 from '../assets/outerwear5.png';
+import outerwear6 from '../assets/outerwear6.png';
 
-import tops1 from '../assets/tops1.png'
-import tops2 from '../assets/tops2.png'
-import tops3 from '../assets/tops3.png'
-import tops4 from '../assets/tops4.png'
-import tops5 from '../assets/tops5.png'
-import tops6 from '../assets/tops6.png'
-import tops7 from '../assets/tops7.png'
-import tops8 from '../assets/tops8.png'
+import tops1 from '../assets/tops1.png';
+import tops2 from '../assets/tops2.png';
+import tops3 from '../assets/tops3.png';
+import tops4 from '../assets/tops4.png';
+import tops5 from '../assets/tops5.png';
+import tops6 from '../assets/tops6.png';
+import tops7 from '../assets/tops7.png';
+import tops8 from '../assets/tops8.png';
 
-import bottoms1 from '../assets/bottoms1.png'
-import bottoms2 from '../assets/bottoms2.png'
-import bottoms3 from '../assets/bottoms3.png'
-import bottoms4 from '../assets/bottoms4.png'
-import bottoms5 from '../assets/bottoms5.png'
+import bottoms1 from '../assets/bottoms1.png';
+import bottoms2 from '../assets/bottoms2.png';
+import bottoms3 from '../assets/bottoms3.png';
+import bottoms4 from '../assets/bottoms4.png';
+import bottoms5 from '../assets/bottoms5.png';
 
-import shoes1 from '../assets/shoes1.png'
-import shoes2 from '../assets/shoes2.png'
-import shoes3 from '../assets/shoes3.png'
-import shoes4 from '../assets/shoes4.png'
+import shoes1 from '../assets/shoes1.png';
+import shoes2 from '../assets/shoes2.png';
+import shoes3 from '../assets/shoes3.png';
+import shoes4 from '../assets/shoes4.png';
 
 import { ClothingTypes, ColorTags } from './Enums';
-import { User } from '../pages/Main';
-import { UserItems } from '../pages/Main';
+import { User } from '../pages/Main/UserTypes';
+import { UserItems } from '../pages/Main/UserTypes';
 import { UserOutfits } from '../pages/OutfitView';
 
 // export const mockItemsData: (UserItems | UserOutfits)[] = [
@@ -692,3 +692,4 @@ import { UserOutfits } from '../pages/OutfitView';
 // 		items: mockItemsData3,
 // 	},
 // ];
+

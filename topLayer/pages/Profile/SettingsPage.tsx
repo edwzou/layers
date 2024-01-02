@@ -23,7 +23,7 @@ import {
 } from 'react-hook-form';
 import { AppContext } from '../../App';
 import { UserContext } from '../../utils/UserContext';
-import { type User } from '../../pages/Main';
+import { type User } from '../Main/UserTypes';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import Toast from 'react-native-toast-message';
