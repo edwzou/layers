@@ -1,11 +1,9 @@
 import {
 	StyleSheet,
-	Text,
 	View,
 	SafeAreaView,
-	Image,
 	Pressable,
-	ViewStyle,
+	type ViewStyle,
 } from 'react-native';
 import React, {
 	type Dispatch,
@@ -13,12 +11,11 @@ import React, {
 	useCallback,
 	useRef,
 	useState,
-	useEffect,
 	useContext,
+	type ReactElement,
 } from 'react';
 import {
 	Camera,
-	type CameraCapturedPicture,
 	type CameraPictureOptions,
 	CameraType,
 	FlashMode,
@@ -35,7 +32,7 @@ import {
 	type TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
-	AnimatedStyleProp,
+	type AnimatedStyleProp,
 	measure,
 	runOnJS,
 	useAnimatedGestureHandler,
@@ -64,10 +61,11 @@ export default function CameraComponent({
 	returnToNavigation,
 	setPfpUrl,
 	returnToPfp,
-}: CameraPropType) {
+}: CameraPropType): ReactElement {
 	const { setReturnToPfp } = useContext(ProfilePageContext);
 
 	const [orientation, setOrientation] = useState(CameraType.back);
+	// TODO: Upgrade Camera
 	const [flash, setFlash] = useState(FlashMode.auto);
 	const [cameraPermission, requestCameraPermission] =
 		Camera.useCameraPermissions();
@@ -89,7 +87,7 @@ export default function CameraComponent({
 		exif: false,
 	};
 
-	const flipCamera = () => {
+	const flipCamera = (): void => {
 		setOrientation((current) =>
 			current === CameraType.front ? CameraType.back : CameraType.front
 		);
@@ -99,7 +97,11 @@ export default function CameraComponent({
 		if (cameraRef.current == null) return;
 		const newPhoto = await cameraRef.current.takePictureAsync(takePhotoOptions);
 
-		if (newPhoto.uri) {
+		if (
+			newPhoto?.uri !== null &&
+			newPhoto?.uri !== undefined &&
+			newPhoto?.uri !== ''
+		) {
 			ImageCropPicker.openCropper({
 				path: newPhoto.uri,
 				width: 2000, // set your desired width
@@ -109,10 +111,16 @@ export default function CameraComponent({
 				mediaType: 'photo', // specify media type as 'photo'
 			})
 				.then((croppedImage) => {
-					if (croppedImage.data) {
+					if (
+						croppedImage?.data !== null &&
+						croppedImage?.data !== undefined &&
+						croppedImage?.data !== ''
+					) {
 						if (returnToPfp) {
 							setReturnToPfp(false);
-							setPfpUrl && setPfpUrl(croppedImage.data);
+							if (setPfpUrl !== null && setPfpUrl !== undefined) {
+								setPfpUrl(croppedImage.data);
+							}
 							returnToNavigation.goBack();
 						} else {
 							data(croppedImage.data); // use the base64 string
@@ -149,7 +157,7 @@ export default function CameraComponent({
 
 	const rippleAnimation = useAnimatedStyle(() => {
 		const circleRadius = shutterWidth.value;
-		return {
+		const animatedStyle: AnimatedStyleProp<ViewStyle> = {
 			width: circleRadius * 2,
 			aspectRatio: 1 / 1,
 			borderRadius: circleRadius,
@@ -161,7 +169,8 @@ export default function CameraComponent({
 					scale: scale.value,
 				},
 			],
-		} as AnimatedStyleProp<ViewStyle>;
+		};
+		return animatedStyle;
 	});
 
 	if (cameraPermission == null) {
@@ -169,7 +178,8 @@ export default function CameraComponent({
 	}
 
 	if (!cameraPermission.granted) {
-		requestCameraPermission();
+		// If an error is thrown nothing happens
+		void requestCameraPermission();
 		return <></>;
 	}
 
@@ -178,11 +188,12 @@ export default function CameraComponent({
 	}
 
 	if (!mediaPermission.granted) {
-		requestMediaPermission();
+		// If an error is thrown nothing happens
+		void requestMediaPermission();
 		return <></>;
 	}
 
-	const pickImage = async () => {
+	const pickImage = async (): Promise<void> => {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
@@ -192,15 +203,19 @@ export default function CameraComponent({
 		});
 		if (result.canceled) return;
 
-		// console.log('Test2: ', result.assets[0].base64);
-		if (result.assets[0].base64) {
+		if (
+			result.assets[0].base64 !== null &&
+			result.assets[0].base64 !== undefined &&
+			result.assets[0].base64 !== ''
+		) {
 			if (returnToPfp) {
 				setReturnToPfp(false);
-				setPfpUrl && setPfpUrl(result.assets[0].base64);
+				if (setPfpUrl !== null && setPfpUrl !== undefined) {
+					setPfpUrl(result.assets[0].base64);
+				}
 				returnToNavigation.goBack();
 			}
 			data(result.assets[0].base64);
-			//console.log(result.assets[0].base64.substring(0, 10)); // Select image from library
 			navigation.navigate(StackNavigation.ItemCreate, {});
 		} else {
 			console.log('result.assets[0].base64 is undefined!');
@@ -244,7 +259,12 @@ export default function CameraComponent({
 					</Pressable>
 				</View>
 				<View style={styles.bottomContainer}>
-					<Pressable onPress={pickImage} style={styles.button}>
+					<Pressable
+						onPress={() => {
+							void pickImage();
+						}}
+						style={styles.button}
+					>
 						<Icon
 							name={GlobalStyles.icons.imageFill}
 							size={GlobalStyles.sizing.icon.regular}

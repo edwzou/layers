@@ -13,22 +13,21 @@ import axios from 'axios';
 
 import Match from './Match';
 import OutfitPreview from '../../pages/OutfitPreview/OutfitPreview';
-import { UserClothing } from '.';
+import { type UserClothing } from '.';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { MainPageContext } from '../../pages/Main/MainPage';
 
 import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings'
+import { toast } from '../../constants/GlobalStrings';
 
 export const MatchPageContext = createContext({
-	setMatch: (_?: any) => { },
+	setMatch: (_?: any) => {},
 	dismissal: false,
 	isLoading: false,
 });
 
-const MatchPage = () => {
-	const { navigationArray, setShouldRefreshMainPage } =
-		useContext(MainPageContext);
+const MatchPage: React.FC = () => {
+	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 	const [dismissal, setDismissal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
@@ -42,7 +41,7 @@ const MatchPage = () => {
 		matchName: '',
 	});
 
-	const handleSubmitOutfit = async () => {
+	const handleSubmitOutfit = async (): Promise<void> => {
 		const clothingItems = [
 			match.previewData && match.previewData.outerwear
 				? match.previewData.outerwear.ciid
@@ -67,40 +66,40 @@ const MatchPage = () => {
 			});
 
 			if (response.status === 200) {
-				//alert(`You have created: ${JSON.stringify(response.data)}`);
+				// alert(`You have created: ${JSON.stringify(response.data)}`);
 				setDismissal(true);
 				setShouldRefreshMainPage(true);
-				//navigationArray[0](); // Uncomment this to navigate to profile page
+				// navigationArray[0](); // Uncomment this to navigate to profile page
 				setDismissal(false);
-				showSuccessMatchToast()
+				showSuccessMatchToast();
 			} else {
-				showErrorMatchToast()
-				//throw new Error('An error has occurred while submitting outfit');
+				showErrorMatchToast();
+				// throw new Error('An error has occurred while submitting outfit');
 			}
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {
 			setIsLoading(false); // Stop loading on error
-			void axiosEndpointErrorHandler(error);
+			axiosEndpointErrorHandler(error);
 		}
 	};
 
-	const showSuccessMatchToast = () => {
+	const showSuccessMatchToast = (): void => {
 		Toast.show({
 			type: 'success',
 			text1: toast.success,
 			text2: toast.yourOutfitHasBeenCreated,
-			topOffset: GlobalStyles.layout.toastTopOffset
+			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
-	const showErrorMatchToast = () => {
+	const showErrorMatchToast = (): void => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
 			text2: toast.anErrorHasOccurredWhileCreatingOutfit,
-			topOffset: GlobalStyles.layout.toastTopOffset
+			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
-	}
+	};
 
 	return (
 		<MatchPageContext.Provider value={{ setMatch, dismissal, isLoading }}>
@@ -121,10 +120,13 @@ const MatchPage = () => {
 								backgroundColor: GlobalStyles.colorPalette.background,
 							},
 							headerShadowVisible: false,
-							headerRight: () => headerButton({
-								type: StepOverTypes.done,
-								handlePress: handleSubmitOutfit,
-							}),
+							headerRight: () =>
+								headerButton({
+									type: StepOverTypes.done,
+									handlePress: () => {
+										void handleSubmitOutfit();
+									},
+								}),
 						}}
 						name={StackNavigation.OutfitPreview}
 						component={OutfitPreview}
@@ -138,4 +140,3 @@ const MatchPage = () => {
 export default MatchPage;
 
 const styles = StyleSheet.create({});
-

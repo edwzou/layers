@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { SafeAreaView } from 'react-native';
 
 import Header from '../../components/Header/Header';
@@ -23,7 +23,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 
-const Match = () => {
+const Match: React.FC = () => {
 	const { allItems } = useContext(MainPageContext);
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -53,34 +53,34 @@ const Match = () => {
 
 		setData(
 			(value) =>
-			({
-				...value,
-				outerwear: filterClothing(ClothingTypes.outerwear)[0].data,
-			} as UserClothingList)
+				({
+					...value,
+					outerwear: filterClothing(ClothingTypes.outerwear)[0].data,
+				} as UserClothingList)
 		);
 
 		setData(
 			(value) =>
-			({
-				...value,
-				tops: filterClothing(ClothingTypes.tops)[0].data,
-			} as UserClothingList)
+				({
+					...value,
+					tops: filterClothing(ClothingTypes.tops)[0].data,
+				} as UserClothingList)
 		);
 
 		setData(
 			(value) =>
-			({
-				...value,
-				bottoms: filterClothing(ClothingTypes.bottoms)[0].data,
-			} as UserClothingList)
+				({
+					...value,
+					bottoms: filterClothing(ClothingTypes.bottoms)[0].data,
+				} as UserClothingList)
 		);
 
 		setData(
 			(value) =>
-			({
-				...value,
-				shoes: filterClothing(ClothingTypes.shoes)[0].data,
-			} as UserClothingList)
+				({
+					...value,
+					shoes: filterClothing(ClothingTypes.shoes)[0].data,
+				} as UserClothingList)
 		);
 	}, [allItems]);
 
@@ -153,4 +153,3 @@ const Match = () => {
 };
 
 export default Match;
-

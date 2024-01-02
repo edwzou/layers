@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import { Text, Pressable, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StepOverTypes } from '../../constants/Enums';
@@ -16,7 +16,7 @@ export function headerButtons({
 	left,
 	handlePress,
 	disabled = false,
-}: HeaderButtonPropsType) {
+}: HeaderButtonPropsType): ReactElement {
 	switch (type) {
 		case StepOverTypes.send: {
 			return (
@@ -100,7 +100,7 @@ export function headerButtons({
 			);
 		}
 		default:
-			return null; // Handle default case if needed
+			return <></>; // Handle default case if needed
 	}
 }
 

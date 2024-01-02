@@ -29,8 +29,8 @@ import { StackNavigation } from '../../constants/Enums';
 import { UserContext } from '../../utils/UserContext';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import {
-	showErrorCreateToast,
-	showSuccessCreateToast,
+	showErrorToast,
+	showSuccessToast,
 } from '../../components/Toasts/Toasts';
 import { toast } from '../../constants/GlobalStrings';
 
@@ -110,11 +110,11 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}
 
-				showSuccessCreateToast(toast.yourProfileHasBeenCreated);
+				showSuccessToast(toast.yourProfileHasBeenCreated);
 				setIsLoading(false); // Stop loading on success
 			} catch (err: unknown) {
 				setIsLoading(false); // Stop loading on error
-				showErrorCreateToast(toast.anErrorHasOccurredWhileCreatingProfile);
+				showErrorToast(toast.anErrorHasOccurredWhileCreatingProfile);
 				axiosEndpointErrorHandler(err);
 			}
 		};

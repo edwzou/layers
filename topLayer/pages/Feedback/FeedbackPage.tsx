@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
 	View,
 	Text,
@@ -9,18 +9,17 @@ import {
 } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import SquareTextbox from '../../components/Textbox/SquareTextbox';
-import { feedback } from '../../constants/GlobalStrings';
+import { feedback, toast } from '../../constants/GlobalStrings';
 import Header from '../../components/Header/Header';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import { Controller, useForm } from 'react-hook-form';
 import Toast from 'react-native-toast-message';
-import { toast } from '../../constants/GlobalStrings';
 
 interface FormValues {
 	feedback: string;
 }
 
-const FeedbackPage = () => {
+const FeedbackPage: React.FC = () => {
 	const {
 		control,
 		handleSubmit,
@@ -31,11 +30,7 @@ const FeedbackPage = () => {
 		},
 	});
 
-	// const handleLinkPress = () => {
-	// 	console.log('OPEN EMAIL DRAFT TO team@layers.com');
-	// };
-
-	const showErrorSendToast = () => {
+	const showErrorSendToast = (): void => {
 		Toast.show({
 			type: 'error',
 			text1: toast.error,
@@ -43,7 +38,7 @@ const FeedbackPage = () => {
 			topOffset: GlobalStyles.layout.toastTopOffset,
 		});
 	};
-	const handleEmail = (values: FormValues) => {
+	const handleEmail = (values: FormValues): void => {
 		const email_address = 'layersapplication@gmail.com';
 		const mail = `mailto:${email_address}` + '?body=' + values.feedback;
 		Linking.openURL(mail).catch((err) => {

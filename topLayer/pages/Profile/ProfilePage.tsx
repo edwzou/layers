@@ -2,8 +2,8 @@ import React, {
 	useState,
 	useContext,
 	createContext,
-	Dispatch,
-	SetStateAction,
+	type Dispatch,
+	type SetStateAction,
 } from 'react';
 
 import { StackNavigation } from '../../constants/Enums';
@@ -17,15 +17,15 @@ import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { UserContext } from '../../utils/UserContext';
-import { User } from '../../pages/Main';
+import { type User } from '../../pages/Main';
 
 import CameraWrapper from '../../components/Camera/CameraWrapper';
 
 // Define the context type
-type ProfilePageContextType = {
+interface ProfilePageContextType {
 	pfpUrlForSettings: string;
 	setReturnToPfp: Dispatch<SetStateAction<boolean>>;
-};
+}
 
 // Create the context with the defined type
 export const ProfilePageContext = createContext<ProfilePageContextType>({
@@ -33,13 +33,13 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 	setReturnToPfp: () => {},
 });
 
-const ProfilePage = () => {
+const ProfilePage: React.FC = () => {
 	const { data } = useContext(UserContext);
 	const { pp_url } = data as User;
 	const [pfpUrlForSettings, setPfpUrlForSettings] = useState(pp_url);
 	const [returnToPfp, setReturnToPfp] = useState(false);
 
-	const CameraWrapperComponent = () => (
+	const CameraWrapperComponent: React.FC = () => (
 		<CameraWrapper setPfpUrl={setPfpUrlForSettings} returnToPfp={returnToPfp} />
 	);
 

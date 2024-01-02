@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import ItemCell from '../../components/Cell/ItemCell';
 
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -8,13 +8,13 @@ import ColorTagsList from '../../components/ColorManager/ColorTagsList';
 import { TagAction } from '../../constants/Enums';
 import { screenHeight } from '../../utils/modalMaxShow';
 
-import { UserClothing } from '../../pages/Match';
+import { type UserClothing } from '../../pages/Match';
 
 interface OutfitViewPropsType {
 	clothingItems: UserClothing[];
 }
 
-const OutfitView = ({ clothingItems }: OutfitViewPropsType) => {
+const OutfitView = ({ clothingItems }: OutfitViewPropsType): ReactElement => {
 	const allColors = clothingItems.flatMap((item) => item.color);
 	const uniqueColors = Array.from(new Set(allColors));
 
@@ -22,7 +22,7 @@ const OutfitView = ({ clothingItems }: OutfitViewPropsType) => {
 		<FlatList
 			data={clothingItems.slice(1)}
 			numColumns={2}
-			renderItem={({ item, index }) => {
+			renderItem={({ item }) => {
 				return (
 					<View style={{ flex: 1 / 2 }}>
 						<ItemCell imageUrl={item.image_url} disablePress />
@@ -44,7 +44,9 @@ const OutfitView = ({ clothingItems }: OutfitViewPropsType) => {
 			ListFooterComponent={
 				<View style={{ gap: 20 }}>
 					<View style={[styles.categoryContainer, { top: 4 }]}>
-						{uniqueColors.length > 0 && <Text style={styles.subheader}>Colors</Text>}
+						{uniqueColors.length > 0 && (
+							<Text style={styles.subheader}>Colors</Text>
+						)}
 						<ColorTagsList data={uniqueColors} tagAction={TagAction.static} />
 					</View>
 					{/* <View style={styles.categoryContainer}>

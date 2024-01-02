@@ -9,6 +9,8 @@ import { StepOverTypes } from '../../constants/Enums';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import { headerButtons } from './HeaderButtons';
 
+type anyFunc = (...args: any[]) => any;
+
 interface HeaderPropType {
 	text: string;
 	rightBack?: boolean;
@@ -17,8 +19,8 @@ interface HeaderPropType {
 	leftButton?: boolean;
 	rightStepOverType?: string;
 	leftStepOverType?: string;
-	rightButtonAction?: any;
-	leftButtonAction?: any;
+	rightButtonAction?: anyFunc;
+	leftButtonAction?: anyFunc;
 	rightButtonDisabled?: boolean;
 }
 
@@ -37,19 +39,19 @@ const Header: React.FC<HeaderPropType> = ({
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { navigationArray } = useContext(MainPageContext);
 	const handleRightPress = (): void => {
-		if (rightButtonAction) {
+		if (rightButtonAction !== null && rightButtonAction !== undefined) {
 			rightButtonAction();
 		}
-		if (rightBack) {
+		if (rightBack === true) {
 			navigation.goBack();
 		}
 		navigationArray[0]();
 	};
 	const handleLeftPress = (): void => {
-		if (leftButtonAction) {
+		if (leftButtonAction !== null && leftButtonAction !== undefined) {
 			leftButtonAction();
 		}
-		if (leftBack) {
+		if (leftBack === true) {
 			navigation.goBack();
 		}
 		navigationArray[0]();
@@ -57,7 +59,7 @@ const Header: React.FC<HeaderPropType> = ({
 	return (
 		<SafeAreaView>
 			<View style={styles.header}>
-				{leftButton &&
+				{leftButton === true &&
 					headerButtons({
 						type: leftStepOverType,
 						left: true,
@@ -65,7 +67,7 @@ const Header: React.FC<HeaderPropType> = ({
 						disabled: false,
 					})}
 
-				{rightButton &&
+				{rightButton === true &&
 					headerButtons({
 						type: rightStepOverType,
 						left: false,
