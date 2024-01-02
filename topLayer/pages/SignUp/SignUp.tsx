@@ -33,6 +33,10 @@ import {
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
 import { toast } from '../../constants/GlobalStrings';
+import {
+	type PrivacyOption,
+	privacyOptions,
+} from '../../constants/PrivateOptions';
 
 interface FormValues {
 	first_name: string;
@@ -44,11 +48,6 @@ interface FormValues {
 	profile_picture: string;
 }
 
-interface PrivacyOption {
-	value: string;
-	boolean: boolean;
-}
-
 interface SignUpPropsType {
 	pfpUrlForSignUp: string;
 }
@@ -58,11 +57,6 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 	const { updateData } = useContext(UserContext);
 
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
-
-	const privacyOptions = [
-		{ value: 'Public', boolean: false },
-		{ value: 'Private', boolean: true },
-	];
 
 	const {
 		control,
@@ -227,6 +221,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 					onSelect={(selectedOption: PrivacyOption) => {
 						setValue('private_option', selectedOption.boolean);
 					}}
+					choice={privacyOptions[0].value}
 				/>
 			</View>
 			<View style={{ alignItems: 'center' }}>
