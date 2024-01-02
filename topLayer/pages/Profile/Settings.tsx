@@ -7,7 +7,7 @@ import {
 	Keyboard,
 	ActivityIndicator,
 } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import RadioButton from '../../components/RadioButton/RadioButton';
@@ -90,7 +90,7 @@ const Settings = () => {
 				>
 					<ProfilePicture
 						imageUrl={pfpUrlForSettings}
-						base64={pfpUrlForSettings.slice(0, 5) == 'https' ? false : true}
+						base64={pfpUrlForSettings.slice(0, 5) === 'https' ? false : true}
 					/>
 				</Pressable>
 				<View
@@ -200,6 +200,11 @@ const Settings = () => {
 						setValue('private_option', selectedOption.boolean);
 						handleFieldChange('private_option', selectedOption.boolean);
 					}}
+					choice={
+						control._defaultValues.private_option === true
+							? privacyOptions[1].value
+							: privacyOptions[0].value
+					}
 				/>
 			</View>
 			<View style={{ alignItems: 'center' }}>

@@ -227,6 +227,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 					onSelect={(selectedOption: PrivacyOption) => {
 						setValue('private_option', selectedOption.boolean);
 					}}
+					choice={privacyOptions[0].value}
 				/>
 			</View>
 			<View style={{ alignItems: 'center' }}>

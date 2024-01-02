@@ -1,32 +1,20 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import React, { useContext, useState } from 'react';
+import React, { type ReactElement, useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { ITEM_SIZE } from '../../utils/GapCalc';
-import { UserContext } from '../../utils/UserContext';
-
-interface PrivacyOption {
-	value: string;
-	boolean: boolean;
-}
 
 interface RadioButtonPropsType {
-	privateData: PrivacyOption[];
-	onSelect: (option: PrivacyOption) => void;
+	privateData: any[];
+	onSelect: (option: any) => void;
+	choice: string;
 }
 
-const RadioButton = ({ privateData, onSelect }: RadioButtonPropsType) => {
-	const { data } = useContext(UserContext);
-
-	let option = false as {};
-
-	if (data) {
-		const { private_option } = data;
-		option = private_option ? private_option : false;
-	}
-
-	const savedOption = option ? 'Private' : 'Public';
-
-	const [userOption, setUserOption] = useState(savedOption ?? 'Public');
+const RadioButton = ({
+	privateData,
+	onSelect,
+	choice,
+}: RadioButtonPropsType): ReactElement => {
+	const [userOption, setUserOption] = useState(choice);
 
 	return (
 		<View style={{ flexDirection: 'row', gap: GlobalStyles.layout.gap }}>
@@ -35,7 +23,7 @@ const RadioButton = ({ privateData, onSelect }: RadioButtonPropsType) => {
 					<Pressable
 						onPress={() => {
 							setUserOption(item.value);
-							onSelect(item);  // Pass the entire item to the onSelect function
+							onSelect(item); // Pass the entire item to the onSelect function
 						}}
 						style={[
 							item.value === userOption ? styles.selected : null,
