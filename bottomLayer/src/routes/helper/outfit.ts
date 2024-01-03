@@ -1,7 +1,7 @@
 import { type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import { AsyncManager } from '../../utils/event-emitters/asyncManager';
-import { urlDownloadHandlerOutfits } from '../../utils/event-emitters/asyncHandlers';
+import { asyncHandler } from '../../utils/event-emitters/asyncHandler';
 import { once } from 'node:events';
 import {
   getUserCore,
@@ -12,6 +12,7 @@ import { itemCategories } from '../../utils/constants/itemCategories';
 import { itemFields } from '../../utils/constants/itemFields';
 import { outfitFields } from '../../utils/constants/outfitFields';
 import { type PoolClient } from 'pg';
+import { downloadConditions } from '../../utils/constants/downloadConditions';
 
 // Gets an Outfit By Id
 export const getOutfitById = async (
@@ -90,7 +91,7 @@ export const getOutfitByIdCate = async (
     const asyncTrigger = once(asyncManager, 'proceed');
     for (const item of result) {
       if (item.item_image_url !== null) {
-        void urlDownloadHandlerOutfits(item.item_image_url, item, asyncManager);
+        void asyncHandler(item.item_image_url, item, asyncManager, downloadConditions.outfit);
       } else {
         console.log('Item has No Image, ciid: ' + String(item.item_ciid));
         asyncManager.complete(
@@ -180,7 +181,7 @@ export const getAllOutfitsCate = async (
     const asyncTrigger = once(asyncManager, 'proceed');
     for (const item of result) {
       if (item.item_image_url !== null) {
-        void urlDownloadHandlerOutfits(item.item_image_url, item, asyncManager);
+        void asyncHandler(item.item_image_url, item, asyncManager, downloadConditions.outfit);
       } else {
         console.log('Item has No Image, ciid: ' + String(item.item_ciid));
         asyncManager.complete(
