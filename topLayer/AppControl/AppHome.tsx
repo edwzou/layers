@@ -32,43 +32,39 @@ const AppHome: React.FC = () => {
 	);
 
 	return (
-		<>
-			<NavigationContainer ref={navigationRef}>
-				<View style={styles.container}>
-					<Stack.Navigator
-						screenOptions={{
-							headerShown: false,
-						}}
-					>
-						{user.uid === '' ? (
-							<>
-								<Stack.Screen
-									name={StackNavigation.Login}
-									component={SignInPage}
-								/>
-								<Stack.Screen
-									name={StackNavigation.SignUp}
-									component={SignUpPageComponent}
-								/>
-								<Stack.Screen
-									name={StackNavigation.CameraWrapper}
-									component={CameraWrapperComponent}
-								/>
-							</>
-						) : (
-							<>
-								<Stack.Screen
-									name={StackNavigation.Main}
-									component={MainPage}
-								/>
-							</>
-						)}
-					</Stack.Navigator>
-					<ExpoStatusBar style="auto" />
-				</View>
-			</NavigationContainer>
+		<NavigationContainer ref={navigationRef}>
+			<View style={styles.container}>
+				<Stack.Navigator
+					screenOptions={{
+						headerShown: false,
+					}}
+				>
+					{user.uid === '' ? (
+						<>
+							<Stack.Screen
+								name={StackNavigation.Login}
+								component={SignInPage}
+							/>
+							<Stack.Screen
+								name={StackNavigation.SignUp}
+								component={SignUpPageComponent}
+							/>
+							<Stack.Screen
+								name={StackNavigation.CameraWrapper}
+								component={CameraWrapperComponent}
+							/>
+						</>
+					) : (
+						<>
+							<Stack.Screen name={StackNavigation.Main} component={MainPage} />
+						</>
+					)}
+				</Stack.Navigator>
+				<ExpoStatusBar style="auto" />
+			</View>
+
 			<Toast />
-		</>
+		</NavigationContainer>
 	);
 };
 
