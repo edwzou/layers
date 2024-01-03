@@ -9,7 +9,7 @@ export interface User {
 	private_option: boolean;
 	followers: string[];
 	following: string[];
-	pp_url: string;
+	profile_picture: string;
 }
 
 export interface formUser {

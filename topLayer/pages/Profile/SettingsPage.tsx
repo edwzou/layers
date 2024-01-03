@@ -67,8 +67,14 @@ const SettingsPage: React.FC = () => {
 	const data = useUser();
 	const refreshUser = useUpdateUser();
 
-	const { first_name, last_name, email, username, private_option, pp_url } =
-		data;
+	const {
+		first_name,
+		last_name,
+		email,
+		username,
+		private_option,
+		profile_picture,
+	} = data;
 
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
@@ -80,7 +86,7 @@ const SettingsPage: React.FC = () => {
 		username: username,
 		password: '**********',
 		private_option: private_option,
-		profile_picture: pp_url,
+		profile_picture: profile_picture,
 	};
 
 	const {
@@ -126,7 +132,7 @@ const SettingsPage: React.FC = () => {
 		if (formValues.private_option !== data.private_option) {
 			updatedFields.private_option = formValues.private_option;
 		}
-		if (formValues.profile_picture !== data.pp_url) {
+		if (formValues.profile_picture !== data.profile_picture) {
 			updatedFields.profile_picture = formValues.profile_picture;
 		}
 
@@ -155,7 +161,10 @@ const SettingsPage: React.FC = () => {
 					// await AsyncStorage.setItem('session', sessionData);
 					// updateData(sessionData);
 					setShowSuccessUpdate(true);
-					void updateUser(refreshUser);
+					refreshUser({
+						type: 'change fields',
+						...updatedFields,
+					});
 					showSuccessToast(toast.yourProfileHasBeenUpdated);
 					setIsLoading(false); // Stop loading on success
 				} catch (error) {

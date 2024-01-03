@@ -141,7 +141,7 @@ const ForeignProfile = ({ route }: any): ReactElement => {
 			<View style={{ paddingVertical: GlobalStyles.layout.modalTopPadding }} />
 			<View style={{ flex: 1 }}>
 				<View style={styles.profilePicture}>
-					<ProfilePicture imageUrl={user?.pp_url ?? ''} />
+					<ProfilePicture imageUrl={user?.profile_picture ?? ''} />
 					<View>
 						<FullName
 							firstName={user?.first_name ?? ''}

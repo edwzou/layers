@@ -19,5 +19,5 @@ export const nullUser: User = {
 	private_option: false,
 	followers: [],
 	following: [],
-	pp_url: '',
+	profile_picture: '',
 };

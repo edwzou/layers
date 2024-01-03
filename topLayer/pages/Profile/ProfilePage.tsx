@@ -31,9 +31,8 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 });
 
 const ProfilePage: React.FC = () => {
-	const data = useUser();
-	const { pp_url } = data;
-	const [pfpUrlForSettings, setPfpUrlForSettings] = useState(pp_url);
+	const { profile_picture } = useUser();
+	const [pfpUrlForSettings, setPfpUrlForSettings] = useState(profile_picture);
 	const [returnToPfp, setReturnToPfp] = useState(false);
 
 	const CameraWrapperComponent: React.FC = () => (

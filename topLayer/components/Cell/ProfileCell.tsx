@@ -49,7 +49,7 @@ const ProfileCell = ({
 			email: '',
 			followers: [],
 			following: [],
-			pp_url: '',
+			profile_picture: '',
 		};
 	} else {
 		userProcessed = user;
@@ -107,7 +107,7 @@ const ProfileCell = ({
 			{/* Use the ProfilePicture component to render the user's profile picture */}
 			<View style={styles.profilePicture}>
 				<ProfilePicture
-					imageUrl={userProcessed.pp_url}
+					imageUrl={userProcessed.profile_picture}
 					base64={false}
 					size={GlobalStyles.sizing.pfp.small}
 					shadow={false}

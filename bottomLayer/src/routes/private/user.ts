@@ -23,8 +23,8 @@ router.get('/', (req: Request, res: Response): void => {
 				[userId]
 			);
 			const result = user.rows[0];
-			const imgRef = result.pp_url;
-			result.pp_url = await downloadURLFromS3(imgRef);
+			const imgRef = result.profile_picture;
+			result.profile_picture = await downloadURLFromS3(imgRef);
 
 			responseCallbackGet(null, result, res, 'User');
 		} catch (error) {
@@ -103,11 +103,11 @@ router.put(
 					query += ` private_option = '${fieldsToUpdate.private_option.toString()}',`;
 				}
 				if (fieldsToUpdate.profile_picture !== undefined) {
-					const pp_url = await ppAsync;
-					if (pp_url === null) {
+					const profile_picture = await ppAsync;
+					if (profile_picture === null) {
 						throw new Error('Impossible Null value occured');
 					}
-					query += ` pp_url = '${pp_url}',`;
+					query += ` profile_picture = '${profile_picture}',`;
 				}
 
 				if (fieldsToUpdate.followers !== undefined) {

@@ -44,7 +44,7 @@ export const userSearchQueryMarked = (
 	}
 
 	// Extra Orderings by Marked and Private Option
-	// CASE WHEN pp_url IS NULL THEN 0 WHEN pp_url = '' THEN 0 ELSE 1 END DESC,
+	// CASE WHEN profile_picture IS NULL THEN 0 WHEN profile_picture = '' THEN 0 ELSE 1 END DESC,
 	// CASE WHEN private_option is true then 0 else 1 end DESC,
 	query += `ORDER BY 
     CASE WHEN marked IS NULL THEN 0 ELSE 1 END DESC,
@@ -85,7 +85,7 @@ export const userSearchMarked = async (
 				console.log('This User is Private, uid: ' + String(user.uid));
 				asyncManager.complete('This User is Private, uid: ' + String(user.uid));
 			} else {
-				void ppurlDownloadHandler(user.pp_url, user, asyncManager);
+				void ppurlDownloadHandler(user.profile_picture, user, asyncManager);
 				delete user.password;
 				user.marked = marked;
 			}
@@ -131,7 +131,7 @@ export const userSearch = async (
 				console.log('This User is Private, uid: ' + String(user.uid));
 				asyncManager.complete('This User is Private, uid: ' + String(user.uid));
 			} else {
-				void ppurlDownloadHandler(user.pp_url, user, asyncManager);
+				void ppurlDownloadHandler(user.profile_picture, user, asyncManager);
 				delete user.password;
 			}
 		}

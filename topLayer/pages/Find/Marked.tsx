@@ -37,7 +37,7 @@ const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType): ReactElement => {
 				{users.slice(0, previewLength).map((user, index) => (
 					<View key={index} style={styles.profilePicture}>
 						<ProfilePicture
-							imageUrl={user?.pp_url ?? ''}
+							imageUrl={user?.profile_picture ?? ''}
 							size={GlobalStyles.sizing.pfp.small}
 							border={true}
 						/>
