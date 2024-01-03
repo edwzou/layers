@@ -13,7 +13,7 @@ import { feedback, toast } from '../../constants/GlobalStrings';
 import Header from '../../components/Header/Header';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import { Controller, useForm } from 'react-hook-form';
-import Toast from 'react-native-toast-message';
+import { showErrorToast } from '../../components/Toasts/Toasts';
 
 interface FormValues {
 	feedback: string;
@@ -30,20 +30,12 @@ const FeedbackPage: React.FC = () => {
 		},
 	});
 
-	const showErrorSendToast = (): void => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileSendingFeedback,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
 	const handleEmail = (values: FormValues): void => {
 		const email_address = 'layersapplication@gmail.com';
 		const mail = `mailto:${email_address}` + '?body=' + values.feedback;
 		Linking.openURL(mail).catch((err) => {
 			console.log(err);
-			showErrorSendToast();
+			showErrorToast(toast.anErrorHasOccurredWhileSendingFeedback);
 		});
 	};
 

@@ -34,6 +34,10 @@ import Toast from 'react-native-toast-message';
 import Header from '../../components/Header/Header';
 import { StepOverTypes } from '../../constants/Enums';
 import { Loading } from '../../components/Loading/Loading';
+import {
+	showErrorToast,
+	showSuccessToast,
+} from '../../components/Toasts/Toasts';
 
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
@@ -80,42 +84,6 @@ const OutfitEdit = ({
 		setOutfitData(rawData.filter(Boolean));
 	}, [rawData]);
 
-	const showSuccessUpdateToast = () => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourOutfitHasBeenUpdated,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showErrorUpdateToast = () => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileUpdatingOutfit,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showSuccessDeleteToast = () => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourOutfitHasBeenDeleted,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showErrorDeleteToast = () => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileDeletingOutfit,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
 	const confirmDeletion = () => {
 		Alert.alert(outfitEdit.deleteOutfit, outfitEdit.youCannotUndoThisAction, [
 			{
@@ -144,15 +112,15 @@ const OutfitEdit = ({
 				//alert(`You have updated: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
-				showSuccessUpdateToast();
+				showSuccessToast(toast.yourOutfitHasBeenUpdated);
 			} else {
-				showErrorUpdateToast();
+				showErrorToast(toast.anErrorHasOccurredWhileUpdatingOutfit);
 				// throw new Error('An error has occurred while updating outfit');
 			}
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {
 			setIsLoading(false); // Stop loading on error
-			void axiosEndpointErrorHandler(error);
+			axiosEndpointErrorHandler(error);
 		}
 	};
 
@@ -167,16 +135,15 @@ const OutfitEdit = ({
 				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
-				showSuccessDeleteToast();
+				showSuccessToast(toast.yourOutfitHasBeenDeleted);
 			} else {
-				showErrorDeleteToast();
+				showErrorToast(toast.anErrorHasOccurredWhileDeletingOutfit);
 				// throw new Error('An error has occurred while deleting outfit');
 			}
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {
 			setIsLoading(false); // Stop loading on error
-			void axiosEndpointErrorHandler(error);
-			alert(error);
+			axiosEndpointErrorHandler(error);
 		}
 	};
 

@@ -38,6 +38,10 @@ import Toast from 'react-native-toast-message';
 import { toast } from '../../constants/GlobalStrings';
 import { Loading } from '../../components/Loading/Loading';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+import {
+	showErrorToast,
+	showSuccessToast,
+} from '../../components/Toasts/Toasts';
 
 interface FormValues {
 	image: string;
@@ -236,24 +240,6 @@ const ItemCreate = ({
 		setValue('image', clothingItem.image_url);
 	}, [clothingItem.image_url]);
 
-	const showSuccessCreateToast = () => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourItemHasBeenCreated,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showErrorCreateToast = () => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileCreatingItem,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
 	const handleCreate = async (values: FormValues | any) => {
 		console.log(values);
 		if (values.category === '') {
@@ -278,9 +264,9 @@ const ItemCreate = ({
 			if (status === 200) {
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
-				showSuccessCreateToast();
+				showSuccessToast(toast.yourItemHasBeenCreated);
 			} else {
-				showErrorCreateToast();
+				showErrorToast(toast.anErrorHasOccurredWhileCreatingItem);
 			}
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {
