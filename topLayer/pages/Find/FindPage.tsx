@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Find from './Find';
 import MarkedList from './MarkedList';
@@ -12,17 +12,15 @@ import { StackNavigation } from '../../constants/Enums';
 
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
-
-import { UserContext } from '../../utils/UserContext';
-
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { getForeignUser } from '../../endpoints/getUser';
 import { type User } from '../Main/UserTypes';
 import { previewLength } from '../../constants/Find';
 import { MarkUserFuncProvider } from '../../Contexts/ForeignUserContext';
+import { useUser } from '../../Contexts/UserContext';
 
 const FindPage: React.FC = () => {
-	const { data } = useContext(UserContext);
+	const data = useUser();
 	// this only gets the foreignUsersData from UserContext on initial load
 	const foreignUsersIDs: string[] = data?.following ?? [];
 	const [followedUsersData, setFollowed] =

@@ -19,7 +19,6 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import { UserContext } from '../../utils/UserContext';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import {
 	showErrorToast,
@@ -30,8 +29,9 @@ import {
 	type PrivacyOption,
 	privacyOptions,
 } from '../../constants/PrivateOptions';
-import { defaultFormUser } from '../../constants/DefaultUser';
+import { defaultFormUser } from '../../constants/baseUsers';
 import { Loading } from '../../components/Loading/Loading';
+import { useUpdateUser } from '../../Contexts/UserContext';
 
 interface FormValues {
 	first_name: string;
@@ -49,7 +49,7 @@ interface SignUpPropsType {
 
 const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const { updateData } = useContext(UserContext);
+	const updateUser = useUpdateUser();
 
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
@@ -86,7 +86,10 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 				);
 
 				if (status === 200) {
-					updateData(userData.data);
+					updateUser({
+						type: 'change user',
+						user: userData.data,
+					});
 				} else {
 					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}

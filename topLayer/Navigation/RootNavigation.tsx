@@ -1,5 +1,5 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { type StackNavigatorType } from './utils/StackNavigation';
+import { type StackNavigatorType } from '../utils/StackNavigation';
 
 export const navigationRef =
 	createNavigationContainerRef<Record<string, object>>();

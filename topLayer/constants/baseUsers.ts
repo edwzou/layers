@@ -10,7 +10,7 @@ export const defaultFormUser: formUser = {
 	profile_picture: '',
 };
 
-export const defaultUser: User = {
+export const nullUser: User = {
 	uid: '',
 	first_name: '',
 	last_name: '',
