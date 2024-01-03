@@ -35,7 +35,7 @@ const FindPage: React.FC = () => {
 	useEffect(() => {
 		const get3Users = async (): Promise<void> => {
 			try {
-				const top3Users = await Promise.all(
+				const top3Users: Array<User | string> = await Promise.all(
 					followedUsersData
 						.slice(0, previewLength)
 						.map(async (user: string | User) => {

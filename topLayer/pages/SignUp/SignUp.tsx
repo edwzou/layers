@@ -1,14 +1,7 @@
 import axios from 'axios';
 
 import { useForm, Controller } from 'react-hook-form';
-import {
-	View,
-	Text,
-	StyleSheet,
-	Pressable,
-	Keyboard,
-	ActivityIndicator,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
 import React, {
 	type ReactElement,
 	useContext,
@@ -38,6 +31,7 @@ import {
 	privacyOptions,
 } from '../../constants/PrivateOptions';
 import { defaultFormUser } from '../../constants/DefaultUser';
+import { Loading } from '../../components/Loading/Loading';
 
 interface FormValues {
 	first_name: string;
@@ -237,16 +231,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 					bgColor={GlobalStyles.colorPalette.primary[500]}
 				/>
 			</View>
-			{isLoading && (
-				<View style={GlobalStyles.utils.loadingOverlay}>
-					<View style={GlobalStyles.utils.loadingContainer}>
-						<ActivityIndicator
-							size="large"
-							color={GlobalStyles.colorPalette.activityIndicator}
-						/>
-					</View>
-				</View>
-			)}
+			{isLoading && <Loading />}
 		</Pressable>
 	);
 };

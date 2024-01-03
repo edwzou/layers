@@ -1,4 +1,4 @@
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -16,6 +16,7 @@ import { MatchPageContext } from '../../pages/Match/MatchPage';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
+import { Loading } from '../../components/Loading/Loading';
 
 const OutfitPreview = ({ route }: any) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -84,13 +85,7 @@ const OutfitPreview = ({ route }: any) => {
 				style={{ height: screenHeight - 350 }}
 			/>
 
-			{isLoading && (
-				<View style={GlobalStyles.utils.loadingOverlay}>
-					<View style={GlobalStyles.utils.loadingContainer}>
-						<ActivityIndicator size='large' color={GlobalStyles.colorPalette.activityIndicator} />
-					</View>
-				</View>
-			)}
+			{isLoading && <Loading />}
 		</View>
 	);
 };

@@ -36,6 +36,7 @@ import Header from '../../components/Header/Header';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import Toast from 'react-native-toast-message';
 import { toast } from '../../constants/GlobalStrings';
+import { Loading } from '../../components/Loading/Loading';
 
 interface FormValues {
 	image: string;
@@ -386,16 +387,7 @@ const ItemCreate = ({
 				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
 				dim={false}
 			/>
-			{isLoading && (
-				<View style={GlobalStyles.utils.loadingOverlay}>
-					<View style={GlobalStyles.utils.loadingContainer}>
-						<ActivityIndicator
-							size="large"
-							color={GlobalStyles.colorPalette.activityIndicator}
-						/>
-					</View>
-				</View>
-			)}
+			{isLoading && <Loading />}
 		</View>
 	);
 };
