@@ -1,12 +1,5 @@
 import { Controller } from 'react-hook-form';
-import {
-	View,
-	Text,
-	StyleSheet,
-	Pressable,
-	Keyboard,
-	ActivityIndicator,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
 import React, { useContext, useEffect } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -24,6 +17,7 @@ import {
 	type PrivacyOption,
 	privacyOptions,
 } from '../../constants/PrivateOptions';
+import { Loading } from '../../components/Loading/Loading';
 
 const Settings: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -176,16 +170,7 @@ const Settings: React.FC = () => {
 				)}
 			</View>
 
-			{isLoading && (
-				<View style={GlobalStyles.utils.loadingOverlay}>
-					<View style={GlobalStyles.utils.loadingContainer}>
-						<ActivityIndicator
-							size="large"
-							color={GlobalStyles.colorPalette.activityIndicator}
-						/>
-					</View>
-				</View>
-			)}
+			{isLoading && <Loading />}
 		</Pressable>
 	);
 };

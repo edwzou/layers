@@ -33,6 +33,7 @@ import { MainPageContext } from '../../pages/Main/MainPage';
 import Toast from 'react-native-toast-message';
 import Header from '../../components/Header/Header';
 import { StepOverTypes } from '../../constants/Enums';
+import { Loading } from '../../components/Loading/Loading';
 
 // type OutfitPreviewPropsType = {
 //     outerwear: UserOutfit,
@@ -225,16 +226,7 @@ const OutfitEdit = ({
 					</Pressable>
 				</View>
 
-				{isLoading && (
-					<View style={GlobalStyles.utils.loadingOverlay}>
-						<View style={GlobalStyles.utils.loadingContainer}>
-							<ActivityIndicator
-								size="large"
-								color={GlobalStyles.colorPalette.activityIndicator}
-							/>
-						</View>
-					</View>
-				)}
+				{isLoading && <Loading />}
 			</View>
 		</View>
 	);

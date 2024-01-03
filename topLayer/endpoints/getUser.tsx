@@ -3,8 +3,9 @@ import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../utils/ErrorHandlers';
 import { type Dispatch, type SetStateAction } from 'react';
 import { type User } from '../pages/Main/UserTypes';
+import { defaultUser } from '../constants/DefaultUser';
 
-export const getForeignUser = async (userId: string): Promise<void> => {
+export const getForeignUser = async (userId: string): Promise<User> => {
 	try {
 		const { data, status } = await axios.get(`${baseUrl}/api/users/${userId}`);
 
@@ -14,6 +15,7 @@ export const getForeignUser = async (userId: string): Promise<void> => {
 	} catch (error) {
 		axiosEndpointErrorHandler(error);
 	}
+	return defaultUser;
 };
 
 export const getUser = async (

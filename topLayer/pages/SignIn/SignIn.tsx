@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
@@ -12,6 +12,7 @@ import { UserContext } from '../../utils/UserContext';
 
 import { toast } from '../../constants/GlobalStrings';
 import { showErrorToast } from '../../components/Toasts/Toasts';
+import { Loading } from '../../components/Loading/Loading';
 
 const SignIn: React.FC = () => {
 	const { updateData } = useContext(UserContext);
@@ -124,16 +125,7 @@ const SignIn: React.FC = () => {
 				/>
 			</View>
 
-			{isLoading && (
-				<View style={GlobalStyles.utils.loadingOverlay}>
-					<View style={GlobalStyles.utils.loadingContainer}>
-						<ActivityIndicator
-							size="large"
-							color={GlobalStyles.colorPalette.activityIndicator}
-						/>
-					</View>
-				</View>
-			)}
+			{isLoading && <Loading />}
 		</View>
 	);
 };
