@@ -1,10 +1,4 @@
-import React, {
-	useRef,
-	useState,
-	useEffect,
-	type ReactElement,
-	useContext,
-} from 'react';
+import React, { useRef, useState, useEffect, type ReactElement } from 'react';
 import { View, Pressable, StyleSheet, type FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -26,12 +20,12 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserAllItems, type UserClothing } from '../Match';
 import { type UserOutfit } from '../OutfitView';
-import { type markedUser } from '../../pages/Main';
+import { type markedUser } from '../Main/UserTypes';
 import {
 	getForeignAllClothingItems,
 	getForeignAllOutfits,
 } from '../../endpoints/wardrobe';
-import { MarkUserFuncContext } from '../../Contexts/ForeignUserContext';
+import { useMarkUserFunc } from '../../Contexts/ForeignUserContext';
 
 const ForeignProfile = ({ route }: any): ReactElement => {
 	console.log('Route: ', route, route.params);
@@ -39,7 +33,7 @@ const ForeignProfile = ({ route }: any): ReactElement => {
 
 	const user: markedUser = route.params.markedUser;
 
-	const markUserFunc = useContext(MarkUserFuncContext);
+	const markUserFunc = useMarkUserFunc();
 	// const [user, setUser] = useState<markedUser>(fetchedUser);
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
 	const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);

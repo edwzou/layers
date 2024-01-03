@@ -37,6 +37,7 @@ import {
 	type PrivacyOption,
 	privacyOptions,
 } from '../../constants/PrivateOptions';
+import { defaultFormUser } from '../../constants/DefaultUser';
 
 interface FormValues {
 	first_name: string;
@@ -64,15 +65,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 		setValue,
 		formState: { dirtyFields, errors },
 	} = useForm({
-		defaultValues: {
-			first_name: '',
-			last_name: '',
-			username: '',
-			email: '',
-			password: '',
-			private_option: false,
-			profile_picture: '',
-		},
+		defaultValues: defaultFormUser,
 	});
 
 	useEffect(() => {

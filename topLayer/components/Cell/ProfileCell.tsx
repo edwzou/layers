@@ -1,4 +1,4 @@
-import React, { useState, useRef, type ReactElement, useContext } from 'react';
+import React, { useState, useRef, type ReactElement } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -9,13 +9,13 @@ import {
 	isMarkedPrivateUser,
 	type markedPrivateUser,
 	type markedUser,
-} from '../../pages/Main';
+} from '../../pages/Main/UserTypes';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { followUser, unFollowUser } from '../../endpoints/followUser';
-import { MarkUserFuncDispatchContext } from '../../Contexts/ForeignUserContext';
+import { useMarkUserFuncDispatch } from '../../Contexts/ForeignUserContext';
 
 interface ProfileCellPropsType {
 	user: markedPrivateUser | markedUser;
@@ -38,7 +38,7 @@ const ProfileCell = ({
 			: GlobalStyles.icons.bookmarkOutline
 	);
 	const index = useRef<number>(-1);
-	const setUserMarkFunc = useContext(MarkUserFuncDispatchContext);
+	const setUserMarkFunc = useMarkUserFuncDispatch();
 
 	let userProcessed: markedUser;
 	if (isMarkedPrivateUser(user)) {

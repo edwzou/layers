@@ -17,7 +17,7 @@ import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { UserContext } from '../../utils/UserContext';
-import { type User } from '../../pages/Main';
+import { type User } from '../Main/UserTypes';
 
 import CameraWrapper from '../../components/Camera/CameraWrapper';
 

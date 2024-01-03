@@ -1,17 +1,14 @@
 import { baseUrl } from '../utils/apiUtils';
 import axios from 'axios';
-import {
-	axiosEndpointErrorHandler,
-	axiosEndpointErrorHandlerNoAlert,
-} from '../utils/ErrorHandlers';
-import { UserOutfit } from '../pages/OutfitView';
-import { UserClothing } from '../pages/Match';
+import { axiosEndpointErrorHandlerNoAlert } from '../utils/ErrorHandlers';
+import { type UserOutfit } from '../pages/OutfitView';
+import { type UserClothing } from '../pages/Match';
 
 export const getForeignAllOutfits = async (
 	uid: string,
 	updateOutfits: (outfit: UserOutfit[]) => void
-) => {
-	getAllOutfitsHandler(
+): Promise<void> => {
+	void getAllOutfitsHandler(
 		updateOutfits,
 		`${baseUrl}/api/outfits/u/${uid}?parse=categories`
 	);
@@ -19,8 +16,8 @@ export const getForeignAllOutfits = async (
 
 export const getAllOutfits = async (
 	updateOutfits: (outfit: UserOutfit[]) => void
-) => {
-	getAllOutfitsHandler(
+): Promise<void> => {
+	void getAllOutfitsHandler(
 		updateOutfits,
 		`${baseUrl}/api/private/outfits?parse=categories`
 	);
@@ -29,19 +26,19 @@ export const getAllOutfits = async (
 const getAllOutfitsHandler = async (
 	updateOutfits: (outfit: UserOutfit[]) => void,
 	query: string
-) => {
+): Promise<void> => {
 	try {
 		const { data, status } = await axios.get(query);
 
 		if (status === 200) {
 			console.log('Successfully Fetched Outfits');
-			return updateOutfits(data.data);
+			updateOutfits(data.data);
 		} else {
 			throw new Error(`An Get All Outfits Error Has Occurred: ${status}`);
 		}
 	} catch (err: unknown) {
-		void axiosEndpointErrorHandlerNoAlert(err);
-		return updateOutfits([]);
+		axiosEndpointErrorHandlerNoAlert(err);
+		updateOutfits([]);
 	}
 };
 
@@ -51,9 +48,9 @@ export const getForeignAllClothingItems = async (
 	setAllTops: (wear: UserClothing[]) => void,
 	setAllBottoms: (wear: UserClothing[]) => void,
 	setAllShoes: (wear: UserClothing[]) => void
-) => {
+): Promise<void> => {
 	console.log('Foreign Clothing Items');
-	getAllClothingItemsHandler(
+	void getAllClothingItemsHandler(
 		setAllOuterwear,
 		setAllTops,
 		setAllBottoms,
@@ -67,8 +64,8 @@ export const getAllClothingItems = async (
 	setAllTops: (wear: UserClothing[]) => void,
 	setAllBottoms: (wear: UserClothing[]) => void,
 	setAllShoes: (wear: UserClothing[]) => void
-) => {
-	getAllClothingItemsHandler(
+): Promise<void> => {
+	void getAllClothingItemsHandler(
 		setAllOuterwear,
 		setAllTops,
 		setAllBottoms,
@@ -83,29 +80,28 @@ const getAllClothingItemsHandler = async (
 	setAllBottoms: (wear: UserClothing[]) => void,
 	setAllShoes: (wear: UserClothing[]) => void,
 	query: string
-) => {
+): Promise<void> => {
 	try {
 		const { data, status } = await axios.get(query);
 
 		if (status === 200) {
 			console.log('Successfully Fetched Clothing Items');
 			// console.log(data.data);
-			return (
-				setAllOuterwear(data.data['outerwear']),
-				setAllTops(data.data['tops']),
-				setAllBottoms(data.data['bottoms']),
-				setAllShoes(data.data['shoes'])
-			);
+			setAllOuterwear(data.data.outerwear);
+			setAllTops(data.data.tops);
+			setAllBottoms(data.data.bottoms);
+			setAllShoes(data.data.shoes);
 		} else {
 			throw new Error(
 				`An Get All Clothing Items Error Has Occurred: ${status}`
 			);
 		}
 	} catch (err: unknown) {
-		void axiosEndpointErrorHandlerNoAlert(err);
-		return (
-			setAllOuterwear([]), setAllTops([]), setAllBottoms([]), setAllShoes([])
-		);
+		axiosEndpointErrorHandlerNoAlert(err);
+		setAllOuterwear([]);
+		setAllTops([]);
+		setAllBottoms([]);
+		setAllShoes([]);
 	}
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, type ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
-import { type markedUser, type User } from '../../pages/Main';
+import { type markedUser, type User } from '../../pages/Main/UserTypes';
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandlerNoAlert } from '../../utils/ErrorHandlers';

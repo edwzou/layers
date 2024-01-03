@@ -4,6 +4,7 @@ import {
 	useReducer,
 	type ReactElement,
 	type Dispatch,
+	useContext,
 } from 'react';
 
 interface MarkUserFuncProviderProps {
@@ -19,7 +20,6 @@ const markUserFuncReducer = (
 	state: () => void,
 	action: MarkUserFuncUpdateProps
 ): (() => void) => {
-	console.log('User: ', action);
 	switch (action.type) {
 		case 'new user': {
 			return action.func;
@@ -49,3 +49,12 @@ export function MarkUserFuncProvider({
 		</MarkUserFuncContext.Provider>
 	);
 }
+
+export const useMarkUserFunc = (): (() => void) => {
+	return useContext(MarkUserFuncContext);
+};
+
+export const useMarkUserFuncDispatch =
+	(): Dispatch<MarkUserFuncUpdateProps> => {
+		return useContext(MarkUserFuncDispatchContext);
+	};

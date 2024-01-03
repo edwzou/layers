@@ -21,13 +21,14 @@ import {
 	UseFormSetValue,
 	useForm,
 } from 'react-hook-form';
-import { AppContext } from '../../App';
+import { AppContext } from '../../AppControl/AppHome';
 import { UserContext } from '../../utils/UserContext';
-import { type User } from '../../pages/Main';
+import { type User } from '../Main/UserTypes';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import Toast from 'react-native-toast-message';
 import { toast } from '../../constants/GlobalStrings';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 interface FormValues {
 	first_name: string;
@@ -162,7 +163,7 @@ const SettingsPage: React.FC = () => {
 				throw new Error('An error has occurred');
 			}
 		} catch (error) {
-			alert(error);
+			axiosEndpointErrorHandler(error);
 		}
 	};
 
