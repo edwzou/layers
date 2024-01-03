@@ -13,9 +13,10 @@ import { UserContext } from '../../utils/UserContext';
 import { toast } from '../../constants/GlobalStrings';
 import { showErrorToast } from '../../components/Toasts/Toasts';
 import { Loading } from '../../components/Loading/Loading';
+import { useUpdateUser } from '../../Contexts/UserContext';
 
 const SignIn: React.FC = () => {
-	const { updateData } = useContext(UserContext);
+	const updateUser = useUpdateUser();
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const {
@@ -60,7 +61,10 @@ const SignIn: React.FC = () => {
 				);
 
 				if (status === 200) {
-					updateData(userData.data);
+					updateUser({
+						type: 'change user',
+						user: userData.data,
+					});
 				} else {
 					throw new Error(`An Sign Up Error Has Occurred: ${status}`);
 				}

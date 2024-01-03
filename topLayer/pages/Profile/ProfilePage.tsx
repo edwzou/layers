@@ -1,6 +1,5 @@
 import React, {
 	useState,
-	useContext,
 	createContext,
 	type Dispatch,
 	type SetStateAction,
@@ -16,10 +15,8 @@ import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { UserContext } from '../../utils/UserContext';
-import { type User } from '../Main/UserTypes';
-
 import CameraWrapper from '../../components/Camera/CameraWrapper';
+import { useUser } from '../../Contexts/UserContext';
 
 // Define the context type
 interface ProfilePageContextType {
@@ -34,8 +31,8 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 });
 
 const ProfilePage: React.FC = () => {
-	const { data } = useContext(UserContext);
-	const { pp_url } = data as User;
+	const data = useUser();
+	const { pp_url } = data;
 	const [pfpUrlForSettings, setPfpUrlForSettings] = useState(pp_url);
 	const [returnToPfp, setReturnToPfp] = useState(false);
 

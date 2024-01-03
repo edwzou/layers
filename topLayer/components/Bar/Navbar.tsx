@@ -10,7 +10,6 @@ import { MainPageContext } from '../../pages/Main/MainPage';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
-import { navigate } from '../../RootNavigation';
 
 interface NavbarPropsType {
 	toggleFeedbackModal: () => void;

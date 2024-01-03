@@ -1,8 +1,12 @@
-import axios, { AxiosError } from 'axios';
+import axios, { type AxiosError } from 'axios';
 
 export const axiosEndpointErrorHandler = (err: unknown): void => {
 	const error = err as Error | AxiosError;
-	if (axios.isAxiosError(error) && error.response) {
+	if (
+		axios.isAxiosError(error) &&
+		error.response !== null &&
+		error.response !== undefined
+	) {
 		console.log(error.response.data);
 		console.log(error.response.status);
 		// console.log(error.response.headers);
@@ -12,6 +16,7 @@ export const axiosEndpointErrorHandler = (err: unknown): void => {
 	} else {
 		// Just a stock error
 		//
+		console.log(error);
 		alert(error);
 	}
 };
@@ -19,10 +24,16 @@ export const axiosEndpointErrorHandler = (err: unknown): void => {
 export const axiosEndpointErrorHandlerNoAlert = (err: unknown): void => {
 	console.log(err);
 	const error = err as Error | AxiosError;
-	if (axios.isAxiosError(error) && error.response) {
+	if (
+		axios.isAxiosError(error) &&
+		error.response !== null &&
+		error.response !== undefined
+	) {
 		console.log(error.response.data);
 		console.log(error.response.status);
 		// console.log(error.response.headers);
 		// console.log('detail', error.response.data.err);
+	} else {
+		console.log(error);
 	}
 };

@@ -32,6 +32,9 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
+import { nullUser } from '../../constants/baseUsers';
+import { useUpdateUser, useUser } from '../../Contexts/UserContext';
+import { updateUser } from '../../endpoints/getUser';
 
 interface FormValues {
 	first_name: string;
@@ -64,12 +67,11 @@ export const SettingsPageContext = createContext<SettingsPageContextType>({
 });
 
 const SettingsPage: React.FC = () => {
-	const { setShouldRefreshApp } = useContext(AppContext);
-
-	const { data, updateData } = useContext(UserContext);
+	const data = useUser();
+	const refreshUser = useUpdateUser();
 
 	const { first_name, last_name, email, username, private_option, pp_url } =
-		data as User;
+		data;
 
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
@@ -95,7 +97,9 @@ const SettingsPage: React.FC = () => {
 
 	const handleLogout = async (): Promise<void> => {
 		await axios(`${baseUrl}/logout`);
-		updateData(null);
+		refreshUser({
+			type: 'logout',
+		});
 	};
 
 	const onSubmit = async (formValues: FormValues | any): Promise<void> => {
@@ -154,7 +158,7 @@ const SettingsPage: React.FC = () => {
 					// await AsyncStorage.setItem('session', sessionData);
 					// updateData(sessionData);
 					setShowSuccessUpdate(true);
-					setShouldRefreshApp(true);
+					void updateUser(refreshUser);
 					showSuccessToast(toast.yourProfileHasBeenUpdated);
 					setIsLoading(false); // Stop loading on success
 				} catch (error) {

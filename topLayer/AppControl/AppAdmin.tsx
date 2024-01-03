@@ -1,6 +1,6 @@
 import { LogBox } from 'react-native';
 import React, { StrictMode } from 'react';
-import AppHome from './AppHome';
+import AppProvider from './AppProvider';
 
 LogBox.ignoreLogs(['Require cycle:']);
 // ^ Ignores require cycle warnings. We decided to ignore these warnings for 2 reasons:
@@ -9,7 +9,7 @@ LogBox.ignoreLogs(['Require cycle:']);
 LogBox.ignoreLogs(['Constants.platform.ios.model has been deprecated']);
 
 const AppAdmin: React.FC = () => {
-	return <AppHome />;
+	return <AppProvider />;
 };
 
 export default AppAdmin;

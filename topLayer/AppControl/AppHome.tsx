@@ -1,18 +1,12 @@
 import { StyleSheet, StatusBar, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import React, {
-	type Dispatch,
-	type SetStateAction,
-	createContext,
-	useEffect,
-	useState,
-} from 'react';
+import React, { useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from '../utils/StackNavigation';
 import { StackNavigation } from '../constants/Enums';
-import { navigationRef } from '../RootNavigation';
+import { navigationRef } from '../Navigation/RootNavigation';
 
 import SignInPage from '../pages/SignIn/SignInPage';
 import SignUpPage from '../pages/SignUp/SignUpPage';
@@ -20,37 +14,12 @@ import MainPage from '../pages/Main/MainPage';
 
 import GlobalStyles from '../constants/GlobalStyles';
 import CameraWrapper from '../components/Camera/CameraWrapper';
-import { UserContext } from '../utils/UserContext';
 import { type User } from '../pages/Main/UserTypes';
 import Toast from 'react-native-toast-message';
-import { useUpdateUser, useUser } from 'Contexts/UserContext';
-import { getUser } from '../endpoints/getUser';
-
-export const AppContext = createContext({
-	setShouldRefreshApp: (() => {}) as Dispatch<SetStateAction<boolean>>,
-});
+import { useUser } from '../Contexts/UserContext';
 
 const AppHome: React.FC = () => {
-	const [shouldRefreshApp, setShouldRefreshApp] = useState(false);
-
-	const [user, setUser] = useState<User | null>(null);
-	const userContextValue = {
-		data: user,
-		updateData: (user: any) => {
-			setUser(user);
-		},
-	};
-
-	useEffect(() => {
-		void getUser(setUser);
-	}, []);
-	// refetches user after updating info in settings
-	useEffect(() => {
-		if (shouldRefreshApp) {
-			void getUser(setUser);
-			setShouldRefreshApp(false);
-		}
-	}, [shouldRefreshApp]);
+	const user: User = useUser();
 
 	const [pfpUrlForSignUp, setPfpUrlForSignUp] = useState('');
 
@@ -63,49 +32,43 @@ const AppHome: React.FC = () => {
 	);
 
 	return (
-		<AppContext.Provider
-			value={{
-				setShouldRefreshApp: setShouldRefreshApp,
-			}}
-		>
+		<>
 			<NavigationContainer ref={navigationRef}>
 				<View style={styles.container}>
-					<UserContext.Provider value={userContextValue}>
-						<Stack.Navigator
-							screenOptions={{
-								headerShown: false,
-							}}
-						>
-							{user === null || user === undefined ? (
-								<>
-									<Stack.Screen
-										name={StackNavigation.Login}
-										component={SignInPage}
-									/>
-									<Stack.Screen
-										name={StackNavigation.SignUp}
-										component={SignUpPageComponent}
-									/>
-									<Stack.Screen
-										name={StackNavigation.CameraWrapper}
-										component={CameraWrapperComponent}
-									/>
-								</>
-							) : (
-								<>
-									<Stack.Screen
-										name={StackNavigation.Main}
-										component={MainPage}
-									/>
-								</>
-							)}
-						</Stack.Navigator>
-						<ExpoStatusBar style="auto" />
-					</UserContext.Provider>
+					<Stack.Navigator
+						screenOptions={{
+							headerShown: false,
+						}}
+					>
+						{user.uid === '' ? (
+							<>
+								<Stack.Screen
+									name={StackNavigation.Login}
+									component={SignInPage}
+								/>
+								<Stack.Screen
+									name={StackNavigation.SignUp}
+									component={SignUpPageComponent}
+								/>
+								<Stack.Screen
+									name={StackNavigation.CameraWrapper}
+									component={CameraWrapperComponent}
+								/>
+							</>
+						) : (
+							<>
+								<Stack.Screen
+									name={StackNavigation.Main}
+									component={MainPage}
+								/>
+							</>
+						)}
+					</Stack.Navigator>
+					<ExpoStatusBar style="auto" />
 				</View>
 			</NavigationContainer>
 			<Toast />
-		</AppContext.Provider>
+		</>
 	);
 };
 
