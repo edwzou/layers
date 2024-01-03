@@ -37,6 +37,7 @@ import { MainPageContext } from '../../pages/Main/MainPage';
 import Toast from 'react-native-toast-message';
 import { toast } from '../../constants/GlobalStrings';
 import { Loading } from '../../components/Loading/Loading';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 interface FormValues {
 	image: string;
@@ -284,7 +285,7 @@ const ItemCreate = ({
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {
 			setIsLoading(false); // Stop loading on error
-			alert(error);
+			axiosEndpointErrorHandler(error);
 		}
 	};
 

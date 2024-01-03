@@ -1,4 +1,4 @@
-import GlobalStyles from 'constants/GlobalStyles';
+import GlobalStyles from '../../constants/GlobalStyles';
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
