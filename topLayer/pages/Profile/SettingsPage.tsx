@@ -22,8 +22,6 @@ import {
 	useForm,
 } from 'react-hook-form';
 import { AppContext } from '../../AppControl/AppHome';
-import { UserContext } from '../../utils/UserContext';
-import { type User } from '../Main/UserTypes';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import { toast } from '../../constants/GlobalStrings';
@@ -32,7 +30,6 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
-import { nullUser } from '../../constants/baseUsers';
 import { useUpdateUser, useUser } from '../../Contexts/UserContext';
 import { updateUser } from '../../endpoints/getUser';
 

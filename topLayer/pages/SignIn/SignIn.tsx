@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -8,8 +8,6 @@ import InlineTextbox from '../../components/Textbox/InlineTextbox';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
-import { UserContext } from '../../utils/UserContext';
-
 import { toast } from '../../constants/GlobalStrings';
 import { showErrorToast } from '../../components/Toasts/Toasts';
 import { Loading } from '../../components/Loading/Loading';

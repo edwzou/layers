@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Find from './Find';
 import MarkedList from './MarkedList';
@@ -12,9 +12,6 @@ import { StackNavigation } from '../../constants/Enums';
 
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
-
-import { UserContext } from '../../utils/UserContext';
-
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { getForeignUser } from '../../endpoints/getUser';
 import { type User } from '../Main/UserTypes';

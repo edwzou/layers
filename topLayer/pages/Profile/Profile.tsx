@@ -21,7 +21,6 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserClothing } from '../Match';
 import { type UserOutfit } from '../OutfitView';
-import { UserContext } from '../../utils/UserContext';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useUser } from '../../Contexts/UserContext';
