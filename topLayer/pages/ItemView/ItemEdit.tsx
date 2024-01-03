@@ -43,6 +43,10 @@ import Toast from 'react-native-toast-message';
 import { toast, itemEdit } from '../../constants/GlobalStrings';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { Loading } from '../../components/Loading/Loading';
+import {
+	showErrorToast,
+	showSuccessToast,
+} from '../../components/Toasts/Toasts';
 
 interface ItemEditPropsType {
 	clothingItem: UserClothing;
@@ -237,42 +241,6 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 		setValue('color', currentColorTags);
 	}, [currentColorTags]);
 
-	const showSuccessUpdateToast = () => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourItemHasBeenUpdated,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showErrorUpdateToast = () => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileUpdatingItem,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showSuccessDeleteToast = () => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourItemHasBeenDeleted,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showErrorDeleteToast = () => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileDeletingItem,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
 	const confirmDeletion = () => {
 		Alert.alert(itemEdit.deleteItem, itemEdit.youCannotUndoThisAction, [
 			{
@@ -311,9 +279,9 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 			if (response.status === 200) {
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
-				showSuccessUpdateToast();
+				showSuccessToast(toast.yourItemHasBeenUpdated);
 			} else {
-				showErrorUpdateToast();
+				showErrorToast(toast.anErrorHasOccurredWhileUpdatingItem);
 			}
 
 			setIsLoading(false); // Stop loading on success
@@ -334,9 +302,9 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
-				showSuccessDeleteToast();
+				showSuccessToast(toast.yourItemHasBeenDeleted);
 			} else {
-				showErrorDeleteToast();
+				showErrorToast(toast.anErrorHasOccurredWhileDeletingItem);
 				// throw new Error('An error has occurred while deleting outfit');
 			}
 			setIsLoading(false); // Stop loading on success

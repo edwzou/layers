@@ -26,9 +26,12 @@ import { UserContext } from '../../utils/UserContext';
 import { type User } from '../Main/UserTypes';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import Toast from 'react-native-toast-message';
 import { toast } from '../../constants/GlobalStrings';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+import {
+	showErrorToast,
+	showSuccessToast,
+} from '../../components/Toasts/Toasts';
 
 interface FormValues {
 	first_name: string;
@@ -152,12 +155,12 @@ const SettingsPage: React.FC = () => {
 					// updateData(sessionData);
 					setShowSuccessUpdate(true);
 					setShouldRefreshApp(true);
-					showSuccessUpdateToast();
+					showSuccessToast(toast.yourProfileHasBeenUpdated);
 					setIsLoading(false); // Stop loading on success
 				} catch (error) {
 					setIsLoading(false); // Stop loading on error
 					console.log(error);
-					showErrorUpdateToast();
+					showErrorToast(toast.anErrorHasOccurredWhileUpdatingProfile);
 				}
 			} else {
 				throw new Error('An error has occurred');
@@ -165,24 +168,6 @@ const SettingsPage: React.FC = () => {
 		} catch (error) {
 			axiosEndpointErrorHandler(error);
 		}
-	};
-
-	const showSuccessUpdateToast = (): void => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourProfileHasBeenUpdated,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showErrorUpdateToast = (): void => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileUpdatingProfile,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
 	};
 
 	return (

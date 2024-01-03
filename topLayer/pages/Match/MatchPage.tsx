@@ -19,6 +19,10 @@ import { MainPageContext } from '../../pages/Main/MainPage';
 
 import Toast from 'react-native-toast-message';
 import { toast } from '../../constants/GlobalStrings';
+import {
+	showErrorToast,
+	showSuccessToast,
+} from '../../components/Toasts/Toasts';
 
 export const MatchPageContext = createContext({
 	setMatch: (_?: any) => {},
@@ -71,9 +75,9 @@ const MatchPage: React.FC = () => {
 				setShouldRefreshMainPage(true);
 				// navigationArray[0](); // Uncomment this to navigate to profile page
 				setDismissal(false);
-				showSuccessMatchToast();
+				showSuccessToast(toast.yourOutfitHasBeenCreated);
 			} else {
-				showErrorMatchToast();
+				showErrorToast(toast.anErrorHasOccurredWhileCreatingOutfit);
 				// throw new Error('An error has occurred while submitting outfit');
 			}
 			setIsLoading(false); // Stop loading on success
@@ -81,24 +85,6 @@ const MatchPage: React.FC = () => {
 			setIsLoading(false); // Stop loading on error
 			axiosEndpointErrorHandler(error);
 		}
-	};
-
-	const showSuccessMatchToast = (): void => {
-		Toast.show({
-			type: 'success',
-			text1: toast.success,
-			text2: toast.yourOutfitHasBeenCreated,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
-	};
-
-	const showErrorMatchToast = (): void => {
-		Toast.show({
-			type: 'error',
-			text1: toast.error,
-			text2: toast.anErrorHasOccurredWhileCreatingOutfit,
-			topOffset: GlobalStyles.layout.toastTopOffset,
-		});
 	};
 
 	return (
