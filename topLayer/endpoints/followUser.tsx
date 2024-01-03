@@ -1,11 +1,8 @@
 import { baseUrl } from '../utils/apiUtils';
 import axios from 'axios';
-import {
-	axiosEndpointErrorHandler,
-	axiosEndpointErrorHandlerNoAlert,
-} from '../utils/ErrorHandlers';
+import { axiosEndpointErrorHandlerNoAlert } from '../utils/ErrorHandlers';
 
-export const followUser = async (followedUid: string) => {
+export const followUser = async (followedUid: string): Promise<void> => {
 	try {
 		const { data, status } = await axios.post(
 			`${baseUrl}/api/private/users/follow`,
@@ -19,11 +16,11 @@ export const followUser = async (followedUid: string) => {
 			throw new Error('An error has occurred while Following A User');
 		}
 	} catch (error) {
-		void axiosEndpointErrorHandlerNoAlert(error);
+		axiosEndpointErrorHandlerNoAlert(error);
 	}
 };
 
-export const unFollowUser = async (followedUid: string) => {
+export const unFollowUser = async (followedUid: string): Promise<void> => {
 	try {
 		const { data, status } = await axios.post(
 			`${baseUrl}/api/private/users/unfollow`,
@@ -37,6 +34,6 @@ export const unFollowUser = async (followedUid: string) => {
 			throw new Error('An error has occurred while Unfollowing A User');
 		}
 	} catch (error) {
-		void axiosEndpointErrorHandlerNoAlert(error);
+		axiosEndpointErrorHandlerNoAlert(error);
 	}
 };

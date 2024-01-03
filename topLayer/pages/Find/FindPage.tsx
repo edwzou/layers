@@ -16,7 +16,7 @@ import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { UserContext } from '../../utils/UserContext';
 
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
-import { getUser } from '../../endpoints/endpoints';
+import { getForeignUser } from '../../endpoints/getUser';
 import { type User } from '../Main/UserTypes';
 import { previewLength } from '../../constants/Find';
 import { MarkUserFuncProvider } from '../../Contexts/ForeignUserContext';
@@ -40,7 +40,7 @@ const FindPage: React.FC = () => {
 						.slice(0, previewLength)
 						.map(async (user: string | User) => {
 							if (typeof user === 'string') {
-								return await getUser(user);
+								return await getForeignUser(user);
 							} else {
 								return user;
 							}
