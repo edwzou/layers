@@ -5,15 +5,7 @@ import {
 	Pressable,
 	type ViewStyle,
 } from 'react-native';
-import React, {
-	type Dispatch,
-	type SetStateAction,
-	useCallback,
-	useRef,
-	useState,
-	useContext,
-	type ReactElement,
-} from 'react';
+import React, { useCallback, useRef, useState, type ReactElement } from 'react';
 import {
 	Camera,
 	type CameraPictureOptions,
@@ -47,26 +39,23 @@ import * as ImagePicker from 'expo-image-picker';
 import { StackNavigation } from '../../constants/Enums';
 
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { ProfilePageContext } from '../../pages/Profile/ProfilePage';
+import { usePhotoUpdate } from '../../Contexts/CameraContext';
 
 interface CameraPropType {
 	data: (photo: string) => void;
 	returnToNavigation: NativeStackNavigationProp<StackTypes>;
-	setPfpUrl?: Dispatch<SetStateAction<string>>;
 	returnToPfp: boolean;
 }
 
 export default function CameraComponent({
 	data,
 	returnToNavigation,
-	setPfpUrl,
 	returnToPfp,
 }: CameraPropType): ReactElement {
-	const { setReturnToPfp } = useContext(ProfilePageContext);
+	const setPfpUrl = usePhotoUpdate();
 
 	const [orientation, setOrientation] = useState(CameraType.back);
-	// TODO: Upgrade Camera
-	const [flash, setFlash] = useState(FlashMode.auto);
+	const flash = FlashMode.auto;
 	const [cameraPermission, requestCameraPermission] =
 		Camera.useCameraPermissions();
 	const [mediaPermission, requestMediaPermission] =
@@ -117,10 +106,10 @@ export default function CameraComponent({
 						croppedImage?.data !== ''
 					) {
 						if (returnToPfp) {
-							setReturnToPfp(false);
-							if (setPfpUrl !== null && setPfpUrl !== undefined) {
-								setPfpUrl(croppedImage.data);
-							}
+							setPfpUrl({
+								type: 'new photo',
+								image: croppedImage.data,
+							});
 							returnToNavigation.goBack();
 						} else {
 							data(croppedImage.data); // use the base64 string
@@ -209,10 +198,10 @@ export default function CameraComponent({
 			result.assets[0].base64 !== ''
 		) {
 			if (returnToPfp) {
-				setReturnToPfp(false);
-				if (setPfpUrl !== null && setPfpUrl !== undefined) {
-					setPfpUrl(result.assets[0].base64);
-				}
+				setPfpUrl({
+					type: 'new photo',
+					image: result.assets[0].base64,
+				});
 				returnToNavigation.goBack();
 			}
 			data(result.assets[0].base64);

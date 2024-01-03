@@ -5,7 +5,9 @@ import {
 	type ReactElement,
 	type Dispatch,
 	useContext,
+	useEffect,
 } from 'react';
+import { useUser } from './UserContext';
 
 interface PhotoProviderProps {
 	children: ReactNode;
@@ -21,6 +23,9 @@ const photoReducer = (state: string, action: photoReducerProps): string => {
 		case 'new photo': {
 			return action.image;
 		}
+		case 'null photo': {
+			return '';
+		}
 		default: {
 			throw Error('Unknown action: ' + String(action.type));
 		}
@@ -34,6 +39,15 @@ export const photoUpdateContext = createContext<Dispatch<photoReducerProps>>(
 
 export function CameraProvider({ children }: PhotoProviderProps): ReactElement {
 	const [tasks, dispatch] = useReducer(photoReducer, '');
+	const user = useUser();
+	useEffect(() => {
+		if (tasks !== user.pp_url) {
+			dispatch({
+				type: 'new photo',
+				image: user.pp_url,
+			});
+		}
+	}, [user]);
 
 	return (
 		<photoContext.Provider value={tasks}>

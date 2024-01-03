@@ -29,7 +29,6 @@ import { useMarkUserFunc } from '../../Contexts/ForeignUserContext';
 
 const ForeignProfile = ({ route }: any): ReactElement => {
 	console.log('Route: ', route, route.params);
-	// console.log('Params: ', route.params.markedUser);
 
 	const user: markedUser = route.params.markedUser;
 

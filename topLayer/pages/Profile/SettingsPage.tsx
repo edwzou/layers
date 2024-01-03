@@ -3,25 +3,19 @@ import React, {
 	Dispatch,
 	SetStateAction,
 	createContext,
-	useContext,
 	useState,
+	useEffect,
 } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Header from '../../components/Header/Header';
 import Settings from './Settings';
-import {
-	NavigationBack,
-	StackNavigation,
-	StepOverTypes,
-} from '../../constants/Enums';
+import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import {
 	Control,
 	FieldErrors,
-	UseFormHandleSubmit,
 	UseFormSetValue,
 	useForm,
 } from 'react-hook-form';
-import { AppContext } from '../../AppControl/AppHome';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import { toast } from '../../constants/GlobalStrings';
@@ -32,6 +26,10 @@ import {
 } from '../../components/Toasts/Toasts';
 import { useUpdateUser, useUser } from '../../Contexts/UserContext';
 import { updateUser } from '../../endpoints/getUser';
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from '../../utils/StackNavigation';
+import { usePhotoUpdate } from '../../Contexts/CameraContext';
 
 interface FormValues {
 	first_name: string;
@@ -66,12 +64,14 @@ export const SettingsPageContext = createContext<SettingsPageContextType>({
 const SettingsPage: React.FC = () => {
 	const data = useUser();
 	const refreshUser = useUpdateUser();
+	const resetPhoto = usePhotoUpdate();
 
 	const { first_name, last_name, email, username, private_option, pp_url } =
 		data;
 
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const defaultForm = {
 		first_name: first_name,
@@ -99,8 +99,18 @@ const SettingsPage: React.FC = () => {
 		});
 	};
 
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('beforeRemove', () => {
+			resetPhoto({
+				type: 'new photo',
+				image: data.pp_url,
+			});
+		});
+		return unsubscribe;
+	});
+
 	const onSubmit = async (formValues: FormValues | any): Promise<void> => {
-		console.log('values: ', formValues.first_name, formValues.last_name);
+		console.log('values: ', formValues.profile_picture.substring(0, 10));
 		if (data === null || data === undefined) {
 			console.log('User data is not available.');
 			return;

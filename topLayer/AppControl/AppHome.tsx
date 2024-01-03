@@ -21,15 +21,15 @@ import { useUser } from '../Contexts/UserContext';
 const AppHome: React.FC = () => {
 	const user: User = useUser();
 
-	const [pfpUrlForSignUp, setPfpUrlForSignUp] = useState('');
+	// const [pfpUrlForSignUp, setPfpUrlForSignUp] = useState('');
 
-	const SignUpPageComponent: React.FC = () => (
-		<SignUpPage pfpUrlForSignUp={pfpUrlForSignUp} />
-	);
+	// const SignUpPageComponent: React.FC = () => (
+	// 	<SignUpPage pfpUrlForSignUp={pfpUrlForSignUp} />
+	// );
 
-	const CameraWrapperComponent: React.FC = () => (
-		<CameraWrapper setPfpUrl={setPfpUrlForSignUp} returnToPfp={true} />
-	);
+	// const CameraWrapperComponent: React.FC = () => (
+	// 	<CameraWrapper setPfpUrl={setPfpUrlForSignUp} returnToPfp={true} />
+	// );
 
 	return (
 		<NavigationContainer ref={navigationRef}>
@@ -47,11 +47,11 @@ const AppHome: React.FC = () => {
 							/>
 							<Stack.Screen
 								name={StackNavigation.SignUp}
-								component={SignUpPageComponent}
+								component={SignUpPage}
 							/>
 							<Stack.Screen
 								name={StackNavigation.CameraWrapper}
-								component={CameraWrapperComponent}
+								component={CameraWrapper}
 							/>
 						</>
 					) : (

@@ -27,6 +27,7 @@ import {
 import { defaultFormUser } from '../../constants/baseUsers';
 import { Loading } from '../../components/Loading/Loading';
 import { useUpdateUser } from '../../Contexts/UserContext';
+import { usePhoto } from '../../Contexts/CameraContext';
 
 interface FormValues {
 	first_name: string;
@@ -42,9 +43,10 @@ interface SignUpPropsType {
 	pfpUrlForSignUp: string;
 }
 
-const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
+const SignUp: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const updateUser = useUpdateUser();
+	const profile_picture = usePhoto();
 
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
@@ -57,10 +59,6 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 		defaultValues: defaultFormUser,
 	});
 
-	useEffect(() => {
-		setValue('profile_picture', pfpUrlForSignUp);
-	}, [pfpUrlForSignUp]);
-
 	const onSubmit = (values: FormValues | any): void => {
 		const formValues: Record<string, any> = {
 			first_name: values.first_name,
@@ -68,7 +66,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 			username: values.username,
 			email: values.email,
 			password: values.password,
-			profile_picture: values.profile_picture,
+			profile_picture: profile_picture,
 			private_option: values.private_option,
 		};
 
@@ -111,7 +109,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 						});
 					}}
 				>
-					<ProfilePicture imageUrl={pfpUrlForSignUp} base64 />
+					<ProfilePicture imageUrl={profile_picture} base64 />
 				</Pressable>
 				<View
 					style={{

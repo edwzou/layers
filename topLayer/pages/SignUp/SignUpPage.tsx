@@ -8,12 +8,12 @@ interface SignUpPagePropsType {
 	pfpUrlForSignUp: string;
 }
 
-const SignUpPage = ({ pfpUrlForSignUp }: SignUpPagePropsType): ReactElement => {
+const SignUpPage: React.FC = () => {
 	return (
 		<View style={{ gap: 40 }}>
 			<Header text="Sign up" leftBack={true} leftButton={true} />
 			<View style={styles.container}>
-				<SignUp pfpUrlForSignUp={pfpUrlForSignUp} />
+				<SignUp />
 			</View>
 		</View>
 	);
