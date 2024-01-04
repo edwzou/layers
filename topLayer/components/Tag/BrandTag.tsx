@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import Tag from './Tag';
 import { TagCategory } from '../../constants/Enums';
 
@@ -8,7 +8,11 @@ interface BrandTagPropsType {
 	onPress?: () => void;
 }
 
-const BrandTag = ({ action, label, onPress }: BrandTagPropsType) => {
+const BrandTag = ({
+	action,
+	label,
+	onPress,
+}: BrandTagPropsType): ReactElement => {
 	return (
 		<Tag
 			label={label}

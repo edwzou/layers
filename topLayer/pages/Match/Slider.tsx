@@ -43,7 +43,14 @@ const Slider = ({
 
 	const handleOnViewableItemsChanged = useCallback(({ viewableItems }: any) => {
 		const itemsInView = viewableItems.filter(
-			({ item }: any) => (item.image_url && item.category) || item.ciid === ''
+			({ item }: { item: UserClothing }) =>
+				(item.image_url !== null &&
+					item.image_url !== undefined &&
+					item.image_url !== '' &&
+					item.category !== null &&
+					item.category !== undefined &&
+					item.category !== '') ||
+				item.ciid === ''
 		);
 
 		if (itemsInView.length === 0) {
@@ -57,7 +64,10 @@ const Slider = ({
 		selectedIndex(category, rawItemIndex);
 	}, []);
 
-	const getItemLayout = (_: any, index: number) => ({
+	const getItemLayout = (
+		unused: any,
+		index: number
+	): { length: number; offset: number; index: number } => ({
 		length: SNAP_ITEM_SIZE,
 		offset: SNAP_ITEM_SIZE * (index - 1),
 		index,
@@ -68,14 +78,24 @@ const Slider = ({
 			<FlatList
 				ref={flatListRef}
 				data={
-					data && [
-						...data.slice(0, data.length - 1),
-						emptyItem,
-						...data.slice(data.length - 1, data.length),
-					]
+					data !== null && data !== undefined
+						? [
+								...data.slice(0, data.length - 1),
+								emptyItem,
+								...data.slice(data.length - 1, data.length),
+						  ] // eslint-disable-line no-mixed-spaces-and-tabs
+						: null
 				}
 				renderItem={({ item, index }) => {
-					if ((!item.image_url || !item.category) && item.ciid !== '') {
+					if (
+						(item.image_url === null ||
+							item.image_url === undefined ||
+							item.image_url === '' ||
+							item.category === null ||
+							item.category === undefined ||
+							item.category === '') &&
+						item.ciid !== ''
+					) {
 						return <View style={{ width: EMPTY_ITEM_SIZE }} />;
 					}
 
@@ -97,7 +117,8 @@ const Slider = ({
 								{
 									width: ITEM_SIZE(),
 								},
-								data &&
+								data !== null &&
+									data !== undefined &&
 									index !== data?.length - 1 && {
 										marginRight: HORIZONTAL_SPACING,
 									}, // adds a horizontal spacing to the right of every component EXCEPT for the last oen
@@ -132,7 +153,7 @@ const Slider = ({
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				keyExtractor={(data, index) => {
-					if (data.ciid) {
+					if (data?.ciid !== undefined && data?.ciid !== null) {
 						return data.ciid;
 					} else {
 						return index;

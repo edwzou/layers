@@ -1,16 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { SafeAreaView } from 'react-native';
-
 import Header from '../../components/Header/Header';
 import Selector from './Selector';
 import Button from '../../components/Button/Button';
-
 import { ClothingTypes, StackNavigation } from '../../constants/Enums';
-// import { mockItemsData } from '../../constants/testData';
-
 import { MainPageContext } from '../../pages/Main/MainPage';
 
 import {
+	isUserClothingArray,
+	type UserAllItems,
 	type UserClothing,
 	type UserClothingList,
 	type UserClothingListSingle,
@@ -29,7 +27,12 @@ const Match: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [selectedIndexes, setSelectedIndexes] =
-		useState<UserSelectedClothingList>({} as UserSelectedClothingList);
+		useState<UserSelectedClothingList>({
+			outerwear: 0,
+			tops: 0,
+			bottoms: 0,
+			shoes: 0,
+		});
 
 	const [data, setData] = useState<UserClothingList>({
 		outerwear: [] as UserClothing[],
@@ -38,50 +41,43 @@ const Match: React.FC = () => {
 		shoes: [] as UserClothing[],
 	});
 	const [previewData, setPreviewData] = useState<UserClothingListSingle>({
-		outerwear: {} as UserClothing,
-		tops: {} as UserClothing,
-		bottoms: {} as UserClothing,
-		shoes: {} as UserClothing,
+		outerwear: undefined,
+		tops: undefined,
+		bottoms: undefined,
+		shoes: undefined,
 	});
 
 	useEffect(() => {
-		const filterClothing = (type: string) => {
+		const filterClothing = (type: string): UserAllItems[] => {
 			return allItems
 				.slice(1)
 				.filter((value) => value.category.toString() === type);
 		};
 
-		setData(
-			(value) =>
-				({
-					...value,
-					outerwear: filterClothing(ClothingTypes.outerwear)[0].data,
-				} as UserClothingList)
-		);
+		const newData: UserClothingList = {
+			outerwear: [],
+			tops: [],
+			bottoms: [],
+			shoes: [],
+		};
+		const outerwear = filterClothing(ClothingTypes.outerwear)[0].data;
+		const tops = filterClothing(ClothingTypes.tops)[0].data;
+		const bottoms = filterClothing(ClothingTypes.bottoms)[0].data;
+		const shoes = filterClothing(ClothingTypes.shoes)[0].data;
+		if (isUserClothingArray(outerwear)) {
+			newData.outerwear = outerwear;
+		}
+		if (isUserClothingArray(tops)) {
+			newData.tops = tops;
+		}
+		if (isUserClothingArray(bottoms)) {
+			newData.bottoms = bottoms;
+		}
+		if (isUserClothingArray(shoes)) {
+			newData.shoes = shoes;
+		}
 
-		setData(
-			(value) =>
-				({
-					...value,
-					tops: filterClothing(ClothingTypes.tops)[0].data,
-				} as UserClothingList)
-		);
-
-		setData(
-			(value) =>
-				({
-					...value,
-					bottoms: filterClothing(ClothingTypes.bottoms)[0].data,
-				} as UserClothingList)
-		);
-
-		setData(
-			(value) =>
-				({
-					...value,
-					shoes: filterClothing(ClothingTypes.shoes)[0].data,
-				} as UserClothingList)
-		);
+		setData(() => newData);
 	}, [allItems]);
 
 	useEffect(() => {
@@ -103,7 +99,7 @@ const Match: React.FC = () => {
 		}));
 	}, [selectedIndexes]);
 
-	const selectedIndex = (category: string, index: any): void => {
+	const selectedIndex = (category: string, index: number): void => {
 		// !!! Change to select ID
 		if (category === ClothingTypes.outerwear) {
 			setSelectedIndexes((data) => ({ ...data, outerwear: index }));

@@ -1,8 +1,8 @@
 import { View, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
-import { screenWidth, screenHeight } from '../../utils/modalMaxShow';
+import { screenWidth } from '../../utils/modalMaxShow';
 import GlobalStyles from '../../constants/GlobalStyles';
-const Empty = () => {
+const Empty: React.FC = () => {
 	return (
 		<View
 			style={{
