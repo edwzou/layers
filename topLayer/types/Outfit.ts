@@ -1,9 +1,4 @@
-import { isUserClothing, type UserClothing } from '../../pages/Match';
-
-export interface UserOutfits {
-	category: string;
-	data: UserOutfit[];
-}
+import { isUserClothing, type UserClothing } from './Clothing';
 
 export interface UserOutfit {
 	oid: string;
@@ -12,6 +7,11 @@ export interface UserOutfit {
 	uid: string;
 	created_at: string;
 }
+
+// export interface UserOutfits {
+// 	category: string;
+// 	data: UserOutfit[];
+// }
 
 export const isUserOutfit = (obj: any): obj is UserOutfit =>
 	obj !== null &&

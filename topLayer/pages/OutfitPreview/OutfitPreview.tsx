@@ -13,7 +13,7 @@ import StackedTextbox from '../../components/Textbox/StackedTextbox';
 
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
-import { type UserClothing } from '../../pages/Match';
+import { type UserClothing } from '../../types/Clothing';
 import { match } from '../../constants/GlobalStrings';
 
 import { MatchPageContext } from '../../pages/Match/MatchPage';

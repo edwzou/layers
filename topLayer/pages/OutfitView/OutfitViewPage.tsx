@@ -7,10 +7,10 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { headerButton } from '../../components/Modal/HeaderButton';
-import { type UserClothing } from '../../pages/Match';
+import { type UserClothing } from '../../types/Clothing';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { type UserOutfit } from '.';
+import { type UserOutfit } from '../../types/Outfit';
 
 const OutfitViewPage = ({ route }: any): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();

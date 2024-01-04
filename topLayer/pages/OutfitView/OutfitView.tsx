@@ -1,14 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { type ReactElement } from 'react';
 import ItemCell from '../../components/Cell/ItemCell';
-
 import GlobalStyles from '../../constants/GlobalStyles';
 import { FlatList } from 'react-native-gesture-handler';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
 import { TagAction } from '../../constants/Enums';
 import { screenHeight } from '../../utils/modalMaxShow';
-
-import { type UserClothing } from '../../pages/Match';
+import { type UserClothing } from '../../types/Clothing';
 
 interface OutfitViewPropsType {
 	clothingItems: UserClothing[];

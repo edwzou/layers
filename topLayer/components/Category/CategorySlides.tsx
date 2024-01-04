@@ -2,7 +2,7 @@ import { StyleSheet, FlatList, Dimensions } from 'react-native';
 import React, { type ReactElement } from 'react';
 import CategorySlide from './CategorySlide';
 import { CategoryToIndex } from '../../constants/Enums';
-import { type UserAllItems } from '../../pages/Match';
+import { type UserAllItems } from '../../types/AllItems';
 
 interface CategorySlidesPropsType {
 	categorySlidesRef: any; /// !!! Fix any type

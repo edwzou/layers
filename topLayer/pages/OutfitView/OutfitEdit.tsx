@@ -13,7 +13,7 @@ import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import { outfitEdit, toast } from '../../constants/GlobalStrings';
 import Icon from 'react-native-remix-icon';
-import { type UserClothing } from '../../pages/Match';
+import { type UserClothing } from '../../types/Clothing';
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';

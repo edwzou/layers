@@ -1,7 +1,7 @@
 import React, { type ReactElement, useCallback, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { type UserClothing } from '.';
+import { type UserClothing } from '../../types/Clothing';
 import ItemCell from '../../components/Cell/ItemCell';
 import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';

@@ -21,7 +21,7 @@ import { capitalizeFirstLetter } from '../../utils/misc';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
-import { type UserClothing } from '../Match';
+import { type UserClothing } from '../../types/Clothing';
 import { useForm, Controller } from 'react-hook-form';
 import Icon from 'react-native-remix-icon';
 import { ScrollView } from 'react-native-gesture-handler';

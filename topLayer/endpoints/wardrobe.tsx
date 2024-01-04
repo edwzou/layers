@@ -1,8 +1,8 @@
 import { baseUrl } from '../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandlerNoAlert } from '../utils/ErrorHandlers';
-import { type UserOutfit } from '../pages/OutfitView';
-import { type UserClothing } from '../pages/Match';
+import { type UserOutfit } from '../types/Outfit';
+import { type UserClothing } from '../types/Clothing';
 
 export const getForeignAllOutfits = async (
 	uid: string,

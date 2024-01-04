@@ -5,7 +5,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { TagAction } from '../../constants/Enums';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
-import { type UserClothing } from '../../pages/Match';
+import { type UserClothing } from '../../types/Clothing';
 
 interface ItemViewPropsType {
 	clothingItem: UserClothing;
