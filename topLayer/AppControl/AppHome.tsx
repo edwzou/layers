@@ -1,7 +1,7 @@
 import { StyleSheet, StatusBar, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from '../utils/StackNavigation';
@@ -20,16 +20,6 @@ import { useUser } from '../Contexts/UserContext';
 
 const AppHome: React.FC = () => {
 	const user: User = useUser();
-
-	// const [pfpUrlForSignUp, setPfpUrlForSignUp] = useState('');
-
-	// const SignUpPageComponent: React.FC = () => (
-	// 	<SignUpPage pfpUrlForSignUp={pfpUrlForSignUp} />
-	// );
-
-	// const CameraWrapperComponent: React.FC = () => (
-	// 	<CameraWrapper setPfpUrl={setPfpUrlForSignUp} returnToPfp={true} />
-	// );
 
 	return (
 		<NavigationContainer ref={navigationRef}>

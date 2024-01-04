@@ -42,14 +42,14 @@ interface FormValues {
 }
 
 // Define the context type
-type SettingsPageContextType = {
+interface SettingsPageContextType {
 	control: Control<FormValues>;
 	setValue: UseFormSetValue<FormValues>;
 	errors: FieldErrors<FormValues>;
 	showSuccessUpdate: boolean;
 	setShowSuccessUpdate: Dispatch<SetStateAction<boolean>>;
 	isLoading: boolean;
-};
+}
 
 // Create the context with the defined type
 export const SettingsPageContext = createContext<SettingsPageContextType>({

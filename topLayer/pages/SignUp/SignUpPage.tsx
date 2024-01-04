@@ -1,12 +1,8 @@
 import { View, StyleSheet } from 'react-native';
-import React, { type ReactElement } from 'react';
+import React from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Header from '../../components/Header/Header';
 import SignUp from './SignUp';
-
-interface SignUpPagePropsType {
-	pfpUrlForSignUp: string;
-}
 
 const SignUpPage: React.FC = () => {
 	return (

@@ -1,5 +1,4 @@
 import React, {
-	useState,
 	createContext,
 	type Dispatch,
 	type SetStateAction,
@@ -7,7 +6,6 @@ import React, {
 
 import { StackNavigation } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
-
 import Profile from './Profile';
 import FeedbackPage from '../Feedback/FeedbackPage';
 import SettingsPage from './SettingsPage';
@@ -16,7 +14,6 @@ import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import CameraWrapper from '../../components/Camera/CameraWrapper';
-import { useUser } from '../../Contexts/UserContext';
 
 // Define the context type
 interface ProfilePageContextType {

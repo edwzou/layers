@@ -1,4 +1,4 @@
-import { UserOutfit } from '../../pages/OutfitView';
+import { type UserOutfit } from '../../pages/OutfitView';
 
 export interface UserClothing {
 	ciid: string;

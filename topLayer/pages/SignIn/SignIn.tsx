@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
-
 import InlineTextbox from '../../components/Textbox/InlineTextbox';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';

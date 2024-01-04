@@ -1,8 +1,7 @@
 import axios from 'axios';
-
 import { useForm, Controller } from 'react-hook-form';
 import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
-import React, { type ReactElement, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -37,10 +36,6 @@ interface FormValues {
 	password: string;
 	private_option: boolean;
 	profile_picture: string;
-}
-
-interface SignUpPropsType {
-	pfpUrlForSignUp: string;
 }
 
 const SignUp: React.FC = () => {

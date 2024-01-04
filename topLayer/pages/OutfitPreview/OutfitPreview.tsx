@@ -1,5 +1,10 @@
 import { View, StyleSheet } from 'react-native';
-import React, { useEffect, useState, useContext } from 'react';
+import React, {
+	useEffect,
+	useState,
+	useContext,
+	type ReactElement,
+} from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
 import ItemCell from '../../components/Cell/ItemCell';
@@ -18,7 +23,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
 import { Loading } from '../../components/Loading/Loading';
 
-const OutfitPreview = ({ route }: any) => {
+const OutfitPreview = ({ route }: any): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const { matchItems } = route.params;
@@ -28,7 +33,7 @@ const OutfitPreview = ({ route }: any) => {
 	const [text, setText] = useState('');
 	const [rawData, setRawData] = useState<UserClothing[]>([]);
 	const [data, setData] = useState<UserClothing[]>([]);
-	const onInputChange = (text: string) => {
+	const onInputChange = (text: string): void => {
 		setText(text);
 	};
 

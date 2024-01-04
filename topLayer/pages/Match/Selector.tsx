@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import React, { type ReactElement, useEffect, useState } from 'react';
 import Slider from './Slider';
 import { type UserClothing, type UserClothingPadding } from '.';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -20,7 +19,7 @@ const Selector = ({
 	bottoms,
 	shoes,
 	selectedIndex,
-}: SelectorPropsType) => {
+}: SelectorPropsType): ReactElement => {
 	const [dataWithPlaceholders, setDataWithPlaceholders] =
 		useState<UserClothingPadding>({
 			outerwear: [] as Array<UserClothing | Record<string, number>>,
@@ -32,26 +31,32 @@ const Selector = ({
 	const padding: Record<string, number> = { id: -1 };
 
 	useEffect(() => {
-		if (outerwear !== null && outerwear.length > 0)
+		if (outerwear !== null && outerwear.length > 0) {
 			setDataWithPlaceholders((placeholderData) => ({
 				...placeholderData,
 				outerwear: [padding, ...outerwear, { id: outerwear.length }],
 			}));
-		if (tops !== null && tops.length > 0)
+		}
+		if (tops !== null && tops.length > 0) {
 			setDataWithPlaceholders((placeholderData) => ({
 				...placeholderData,
 				tops: [padding, ...tops, { id: tops.length }],
 			}));
-		if (bottoms !== null && bottoms.length > 0)
+		}
+
+		if (bottoms !== null && bottoms.length > 0) {
 			setDataWithPlaceholders((placeholderData) => ({
 				...placeholderData,
 				bottoms: [padding, ...bottoms, { id: bottoms.length }],
 			}));
-		if (shoes !== null && shoes.length > 0)
+		}
+
+		if (shoes !== null && shoes.length > 0) {
 			setDataWithPlaceholders((placeholderData) => ({
 				...placeholderData,
 				shoes: [padding, ...shoes, { id: shoes.length }],
 			}));
+		}
 	}, [outerwear, tops, bottoms, shoes]);
 
 	return (

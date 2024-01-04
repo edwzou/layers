@@ -112,7 +112,7 @@ const utils = StyleSheet.create({
 	},
 	tagShadow: {
 		shadowOffset: { width: 0, height: 0 },
-		shadowOpacity: 0.40,
+		shadowOpacity: 0.4,
 		shadowRadius: 5,
 	},
 	buttonShadow: {
@@ -189,7 +189,7 @@ const utils = StyleSheet.create({
 		},
 		shadowOpacity: 0.05,
 		shadowRadius: 5,
-	}
+	},
 });
 
 const sizing = {

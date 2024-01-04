@@ -69,4 +69,3 @@ export const toast = {
 	anErrorHasOccurredWhileCreatingProfile:
 		'An error has occurred while creating your profile.',
 };
-
