@@ -1,24 +1,22 @@
-import { View, StyleSheet } from 'react-native';
-import React, {
-	type Dispatch,
-	type SetStateAction,
-	createContext,
-	useState,
-	useEffect,
-} from 'react';
+import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import StackedTextBox from '../../components/Textbox/StackedTextbox';
+import { ITEM_SIZE } from '../../utils/GapCalc';
+import RadioButton from '../../components/RadioButton/RadioButton';
 import GlobalStyles from '../../constants/GlobalStyles';
-import Header from '../../components/Header/Header';
-import Settings from './Settings';
-import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import {
-	type Control,
-	type FieldErrors,
-	type UseFormSetValue,
-	useForm,
-} from 'react-hook-form';
+	type PrivacyOption,
+	privacyOptions,
+} from '../../constants/PrivateOptions';
+import { Loading } from '../../components/Loading/Loading';
+import { usePhoto, usePhotoUpdate } from '../../Contexts/CameraContext';
+import React, { useState, useEffect } from 'react';
+import Header from '../../components/Header/Header';
+import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { toast } from '../../constants/GlobalStrings';
+import { toast, settings } from '../../constants/GlobalStrings';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import {
 	showErrorToast,
@@ -29,7 +27,6 @@ import { updateUser } from '../../endpoints/getUser';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { usePhotoUpdate } from '../../Contexts/CameraContext';
 
 interface FormValues {
 	first_name: string;
@@ -40,26 +37,6 @@ interface FormValues {
 	private_option: boolean;
 	profile_picture: string;
 }
-
-// Define the context type
-interface SettingsPageContextType {
-	control: Control<FormValues>;
-	setValue: UseFormSetValue<FormValues>;
-	errors: FieldErrors<FormValues>;
-	showSuccessUpdate: boolean;
-	setShowSuccessUpdate: Dispatch<SetStateAction<boolean>>;
-	isLoading: boolean;
-}
-
-// Create the context with the defined type
-export const SettingsPageContext = createContext<SettingsPageContextType>({
-	control: {} as Control<FormValues>,
-	setValue: {} as UseFormSetValue<FormValues>,
-	errors: {} as FieldErrors<FormValues>,
-	showSuccessUpdate: false,
-	setShowSuccessUpdate: () => {},
-	isLoading: false,
-});
 
 const SettingsPage: React.FC = () => {
 	const data = useUser();
@@ -98,6 +75,18 @@ const SettingsPage: React.FC = () => {
 			type: 'logout',
 		});
 	};
+	const profile_picture = usePhoto();
+
+	useEffect(() => {
+		setValue('profile_picture', profile_picture);
+	}, [profile_picture]);
+
+	useEffect(() => {
+		if (showSuccessUpdate) {
+			navigation.goBack();
+			setShowSuccessUpdate(false);
+		}
+	}, [showSuccessUpdate]);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -182,39 +171,180 @@ const SettingsPage: React.FC = () => {
 	};
 
 	return (
-		<SettingsPageContext.Provider
-			value={{
-				control,
-				setValue,
-				errors,
-				showSuccessUpdate,
-				setShowSuccessUpdate,
-				isLoading,
-			}}
-		>
-			<View style={styles.container}>
-				<Header
-					text={StackNavigation.Settings}
-					leftButton={true}
-					leftStepOverType={StepOverTypes.logout}
-					leftButtonAction={handleLogout}
-					rightButton={true}
-					rightStepOverType={StepOverTypes.update}
-					rightButtonAction={() => {
-						void handleSubmit(onSubmit)();
-					}}
-				/>
-				<View style={{ gap: 40 }}>
-					<View style={styles.settingsContainer}>
-						<Settings />
-					</View>
+		<View style={styles.container}>
+			<Header
+				text={StackNavigation.Settings}
+				leftButton={true}
+				leftStepOverType={StepOverTypes.logout}
+				leftButtonAction={handleLogout}
+				rightButton={true}
+				rightStepOverType={StepOverTypes.update}
+				rightButtonAction={() => {
+					void handleSubmit(onSubmit)();
+				}}
+			/>
+			<View style={{ gap: 40 }}>
+				<View style={styles.settingsContainer}>
+					<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
+						<View style={{ gap: GlobalStyles.layout.gap }}>
+							<Pressable
+								style={{ alignSelf: 'center' }}
+								onPress={() => {
+									navigation.navigate(StackNavigation.CameraWrapper, {
+										returnToPfp: true,
+									});
+								}}
+							>
+								<ProfilePicture
+									imageUrl={profile_picture}
+									base64={profile_picture.slice(0, 5) !== 'https'}
+								/>
+							</Pressable>
+							<View
+								style={{
+									flexDirection: 'row',
+									gap: GlobalStyles.layout.gap,
+									width: ITEM_SIZE(),
+								}}
+							>
+								<Controller
+									control={control}
+									rules={{
+										required: true,
+										maxLength: 50,
+									}}
+									render={({ field: { onChange, value } }) => (
+										<StackedTextBox
+											label="First Name"
+											onFieldChange={onChange}
+											value={value.trim()}
+										/>
+									)}
+									name="first_name"
+								/>
+								<Controller
+									control={control}
+									rules={{
+										required: true,
+										maxLength: 50,
+									}}
+									render={({ field: { onChange, value } }) => (
+										<StackedTextBox
+											label="Last Name"
+											onFieldChange={onChange}
+											value={value.trim()}
+										/>
+									)}
+									name="last_name"
+								/>
+							</View>
+							<Controller
+								control={control}
+								rules={{
+									required: true,
+									maxLength: 20,
+								}}
+								render={({ field: { onChange, value } }) => (
+									<StackedTextBox
+										label="Username"
+										onFieldChange={onChange}
+										value={value.trim()}
+									/>
+								)}
+								name="username"
+							/>
+							<Controller
+								control={control}
+								rules={{
+									required: true,
+									pattern: /^\S+@\S+\.\S+$/,
+									maxLength: 255,
+								}}
+								render={({ field: { onChange, value } }) => (
+									<StackedTextBox
+										label="Email"
+										onFieldChange={onChange}
+										value={value.trim()}
+									/>
+								)}
+								name="email"
+							/>
+							<Controller
+								control={control}
+								rules={{
+									required: true,
+									minLength: 8,
+									maxLength: 100,
+								}}
+								render={({ field: { onChange, value } }) => (
+									<StackedTextBox
+										label="Password"
+										onFieldChange={onChange}
+										value={value}
+										secure
+									/>
+								)}
+								name="password"
+							/>
+							<RadioButton
+								privateData={privacyOptions}
+								onSelect={(selectedOption: PrivacyOption) => {
+									setValue('private_option', selectedOption.boolean);
+								}}
+								choice={
+									control._defaultValues.private_option === true
+										? privacyOptions[1].value
+										: privacyOptions[0].value
+								}
+							/>
+						</View>
+						<View style={{ alignItems: 'center' }}>
+							{errors.email != null && (
+								<Text style={styles.error}>
+									{settings.pleaseEnterAValidEmail}
+								</Text>
+							)}
+							{errors.password != null && (
+								<Text style={styles.error}>
+									{settings.passwordMustBe8CharactersOrMore}
+								</Text>
+							)}
+						</View>
+
+						{isLoading && <Loading />}
+					</Pressable>
 				</View>
 			</View>
-		</SettingsPageContext.Provider>
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	error: {
+		color: GlobalStyles.colorPalette.danger[500],
+	},
+	camera: {
+		flex: 1,
+	},
+	modalGroup: {
+		backgroundColor: GlobalStyles.colorPalette.primary[100],
+		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
+		gap: 5,
+		width: '95%',
+	},
+	modalSelection: {
+		width: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 15,
+	},
+	modalButtons: {
+		width: '95%',
+		alignItems: 'center',
+		backgroundColor: GlobalStyles.colorPalette.primary[100],
+		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
+		padding: 15,
+	},
 	container: {
 		flex: 1,
 		gap: 15,
