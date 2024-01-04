@@ -57,12 +57,12 @@ const ProfileCell = ({
 
 	const handleIconPress = (user: markedUser): void => {
 		if (user.uid !== '') {
-			handleBookmarkPress();
+			handleBookmarkPress(user.marked);
 		}
 	};
 
-	const handleBookmarkPress = (): void => {
-		if (iconName === GlobalStyles.icons.bookmarkFill) {
+	const handleBookmarkPress = (marked: boolean): void => {
+		if (marked) {
 			void unFollowUser(userProcessed.uid);
 			setIconName(GlobalStyles.icons.bookmarkOutline);
 			userProcessed.marked = false;

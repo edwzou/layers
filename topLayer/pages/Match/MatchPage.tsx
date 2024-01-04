@@ -38,7 +38,6 @@ const MatchPage: React.FC = () => {
 		},
 		matchName: '',
 	});
-	console.log('match: ', match);
 
 	const onSubmit = (): void => {
 		const clothingItems = [
@@ -110,7 +109,6 @@ const MatchPage: React.FC = () => {
 								headerButton({
 									type: StepOverTypes.done,
 									handlePress: () => {
-										console.log('clicked');
 										onSubmit();
 									},
 								}),
