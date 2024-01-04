@@ -85,7 +85,9 @@ const CategorySlide = ({
 	};
 	return (
 		<>
-			{itemsData.data.length !== 0 ? (
+			{itemsData.data !== null &&
+			itemsData.data !== undefined &&
+			itemsData.data.length !== 0 ? (
 				<View
 					style={[
 						styles.container,
