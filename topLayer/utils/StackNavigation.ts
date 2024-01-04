@@ -5,7 +5,7 @@ import {
 import { type UserClothing } from '../types/Clothing';
 import { type UserOutfit } from '../types/Outfit';
 
-import { type markedUser } from '../pages/Main/UserTypes';
+import { type markedUser } from '../types/User';
 
 // DO NOT ADD ANY FUNCTIONS UNDER StackNavigatorType
 export interface StackNavigatorType {

@@ -9,7 +9,7 @@ import {
 	isMarkedPrivateUser,
 	type markedPrivateUser,
 	type markedUser,
-} from '../../pages/Main/UserTypes';
+} from '../../types/User';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';

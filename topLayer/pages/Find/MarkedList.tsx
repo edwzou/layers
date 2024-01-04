@@ -5,7 +5,7 @@ import ProfileCell from '../../components/Cell/ProfileCell';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 
-import { type markedUser, type User } from '../Main/UserTypes';
+import { type markedUser, type User } from '../../types/User';
 import FetchProfileCell from '../../components/Cell/LoadProfileCell';
 import { find } from '../../constants/GlobalStrings';
 import { previewLength } from '../../constants/Find';
