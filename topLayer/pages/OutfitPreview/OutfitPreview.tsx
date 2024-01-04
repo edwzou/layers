@@ -11,13 +11,11 @@ import axios from 'axios';
 import ItemCell from '../../components/Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import StackedTextbox from '../../components/Textbox/StackedTextbox';
-
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserClothing } from '../../types/Clothing';
-import { MatchPageContext } from '../../pages/Match/MatchPage';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
-import { toast } from '../../constants/GlobalStrings';
+import { toast, match as matchHeading } from '../../constants/GlobalStrings';
 import {
 	showErrorToast,
 	showSuccessToast,
@@ -136,7 +134,7 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 			/>
 			<View style={styles.containerInner}>
 				<StackedTextbox
-					label={match.matchName}
+					label={matchHeading.matchName}
 					onFieldChange={onInputChange}
 					value={text}
 				/>
