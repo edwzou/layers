@@ -22,7 +22,7 @@ import {
 } from '../../components/Toasts/Toasts';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from '../../utils/StackNavigation';
+import { type StackTypes } from 'utils/StackNavigation';
 import { Loading } from '../../components/Loading/Loading';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import Header from '../../components/Header/Header';
@@ -34,7 +34,8 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 
 	const { matchItems } = route.params;
 
-	const { setShouldRefreshMainPage } = useContext(MainPageContext);
+	const { setShouldRefreshMainPage, navigationArray } =
+		useContext(MainPageContext);
 
 	const [text, setText] = useState('');
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
@@ -77,12 +78,12 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 		setData(rawData.filter(Boolean));
 	}, [rawData]);
 
-	useEffect(() => {
-		if (showSuccessUpdate) {
-			navigation.goBack();
-			setShowSuccessUpdate(false);
-		}
-	}, [showSuccessUpdate]);
+	// useEffect(() => {
+	// 	if (showSuccessUpdate) {
+	// 		navigation.goBack();
+	// 		setShowSuccessUpdate(false);
+	// 	}
+	// }, [showSuccessUpdate]);
 
 	const onSubmit = (): void => {
 		const clothingItems = [
@@ -103,6 +104,7 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 		].filter((item) => item !== null);
 		console.log('item: ', clothingItems);
 
+		navigation.goBack();
 		const onSubmitInner = async (): Promise<void> => {
 			try {
 				const response = await axios.post(`${baseUrl}/api/private/outfits`, {
@@ -113,9 +115,10 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 				setIsLoading(false); // Stop loading
 				if (response.status === 200) {
 					// alert(`You have created: ${JSON.stringify(response.data)}`);
-					navigation.goBack();
-					setShouldRefreshMainPage(true);
-					// navigationArray[0](); // Uncomment this to navigate to profile page
+					// navigation.goBack();
+					// setShowSuccessUpdate(true);
+					// setShouldRefreshMainPage(true);
+					// navigationArray[1](); // Uncomment this to navigate to profile page
 					showSuccessToast(toast.yourOutfitHasBeenCreated);
 				} else {
 					showErrorToast(toast.anErrorHasOccurredWhileCreatingOutfit);
@@ -126,6 +129,7 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 			}
 		};
 		setIsLoading(true); // Start loading
+
 		void onSubmitInner();
 	};
 	return (

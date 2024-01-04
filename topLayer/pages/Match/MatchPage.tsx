@@ -1,22 +1,10 @@
-import React, { useState, createContext, useContext } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { StackNavigation } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
-import { headerButton } from '../../components/Modal/HeaderButton';
 import { NavigationContainer } from '@react-navigation/native';
-import GlobalStyles from '../../constants/GlobalStyles';
-import { baseUrl } from '../../utils/apiUtils';
-import axios from 'axios';
 import Match from './Match';
 import OutfitPreview from '../../pages/OutfitPreview/OutfitPreview';
-import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
-import { MainPageContext } from '../../pages/Main/MainPage';
-import { toast } from '../../constants/GlobalStrings';
-import {
-	showErrorToast,
-	showSuccessToast,
-} from '../../components/Toasts/Toasts';
-import { emptyClothing } from '../../constants/Clothing';
 
 const MatchPage: React.FC = () => {
 	return (
