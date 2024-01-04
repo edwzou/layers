@@ -40,6 +40,7 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 	const [rawData, setRawData] = useState<UserClothing[]>([]);
 	const [data, setData] = useState<UserClothing[]>([]);
+	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const onInputChange = (text: string): void => {
 		setText(text);
 	};
@@ -76,6 +77,13 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 		setData(rawData.filter(Boolean));
 	}, [rawData]);
 
+	useEffect(() => {
+		if (showSuccessUpdate) {
+			navigation.goBack();
+			setShowSuccessUpdate(false);
+		}
+	}, [showSuccessUpdate]);
+
 	const onSubmit = (): void => {
 		const clothingItems = [
 			match.previewData.outerwear !== null &&
@@ -96,16 +104,15 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 		console.log('item: ', clothingItems);
 
 		const onSubmitInner = async (): Promise<void> => {
-			setIsLoading(true); // Start loading
 			try {
 				const response = await axios.post(`${baseUrl}/api/private/outfits`, {
 					title: match.matchName,
 					clothing_items: clothingItems,
 				});
 
+				setIsLoading(false); // Stop loading
 				if (response.status === 200) {
 					// alert(`You have created: ${JSON.stringify(response.data)}`);
-
 					navigation.goBack();
 					setShouldRefreshMainPage(true);
 					// navigationArray[0](); // Uncomment this to navigate to profile page
@@ -114,12 +121,11 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 					showErrorToast(toast.anErrorHasOccurredWhileCreatingOutfit);
 					// throw new Error('An error has occurred while submitting outfit');
 				}
-				setIsLoading(false); // Stop loading on success
 			} catch (error) {
-				setIsLoading(false); // Stop loading on error
 				axiosEndpointErrorHandler(error);
 			}
 		};
+		setIsLoading(true); // Start loading
 		void onSubmitInner();
 	};
 	return (
