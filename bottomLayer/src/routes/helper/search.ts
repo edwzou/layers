@@ -135,6 +135,9 @@ export const userSearch = async (
 				const dummy = {
 					uid: user.uid,
 					username: user.username,
+					first_name: user.first_name,
+					last_name: user.last_name,
+					pp_url: await downloadURLFromS3(user.pp_url),
 					private_option: user.private_option,
 				};
 				users[i] = dummy;
