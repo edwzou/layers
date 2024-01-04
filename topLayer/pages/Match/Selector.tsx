@@ -1,6 +1,9 @@
 import React, { type ReactElement, useEffect, useState } from 'react';
 import Slider from './Slider';
-import { type UserClothing, type UserClothingPadding } from '.';
+import {
+	type UserClothing,
+	type UserClothingPadding,
+} from '../../types/Clothing';
 import { ScrollView } from 'react-native-gesture-handler';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { ClothingTypes } from '../../constants/Enums';

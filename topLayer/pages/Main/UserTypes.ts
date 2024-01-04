@@ -1,4 +1,4 @@
-import { type UserClothing } from '../Match';
+import { type UserClothing } from '../../types/Clothing';
 
 export interface User {
 	uid: string;

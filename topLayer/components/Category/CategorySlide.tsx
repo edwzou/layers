@@ -1,16 +1,14 @@
 import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
 import React, { type ReactElement } from 'react';
-
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import OutfitCard from '../Card/OutfitCard';
 import ItemCell from '../Cell/ItemCell';
-
 import GlobalStyles from '../../constants/GlobalStyles';
-
-import { type UserClothing, type UserAllItems } from '../../pages/Match';
-import { type UserOutfit } from '../../pages/OutfitView';
+import { type UserClothing } from '../../types/Clothing';
+import { type UserOutfit } from '../../types/Outfit';
 import Empty from './Empty';
+import { type UserAllItems } from '../../types/AllItems';
 
 interface CategorySlidePropsType {
 	// ex)

@@ -8,18 +8,17 @@ import { MainPageContext } from '../../pages/Main/MainPage';
 
 import {
 	isUserClothingArray,
-	type UserAllItems,
 	type UserClothing,
 	type UserClothingList,
 	type UserClothingListSingle,
 	type UserSelectedClothingList,
-} from '.';
+} from '../../types/Clothing';
 import { match } from '../../constants/GlobalStrings';
 import GlobalStyles from '../../constants/GlobalStyles';
-
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
+import { type UserAllItems } from '../../types/AllItems';
 
 const Match: React.FC = () => {
 	const { allItems } = useContext(MainPageContext);

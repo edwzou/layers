@@ -1,5 +1,3 @@
-import { type UserOutfit } from '../../pages/OutfitView';
-
 export interface UserClothing {
 	ciid: string;
 	image_url: string;
@@ -10,11 +8,6 @@ export interface UserClothing {
 	size: string;
 	color: string[];
 	created_at: string;
-}
-
-export interface UserAllItems {
-	category: string;
-	data: UserClothing[] | UserOutfit[];
 }
 
 export interface UserClothingList {

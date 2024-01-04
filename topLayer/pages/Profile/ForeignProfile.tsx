@@ -16,14 +16,15 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { type UserAllItems, type UserClothing } from '../Match';
-import { type UserOutfit } from '../OutfitView';
+import { type UserClothing } from '../../types/Clothing';
+import { type UserOutfit } from '../../types/Outfit';
 import { type markedUser } from '../Main/UserTypes';
 import {
 	getForeignAllClothingItems,
 	getForeignAllOutfits,
 } from '../../endpoints/wardrobe';
 import { useMarkUserFunc } from '../../Contexts/ForeignUserContext';
+import { type UserAllItems } from '../../types/AllItems';
 
 const ForeignProfile = ({ route }: any): ReactElement => {
 	console.log('Route: ', route, route.params);

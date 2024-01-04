@@ -14,9 +14,10 @@ import ProfilePage from '../Profile/ProfilePage';
 import MatchPage from '../Match/MatchPage';
 import FindPage from '../Find/FindPage';
 
-import { type UserOutfit } from '../../pages/OutfitView';
-import { type UserAllItems, type UserClothing } from '../../pages/Match';
+import { type UserOutfit } from '../../types/Outfit';
+import { type UserClothing } from '../../types/Clothing';
 import { getAllClothingItems, getAllOutfits } from '../../endpoints/wardrobe';
+import { type UserAllItems } from '../../types/AllItems';
 
 export const MainPageContext = createContext({
 	navigationArray: [() => {}],
