@@ -27,21 +27,16 @@ import { Loading } from '../../components/Loading/Loading';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import Header from '../../components/Header/Header';
 import { emptyClothing } from '../../constants/Clothing';
-import { MainPageContext } from '../../pages/Main/MainPage';
 
 const OutfitPreview = ({ route }: any): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const { matchItems } = route.params;
 
-	const { setShouldRefreshMainPage, navigationArray } =
-		useContext(MainPageContext);
-
 	const [text, setText] = useState('');
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 	const [rawData, setRawData] = useState<UserClothing[]>([]);
 	const [data, setData] = useState<UserClothing[]>([]);
-	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const onInputChange = (text: string): void => {
 		setText(text);
 	};
@@ -78,13 +73,6 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 		setData(rawData.filter(Boolean));
 	}, [rawData]);
 
-	// useEffect(() => {
-	// 	if (showSuccessUpdate) {
-	// 		navigation.goBack();
-	// 		setShowSuccessUpdate(false);
-	// 	}
-	// }, [showSuccessUpdate]);
-
 	const onSubmit = (): void => {
 		const clothingItems = [
 			match.previewData.outerwear !== null &&
@@ -102,9 +90,9 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 				? match.previewData.shoes.ciid
 				: null,
 		].filter((item) => item !== null);
-		console.log('item: ', clothingItems);
 
-		navigation.goBack();
+		// navigation.navigate(StackNavigation.Match, {});
+		// navigation.popToTop();
 		const onSubmitInner = async (): Promise<void> => {
 			try {
 				const response = await axios.post(`${baseUrl}/api/private/outfits`, {
@@ -112,14 +100,14 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 					clothing_items: clothingItems,
 				});
 
-				setIsLoading(false); // Stop loading
+				// setIsLoading(false); // Stop loading
 				if (response.status === 200) {
 					// alert(`You have created: ${JSON.stringify(response.data)}`);
 					// navigation.goBack();
 					// setShowSuccessUpdate(true);
 					// setShouldRefreshMainPage(true);
 					// navigationArray[1](); // Uncomment this to navigate to profile page
-					showSuccessToast(toast.yourOutfitHasBeenCreated);
+					// showSuccessToast(toast.yourOutfitHasBeenCreated);
 				} else {
 					showErrorToast(toast.anErrorHasOccurredWhileCreatingOutfit);
 					// throw new Error('An error has occurred while submitting outfit');
@@ -128,8 +116,7 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 				axiosEndpointErrorHandler(error);
 			}
 		};
-		setIsLoading(true); // Start loading
-
+		// setIsLoading(true); // Start loading
 		void onSubmitInner();
 	};
 	return (
@@ -139,7 +126,7 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 				rightButton={true}
 				rightStepOverType={StepOverTypes.done}
 				rightButtonAction={() => {
-					onSubmit();
+					// onSubmit();
 				}}
 			/>
 			<View style={styles.containerInner}>
