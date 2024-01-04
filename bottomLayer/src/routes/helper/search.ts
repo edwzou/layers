@@ -9,6 +9,7 @@ import { once } from 'node:events';
 import { asyncHandler } from '../../utils/event-emitters/asyncHandler';
 import { userFields } from '../../utils/constants/userFields';
 import { downloadConditions } from '../../utils/constants/downloadConditions';
+import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 
 // Writes out the a prefix for Search Query so User Search doesn't overlap
 export const userSearchQueryPrefix = (): string => {
@@ -79,6 +80,9 @@ export const userSearchMarked = async (
 				const dummy = {
 					uid: user.uid,
 					username: user.username,
+					first_name: user.first_name,
+					last_name: user.last_name,
+					pp_url: await downloadURLFromS3(user.pp_url),
 					private_option: user.private_option,
 					marked: marked,
 				};
@@ -86,7 +90,12 @@ export const userSearchMarked = async (
 				console.log('This User is Private, uid: ' + String(user.uid));
 				asyncManager.complete('This User is Private, uid: ' + String(user.uid));
 			} else {
-				void asyncHandler(user.pp_url, user, asyncManager, downloadConditions.profile_picture);
+				void asyncHandler(
+					user.pp_url,
+					user,
+					asyncManager,
+					downloadConditions.profile_picture
+				);
 				delete user.password;
 				user.marked = marked;
 			}
@@ -132,7 +141,12 @@ export const userSearch = async (
 				console.log('This User is Private, uid: ' + String(user.uid));
 				asyncManager.complete('This User is Private, uid: ' + String(user.uid));
 			} else {
-				void asyncHandler(user.pp_url, user, asyncManager, downloadConditions.profile_picture);
+				void asyncHandler(
+					user.pp_url,
+					user,
+					asyncManager,
+					downloadConditions.profile_picture
+				);
 				delete user.password;
 			}
 		}
