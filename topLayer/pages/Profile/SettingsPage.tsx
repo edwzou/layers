@@ -1,22 +1,13 @@
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
-import StackedTextBox from '../../components/Textbox/StackedTextbox';
-import { ITEM_SIZE } from '../../utils/GapCalc';
-import RadioButton from '../../components/RadioButton/RadioButton';
+import { View, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
-import {
-	type PrivacyOption,
-	privacyOptions,
-} from '../../constants/PrivateOptions';
-import { Loading } from '../../components/Loading/Loading';
 import { usePhoto, usePhotoUpdate } from '../../Contexts/CameraContext';
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { toast, settings } from '../../constants/GlobalStrings';
+import { toast } from '../../constants/GlobalStrings';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import {
 	showErrorToast,
@@ -27,6 +18,7 @@ import { updateUser } from '../../endpoints/getUser';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
+import SettingsFields from '../../components/Settings/SettingsFields';
 
 interface FormValues {
 	first_name: string;
@@ -183,138 +175,13 @@ const SettingsPage: React.FC = () => {
 					void handleSubmit(onSubmit)();
 				}}
 			/>
-			<View style={{ gap: 40 }}>
-				<View style={styles.settingsContainer}>
-					<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
-						<View style={{ gap: GlobalStyles.layout.gap }}>
-							<Pressable
-								style={{ alignSelf: 'center' }}
-								onPress={() => {
-									navigation.navigate(StackNavigation.CameraWrapper, {
-										returnToPfp: true,
-									});
-								}}
-							>
-								<ProfilePicture
-									imageUrl={profile_picture}
-									base64={profile_picture.slice(0, 5) !== 'https'}
-								/>
-							</Pressable>
-							<View
-								style={{
-									flexDirection: 'row',
-									gap: GlobalStyles.layout.gap,
-									width: ITEM_SIZE(),
-								}}
-							>
-								<Controller
-									control={control}
-									rules={{
-										required: true,
-										maxLength: 50,
-									}}
-									render={({ field: { onChange, value } }) => (
-										<StackedTextBox
-											label="First Name"
-											onFieldChange={onChange}
-											value={value.trim()}
-										/>
-									)}
-									name="first_name"
-								/>
-								<Controller
-									control={control}
-									rules={{
-										required: true,
-										maxLength: 50,
-									}}
-									render={({ field: { onChange, value } }) => (
-										<StackedTextBox
-											label="Last Name"
-											onFieldChange={onChange}
-											value={value.trim()}
-										/>
-									)}
-									name="last_name"
-								/>
-							</View>
-							<Controller
-								control={control}
-								rules={{
-									required: true,
-									maxLength: 20,
-								}}
-								render={({ field: { onChange, value } }) => (
-									<StackedTextBox
-										label="Username"
-										onFieldChange={onChange}
-										value={value.trim()}
-									/>
-								)}
-								name="username"
-							/>
-							<Controller
-								control={control}
-								rules={{
-									required: true,
-									pattern: /^\S+@\S+\.\S+$/,
-									maxLength: 255,
-								}}
-								render={({ field: { onChange, value } }) => (
-									<StackedTextBox
-										label="Email"
-										onFieldChange={onChange}
-										value={value.trim()}
-									/>
-								)}
-								name="email"
-							/>
-							<Controller
-								control={control}
-								rules={{
-									required: true,
-									minLength: 8,
-									maxLength: 100,
-								}}
-								render={({ field: { onChange, value } }) => (
-									<StackedTextBox
-										label="Password"
-										onFieldChange={onChange}
-										value={value}
-										secure
-									/>
-								)}
-								name="password"
-							/>
-							<RadioButton
-								privateData={privacyOptions}
-								onSelect={(selectedOption: PrivacyOption) => {
-									setValue('private_option', selectedOption.boolean);
-								}}
-								choice={
-									control._defaultValues.private_option === true
-										? privacyOptions[1].value
-										: privacyOptions[0].value
-								}
-							/>
-						</View>
-						<View style={{ alignItems: 'center' }}>
-							{errors.email != null && (
-								<Text style={styles.error}>
-									{settings.pleaseEnterAValidEmail}
-								</Text>
-							)}
-							{errors.password != null && (
-								<Text style={styles.error}>
-									{settings.passwordMustBe8CharactersOrMore}
-								</Text>
-							)}
-						</View>
-
-						{isLoading && <Loading />}
-					</Pressable>
-				</View>
-			</View>
+			<SettingsFields
+				control={control}
+				setValue={setValue}
+				errors={errors}
+				isLoading={isLoading}
+				profile_picture={profile_picture}
+			/>
 		</View>
 	);
 };
