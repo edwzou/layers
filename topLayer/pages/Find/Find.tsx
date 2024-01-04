@@ -66,7 +66,11 @@ const Find = ({
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<Header text={StackNavigation.Find} leftButton={true} />
+			<Header
+				text={StackNavigation.Find}
+				leftButton={true}
+				leftButtonNavigateTo={0}
+			/>
 			<View style={styles.content}>
 				<SearchUsers
 					placeholder={find.searchProfiles}

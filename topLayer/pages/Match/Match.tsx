@@ -128,7 +128,11 @@ const Match: React.FC = () => {
 	return (
 		<>
 			<SafeAreaView style={{ gap: 15 }}>
-				<Header text={StackNavigation.Match} rightButton={true} />
+				<Header
+					text={StackNavigation.Match}
+					rightButton={true}
+					rightButtonNavigateTo={0}
+				/>
 				<Selector
 					outerwear={data.outerwear}
 					tops={data.tops}
