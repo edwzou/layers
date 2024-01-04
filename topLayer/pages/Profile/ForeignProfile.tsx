@@ -18,7 +18,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserClothing } from '../../types/Clothing';
 import { type UserOutfit } from '../../types/Outfit';
-import { type markedUser } from '../Main/UserTypes';
+import { type markedUser } from '../../types/User';
 import {
 	getForeignAllClothingItems,
 	getForeignAllOutfits,

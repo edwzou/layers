@@ -10,7 +10,7 @@ import {
 	type markedPrivateUser,
 	type markedUser,
 	type User,
-} from '../../pages/Main/UserTypes';
+} from '../../types/User';
 import SearchBar from './SearchBar';
 
 import GlobalStyles from '../../constants/GlobalStyles';

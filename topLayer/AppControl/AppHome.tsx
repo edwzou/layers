@@ -14,7 +14,7 @@ import MainPage from '../pages/Main/MainPage';
 
 import GlobalStyles from '../constants/GlobalStyles';
 import CameraWrapper from '../components/Camera/CameraWrapper';
-import { type User } from '../pages/Main/UserTypes';
+import { type User } from '../types/User';
 import Toast from 'react-native-toast-message';
 import { useUser } from '../Contexts/UserContext';
 

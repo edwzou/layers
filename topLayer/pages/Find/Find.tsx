@@ -14,7 +14,7 @@ import Header from '../../components/Header/Header';
 import MarkedBar from './Marked';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchUsers from '../../components/Bar/SearchUsers';
-import { type User } from '../Main/UserTypes';
+import { type User } from '../../types/User';
 
 interface FindPropsType {
 	foreignUserIDs: Array<string | User>;

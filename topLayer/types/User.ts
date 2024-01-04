@@ -1,5 +1,3 @@
-import { type UserClothing } from '../../types/Clothing';
-
 export interface User {
 	uid: string;
 	first_name: string;
@@ -34,16 +32,6 @@ export interface privateUser {
 
 export interface markedPrivateUser extends privateUser {
 	marked: boolean;
-}
-
-export interface userToFetch {
-	uid: string;
-	marked: boolean;
-}
-
-export interface UserItems {
-	category: string;
-	data: UserClothing[];
 }
 
 export const isMarkedPrivateUser = (obj: any): obj is markedPrivateUser => {
