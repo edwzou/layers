@@ -1,18 +1,12 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { type ReactElement, useCallback, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-
 import { FlatList } from 'react-native-gesture-handler';
 import { type UserClothing } from '.';
-
 import ItemCell from '../../components/Cell/ItemCell';
 import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
-
 import Icon from 'react-native-remix-icon';
-
-import img from '../../assets/icon.png';
-//import { ClothingCategoryTypes } from 'constants/Enums';
 
 const SNAP_ITEM_SIZE = ITEM_SIZE() * 1.15;
 const HORIZONTAL_SPACING = ITEM_SIZE() * 0.15; // Cell gap
@@ -25,7 +19,11 @@ interface SliderPropsType {
 	category: string;
 }
 
-const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
+const Slider = ({
+	data,
+	selectedIndex,
+	category,
+}: SliderPropsType): ReactElement => {
 	const emptyItem: UserClothing = {
 		ciid: '',
 		image_url: '',
@@ -94,12 +92,17 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 					});
 
 					return (
-						<View style={[
-							{
-								width: ITEM_SIZE(),
-							},
-							data && index !== data?.length - 1 && { marginRight: HORIZONTAL_SPACING } // adds a horizontal spacing to the right of every component EXCEPT for the last oen
-						]}>
+						<View
+							style={[
+								{
+									width: ITEM_SIZE(),
+								},
+								data &&
+									index !== data?.length - 1 && {
+										marginRight: HORIZONTAL_SPACING,
+									}, // adds a horizontal spacing to the right of every component EXCEPT for the last oen
+							]}
+						>
 							<Animated.View
 								style={[
 									{

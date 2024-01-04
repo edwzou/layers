@@ -1,13 +1,7 @@
 import axios from 'axios';
-
 import { useForm, Controller } from 'react-hook-form';
 import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
-import React, {
-	type ReactElement,
-	useContext,
-	useEffect,
-	useState,
-} from 'react';
+import React, { useState } from 'react';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
 import { ITEM_SIZE } from '../../utils/GapCalc';
@@ -32,6 +26,7 @@ import {
 import { defaultFormUser } from '../../constants/baseUsers';
 import { Loading } from '../../components/Loading/Loading';
 import { useUpdateUser } from '../../Contexts/UserContext';
+import { usePhoto } from '../../Contexts/CameraContext';
 
 interface FormValues {
 	first_name: string;
@@ -43,13 +38,10 @@ interface FormValues {
 	profile_picture: string;
 }
 
-interface SignUpPropsType {
-	pfpUrlForSignUp: string;
-}
-
-const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
+const SignUp: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const updateUser = useUpdateUser();
+	const profile_picture = usePhoto();
 
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
@@ -62,10 +54,6 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 		defaultValues: defaultFormUser,
 	});
 
-	useEffect(() => {
-		setValue('profile_picture', pfpUrlForSignUp);
-	}, [pfpUrlForSignUp]);
-
 	const onSubmit = (values: FormValues | any): void => {
 		const formValues: Record<string, any> = {
 			first_name: values.first_name,
@@ -73,7 +61,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 			username: values.username,
 			email: values.email,
 			password: values.password,
-			profile_picture: values.profile_picture,
+			profile_picture: profile_picture,
 			private_option: values.private_option,
 		};
 
@@ -116,7 +104,7 @@ const SignUp = ({ pfpUrlForSignUp }: SignUpPropsType): ReactElement => {
 						});
 					}}
 				>
-					<ProfilePicture imageUrl={pfpUrlForSignUp} base64 />
+					<ProfilePicture imageUrl={profile_picture} base64 />
 				</Pressable>
 				<View
 					style={{

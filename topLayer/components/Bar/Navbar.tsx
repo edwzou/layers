@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
+import React, { type ReactElement, useContext } from 'react';
 import { View, StyleSheet, Pressable, SafeAreaView } from 'react-native';
 
 import Icon from 'react-native-remix-icon';
@@ -15,7 +15,7 @@ interface NavbarPropsType {
 	toggleFeedbackModal: () => void;
 }
 
-const Navbar = ({ toggleFeedbackModal }: NavbarPropsType) => {
+const Navbar = ({ toggleFeedbackModal }: NavbarPropsType): ReactElement => {
 	const { navigationArray } = useContext(MainPageContext);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 

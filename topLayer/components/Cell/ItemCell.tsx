@@ -1,11 +1,5 @@
-import React, { memo, useEffect } from 'react';
-import {
-	Image,
-	type ImageStyle,
-	Pressable,
-	StyleSheet,
-	Text,
-} from 'react-native';
+import React, { memo, type ReactElement } from 'react';
+import { Image, type ImageStyle, Pressable, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 
 interface ItemCellPropsType {
@@ -22,8 +16,8 @@ const ItemCell = ({
 	imageStyle,
 	onPress,
 	base64,
-}: ItemCellPropsType) => {
-	const url = base64 ? `data:image/jpeg;base64,${imageUrl}` : imageUrl;
+}: ItemCellPropsType): ReactElement => {
+	const url = base64 === true ? `data:image/jpeg;base64,${imageUrl}` : imageUrl;
 
 	return (
 		<Pressable
@@ -37,19 +31,6 @@ const ItemCell = ({
 				resizeMode="contain"
 			/>
 		</Pressable>
-		/* {canDelete && (
-				<View style={styles.deleteButtonContainer}>
-					<Pressable onPress={handleDeletePress}>
-						<View style={styles.deleteButton}>
-							<Icon
-								name={GlobalStyles.icons.closeOutline}
-								color={GlobalStyles.colorPalette.background}
-								size={GlobalStyles.sizing.icon.small}
-							/>
-						</View>
-					</Pressable>
-				</View>
-			)} */
 	);
 };
 

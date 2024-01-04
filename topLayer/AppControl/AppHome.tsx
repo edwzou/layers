@@ -1,7 +1,7 @@
 import { StyleSheet, StatusBar, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from '../utils/StackNavigation';
@@ -21,54 +21,40 @@ import { useUser } from '../Contexts/UserContext';
 const AppHome: React.FC = () => {
 	const user: User = useUser();
 
-	const [pfpUrlForSignUp, setPfpUrlForSignUp] = useState('');
-
-	const SignUpPageComponent: React.FC = () => (
-		<SignUpPage pfpUrlForSignUp={pfpUrlForSignUp} />
-	);
-
-	const CameraWrapperComponent: React.FC = () => (
-		<CameraWrapper setPfpUrl={setPfpUrlForSignUp} returnToPfp={true} />
-	);
-
 	return (
-		<>
-			<NavigationContainer ref={navigationRef}>
-				<View style={styles.container}>
-					<Stack.Navigator
-						screenOptions={{
-							headerShown: false,
-						}}
-					>
-						{user.uid === '' ? (
-							<>
-								<Stack.Screen
-									name={StackNavigation.Login}
-									component={SignInPage}
-								/>
-								<Stack.Screen
-									name={StackNavigation.SignUp}
-									component={SignUpPageComponent}
-								/>
-								<Stack.Screen
-									name={StackNavigation.CameraWrapper}
-									component={CameraWrapperComponent}
-								/>
-							</>
-						) : (
-							<>
-								<Stack.Screen
-									name={StackNavigation.Main}
-									component={MainPage}
-								/>
-							</>
-						)}
-					</Stack.Navigator>
-					<ExpoStatusBar style="auto" />
-				</View>
-			</NavigationContainer>
+		<NavigationContainer ref={navigationRef}>
+			<View style={styles.container}>
+				<Stack.Navigator
+					screenOptions={{
+						headerShown: false,
+					}}
+				>
+					{user.uid === '' ? (
+						<>
+							<Stack.Screen
+								name={StackNavigation.Login}
+								component={SignInPage}
+							/>
+							<Stack.Screen
+								name={StackNavigation.SignUp}
+								component={SignUpPage}
+							/>
+							<Stack.Screen
+								name={StackNavigation.CameraWrapper}
+								component={CameraWrapper}
+							/>
+						</>
+					) : (
+						<>
+							<Stack.Screen name={StackNavigation.Main} component={MainPage} />
+						</>
+					)}
+				</Stack.Navigator>
+				<ExpoStatusBar style="auto" />
+			</View>
+
 			<Toast />
-		</>
+		</NavigationContainer>
 	);
 };
 

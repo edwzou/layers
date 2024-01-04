@@ -1,46 +1,44 @@
 import { StyleSheet } from 'react-native';
-import React, { useRef } from 'react';
-
+import React, { type ReactElement, useRef } from 'react';
 import OutfitView from './OutfitView';
 import OutfitEdit from './OutfitEdit';
-
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-
 import { headerButton } from '../../components/Modal/HeaderButton';
-import { type UserClothing, type UserClothingList } from '../../pages/Match';
-
+import { type UserClothing } from '../../pages/Match';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
+import { type UserOutfit } from '.';
 
-const OutfitViewPage = ({ route }: any) => {
+const OutfitViewPage = ({ route }: any): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const { item, editable } = route.params;
+	const { item, editable }: { item: UserOutfit; editable?: boolean } =
+		route.params;
+	const { oid, clothing_items, title } = item;
 
 	const outfitTitleRef = useRef(item.title);
 
 	const getFlatArrayOfValues = (
-		clothingList: UserClothingList
+		clothingList: UserClothing[]
 	): UserClothing[] => {
 		return Object.values(clothingList).flat();
 	};
 
-	const redirectToProfile = () => {
+	const redirectToProfile = (): void => {
 		navigation.navigate(StackNavigation.Profile, {});
 	};
 
-	const OutfitViewComponent = () => (
-		<OutfitView clothingItems={getFlatArrayOfValues(item.clothing_items)} />
+	const OutfitViewComponent = (): ReactElement => (
+		<OutfitView clothingItems={getFlatArrayOfValues(clothing_items)} />
 	);
-	const OutfitEditComponent = () => (
+	const OutfitEditComponent = (): ReactElement => (
 		<OutfitEdit
-			id={item.oid}
-			title={item.title}
-			clothingItems={getFlatArrayOfValues(item.clothing_items)}
+			id={oid}
+			title={title}
+			clothingItems={getFlatArrayOfValues(clothing_items)}
 			titleRef={outfitTitleRef}
 			navigateToProfile={redirectToProfile}
 		/>
@@ -63,15 +61,16 @@ const OutfitViewPage = ({ route }: any) => {
 						component={OutfitViewComponent}
 						options={({ navigation }) => ({
 							headerTitle: item.title,
-							headerRight: editable
-								? () =>
-										headerButton({
-											type: StepOverTypes.edit,
-											handlePress: () => {
-												navigation.navigate(StackNavigation.OutfitEdit);
-											},
-										})
-								: undefined,
+							headerRight:
+								editable === true
+									? () =>
+											headerButton({
+												type: StepOverTypes.edit,
+												handlePress: () => {
+													navigation.navigate(StackNavigation.OutfitEdit);
+												},
+											})
+									: undefined,
 						})}
 					/>
 					<Stack.Screen

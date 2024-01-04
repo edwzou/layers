@@ -35,7 +35,7 @@ const Profile: React.FC = () => {
 	const data = useUser();
 	const { allItems } = useContext(MainPageContext);
 
-	const handleItemChange = (item: UserClothing | UserOutfit) => {
+	const handleItemChange = (item: UserClothing | UserOutfit): void => {
 		if ('oid' in item) {
 			navigation.navigate(StackNavigation.OutfitView, {
 				item: item,
@@ -49,12 +49,12 @@ const Profile: React.FC = () => {
 		}
 	};
 
-	const handleCategoryChange = (category: string) => {
+	const handleCategoryChange = (category: string): void => {
 		setSelectedCategory(category);
 		handleIndexChange(CategoryToIndex[category]);
 	};
 
-	const handleIndexChange = (index: number) => {
+	const handleIndexChange = (index: number): void => {
 		if (flatListRef.current != null) {
 			flatListRef.current?.scrollToIndex({ index, animated: false });
 		}
@@ -70,11 +70,11 @@ const Profile: React.FC = () => {
 		}
 	}).current;
 
-	const toggleFeedbackModal = () => {
+	const toggleFeedbackModal = (): void => {
 		navigation.navigate(StackNavigation.Feedback, {});
 	};
 
-	const toggleSettingsModal = () => {
+	const toggleSettingsModal = (): void => {
 		navigation.navigate(StackNavigation.Settings, {});
 	};
 
@@ -87,14 +87,11 @@ const Profile: React.FC = () => {
 						toggleSettingsModal();
 					}}
 				>
-					<ProfilePicture imageUrl={data ? data.pp_url : ''} />
+					<ProfilePicture imageUrl={data.pp_url} />
 				</Pressable>
 				<View>
-					<FullName
-						firstName={data ? data.first_name : ''}
-						lastName={data ? data.last_name : ''}
-					/>
-					<Username username={data ? data.username : ''} />
+					<FullName firstName={data.first_name} lastName={data.last_name} />
+					<Username username={data.username} />
 				</View>
 			</View>
 			<View style={{ top: 5 }}>

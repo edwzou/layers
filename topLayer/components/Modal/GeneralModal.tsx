@@ -14,10 +14,7 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated';
 
-import {
-	screenHeight,
-	screenWidth,
-} from '../../utils/modalMaxShow';
+import { screenHeight, screenWidth } from '../../utils/modalMaxShow';
 
 import GlobalStyles from '../../constants/GlobalStyles';
 
@@ -35,10 +32,7 @@ export interface ModalPropTypes {
 }
 
 const GeneralModal = forwardRef(
-	(
-		{ title, height, content, dim = true }: ModalPropTypes,
-		ref
-	) => {
+	({ title, height, content, dim = true }: ModalPropTypes, ref) => {
 		const active = useSharedValue(false);
 
 		const translateY = useSharedValue(0);
@@ -113,7 +107,7 @@ const GeneralModal = forwardRef(
 				/>
 				<GestureDetector gesture={gesture}>
 					<Animated.View style={[styles.container, modalGestureStyle]}>
-						{title && (
+						{title !== null && title !== undefined && title !== '' && (
 							<View style={styles.header}>
 								<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
 							</View>
@@ -126,6 +120,8 @@ const GeneralModal = forwardRef(
 	}
 );
 
+GeneralModal.displayName = 'General Modal';
+
 const styles = StyleSheet.create({
 	container: {
 		height: screenHeight,
@@ -135,7 +131,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: screenHeight,
 		gap: 5,
-		//...GlobalStyles.utils.mediumRadius,
+		// ...GlobalStyles.utils.mediumRadius,
 		zIndex: 10,
 		flex: 1,
 		shadowColor: GlobalStyles.colorPalette.primary[500],

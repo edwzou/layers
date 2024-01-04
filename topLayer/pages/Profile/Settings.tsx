@@ -12,12 +12,12 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 import { settings } from '../../constants/GlobalStrings';
 import { SettingsPageContext } from './SettingsPage';
-import { ProfilePageContext } from './ProfilePage';
 import {
 	type PrivacyOption,
 	privacyOptions,
 } from '../../constants/PrivateOptions';
 import { Loading } from '../../components/Loading/Loading';
+import { usePhoto } from '../../Contexts/CameraContext';
 
 const Settings: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -31,11 +31,11 @@ const Settings: React.FC = () => {
 		isLoading,
 	} = useContext(SettingsPageContext);
 
-	const { pfpUrlForSettings, setReturnToPfp } = useContext(ProfilePageContext);
+	const profile_picture = usePhoto();
 
 	useEffect(() => {
-		setValue('profile_picture', pfpUrlForSettings);
-	}, [pfpUrlForSettings]);
+		setValue('profile_picture', profile_picture);
+	}, [profile_picture]);
 
 	useEffect(() => {
 		if (showSuccessUpdate) {
@@ -50,15 +50,14 @@ const Settings: React.FC = () => {
 				<Pressable
 					style={{ alignSelf: 'center' }}
 					onPress={() => {
-						setReturnToPfp(true);
 						navigation.navigate(StackNavigation.CameraWrapper, {
 							returnToPfp: true,
 						});
 					}}
 				>
 					<ProfilePicture
-						imageUrl={pfpUrlForSettings}
-						base64={pfpUrlForSettings.slice(0, 5) !== 'https'}
+						imageUrl={profile_picture}
+						base64={profile_picture.slice(0, 5) !== 'https'}
 					/>
 				</Pressable>
 				<View

@@ -103,19 +103,23 @@ const Match: React.FC = () => {
 		}));
 	}, [selectedIndexes]);
 
-	const selectedIndex = (category: string, index: any) => {
+	const selectedIndex = (category: string, index: any): void => {
 		// !!! Change to select ID
-		if (category === ClothingTypes.outerwear)
+		if (category === ClothingTypes.outerwear) {
 			setSelectedIndexes((data) => ({ ...data, outerwear: index }));
-		if (category === ClothingTypes.tops)
+		}
+		if (category === ClothingTypes.tops) {
 			setSelectedIndexes((data) => ({ ...data, tops: index }));
-		if (category === ClothingTypes.bottoms)
+		}
+		if (category === ClothingTypes.bottoms) {
 			setSelectedIndexes((data) => ({ ...data, bottoms: index }));
-		if (category === ClothingTypes.shoes)
+		}
+		if (category === ClothingTypes.shoes) {
 			setSelectedIndexes((data) => ({ ...data, shoes: index }));
+		}
 	};
 
-	const handlePress = () => {
+	const handlePress = (): void => {
 		navigation.navigate(StackNavigation.OutfitPreview, {
 			matchItems: {
 				outerwear: previewData.outerwear,

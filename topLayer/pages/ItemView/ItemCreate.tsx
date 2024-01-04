@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React, {
 	useState,
 	useEffect,
@@ -34,7 +34,6 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import Header from '../../components/Header/Header';
 import { MainPageContext } from '../../pages/Main/MainPage';
-import Toast from 'react-native-toast-message';
 import { toast } from '../../constants/GlobalStrings';
 import { Loading } from '../../components/Loading/Loading';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
@@ -50,6 +49,11 @@ interface FormValues {
 	size: string;
 	color: string[];
 	brands: string[];
+}
+
+interface Sizes {
+	label: string;
+	value: string;
 }
 
 interface ItemCreatePropsType {
@@ -69,17 +73,15 @@ const ItemCreate = ({
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const [currentColorTags, setColorTags] = useState(clothingItem.color);
-	const [itemName, setItemName] = useState(
-		clothingItem.title ? clothingItem.title : ''
-	);
+	// const [itemName, setItemName] = useState(
+	// 	clothingItem.title ? clothingItem.title : ''
+	// );
 
 	const [sizeOpen, setSizeOpen] = useState(false);
 	// sets the size stored in the database
-	const [sizeValue, setSizeValue] = useState(
-		clothingItem.size ? clothingItem.size : ''
-	);
+	const [sizeValue, setSizeValue] = useState(clothingItem.size ?? '');
 	// helper function for setting the size options based on given clothing category
-	const helpSetSizes = (category: string) => {
+	const helpSetSizes = (category: string): Sizes[] => {
 		if (
 			category === ClothingTypes.outerwear ||
 			category === ClothingTypes.tops
@@ -184,7 +186,7 @@ const ItemCreate = ({
 	const [itemTypeOpen, setItemTypeOpen] = useState(false);
 	// sets the item type value to be stored in the database
 	const [itemTypeValue, setItemTypeValue] = useState(
-		clothingItem.category ? clothingItem.category : ''
+		clothingItem.category ?? ''
 	);
 	// sets the item type options
 	const [itemTypes, setItemTypes] = useState([
@@ -206,12 +208,7 @@ const ItemCreate = ({
 		},
 	]);
 
-	const {
-		control,
-		handleSubmit,
-		setValue,
-		formState: { dirtyFields, errors },
-	} = useForm({
+	const { control, handleSubmit, setValue } = useForm({
 		defaultValues: {
 			image: clothingItem.image_url,
 			category: clothingItem.category,
@@ -240,7 +237,7 @@ const ItemCreate = ({
 		setValue('image', clothingItem.image_url);
 	}, [clothingItem.image_url]);
 
-	const handleCreate = async (values: FormValues | any) => {
+	const handleCreate = async (values: FormValues | any): Promise<void> => {
 		console.log(values);
 		if (values.category === '') {
 			throw new Error('Category Value Not Filled Out.');
@@ -275,21 +272,21 @@ const ItemCreate = ({
 		}
 	};
 
-	const handleOnRemovePress = (colorToDelete: string) => {
+	const handleOnRemovePress = (colorToDelete: string): void => {
 		const updatedColorTags = currentColorTags.filter(
 			(color: string) => color !== colorToDelete
 		);
 		setColorTags(updatedColorTags);
 	};
 
-	const handleOnNewColorPress = (colorToAdd: string) => {
+	const handleOnNewColorPress = (colorToAdd: string): void => {
 		if (!currentColorTags.some((color: string) => color === colorToAdd)) {
 			setColorTags([...currentColorTags, colorToAdd]);
 		}
 		colorPickerRef.current?.scrollTo(0);
 	};
 
-	const redirectToCamera = () => {
+	const redirectToCamera = (): void => {
 		navigation.navigate(StackNavigation.CameraComponents, {});
 	};
 

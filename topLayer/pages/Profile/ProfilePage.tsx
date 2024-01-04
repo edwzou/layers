@@ -1,5 +1,4 @@
 import React, {
-	useState,
 	createContext,
 	type Dispatch,
 	type SetStateAction,
@@ -7,7 +6,6 @@ import React, {
 
 import { StackNavigation } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
-
 import Profile from './Profile';
 import FeedbackPage from '../Feedback/FeedbackPage';
 import SettingsPage from './SettingsPage';
@@ -16,7 +14,6 @@ import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { NavigationContainer } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import CameraWrapper from '../../components/Camera/CameraWrapper';
-import { useUser } from '../../Contexts/UserContext';
 
 // Define the context type
 interface ProfilePageContextType {
@@ -31,84 +28,68 @@ export const ProfilePageContext = createContext<ProfilePageContextType>({
 });
 
 const ProfilePage: React.FC = () => {
-	const data = useUser();
-	const { pp_url } = data;
-	const [pfpUrlForSettings, setPfpUrlForSettings] = useState(pp_url);
-	const [returnToPfp, setReturnToPfp] = useState(false);
-
-	const CameraWrapperComponent: React.FC = () => (
-		<CameraWrapper setPfpUrl={setPfpUrlForSettings} returnToPfp={returnToPfp} />
-	);
-
 	return (
-		<ProfilePageContext.Provider
-			value={{
-				pfpUrlForSettings,
-				setReturnToPfp,
-			}}
-		>
-			<NavigationContainer independent={true}>
-				<Stack.Navigator>
+		<NavigationContainer independent={true}>
+			<Stack.Navigator>
+				<Stack.Screen
+					options={{
+						headerShown: false,
+					}}
+					name={StackNavigation.Profile}
+					component={Profile}
+				/>
+				<Stack.Group
+					screenOptions={{
+						presentation: 'modal',
+						headerTitleStyle: GlobalStyles.typography.subtitle,
+						headerStyle: {
+							backgroundColor: GlobalStyles.colorPalette.background,
+						},
+						headerShadowVisible: false,
+					}}
+				>
 					<Stack.Screen
+						name={StackNavigation.Feedback}
+						component={FeedbackPage}
 						options={{
 							headerShown: false,
 						}}
-						name={StackNavigation.Profile}
-						component={Profile}
 					/>
-					<Stack.Group
-						screenOptions={{
-							presentation: 'modal',
-							headerTitleStyle: GlobalStyles.typography.subtitle,
-							headerStyle: {
-								backgroundColor: GlobalStyles.colorPalette.background,
-							},
-							headerShadowVisible: false,
+					<Stack.Screen
+						name={StackNavigation.Settings}
+						component={SettingsPage}
+						options={{
+							headerShown: false,
 						}}
-					>
-						<Stack.Screen
-							name={StackNavigation.Feedback}
-							component={FeedbackPage}
-							options={{
-								headerShown: false,
-							}}
-						/>
-						<Stack.Screen
-							name={StackNavigation.Settings}
-							component={SettingsPage}
-							options={{
-								headerShown: false,
-							}}
-						/>
-						<Stack.Screen
-							name={StackNavigation.ItemView}
-							component={ItemViewPage}
-							options={{
-								headerShown: false,
-							}}
-						/>
-						<Stack.Screen
-							name={StackNavigation.OutfitView}
-							component={OutfitViewPage}
-							options={{
-								headerShown: false,
-							}}
-						/>
-						<Stack.Screen
-							name={StackNavigation.CameraWrapper}
-							component={CameraWrapperComponent}
-							options={{
-								presentation: 'fullScreenModal',
-								animation: 'slide_from_bottom',
-								gestureEnabled: true,
-								gestureDirection: 'vertical',
-								headerShown: false,
-							}}
-						/>
-					</Stack.Group>
-				</Stack.Navigator>
-			</NavigationContainer>
-		</ProfilePageContext.Provider>
+					/>
+					<Stack.Screen
+						name={StackNavigation.ItemView}
+						component={ItemViewPage}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.OutfitView}
+						component={OutfitViewPage}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.CameraWrapper}
+						component={CameraWrapper}
+						options={{
+							presentation: 'fullScreenModal',
+							animation: 'slide_from_bottom',
+							gestureEnabled: true,
+							gestureDirection: 'vertical',
+							headerShown: false,
+						}}
+					/>
+				</Stack.Group>
+			</Stack.Navigator>
+		</NavigationContainer>
 	);
 };
 

@@ -49,7 +49,3 @@ export interface UserItems {
 export const isMarkedPrivateUser = (obj: any): obj is markedPrivateUser => {
 	return !('first_name' in obj);
 };
-// export interface UserItems {
-//     category: string,
-//     data: UserClothing[] | UserOutfit[],
-// }

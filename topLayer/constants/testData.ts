@@ -692,4 +692,3 @@ import { UserOutfits } from '../pages/OutfitView';
 // 		items: mockItemsData3,
 // 	},
 // ];
-
