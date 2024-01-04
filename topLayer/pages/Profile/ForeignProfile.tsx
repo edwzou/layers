@@ -1,13 +1,11 @@
 import React, { useRef, useState, useEffect, type ReactElement } from 'react';
 import { View, Pressable, StyleSheet, type FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
-
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
 import CategoryBar from '../../components/Category/CategoryBar';
 import CategorySlides from '../../components/Category/CategorySlides';
-
 import {
 	CategoryToIndex,
 	IndexToCategory,
@@ -109,11 +107,11 @@ const ForeignProfile = ({ route }: any): ReactElement => {
 
 	const handleBookmarkPress = (): void => {
 		if (iconName === GlobalStyles.icons.bookmarkFill) {
-			markUserFunc();
+			markUserFunc(true);
 			setIconName(GlobalStyles.icons.bookmarkOutline);
 			user.marked = false;
 		} else {
-			markUserFunc();
+			markUserFunc(false);
 			setIconName(GlobalStyles.icons.bookmarkFill);
 			user.marked = true;
 		}
