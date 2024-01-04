@@ -27,10 +27,12 @@ import { Loading } from '../../components/Loading/Loading';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import Header from '../../components/Header/Header';
 import { emptyClothing } from '../../constants/Clothing';
+import { MainPageContext } from '../../pages/Main/MainPage';
 
 const OutfitPreview = ({ route }: any): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
+	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 	const { matchItems } = route.params;
 
 	const [text, setText] = useState('');
@@ -91,8 +93,6 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 				: null,
 		].filter((item) => item !== null);
 
-		// navigation.navigate(StackNavigation.Match, {});
-		// navigation.popToTop();
 		const onSubmitInner = async (): Promise<void> => {
 			try {
 				const response = await axios.post(`${baseUrl}/api/private/outfits`, {
@@ -100,23 +100,23 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 					clothing_items: clothingItems,
 				});
 
-				// setIsLoading(false); // Stop loading
+				setIsLoading(false); // Stop loading
 				if (response.status === 200) {
 					// alert(`You have created: ${JSON.stringify(response.data)}`);
-					// navigation.goBack();
-					// setShowSuccessUpdate(true);
-					// setShouldRefreshMainPage(true);
+					navigation.goBack();
+					setShouldRefreshMainPage(true);
 					// navigationArray[1](); // Uncomment this to navigate to profile page
-					// showSuccessToast(toast.yourOutfitHasBeenCreated);
+					showSuccessToast(toast.yourOutfitHasBeenCreated);
 				} else {
 					showErrorToast(toast.anErrorHasOccurredWhileCreatingOutfit);
 					// throw new Error('An error has occurred while submitting outfit');
 				}
 			} catch (error) {
+				setIsLoading(false); // Stop loading
 				axiosEndpointErrorHandler(error);
 			}
 		};
-		// setIsLoading(true); // Start loading
+		setIsLoading(true); // Start loading
 		void onSubmitInner();
 	};
 	return (
@@ -126,7 +126,7 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 				rightButton={true}
 				rightStepOverType={StepOverTypes.done}
 				rightButtonAction={() => {
-					// onSubmit();
+					onSubmit();
 				}}
 			/>
 			<View style={styles.containerInner}>
