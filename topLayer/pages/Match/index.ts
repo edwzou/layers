@@ -25,10 +25,10 @@ export interface UserClothingList {
 }
 
 export interface UserClothingListSingle {
-	outerwear: UserClothing;
-	tops: UserClothing;
-	bottoms: UserClothing;
-	shoes: UserClothing;
+	outerwear: UserClothing | undefined;
+	tops: UserClothing | undefined;
+	bottoms: UserClothing | undefined;
+	shoes: UserClothing | undefined;
 }
 
 export interface UserSelectedClothingList {
@@ -44,3 +44,19 @@ export interface UserClothingPadding {
 	bottoms: Array<UserClothing | Record<string, number>>;
 	shoes: Array<UserClothing | Record<string, number>>;
 }
+
+export const isUserClothing = (obj: any): obj is UserClothing =>
+	obj !== null &&
+	obj !== undefined &&
+	typeof obj.ciid === 'string' &&
+	typeof obj.image_url === 'string' &&
+	typeof obj.category === 'string' &&
+	typeof obj.title === 'string' &&
+	typeof obj.uid === 'string' &&
+	Array.isArray(obj.brands) &&
+	typeof obj.size === 'string' &&
+	Array.isArray(obj.color) &&
+	typeof obj.created_at === 'string';
+
+export const isUserClothingArray = (obj: any): obj is UserClothing[] =>
+	Array.isArray(obj) && obj.every(isUserClothing);

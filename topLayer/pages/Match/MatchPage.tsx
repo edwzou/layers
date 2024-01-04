@@ -9,7 +9,6 @@ import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
 import Match from './Match';
 import OutfitPreview from '../../pages/OutfitPreview/OutfitPreview';
-import { type UserClothing } from '.';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import { toast } from '../../constants/GlobalStrings';
@@ -17,9 +16,10 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
+import { emptyClothing } from '../../constants/Clothing';
 
 export const MatchPageContext = createContext({
-	setMatch: (match: any) => {},
+	setMatch: (unused: any) => {},
 	dismissal: false,
 	isLoading: false,
 });
@@ -31,34 +31,29 @@ const MatchPage: React.FC = () => {
 
 	const [match, setMatch] = useState({
 		previewData: {
-			outerwear: {} as UserClothing,
-			tops: {} as UserClothing,
-			bottoms: {} as UserClothing,
-			shoes: {} as UserClothing,
+			outerwear: { ...emptyClothing },
+			tops: { ...emptyClothing },
+			bottoms: { ...emptyClothing },
+			shoes: { ...emptyClothing },
 		},
 		matchName: '',
 	});
+	console.log('match: ', match);
 
 	const onSubmit = (): void => {
 		const clothingItems = [
 			match.previewData.outerwear !== null &&
-			match.previewData.outerwear !== undefined &&
-			Object.keys(match.previewData.outerwear).length !== 0
+			match.previewData.outerwear !== undefined
 				? match.previewData.outerwear.ciid
 				: null,
-			match.previewData.tops !== null &&
-			match.previewData.tops !== undefined &&
-			Object.keys(match.previewData.tops).length !== 0
+			match.previewData.tops !== null && match.previewData.tops !== undefined
 				? match.previewData.tops.ciid
 				: null,
 			match.previewData.bottoms !== null &&
-			match.previewData.bottoms !== undefined &&
-			Object.keys(match.previewData.bottoms).length !== 0
+			match.previewData.bottoms !== undefined
 				? match.previewData.bottoms.ciid
 				: null,
-			match.previewData.shoes !== null &&
-			match.previewData.shoes !== undefined &&
-			Object.keys(match.previewData.shoes).length !== 0
+			match.previewData.shoes !== null && match.previewData.shoes !== undefined
 				? match.previewData.shoes.ciid
 				: null,
 		].filter((item) => item !== null);
@@ -90,48 +85,6 @@ const MatchPage: React.FC = () => {
 			}
 		};
 		void onSubmitInner();
-	};
-	const handleSubmitOutfit = async (): Promise<void> => {
-		const clothingItems = [
-			Object.keys(match.previewData.outerwear).length !== 0
-				? match.previewData.outerwear.ciid
-				: null,
-			Object.keys(match.previewData.tops).length !== 0
-				? match.previewData.tops.ciid
-				: null,
-			Object.keys(match.previewData.bottoms).length !== 0
-				? match.previewData.bottoms.ciid
-				: null,
-			Object.keys(match.previewData.shoes).length !== 0
-				? match.previewData.shoes.ciid
-				: null,
-		].filter((item) => item !== null);
-		console.log('item: ', clothingItems);
-
-		setIsLoading(true); // Start loading
-
-		try {
-			const response = await axios.post(`${baseUrl}/api/private/outfits`, {
-				title: match.matchName,
-				clothing_items: clothingItems,
-			});
-
-			if (response.status === 200) {
-				// alert(`You have created: ${JSON.stringify(response.data)}`);
-				setDismissal(true);
-				setShouldRefreshMainPage(true);
-				// navigationArray[0](); // Uncomment this to navigate to profile page
-				setDismissal(false);
-				showSuccessToast(toast.yourOutfitHasBeenCreated);
-			} else {
-				showErrorToast(toast.anErrorHasOccurredWhileCreatingOutfit);
-				// throw new Error('An error has occurred while submitting outfit');
-			}
-			setIsLoading(false); // Stop loading on success
-		} catch (error) {
-			setIsLoading(false); // Stop loading on error
-			axiosEndpointErrorHandler(error);
-		}
 	};
 
 	return (

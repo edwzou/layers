@@ -52,24 +52,12 @@ const OutfitEdit = ({
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
 	const [text, setText] = useState(title);
-	// const [rawData, setRawData] = useState<UserOutfit[]>([]);
-	// const [outfitData, setOutfitData] = useState<UserOutfit[]>([]);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const onInputChange = (text: string): void => {
 		setText(text);
 		titleRef.current = text;
-		// setTitle(text)
-		// matchName(text);
 	};
-
-	// useEffect(() => {
-	// 	setRawData([outerwear, tops, bottoms, shoes])
-	// }, [outerwear, tops, bottoms, shoes])
-	//
-	// useEffect(() => {
-	// 	setOutfitData(rawData.filter(Boolean));
-	// }, [rawData]);
 
 	const confirmDeletion = (): void => {
 		Alert.alert(outfitEdit.deleteOutfit, outfitEdit.youCannotUndoThisAction, [

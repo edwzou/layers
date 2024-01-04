@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import React, {
-	Dispatch,
-	SetStateAction,
+	type Dispatch,
+	type SetStateAction,
 	createContext,
 	useState,
 	useEffect,
@@ -11,9 +11,9 @@ import Header from '../../components/Header/Header';
 import Settings from './Settings';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import {
-	Control,
-	FieldErrors,
-	UseFormSetValue,
+	type Control,
+	type FieldErrors,
+	type UseFormSetValue,
 	useForm,
 } from 'react-hook-form';
 import axios from 'axios';

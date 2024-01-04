@@ -1,11 +1,5 @@
-import {
-	type StyleProp,
-	StyleSheet,
-	Text,
-	View,
-	type ViewStyle,
-} from 'react-native';
-import React, { type PropsWithChildren, ReactNode } from 'react';
+import { type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
+import React, { type PropsWithChildren } from 'react';
 
 interface RipplePropsType {
 	style?: StyleProp<ViewStyle>;
