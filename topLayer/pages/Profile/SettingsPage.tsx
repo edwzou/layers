@@ -19,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import SettingsFields from '../../components/Settings/SettingsFields';
+import { Loading } from '../../components/Loading/Loading';
 
 interface FormValues {
 	first_name: string;
@@ -179,9 +180,9 @@ const SettingsPage: React.FC = () => {
 				control={control}
 				setValue={setValue}
 				errors={errors}
-				isLoading={isLoading}
 				profile_picture={profile_picture}
 			/>
+			{isLoading && <Loading />}
 		</View>
 	);
 };

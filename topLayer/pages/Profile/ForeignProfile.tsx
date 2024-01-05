@@ -27,12 +27,10 @@ import { useMarkUserFunc } from '../../Contexts/ForeignUserContext';
 import { type UserAllItems } from '../../types/AllItems';
 
 const ForeignProfile = ({ route }: any): ReactElement => {
-	console.log('Route: ', route, route.params);
-
 	const user: markedUser = route.params.markedUser;
+	// console.log('Route: ', route, route.params);
 
 	const markUserFunc = useMarkUserFunc();
-	// const [user, setUser] = useState<markedUser>(fetchedUser);
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
 	const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
 	const [allTops, setAllTops] = useState<UserClothing[]>([]);

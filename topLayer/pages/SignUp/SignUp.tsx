@@ -12,17 +12,12 @@ import { baseUrl } from '../../utils/apiUtils';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { StackNavigation } from '../../constants/Enums';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
 import { toast } from '../../constants/GlobalStrings';
-import {
-	type PrivacyOption,
-	privacyOptions,
-} from '../../constants/PrivateOptions';
 import { defaultFormUser } from '../../constants/baseUsers';
 import { Loading } from '../../components/Loading/Loading';
 import { useUpdateUser } from '../../Contexts/UserContext';
@@ -100,7 +95,6 @@ const SignUp: React.FC = () => {
 				control={control}
 				setValue={setValue}
 				errors={errors}
-				isLoading={isLoading}
 				profile_picture={profile_picture}
 			/>
 			<Button
@@ -111,6 +105,7 @@ const SignUp: React.FC = () => {
 				disabled={isLoading || Object.keys(dirtyFields).length < 5}
 				bgColor={GlobalStyles.colorPalette.primary[500]}
 			/>
+			{isLoading && <Loading />}
 		</>
 	);
 };

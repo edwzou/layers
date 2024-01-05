@@ -13,15 +13,42 @@ import {
 	type PrivacyOption,
 	privacyOptions,
 } from '../../constants/PrivateOptions';
-import { Loading } from '../../components/Loading/Loading';
 import { settings } from '../../constants/GlobalStrings';
-import { Controller } from 'react-hook-form';
+import {
+	type Control,
+	Controller,
+	type UseFormSetValue,
+	type FieldErrors,
+} from 'react-hook-form';
 
 interface SettingsFieldsType {
-	control: any;
-	setValue: any;
-	errors: any;
-	isLoading: boolean;
+	control: Control<{
+		first_name: string;
+		last_name: string;
+		email: string;
+		username: string;
+		password: string;
+		private_option: boolean;
+		profile_picture: string;
+	}>;
+	setValue: UseFormSetValue<{
+		first_name: string;
+		last_name: string;
+		email: string;
+		username: string;
+		password: string;
+		private_option: boolean;
+		profile_picture: string;
+	}>;
+	errors: FieldErrors<{
+		first_name: string;
+		last_name: string;
+		email: string;
+		username: string;
+		password: string;
+		private_option: boolean;
+		profile_picture: string;
+	}>;
 	profile_picture: string;
 }
 
@@ -29,7 +56,6 @@ const SettingsFields = ({
 	control,
 	setValue,
 	errors,
-	isLoading,
 	profile_picture,
 }: SettingsFieldsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -97,6 +123,7 @@ const SettingsFields = ({
 							}}
 							render={({ field: { onChange, value } }) => (
 								<StackedTextBox
+									autoCapitalize="none"
 									label="Username"
 									onFieldChange={onChange}
 									value={value.trim()}
@@ -113,6 +140,7 @@ const SettingsFields = ({
 							}}
 							render={({ field: { onChange, value } }) => (
 								<StackedTextBox
+									autoCapitalize="none"
 									label="Email"
 									onFieldChange={onChange}
 									value={value.trim()}
@@ -161,8 +189,6 @@ const SettingsFields = ({
 							</Text>
 						)}
 					</View>
-
-					{isLoading && <Loading />}
 				</Pressable>
 			</View>
 		</View>
