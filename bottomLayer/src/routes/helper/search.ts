@@ -93,7 +93,6 @@ export const userSearchMarked = async (
 				);
 				users[i] = dummy;
 				console.log('This User is Private, uid: ' + String(user.uid));
-				asyncManager.complete('This User is Private, uid: ' + String(user.uid));
 			} else {
 				void asyncHandler(
 					user.pp_url,
@@ -153,7 +152,6 @@ export const userSearch = async (
 				);
 				users[i] = dummy;
 				console.log('This User is Private, uid: ' + String(user.uid));
-				asyncManager.complete('This User is Private, uid: ' + String(user.uid));
 			} else {
 				void asyncHandler(
 					user.pp_url,
