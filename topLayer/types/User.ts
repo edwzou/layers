@@ -27,6 +27,9 @@ export interface markedUser extends User {
 export interface privateUser {
 	uid: string;
 	username: string;
+	first_name: string;
+	last_name: string;
+	pp_url: string;
 	private_option: boolean;
 }
 
