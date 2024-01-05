@@ -85,12 +85,12 @@ export const userSearchMarked = async (
 					private_option: user.private_option,
 					marked: marked,
 				};
-				void (await asyncHandler(
+				void asyncHandler(
 					dummy.pp_url,
 					dummy,
 					asyncManager,
 					downloadConditions.profile_picture
-				));
+				);
 				users[i] = dummy;
 				console.log('This User is Private, uid: ' + String(user.uid));
 				asyncManager.complete('This User is Private, uid: ' + String(user.uid));
@@ -145,12 +145,12 @@ export const userSearch = async (
 					pp_url: user.pp_url,
 					private_option: user.private_option,
 				};
-				void (await asyncHandler(
+				void asyncHandler(
 					dummy.pp_url,
 					dummy,
 					asyncManager,
 					downloadConditions.profile_picture
-				));
+				);
 				users[i] = dummy;
 				console.log('This User is Private, uid: ' + String(user.uid));
 				asyncManager.complete('This User is Private, uid: ' + String(user.uid));
