@@ -27,14 +27,13 @@ export const MainPageContext = createContext({
 
 const MainPage: React.FC = () => {
 	const [refresh, setRefresh] = useState(false);
+	const [shouldRefreshMainPage, setShouldRefreshMainPage] = useState(true);
 	let prevPage = 1;
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
 	const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
 	const [allTops, setAllTops] = useState<UserClothing[]>([]);
 	const [allBottoms, setAllBottoms] = useState<UserClothing[]>([]);
 	const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
-
-	const [shouldRefreshMainPage, setShouldRefreshMainPage] = useState(true);
 
 	// initializes an array of clothing categories and their data
 	const allItems: UserAllItems[] = [
