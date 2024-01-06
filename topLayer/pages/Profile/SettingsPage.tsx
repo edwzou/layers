@@ -22,6 +22,7 @@ import SettingsFields from '../../components/Settings/SettingsFields';
 import { Loading } from '../../components/Loading/Loading';
 
 interface FormValues {
+	uid: string;
 	first_name: string;
 	last_name: string;
 	email: string;
@@ -36,14 +37,22 @@ const SettingsPage: React.FC = () => {
 	const refreshUser = useUpdateUser();
 	const resetPhoto = usePhotoUpdate();
 
-	const { first_name, last_name, email, username, private_option, pp_url } =
-		data;
+	const {
+		uid,
+		first_name,
+		last_name,
+		email,
+		username,
+		private_option,
+		pp_url,
+	} = data;
 
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const defaultForm = {
+		uid: uid,
 		first_name: first_name,
 		last_name: last_name,
 		email: email,
@@ -100,6 +109,9 @@ const SettingsPage: React.FC = () => {
 
 		const updatedFields: Partial<FormValues> = {};
 
+		if (formValues.uid !== data.uid) {
+			updatedFields.uid = formValues.uid;
+		}
 		if (formValues.first_name !== data.first_name) {
 			updatedFields.first_name = formValues.first_name;
 		}
@@ -180,6 +192,7 @@ const SettingsPage: React.FC = () => {
 				control={control}
 				setValue={setValue}
 				errors={errors}
+				uid={uid}
 				profile_picture={profile_picture}
 			/>
 			{isLoading && <Loading />}

@@ -1,5 +1,12 @@
-import { type ReactElement } from 'react';
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import { useState, type ReactElement } from 'react';
+import {
+	View,
+	Text,
+	StyleSheet,
+	Pressable,
+	Keyboard,
+	Alert,
+} from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -20,9 +27,13 @@ import {
 	type UseFormSetValue,
 	type FieldErrors,
 } from 'react-hook-form';
+import Icon from 'react-native-remix-icon';
+import { Loading } from '../Loading/Loading';
+import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 
 interface SettingsFieldsType {
 	control: Control<{
+		uid: string;
 		first_name: string;
 		last_name: string;
 		email: string;
@@ -32,6 +43,7 @@ interface SettingsFieldsType {
 		profile_picture: string;
 	}>;
 	setValue: UseFormSetValue<{
+		uid: string;
 		first_name: string;
 		last_name: string;
 		email: string;
@@ -49,6 +61,7 @@ interface SettingsFieldsType {
 		private_option: boolean;
 		profile_picture: string;
 	}>;
+	uid: string;
 	profile_picture: string;
 }
 
@@ -56,9 +69,43 @@ const SettingsFields = ({
 	control,
 	setValue,
 	errors,
+	uid,
 	profile_picture,
 }: SettingsFieldsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
+	const [isLoading, setIsLoading] = useState(false);
+
+	const confirmDeletion = (): void => {
+		Alert.alert(settings.deleteAccount, settings.youCannotUndoThisAction, [
+			{
+				text: settings.cancel,
+				onPress: () => {},
+			},
+			{
+				text: settings.delete,
+				onPress: () => {
+					void handleDelete();
+				},
+				style: 'destructive',
+			},
+		]);
+	};
+
+	const handleDelete = async (): Promise<void> => {
+		setIsLoading(true);
+		try {
+			console.log('uid:', uid);
+			// First delete all outfits, find all user's outfits using outfit.uid
+			// Second delete all clothing items, find all user's clothing items using clothingItem.uid
+			// Finally delete the user itself, using the given uid
+			// May need to wrtie new endpoints to handle deleting all outfits and deleting all clothing items
+		} catch (error) {
+			setIsLoading(false);
+			axiosEndpointErrorHandler(error);
+		}
+	};
+
 	return (
 		<View style={{ gap: 40 }}>
 			<View style={styles.settingsContainer}>
@@ -190,6 +237,19 @@ const SettingsFields = ({
 						)}
 					</View>
 				</Pressable>
+				<View style={styles.deleteButtonContainer}>
+					<Pressable onPress={confirmDeletion}>
+						<View style={GlobalStyles.utils.deleteButton}>
+							<Icon
+								name={GlobalStyles.icons.closeOutline}
+								color={GlobalStyles.colorPalette.background}
+								size={GlobalStyles.sizing.icon.regular}
+							/>
+						</View>
+					</Pressable>
+				</View>
+
+				{isLoading && <Loading />}
 			</View>
 		</View>
 	);
@@ -228,6 +288,11 @@ const styles = StyleSheet.create({
 	settingsContainer: {
 		alignItems: 'center',
 		marginHorizontal: GlobalStyles.layout.xGap,
+	},
+	deleteButtonContainer: {
+		position: 'absolute',
+		bottom: 0,
+		alignSelf: 'center',
 	},
 });
 
