@@ -6,7 +6,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 import {
-	isMarkedPrivateUser,
+	isPrivateUser,
 	type markedPrivateUser,
 	type markedUser,
 } from '../../types/User';
@@ -41,15 +41,12 @@ const ProfileCell = ({
 	const setUserMarkFunc = useMarkUserFuncDispatch();
 
 	let userProcessed: markedUser;
-	if (isMarkedPrivateUser(user)) {
+	if (isPrivateUser(user)) {
 		userProcessed = {
 			...user,
-			first_name: user.username, // To be discussed
-			last_name: '',
 			email: '',
 			followers: [],
 			following: [],
-			pp_url: '',
 		};
 	} else {
 		userProcessed = user;
