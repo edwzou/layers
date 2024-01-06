@@ -1,3 +1,0 @@
-curl -X POST -H "Content-Type: application/json" -d '{
-  "unfollowedId": "{ uid1 }"
-}' http://localhost:1234/api/private/users/unfollow/{ uid2 }
