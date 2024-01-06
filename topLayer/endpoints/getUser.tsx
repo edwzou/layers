@@ -1,6 +1,9 @@
 import { baseUrl } from '../utils/apiUtils';
 import axios from 'axios';
-import { axiosEndpointErrorHandler } from '../utils/ErrorHandlers';
+import {
+	axiosEndpointErrorHandler,
+	axiosEndpointErrorHandlerNoAlert,
+} from '../utils/ErrorHandlers';
 import { type Dispatch, type SetStateAction } from 'react';
 import { type User } from '../types/User';
 import { nullUser } from '../constants/baseUsers';
@@ -45,7 +48,7 @@ export const returnGetUser = async (): Promise<User> => {
 			throw Error('could not get user');
 		}
 	} catch (error) {
-		axiosEndpointErrorHandler(error);
+		axiosEndpointErrorHandlerNoAlert(error);
 	}
 	return nullUser;
 };

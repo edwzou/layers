@@ -29,14 +29,22 @@ export interface privateUser {
 	username: string;
 	first_name: string;
 	last_name: string;
-	pp_url: string;
 	private_option: boolean;
+	pp_url: string;
 }
 
 export interface markedPrivateUser extends privateUser {
 	marked: boolean;
 }
 
-export const isMarkedPrivateUser = (obj: any): obj is markedPrivateUser => {
-	return !('first_name' in obj);
+export const isMarkedUser = (
+	obj: any
+): obj is markedUser | markedPrivateUser => {
+	return obj.marked !== null && obj.marked !== undefined;
+};
+
+export const isPrivateUser = (
+	obj: any
+): obj is markedPrivateUser | privateUser => {
+	return obj.private_option === true;
 };
