@@ -26,7 +26,7 @@ export interface UserReducerProps {
 	private_option?: boolean;
 	followers?: string[];
 	following?: string[];
-	pp_url?: string;
+	profile_picture?: string;
 }
 
 const userReducer = (draft: User, action: UserReducerProps): User => {
@@ -41,7 +41,7 @@ const userReducer = (draft: User, action: UserReducerProps): User => {
 			}
 			return draft;
 		}
-		case 'change field': {
+		case 'change fields': {
 			return setUserProps(draft, action);
 		}
 		default: {
@@ -103,8 +103,9 @@ const setUserProps = (draft: User, action: UserReducerProps): User => {
 	if (action.following !== null && action.following !== undefined) {
 		draft.following = action.following;
 	}
-	if (action.pp_url !== null && action.pp_url !== undefined) {
-		draft.pp_url = action.pp_url;
+	if (action.profile_picture !== null && action.profile_picture !== undefined) {
+		console.log('pp2: ', action.profile_picture);
+		draft.profile_picture = action.profile_picture;
 	}
 	return draft;
 };

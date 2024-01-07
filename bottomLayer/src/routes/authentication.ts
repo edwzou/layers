@@ -113,7 +113,7 @@ const signupStrate = new LocalStrategy(
 				const result = await pool.query(
 					`
         INSERT INTO backend_schema.user (
-          uid, first_name, last_name, email, username, password, private_option, followers, following, pp_url
+          uid, first_name, last_name, email, username, password, private_option, followers, following, profile_picture
           ) VALUES (
             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
           `,
@@ -141,7 +141,7 @@ const signupStrate = new LocalStrategy(
 					private_option,
 					followers: [],
 					following: [],
-					pp_url: imgRef,
+					profile_picture: imgRef,
 				};
 
 				done(null, user);
@@ -160,8 +160,8 @@ const getUser = async (
 ): Promise<void> => {
 	try {
 		const { password, ...userFields } = user;
-		const imgRef = userFields.pp_url;
-		userFields.pp_url = await downloadURLFromS3(imgRef);
+		const imgRef = userFields.profile_picture;
+		userFields.profile_picture = await downloadURLFromS3(imgRef);
 
 		console.log('Extracted User: ', userFields);
 		responseCallbackLogin(null, userFields, res);

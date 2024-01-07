@@ -38,8 +38,9 @@ CREATE TABLE backend_schema.user (
     private_option BOOL NOT NULL,
     followers UUID[] NOT NULL,
     following UUID[] NOT NULL,
-    pp_url VARCHAR(36)
+    profile_picture VARCHAR(36)
 );
+
 CREATE TABLE backend_schema.outfit (
     oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     title VARCHAR(255) NOT NULL, 

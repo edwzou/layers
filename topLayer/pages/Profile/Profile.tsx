@@ -87,7 +87,10 @@ const Profile: React.FC = () => {
 						toggleSettingsModal();
 					}}
 				>
-					<ProfilePicture imageUrl={data.pp_url} />
+					<ProfilePicture
+						imageUrl={data.profile_picture}
+						base64={data.profile_picture.slice(0, 5) !== 'https'}
+					/>
 				</Pressable>
 				<View>
 					<FullName firstName={data.first_name} lastName={data.last_name} />

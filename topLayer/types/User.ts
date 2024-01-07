@@ -7,7 +7,7 @@ export interface User {
 	private_option: boolean;
 	followers: string[];
 	following: string[];
-	pp_url: string;
+	profile_picture: string;
 }
 
 export interface formUser {
@@ -30,7 +30,7 @@ export interface privateUser {
 	first_name: string;
 	last_name: string;
 	private_option: boolean;
-	pp_url: string;
+	profile_picture: string;
 }
 
 export interface markedPrivateUser extends privateUser {
