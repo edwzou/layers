@@ -20,7 +20,7 @@ import {
 	type PrivacyOption,
 	privacyOptions,
 } from '../../constants/PrivateOptions';
-import { settings } from '../../constants/GlobalStrings';
+import { settings, toast } from '../../constants/GlobalStrings';
 import {
 	type Control,
 	Controller,
@@ -29,7 +29,10 @@ import {
 } from 'react-hook-form';
 import Icon from 'react-native-remix-icon';
 import { Loading } from '../Loading/Loading';
+import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
+import { baseUrl } from '../../utils/apiUtils';
+import { showErrorToast, showSuccessToast } from '../Toasts/Toasts';
 
 interface SettingsFieldsType {
 	control: Control<{
@@ -96,10 +99,34 @@ const SettingsFields = ({
 		setIsLoading(true);
 		try {
 			console.log('uid:', uid);
-			// First delete all outfits, find all user's outfits using outfit.uid
-			// Second delete all clothing items, find all user's clothing items using clothingItem.uid
-			// Finally delete the user itself, using the given uid
-			// May need to wrtie new endpoints to handle deleting all outfits and deleting all clothing items
+			// Use Promise.all to send multiple requests simultaneously
+			const [
+				deleteOutfitsResponse,
+				deleteClothingItemsResponse,
+				deleteUserResponse,
+			] = await Promise.all([
+				// this may not work because there might be an order for deletion
+				axios.delete(`${baseUrl}/api/private/outfits/all`),
+				axios.delete(`${baseUrl}/api/private/clothing_items/all`),
+				axios.delete(`${baseUrl}/api/private/users`),
+			]);
+
+			// Check the HTTP status codes for each response
+			if (
+				deleteOutfitsResponse.status === 200 &&
+				deleteClothingItemsResponse.status === 200 &&
+				deleteUserResponse.status === 200
+			) {
+				// All requests were successful
+				// setShouldRefreshMainPage(true); // need to figure out what happens after the account has been deleted
+				// navigateToProfile();
+				showSuccessToast(toast.yourProfileHasBeenDeleted);
+			} else {
+				// At least one of the requests failed
+				showErrorToast(toast.anErrorHasOccurredWhileDeletingProfile);
+			}
+
+			setIsLoading(false);
 		} catch (error) {
 			setIsLoading(false);
 			axiosEndpointErrorHandler(error);

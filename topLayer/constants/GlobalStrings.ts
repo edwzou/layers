@@ -68,6 +68,8 @@ export const toast = {
 		'An error has occurred while deleting your item.',
 	anErrorHasOccurredWhileUpdatingProfile:
 		'An error has occurred while updating your profile.',
+	anErrorHasOccurredWhileDeletingProfile:
+		'An error has occurred while deleting your profile.',
 	anErrorHasOccurredWhileSendingFeedback:
 		'An error has occurred while sending your feedback.',
 	anErrorHasOccurredWhileCreatingProfile:
