@@ -13,6 +13,7 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
+import { updateUser } from '../../endpoints/getUser';
 import { useUpdateUser, useUser } from '../../Contexts/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -119,6 +120,7 @@ const SettingsPage: React.FC = () => {
 			updatedFields.private_option = formValues.private_option;
 		}
 		if (formValues.profile_picture !== profile_picture) {
+			console.log('pp: ', formValues.profile_picture);
 			updatedFields.profile_picture = formValues.profile_picture;
 		}
 
@@ -147,6 +149,7 @@ const SettingsPage: React.FC = () => {
 					// await AsyncStorage.setItem('session', sessionData);
 					// updateData(sessionData);
 					setShowSuccessUpdate(true);
+					// void updateUser(refreshUser);
 					refreshUser({
 						type: 'change fields',
 						...updatedFields,

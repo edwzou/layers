@@ -104,6 +104,7 @@ const setUserProps = (draft: User, action: UserReducerProps): User => {
 		draft.following = action.following;
 	}
 	if (action.profile_picture !== null && action.profile_picture !== undefined) {
+		console.log('pp2: ', action.profile_picture);
 		draft.profile_picture = action.profile_picture;
 	}
 	return draft;
