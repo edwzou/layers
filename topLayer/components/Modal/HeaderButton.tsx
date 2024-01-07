@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import { Text, Pressable, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StepOverTypes } from '../../constants/Enums';
@@ -9,7 +9,10 @@ export interface HeaderButtonPropsType {
 	handlePress: () => void;
 }
 
-export function headerButton({ type, handlePress }: HeaderButtonPropsType) {
+export function headerButton({
+	type,
+	handlePress,
+}: HeaderButtonPropsType): ReactElement {
 	switch (type) {
 		case StepOverTypes.send: {
 			return (
@@ -73,7 +76,7 @@ export function headerButton({ type, handlePress }: HeaderButtonPropsType) {
 			);
 		}
 		default:
-			return null; // Handle default case if needed
+			return <></>; // Handle default case if needed
 	}
 }
 

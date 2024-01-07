@@ -1,20 +1,20 @@
-import { StyleSheet, View, FlatList, Text, Dimensions } from 'react-native';
-import React, { useEffect } from 'react';
-
+import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
+import React, { type ReactElement } from 'react';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
 import OutfitCard from '../Card/OutfitCard';
 import ItemCell from '../Cell/ItemCell';
-
-import { ClothingTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-
-import { UserClothing, UserAllItems } from '../../pages/Match';
-import { UserOutfit } from '../../pages/OutfitView';
+import { type UserClothing } from '../../types/Clothing';
+import { type UserOutfit } from '../../types/Outfit';
 import Empty from './Empty';
+import { type UserAllItems } from '../../types/AllItems';
 
 interface CategorySlidePropsType {
-	// ex) [{"clothing_items": {"bottoms": [Array], "outerwear": [Array], "shoes": [Array], "tops": [Array]}, "created_at": "2023-10-14T07:15:07.986Z", "oid": "a11bdae9-9ecb-48f4-8ac2-802809034a0f", "title": "Weekend Casual", "uid": "890e7fad-1352-4998-8f2f-ff8b74b04b86"}]
+	// ex)
+	// [{"clothing_items": {"bottoms": [Array], "outerwear": [Array], "shoes": [Array], "tops": [Array]},
+	// "created_at": "2023-10-14T07:15:07.986Z", "oid": "a11bdae9-9ecb-48f4-8ac2-802809034a0f",
+	// "title": "Weekend Casual", "uid": "890e7fad-1352-4998-8f2f-ff8b74b04b86"}]
 	itemsData: UserAllItems;
 	handleItemChange: (item: any) => void;
 }
@@ -22,16 +22,16 @@ interface CategorySlidePropsType {
 const CategorySlide = ({
 	itemsData,
 	handleItemChange,
-}: CategorySlidePropsType) => {
+}: CategorySlidePropsType): ReactElement => {
 	const windowWidth = Dimensions.get('window').width;
 
-	const slide = () => {
+	const slide = (): ReactElement => {
 		if (itemsData.category === 'outfits') {
 			return (
 				<FlatList
 					data={itemsData.data as UserOutfit[]}
 					renderItem={({ item }) => {
-						//console.log(item)
+						// console.log(item)
 						return (
 							<OutfitCard
 								title={item.title}
@@ -57,13 +57,15 @@ const CategorySlide = ({
 				<FlatList
 					data={itemsData.data as UserClothing[]}
 					renderItem={({ item }) => {
-						//console.log(item);
+						// console.log(item);
 						return (
 							<View style={{ width: ITEM_SIZE(2) }}>
 								<ItemCell
 									imageUrl={item.image_url}
 									key={item.ciid}
-									onPress={() => handleItemChange(item)}
+									onPress={() => {
+										handleItemChange(item);
+									}}
 								/>
 							</View>
 						);
@@ -81,7 +83,9 @@ const CategorySlide = ({
 	};
 	return (
 		<>
-			{itemsData.data && itemsData.data.length !== 0 ? (
+			{itemsData.data !== null &&
+			itemsData.data !== undefined &&
+			itemsData.data.length !== 0 ? (
 				<View
 					style={[
 						styles.container,

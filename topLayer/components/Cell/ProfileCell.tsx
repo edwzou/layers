@@ -6,10 +6,10 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 import {
-	isMarkedPrivateUser,
+	isPrivateUser,
 	type markedPrivateUser,
 	type markedUser,
-} from '../../pages/Main/UserTypes';
+} from '../../types/User';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -41,15 +41,12 @@ const ProfileCell = ({
 	const setUserMarkFunc = useMarkUserFuncDispatch();
 
 	let userProcessed: markedUser;
-	if (isMarkedPrivateUser(user)) {
+	if (isPrivateUser(user)) {
 		userProcessed = {
 			...user,
-			first_name: user.username, // To be discussed
-			last_name: '',
 			email: '',
 			followers: [],
 			following: [],
-			profile_picture: '',
 		};
 	} else {
 		userProcessed = user;
@@ -57,12 +54,12 @@ const ProfileCell = ({
 
 	const handleIconPress = (user: markedUser): void => {
 		if (user.uid !== '') {
-			handleBookmarkPress();
+			handleBookmarkPress(user.marked);
 		}
 	};
 
-	const handleBookmarkPress = (): void => {
-		if (iconName === GlobalStyles.icons.bookmarkFill) {
+	const handleBookmarkPress = (marked: boolean): void => {
+		if (marked) {
 			void unFollowUser(userProcessed.uid);
 			setIconName(GlobalStyles.icons.bookmarkOutline);
 			userProcessed.marked = false;

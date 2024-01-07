@@ -1,13 +1,11 @@
 import React, { useRef, useState, useEffect, type ReactElement } from 'react';
 import { View, Pressable, StyleSheet, type FlatList, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
-
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
 import CategoryBar from '../../components/Category/CategoryBar';
 import CategorySlides from '../../components/Category/CategorySlides';
-
 import {
 	CategoryToIndex,
 	IndexToCategory,
@@ -18,23 +16,21 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
-import { type UserAllItems, type UserClothing } from '../Match';
-import { type UserOutfit } from '../OutfitView';
-import { type markedUser } from '../Main/UserTypes';
+import { type UserClothing } from '../../types/Clothing';
+import { type UserOutfit } from '../../types/Outfit';
+import { type markedUser } from '../../types/User';
 import {
 	getForeignAllClothingItems,
 	getForeignAllOutfits,
 } from '../../endpoints/wardrobe';
 import { useMarkUserFunc } from '../../Contexts/ForeignUserContext';
+import { type UserAllItems } from '../../types/AllItems';
 
 const ForeignProfile = ({ route }: any): ReactElement => {
-	console.log('Route: ', route, route.params);
-	// console.log('Params: ', route.params.markedUser);
-
 	const user: markedUser = route.params.markedUser;
+	// console.log('Route: ', route, route.params);
 
 	const markUserFunc = useMarkUserFunc();
-	// const [user, setUser] = useState<markedUser>(fetchedUser);
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
 	const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
 	const [allTops, setAllTops] = useState<UserClothing[]>([]);
@@ -110,11 +106,11 @@ const ForeignProfile = ({ route }: any): ReactElement => {
 
 	const handleBookmarkPress = (): void => {
 		if (iconName === GlobalStyles.icons.bookmarkFill) {
-			markUserFunc();
+			markUserFunc(true);
 			setIconName(GlobalStyles.icons.bookmarkOutline);
 			user.marked = false;
 		} else {
-			markUserFunc();
+			markUserFunc(false);
 			setIconName(GlobalStyles.icons.bookmarkFill);
 			user.marked = true;
 		}

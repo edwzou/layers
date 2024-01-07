@@ -1,9 +1,8 @@
 import React, { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ColorTags, TagAction } from '../../constants/Enums';
+import { TagAction } from '../../constants/Enums';
 import ColorTag from '../../components/Tag/ColorTag';
-import GlobalStyles from '../../constants/GlobalStyles';
 
 interface ColorTagsListPropsType {
 	data: string[];
@@ -25,7 +24,13 @@ const ColorTagsList = ({
 					<ColorTag
 						action={tagAction}
 						color={item}
-						onPress={onRemovePress ? () => onRemovePress(item) : undefined}
+						onPress={
+							onRemovePress !== null && onRemovePress !== undefined
+								? () => {
+										onRemovePress(item);
+								  } // eslint-disable-line no-mixed-spaces-and-tabs
+								: undefined
+						}
 					/>
 				</View>
 			))}

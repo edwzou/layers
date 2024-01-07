@@ -1,6 +1,6 @@
 import { LogBox } from 'react-native';
 import React, { StrictMode } from 'react';
-import AppProvider from './AppProvider';
+import AppProvider from './AppProviders';
 
 LogBox.ignoreLogs(['Require cycle:']);
 // ^ Ignores require cycle warnings. We decided to ignore these warnings for 2 reasons:

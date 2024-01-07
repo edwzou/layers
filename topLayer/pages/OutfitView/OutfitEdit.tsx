@@ -1,36 +1,23 @@
-import {
-	View,
-	StyleSheet,
-	Pressable,
-	Alert,
-	ActivityIndicator,
-} from 'react-native';
+import { View, StyleSheet, Pressable, Alert } from 'react-native';
 import React, {
-	useEffect,
 	useState,
 	useContext,
 	type MutableRefObject,
+	type ReactElement,
 } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
-
 import ItemCell from '../../components/Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import StackedTextbox from '../../components/Textbox/StackedTextbox';
-
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import { screenHeight } from '../../utils/modalMaxShow';
-import { type UserOutfit } from '.';
 import { outfitEdit, toast } from '../../constants/GlobalStrings';
-
 import Icon from 'react-native-remix-icon';
-import { type UserClothing } from '../../pages/Match';
-
+import { type UserClothing } from '../../types/Clothing';
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { MainPageContext } from '../../pages/Main/MainPage';
-
-import Toast from 'react-native-toast-message';
 import Header from '../../components/Header/Header';
 import { StepOverTypes } from '../../constants/Enums';
 import { Loading } from '../../components/Loading/Loading';
@@ -61,30 +48,18 @@ const OutfitEdit = ({
 	clothingItems,
 	titleRef,
 	navigateToProfile,
-}: OutfitViewPropsType) => {
+}: OutfitViewPropsType): ReactElement => {
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
 	const [text, setText] = useState(title);
-	const [rawData, setRawData] = useState<UserOutfit[]>([]);
-	const [outfitData, setOutfitData] = useState<UserOutfit[]>([]);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
-	const onInputChange = (text: string) => {
+	const onInputChange = (text: string): void => {
 		setText(text);
 		titleRef.current = text;
-		// setTitle(text)
-		// matchName(text);
 	};
 
-	// useEffect(() => {
-	// 	setRawData([outerwear, tops, bottoms, shoes])
-	// }, [outerwear, tops, bottoms, shoes])
-
-	useEffect(() => {
-		setOutfitData(rawData.filter(Boolean));
-	}, [rawData]);
-
-	const confirmDeletion = () => {
+	const confirmDeletion = (): void => {
 		Alert.alert(outfitEdit.deleteOutfit, outfitEdit.youCannotUndoThisAction, [
 			{
 				text: outfitEdit.cancel,
@@ -92,14 +67,16 @@ const OutfitEdit = ({
 			},
 			{
 				text: outfitEdit.delete,
-				onPress: handleDelete,
+				onPress: () => {
+					void handleDelete();
+				},
 				style: 'destructive',
 			},
 		]);
 	};
 
 	// Only updates title
-	const handleUpdate = async () => {
+	const handleUpdate = async (): Promise<void> => {
 		const updatedTitle = titleRef.current;
 
 		setIsLoading(true); // Start loading
@@ -109,7 +86,7 @@ const OutfitEdit = ({
 			});
 
 			if (response.status === 200) {
-				//alert(`You have updated: ${JSON.stringify(response.data)}`);
+				// alert(`You have updated: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
 				showSuccessToast(toast.yourOutfitHasBeenUpdated);
@@ -124,7 +101,7 @@ const OutfitEdit = ({
 		}
 	};
 
-	const handleDelete = async () => {
+	const handleDelete = async (): Promise<void> => {
 		setIsLoading(true); // Start loading
 		try {
 			const response = await axios.delete(
@@ -132,7 +109,7 @@ const OutfitEdit = ({
 			);
 
 			if (response.status === 200) {
-				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
+				// alert(`You have deleted: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
 				showSuccessToast(toast.yourOutfitHasBeenDeleted);
@@ -161,7 +138,7 @@ const OutfitEdit = ({
 				<StackedTextbox
 					label={outfitEdit.outfitName}
 					onFieldChange={onInputChange}
-					value={title ? title : text}
+					value={title ?? text}
 				/>
 				<FlatList
 					data={clothingItems}

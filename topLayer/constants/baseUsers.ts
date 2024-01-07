@@ -1,4 +1,4 @@
-import { type formUser, type User } from '../pages/Main/UserTypes';
+import { type formUser, type User } from '../types/User';
 
 export const defaultFormUser: formUser = {
 	first_name: '',

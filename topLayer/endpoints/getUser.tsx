@@ -1,8 +1,11 @@
 import { baseUrl } from '../utils/apiUtils';
 import axios from 'axios';
-import { axiosEndpointErrorHandler } from '../utils/ErrorHandlers';
+import {
+	axiosEndpointErrorHandler,
+	axiosEndpointErrorHandlerNoAlert,
+} from '../utils/ErrorHandlers';
 import { type Dispatch } from 'react';
-import { type User } from '../pages/Main/UserTypes';
+import { type User } from '../types/User';
 import { nullUser } from '../constants/baseUsers';
 import { type UserReducerProps } from '../Contexts/UserContext';
 
@@ -29,7 +32,7 @@ const returnGetUser = async (): Promise<User> => {
 			throw Error('could not get user');
 		}
 	} catch (error) {
-		axiosEndpointErrorHandler(error);
+		axiosEndpointErrorHandlerNoAlert(error);
 	}
 	return nullUser;
 };

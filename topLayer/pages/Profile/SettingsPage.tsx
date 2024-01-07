@@ -1,27 +1,10 @@
 import { View, StyleSheet } from 'react-native';
-import React, {
-	Dispatch,
-	SetStateAction,
-	createContext,
-	useContext,
-	useState,
-} from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
+import { usePhoto, usePhotoUpdate } from '../../Contexts/CameraContext';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
-import Settings from './Settings';
-import {
-	NavigationBack,
-	StackNavigation,
-	StepOverTypes,
-} from '../../constants/Enums';
-import {
-	Control,
-	FieldErrors,
-	UseFormHandleSubmit,
-	UseFormSetValue,
-	useForm,
-} from 'react-hook-form';
-import { AppContext } from '../../AppControl/AppHome';
+import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import { toast } from '../../constants/GlobalStrings';
@@ -32,6 +15,11 @@ import {
 } from '../../components/Toasts/Toasts';
 import { useUpdateUser, useUser } from '../../Contexts/UserContext';
 import { updateUser } from '../../endpoints/getUser';
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from '../../utils/StackNavigation';
+import SettingsFields from '../../components/Settings/SettingsFields';
+import { Loading } from '../../components/Loading/Loading';
 
 interface FormValues {
 	first_name: string;
@@ -43,29 +31,10 @@ interface FormValues {
 	profile_picture: string;
 }
 
-// Define the context type
-type SettingsPageContextType = {
-	control: Control<FormValues>;
-	setValue: UseFormSetValue<FormValues>;
-	errors: FieldErrors<FormValues>;
-	showSuccessUpdate: boolean;
-	setShowSuccessUpdate: Dispatch<SetStateAction<boolean>>;
-	isLoading: boolean;
-};
-
-// Create the context with the defined type
-export const SettingsPageContext = createContext<SettingsPageContextType>({
-	control: {} as Control<FormValues>,
-	setValue: {} as UseFormSetValue<FormValues>,
-	errors: {} as FieldErrors<FormValues>,
-	showSuccessUpdate: false,
-	setShowSuccessUpdate: () => {},
-	isLoading: false,
-});
-
 const SettingsPage: React.FC = () => {
 	const data = useUser();
 	const refreshUser = useUpdateUser();
+	const resetPhoto = usePhotoUpdate();
 
 	const {
 		first_name,
@@ -78,6 +47,7 @@ const SettingsPage: React.FC = () => {
 
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const defaultForm = {
 		first_name: first_name,
@@ -104,9 +74,31 @@ const SettingsPage: React.FC = () => {
 			type: 'logout',
 		});
 	};
+	const profile_picture = usePhoto();
+
+	useEffect(() => {
+		setValue('profile_picture', profile_picture);
+	}, [profile_picture]);
+
+	useEffect(() => {
+		if (showSuccessUpdate) {
+			navigation.goBack();
+			setShowSuccessUpdate(false);
+		}
+	}, [showSuccessUpdate]);
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('beforeRemove', () => {
+			resetPhoto({
+				type: 'new photo',
+				image: data.pp_url,
+			});
+		});
+		return unsubscribe;
+	});
 
 	const onSubmit = async (formValues: FormValues | any): Promise<void> => {
-		console.log('values: ', formValues.first_name, formValues.last_name);
+		console.log('values: ', formValues.profile_picture.substring(0, 10));
 		if (data === null || data === undefined) {
 			console.log('User data is not available.');
 			return;
@@ -181,39 +173,55 @@ const SettingsPage: React.FC = () => {
 	};
 
 	return (
-		<SettingsPageContext.Provider
-			value={{
-				control,
-				setValue,
-				errors,
-				showSuccessUpdate,
-				setShowSuccessUpdate,
-				isLoading,
-			}}
-		>
-			<View style={styles.container}>
-				<Header
-					text={StackNavigation.Settings}
-					leftButton={true}
-					leftStepOverType={StepOverTypes.logout}
-					leftButtonAction={handleLogout}
-					rightButton={true}
-					rightStepOverType={StepOverTypes.update}
-					rightButtonAction={() => {
-						void handleSubmit(onSubmit)();
-					}}
-				/>
-				<View style={{ gap: 40 }}>
-					<View style={styles.settingsContainer}>
-						<Settings />
-					</View>
-				</View>
-			</View>
-		</SettingsPageContext.Provider>
+		<View style={styles.container}>
+			<Header
+				text={StackNavigation.Settings}
+				leftButton={true}
+				leftStepOverType={StepOverTypes.logout}
+				leftButtonAction={handleLogout}
+				rightButton={true}
+				rightStepOverType={StepOverTypes.update}
+				rightButtonAction={() => {
+					void handleSubmit(onSubmit)();
+				}}
+			/>
+			<SettingsFields
+				control={control}
+				setValue={setValue}
+				errors={errors}
+				profile_picture={profile_picture}
+			/>
+			{isLoading && <Loading />}
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	error: {
+		color: GlobalStyles.colorPalette.danger[500],
+	},
+	camera: {
+		flex: 1,
+	},
+	modalGroup: {
+		backgroundColor: GlobalStyles.colorPalette.primary[100],
+		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
+		gap: 5,
+		width: '95%',
+	},
+	modalSelection: {
+		width: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 15,
+	},
+	modalButtons: {
+		width: '95%',
+		alignItems: 'center',
+		backgroundColor: GlobalStyles.colorPalette.primary[100],
+		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
+		padding: 15,
+	},
 	container: {
 		flex: 1,
 		gap: 15,

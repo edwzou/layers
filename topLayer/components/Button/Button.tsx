@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, type ViewStyle } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
-import React from 'react';
+import React, { type ReactElement } from 'react';
 
 interface ButtonPropsType {
 	text: string;
@@ -16,7 +16,7 @@ const Button = ({
 	style,
 	disabled = false,
 	bgColor,
-}: ButtonPropsType) => {
+}: ButtonPropsType): ReactElement => {
 	return (
 		<Pressable
 			style={[
@@ -29,7 +29,6 @@ const Button = ({
 					shadowColor: disabled
 						? GlobalStyles.colorPalette.primary[200]
 						: bgColor,
-
 				},
 				GlobalStyles.utils.buttonShadow,
 			]}
@@ -57,7 +56,7 @@ export default Button;
 const styles = StyleSheet.create({
 	button: {
 		...GlobalStyles.utils.buttonShape,
-		...GlobalStyles.utils.buttonShadow
+		...GlobalStyles.utils.buttonShadow,
 	},
 	text: {
 		...GlobalStyles.typography.body,

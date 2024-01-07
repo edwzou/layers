@@ -22,6 +22,8 @@ interface HeaderPropType {
 	rightButtonAction?: anyFunc;
 	leftButtonAction?: anyFunc;
 	rightButtonDisabled?: boolean;
+	rightButtonNavigateTo?: number;
+	leftButtonNavigateTo?: number;
 }
 
 const Header: React.FC<HeaderPropType> = ({
@@ -35,6 +37,8 @@ const Header: React.FC<HeaderPropType> = ({
 	rightButtonAction,
 	leftButtonAction,
 	rightButtonDisabled = false,
+	rightButtonNavigateTo = -1,
+	leftButtonNavigateTo = -1,
 }: HeaderPropType) => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { navigationArray } = useContext(MainPageContext);
@@ -45,7 +49,9 @@ const Header: React.FC<HeaderPropType> = ({
 		if (rightBack === true) {
 			navigation.goBack();
 		}
-		navigationArray[0]();
+		if (rightButtonNavigateTo !== -1) {
+			navigationArray[rightButtonNavigateTo]();
+		}
 	};
 	const handleLeftPress = (): void => {
 		if (leftButtonAction !== null && leftButtonAction !== undefined) {
@@ -54,7 +60,9 @@ const Header: React.FC<HeaderPropType> = ({
 		if (leftBack === true) {
 			navigation.goBack();
 		}
-		navigationArray[0]();
+		if (leftButtonNavigateTo !== -1) {
+			navigationArray[leftButtonNavigateTo]();
+		}
 	};
 	return (
 		<SafeAreaView>

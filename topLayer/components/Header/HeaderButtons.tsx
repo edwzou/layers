@@ -22,11 +22,16 @@ export function headerButtons({
 			return (
 				<Pressable
 					onPress={handlePress}
+					disabled={disabled}
 					style={left ? styles.leftButton : styles.rightButton}
 				>
 					<Icon
 						name={GlobalStyles.icons.sendOutline}
-						color={GlobalStyles.colorPalette.info[500]}
+						color={
+							disabled
+								? GlobalStyles.colorPalette.info[900]
+								: GlobalStyles.colorPalette.info[500]
+						}
 						size={GlobalStyles.sizing.icon.regular}
 					/>
 				</Pressable>

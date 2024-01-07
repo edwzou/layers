@@ -1,21 +1,14 @@
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import {
-	View,
-	StyleSheet,
-	Pressable,
-	Keyboard,
-	Text,
-	ActivityIndicator,
-	Alert,
-} from 'react-native';
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import Button from '../../components/Button/Button';
-import {
-	ClothingTypes,
-	StackNavigation,
-	TagAction,
-} from '../../constants/Enums';
+import { View, StyleSheet, Pressable, Alert } from 'react-native';
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	useContext,
+	type ReactElement,
+} from 'react';
+import { ClothingTypes, TagAction, StepOverTypes } from '../../constants/Enums';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import ItemCell from '../../components/Cell/ItemCell';
@@ -28,18 +21,12 @@ import { capitalizeFirstLetter } from '../../utils/misc';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
-import { UserClothing } from '../Match';
+import { type UserClothing } from '../../types/Clothing';
 import { useForm, Controller } from 'react-hook-form';
 import Icon from 'react-native-remix-icon';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from 'utils/StackNavigation';
-
 import Header from '../../components/Header/Header';
-import { StepOverTypes } from '../../constants/Enums';
 import { MainPageContext } from '../../pages/Main/MainPage';
-import Toast from 'react-native-toast-message';
 import { toast, itemEdit } from '../../constants/GlobalStrings';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { Loading } from '../../components/Loading/Loading';
@@ -62,14 +49,22 @@ interface FormValues {
 	brands: string[];
 }
 
-type UpdateData = {
+interface UpdateData {
 	category?: string;
 	title?: string;
 	size?: string;
 	color?: string[];
-};
+}
 
-const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
+interface Sizes {
+	label: string;
+	value: string;
+}
+
+const ItemEdit = ({
+	clothingItem,
+	navigateToProfile,
+}: ItemEditPropsType): ReactElement => {
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
 	// const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -81,11 +76,9 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 
 	const [sizeOpen, setSizeOpen] = useState(false);
 	// sets the size value to be stored in the database
-	const [sizeValue, setSizeValue] = useState(
-		clothingItem.size ? clothingItem.size : ''
-	);
+	const [sizeValue, setSizeValue] = useState(clothingItem.size ?? '');
 	// helper function for setting the size options based on given clothing category
-	const helpSetSizes = (category: string) => {
+	const helpSetSizes = (category: string): Sizes[] => {
 		if (
 			category === ClothingTypes.outerwear ||
 			category === ClothingTypes.tops
@@ -190,7 +183,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 	const [itemTypeOpen, setItemTypeOpen] = useState(false);
 	// sets the item type value to be stored in the database
 	const [itemTypeValue, setItemTypeValue] = useState(
-		clothingItem.category ? clothingItem.category : ''
+		clothingItem.category ?? ''
 	);
 	// sets the item type options
 	const [itemTypes, setItemTypes] = useState([
@@ -212,16 +205,11 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 		},
 	]);
 
-	const {
-		control,
-		handleSubmit,
-		setValue,
-		formState: { dirtyFields, errors },
-	} = useForm({
+	const { control, handleSubmit, setValue } = useForm({
 		defaultValues: {
 			category: clothingItem.category,
 			title: clothingItem.title,
-			//brands: [],
+			// brands: [],
 			size: clothingItem.size,
 			color: clothingItem.color,
 		},
@@ -241,7 +229,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 		setValue('color', currentColorTags);
 	}, [currentColorTags]);
 
-	const confirmDeletion = () => {
+	const confirmDeletion = (): void => {
 		Alert.alert(itemEdit.deleteItem, itemEdit.youCannotUndoThisAction, [
 			{
 				text: itemEdit.cancel,
@@ -249,21 +237,30 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 			},
 			{
 				text: itemEdit.delete,
-				onPress: handleDelete,
+				onPress: () => {
+					void handleDelete();
+				},
 				style: 'destructive',
 			},
 		]);
 	};
 
-	const handleUpdate = async (values: FormValues | any) => {
+	const handleUpdate = async (values: FormValues | any): Promise<void> => {
 		const dataToUpdate: UpdateData = {};
 
 		// Add fields to dataToUpdate only if they have been set
-		if (values.category !== clothingItem.category)
+		if (values.category !== clothingItem.category) {
 			dataToUpdate.category = values.category;
-		if (values.title !== clothingItem.title) dataToUpdate.title = values.title;
-		if (values.size !== clothingItem.size) dataToUpdate.size = values.size;
-		if (values.color !== clothingItem.color) dataToUpdate.color = values.color;
+		}
+		if (values.title !== clothingItem.title) {
+			dataToUpdate.title = values.title;
+		}
+		if (values.size !== clothingItem.size) {
+			dataToUpdate.size = values.size;
+		}
+		if (values.color !== clothingItem.color) {
+			dataToUpdate.color = values.color;
+		}
 
 		setIsLoading(true); // Start loading
 		try {
@@ -291,7 +288,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 		}
 	};
 
-	const handleDelete = async () => {
+	const handleDelete = async (): Promise<void> => {
 		setIsLoading(true); // Start loading
 		try {
 			const response = await axios.delete(
@@ -299,7 +296,7 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 			);
 
 			if (response.status === 200) {
-				//alert(`You have deleted: ${JSON.stringify(response.data)}`);
+				// alert(`You have deleted: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
 				showSuccessToast(toast.yourItemHasBeenDeleted);
@@ -310,19 +307,19 @@ const ItemEdit = ({ clothingItem, navigateToProfile }: ItemEditPropsType) => {
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {
 			setIsLoading(false); // Stop loading on error
-			void axiosEndpointErrorHandler(error);
+			axiosEndpointErrorHandler(error);
 			alert(error);
 		}
 	};
 
-	const handleOnRemovePress = (colorToDelete: string) => {
+	const handleOnRemovePress = (colorToDelete: string): void => {
 		const updatedColorTags = currentColorTags.filter(
 			(color: string) => color !== colorToDelete
 		);
 		setColorTags(updatedColorTags);
 	};
 
-	const handleOnNewColorPress = (colorToAdd: string) => {
+	const handleOnNewColorPress = (colorToAdd: string): void => {
 		if (!currentColorTags.some((color: string) => color === colorToAdd)) {
 			setColorTags([...currentColorTags, colorToAdd]);
 		}

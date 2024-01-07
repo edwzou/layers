@@ -13,13 +13,15 @@ interface MarkUserFuncProviderProps {
 
 interface MarkUserFuncUpdateProps {
 	type: string;
-	func: () => void;
+	func: (marked: boolean) => void;
 }
 
+type StateType = (marked: boolean) => void;
+
 const markUserFuncReducer = (
-	state: () => void,
+	state: StateType,
 	action: MarkUserFuncUpdateProps
-): (() => void) => {
+): ((marked: boolean) => void) => {
 	switch (action.type) {
 		case 'new user': {
 			return action.func;
@@ -31,7 +33,9 @@ const markUserFuncReducer = (
 };
 
 // eslint-disable-next-line @typescript-eslint/no-extra-parens
-export const MarkUserFuncContext = createContext<() => void>((): void => {});
+export const MarkUserFuncContext = createContext<StateType>(
+	(marked: boolean) => {}
+);
 export const MarkUserFuncDispatchContext = createContext<
 	Dispatch<MarkUserFuncUpdateProps>
 >((() => {}) as Dispatch<MarkUserFuncUpdateProps>);
@@ -39,7 +43,10 @@ export const MarkUserFuncDispatchContext = createContext<
 export function MarkUserFuncProvider({
 	children,
 }: MarkUserFuncProviderProps): ReactElement {
-	const [tasks, dispatch] = useReducer(markUserFuncReducer, () => {});
+	const [tasks, dispatch] = useReducer(
+		markUserFuncReducer,
+		(marked: boolean) => {}
+	);
 
 	return (
 		<MarkUserFuncContext.Provider value={tasks}>
@@ -50,7 +57,7 @@ export function MarkUserFuncProvider({
 	);
 }
 
-export const useMarkUserFunc = (): (() => void) => {
+export const useMarkUserFunc = (): StateType => {
 	return useContext(MarkUserFuncContext);
 };
 

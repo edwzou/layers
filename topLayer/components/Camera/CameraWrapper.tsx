@@ -1,30 +1,18 @@
-import React, {
-	type Dispatch,
-	type ReactElement,
-	type SetStateAction,
-	useState,
-} from 'react';
+import React, { type ReactElement, useState } from 'react';
 import CameraComponent from './Camera';
 import ItemCreate from '../../pages/ItemView/ItemCreate';
 import { Stack, type StackTypes } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StackNavigation } from '../../constants/Enums';
-
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const dummyId = 'createID: ';
 let createCount = 0;
 
-interface CameraWrapperProps {
-	setPfpUrl?: Dispatch<SetStateAction<string>>;
-	returnToPfp: boolean;
-}
-
-const CameraWrapper = ({
-	setPfpUrl,
-	returnToPfp,
-}: CameraWrapperProps): ReactElement => {
+const CameraWrapper = ({ route }: any): ReactElement => {
+	const returnToPfp = route.params.returnToPfp;
+	// console.log('params: ', route);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [clothingItem, setClothingItem] = useState({
@@ -69,7 +57,6 @@ const CameraWrapper = ({
 			data={updatePhoto}
 			returnToNavigation={navigation}
 			returnToPfp={returnToPfp}
-			setPfpUrl={setPfpUrl}
 		/>
 	);
 

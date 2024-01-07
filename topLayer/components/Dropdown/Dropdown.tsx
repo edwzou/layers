@@ -1,10 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, {
+	type Dispatch,
+	type ReactElement,
+	type SetStateAction,
+} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Icon from 'react-native-remix-icon';
 
-DropDownPicker.setListMode("SCROLLVIEW");
+DropDownPicker.setListMode('SCROLLVIEW');
 
 interface DropdownType {
 	// !!! Fix Types
@@ -25,15 +29,21 @@ const Dropdown = ({
 	setValue,
 	items,
 	setItems,
-}: DropdownType) => {
+}: DropdownType): ReactElement => {
 	return (
-		<View style={[
-			styles.container,
-			open ? [{
-				shadowColor: GlobalStyles.colorPalette.primary[500],
-
-			}, GlobalStyles.utils.dropdownShadow] : undefined
-		]}>
+		<View
+			style={[
+				styles.container,
+				open
+					? [
+							{
+								shadowColor: GlobalStyles.colorPalette.primary[500],
+							},
+							GlobalStyles.utils.dropdownShadow,
+					  ] // eslint-disable-line no-mixed-spaces-and-tabs
+					: undefined,
+			]}
+		>
 			<Text
 				style={[
 					{
@@ -72,7 +82,7 @@ const Dropdown = ({
 				dropDownContainerStyle={styles.dropdown}
 				style={styles.dropdown}
 				placeholder=""
-				dropDownDirection='TOP'
+				dropDownDirection="TOP"
 			/>
 		</View>
 	);

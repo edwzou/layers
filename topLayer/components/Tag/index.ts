@@ -1,6 +1,6 @@
 export interface TagActionType {
 	static: string;
-	push: string,
+	push: string;
 	add: string;
 	remove: string;
 }

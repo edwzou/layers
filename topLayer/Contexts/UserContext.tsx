@@ -1,4 +1,4 @@
-import { type User } from '../pages/Main/UserTypes';
+import { type User } from '../types/User';
 import {
 	createContext,
 	type ReactNode,

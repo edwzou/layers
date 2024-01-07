@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { type ReactElement } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
-
 import GlobalStyles from '../../constants/GlobalStyles';
-
 import ItemCell from '../Cell/ItemCell';
 import { screenWidth } from '../../utils/modalMaxShow';
-import { ITEM_SIZE } from '../../utils/GapCalc';
-import { type UserClothing } from '../../pages/Match';
+import { type UserClothing } from '../../types/Clothing';
 
 const itemCellSize = (screenWidth - 60) / 4;
 
@@ -20,7 +17,7 @@ export default function OutfitCard({
 	title,
 	clothingItems,
 	onPress,
-}: OutfitCardPropsType) {
+}: OutfitCardPropsType): ReactElement {
 	const truncatedTitle = title.length > 70 ? title.slice(0, 70) + '...' : title;
 	const clothingArray = Object.values(clothingItems).flat().slice(0, 4);
 

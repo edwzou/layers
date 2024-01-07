@@ -1,18 +1,12 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { type ReactElement, useCallback, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-
 import { FlatList } from 'react-native-gesture-handler';
-import { type UserClothing } from '.';
-
+import { type UserClothing } from '../../types/Clothing';
 import ItemCell from '../../components/Cell/ItemCell';
 import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
-
 import Icon from 'react-native-remix-icon';
-
-import img from '../../assets/icon.png';
-//import { ClothingCategoryTypes } from 'constants/Enums';
 
 const SNAP_ITEM_SIZE = ITEM_SIZE() * 1.15;
 const HORIZONTAL_SPACING = ITEM_SIZE() * 0.15; // Cell gap
@@ -25,7 +19,11 @@ interface SliderPropsType {
 	category: string;
 }
 
-const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
+const Slider = ({
+	data,
+	selectedIndex,
+	category,
+}: SliderPropsType): ReactElement => {
 	const emptyItem: UserClothing = {
 		ciid: '',
 		image_url: '',
@@ -45,7 +43,14 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 
 	const handleOnViewableItemsChanged = useCallback(({ viewableItems }: any) => {
 		const itemsInView = viewableItems.filter(
-			({ item }: any) => (item.image_url && item.category) || item.ciid === ''
+			({ item }: { item: UserClothing }) =>
+				(item.image_url !== null &&
+					item.image_url !== undefined &&
+					item.image_url !== '' &&
+					item.category !== null &&
+					item.category !== undefined &&
+					item.category !== '') ||
+				item.ciid === ''
 		);
 
 		if (itemsInView.length === 0) {
@@ -59,7 +64,10 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 		selectedIndex(category, rawItemIndex);
 	}, []);
 
-	const getItemLayout = (_: any, index: number) => ({
+	const getItemLayout = (
+		unused: any,
+		index: number
+	): { length: number; offset: number; index: number } => ({
 		length: SNAP_ITEM_SIZE,
 		offset: SNAP_ITEM_SIZE * (index - 1),
 		index,
@@ -70,14 +78,24 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 			<FlatList
 				ref={flatListRef}
 				data={
-					data && [
-						...data.slice(0, data.length - 1),
-						emptyItem,
-						...data.slice(data.length - 1, data.length),
-					]
+					data !== null && data !== undefined
+						? [
+								...data.slice(0, data.length - 1),
+								emptyItem,
+								...data.slice(data.length - 1, data.length),
+						  ] // eslint-disable-line no-mixed-spaces-and-tabs
+						: null
 				}
 				renderItem={({ item, index }) => {
-					if ((!item.image_url || !item.category) && item.ciid !== '') {
+					if (
+						(item.image_url === null ||
+							item.image_url === undefined ||
+							item.image_url === '' ||
+							item.category === null ||
+							item.category === undefined ||
+							item.category === '') &&
+						item.ciid !== ''
+					) {
 						return <View style={{ width: EMPTY_ITEM_SIZE }} />;
 					}
 
@@ -94,12 +112,18 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 					});
 
 					return (
-						<View style={[
-							{
-								width: ITEM_SIZE(),
-							},
-							data && index !== data?.length - 1 && { marginRight: HORIZONTAL_SPACING } // adds a horizontal spacing to the right of every component EXCEPT for the last oen
-						]}>
+						<View
+							style={[
+								{
+									width: ITEM_SIZE(),
+								},
+								data !== null &&
+									data !== undefined &&
+									index !== data?.length - 1 && {
+										marginRight: HORIZONTAL_SPACING,
+									}, // adds a horizontal spacing to the right of every component EXCEPT for the last oen
+							]}
+						>
 							<Animated.View
 								style={[
 									{
@@ -129,7 +153,7 @@ const Slider = ({ data, selectedIndex, category }: SliderPropsType) => {
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				keyExtractor={(data, index) => {
-					if (data.ciid) {
+					if (data?.ciid !== undefined && data?.ciid !== null) {
 						return data.ciid;
 					} else {
 						return index;

@@ -1,5 +1,3 @@
-import { type UserClothing } from '../Match';
-
 export interface User {
 	uid: string;
 	first_name: string;
@@ -29,27 +27,24 @@ export interface markedUser extends User {
 export interface privateUser {
 	uid: string;
 	username: string;
+	first_name: string;
+	last_name: string;
 	private_option: boolean;
+	profile_picture: string;
 }
 
 export interface markedPrivateUser extends privateUser {
 	marked: boolean;
 }
 
-export interface userToFetch {
-	uid: string;
-	marked: boolean;
-}
-
-export interface UserItems {
-	category: string;
-	data: UserClothing[];
-}
-
-export const isMarkedPrivateUser = (obj: any): obj is markedPrivateUser => {
-	return !('first_name' in obj);
+export const isMarkedUser = (
+	obj: any
+): obj is markedUser | markedPrivateUser => {
+	return obj.marked !== null && obj.marked !== undefined;
 };
-// export interface UserItems {
-//     category: string,
-//     data: UserClothing[] | UserOutfit[],
-// }
+
+export const isPrivateUser = (
+	obj: any
+): obj is markedPrivateUser | privateUser => {
+	return obj.private_option === true;
+};
