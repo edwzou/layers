@@ -41,10 +41,10 @@ export function CameraProvider({ children }: PhotoProviderProps): ReactElement {
 	const [tasks, dispatch] = useReducer(photoReducer, '');
 	const user = useUser();
 	useEffect(() => {
-		if (tasks !== user.pp_url) {
+		if (tasks !== user.profile_picture) {
 			dispatch({
 				type: 'new photo',
-				image: user.pp_url,
+				image: user.profile_picture,
 			});
 		}
 	}, [user]);

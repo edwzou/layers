@@ -40,6 +40,7 @@ CREATE TABLE backend_schema.user (
     following UUID[] NOT NULL,
     profile_picture VARCHAR(36)
 );
+
 CREATE TABLE backend_schema.outfit (
     oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     title VARCHAR(255) NOT NULL, 

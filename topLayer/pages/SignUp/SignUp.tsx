@@ -1,17 +1,10 @@
 import axios from 'axios';
-import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import { useForm } from 'react-hook-form';
+import { StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import StackedTextBox from '../../components/Textbox/StackedTextbox';
 import Button from '../../components/Button/Button';
-import { ITEM_SIZE } from '../../utils/GapCalc';
-import RadioButton from '../../components/RadioButton/RadioButton';
 import GlobalStyles from '../../constants/GlobalStyles';
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import { baseUrl } from '../../utils/apiUtils';
-import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from '../../utils/StackNavigation';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import {
 	showErrorToast,
@@ -35,7 +28,6 @@ interface FormValues {
 }
 
 const SignUp: React.FC = () => {
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const updateUser = useUpdateUser();
 	const profile_picture = usePhoto();
 

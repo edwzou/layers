@@ -14,7 +14,6 @@ import {
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
 import { useUpdateUser, useUser } from '../../Contexts/UserContext';
-import { updateUser } from '../../endpoints/getUser';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -74,11 +73,11 @@ const SettingsPage: React.FC = () => {
 			type: 'logout',
 		});
 	};
-	const profile_picture = usePhoto();
+	const photo = usePhoto();
 
 	useEffect(() => {
-		setValue('profile_picture', profile_picture);
-	}, [profile_picture]);
+		setValue('profile_picture', photo);
+	}, [photo]);
 
 	useEffect(() => {
 		if (showSuccessUpdate) {
@@ -91,40 +90,35 @@ const SettingsPage: React.FC = () => {
 		const unsubscribe = navigation.addListener('beforeRemove', () => {
 			resetPhoto({
 				type: 'new photo',
-				image: data.pp_url,
+				image: profile_picture,
 			});
 		});
 		return unsubscribe;
 	});
 
 	const onSubmit = async (formValues: FormValues | any): Promise<void> => {
-		console.log('values: ', formValues.profile_picture.substring(0, 10));
-		if (data === null || data === undefined) {
-			console.log('User data is not available.');
-			return;
-		}
-
+		// console.log('values: ', formValues.profile_picture.substring(0, 10));
 		const updatedFields: Partial<FormValues> = {};
 
-		if (formValues.first_name !== data.first_name) {
+		if (formValues.first_name !== first_name) {
 			updatedFields.first_name = formValues.first_name;
 		}
-		if (formValues.last_name !== data.last_name) {
+		if (formValues.last_name !== last_name) {
 			updatedFields.last_name = formValues.last_name;
 		}
-		if (formValues.email !== data.email) {
+		if (formValues.email !== email) {
 			updatedFields.email = formValues.email;
 		}
-		if (formValues.username !== data.username) {
+		if (formValues.username !== username) {
 			updatedFields.username = formValues.username;
 		}
 		if (formValues.password !== '**********') {
 			updatedFields.password = formValues.password;
 		}
-		if (formValues.private_option !== data.private_option) {
+		if (formValues.private_option !== private_option) {
 			updatedFields.private_option = formValues.private_option;
 		}
-		if (formValues.profile_picture !== data.profile_picture) {
+		if (formValues.profile_picture !== profile_picture) {
 			updatedFields.profile_picture = formValues.profile_picture;
 		}
 
@@ -189,7 +183,7 @@ const SettingsPage: React.FC = () => {
 				control={control}
 				setValue={setValue}
 				errors={errors}
-				profile_picture={profile_picture}
+				profile_picture={photo}
 			/>
 			{isLoading && <Loading />}
 		</View>

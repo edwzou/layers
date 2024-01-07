@@ -81,12 +81,12 @@ export const userSearchMarked = async (
 					username: user.username,
 					first_name: user.first_name,
 					last_name: user.last_name,
-					pp_url: user.pp_url,
+					profile_picture: user.profile_picture,
 					private_option: user.private_option,
 					marked: marked,
 				};
 				void asyncHandler(
-					dummy.pp_url,
+					dummy.profile_picture,
 					dummy,
 					asyncManager,
 					downloadConditions.profile_picture
@@ -141,11 +141,11 @@ export const userSearch = async (
 					username: user.username,
 					first_name: user.first_name,
 					last_name: user.last_name,
-					pp_url: user.pp_url,
+					profile_picture: user.profile_picture,
 					private_option: user.private_option,
 				};
 				void asyncHandler(
-					dummy.pp_url,
+					dummy.profile_picture,
 					dummy,
 					asyncManager,
 					downloadConditions.profile_picture
