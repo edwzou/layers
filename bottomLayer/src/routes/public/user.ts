@@ -14,18 +14,21 @@ router.get('/:uid', (req: Request, res: Response): void => {
 				[userId]
 			);
 			let user = query.rows[0];
+			const async1 = downloadURLFromS3(user.profile_picture);
 			if (user.private_option === true) {
 				const dummy = {
 					uid: user.uid,
 					username: user.username,
+					first_name: user.first_name,
+					last_name: user.last_name,
+					profile_picture: user.profile_picture,
 					private_option: user.private_option,
 				};
 				user = dummy;
 			} else {
-				const async1 = downloadURLFromS3(user.profile_picture);
 				delete user.password;
-				user.profile_picture = await async1;
 			}
+			user.profile_picture = await async1;
 
 			responseCallbackGet(null, user, res, 'User');
 		} catch (error) {
