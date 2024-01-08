@@ -13,8 +13,8 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
-import { useUpdateUser, useUser } from '../../Contexts/UserContext';
 import { updateUser } from '../../endpoints/getUser';
+import { useUpdateUser, useUser } from '../../Contexts/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -44,7 +44,7 @@ const SettingsPage: React.FC = () => {
 		email,
 		username,
 		private_option,
-		pp_url,
+		profile_picture,
 	} = data;
 
 	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
@@ -59,7 +59,7 @@ const SettingsPage: React.FC = () => {
 		username: username,
 		password: '**********',
 		private_option: private_option,
-		profile_picture: pp_url,
+		profile_picture: profile_picture,
 	};
 
 	const {
@@ -77,11 +77,11 @@ const SettingsPage: React.FC = () => {
 			type: 'logout',
 		});
 	};
-	const profile_picture = usePhoto();
+	const photo = usePhoto();
 
 	useEffect(() => {
-		setValue('profile_picture', profile_picture);
-	}, [profile_picture]);
+		setValue('profile_picture', photo);
+	}, [photo]);
 
 	useEffect(() => {
 		if (showSuccessUpdate) {
@@ -94,43 +94,39 @@ const SettingsPage: React.FC = () => {
 		const unsubscribe = navigation.addListener('beforeRemove', () => {
 			resetPhoto({
 				type: 'new photo',
-				image: data.pp_url,
+				image: profile_picture,
 			});
 		});
 		return unsubscribe;
 	});
 
 	const onSubmit = async (formValues: FormValues | any): Promise<void> => {
-		console.log('values: ', formValues.profile_picture.substring(0, 10));
-		if (data === null || data === undefined) {
-			console.log('User data is not available.');
-			return;
-		}
-
+		// console.log('values: ', formValues.profile_picture.substring(0, 10));
 		const updatedFields: Partial<FormValues> = {};
 
-		if (formValues.uid !== data.uid) {
+		if (formValues.uid !== uid) {
 			updatedFields.uid = formValues.uid;
 		}
-		if (formValues.first_name !== data.first_name) {
+		if (formValues.first_name !== first_name) {
 			updatedFields.first_name = formValues.first_name;
 		}
-		if (formValues.last_name !== data.last_name) {
+		if (formValues.last_name !== last_name) {
 			updatedFields.last_name = formValues.last_name;
 		}
-		if (formValues.email !== data.email) {
+		if (formValues.email !== email) {
 			updatedFields.email = formValues.email;
 		}
-		if (formValues.username !== data.username) {
+		if (formValues.username !== username) {
 			updatedFields.username = formValues.username;
 		}
 		if (formValues.password !== '**********') {
 			updatedFields.password = formValues.password;
 		}
-		if (formValues.private_option !== data.private_option) {
+		if (formValues.private_option !== private_option) {
 			updatedFields.private_option = formValues.private_option;
 		}
-		if (formValues.profile_picture !== data.pp_url) {
+		if (formValues.profile_picture !== profile_picture) {
+			console.log('pp: ', formValues.profile_picture);
 			updatedFields.profile_picture = formValues.profile_picture;
 		}
 
@@ -159,7 +155,11 @@ const SettingsPage: React.FC = () => {
 					// await AsyncStorage.setItem('session', sessionData);
 					// updateData(sessionData);
 					setShowSuccessUpdate(true);
-					void updateUser(refreshUser);
+					// void updateUser(refreshUser);
+					refreshUser({
+						type: 'change fields',
+						...updatedFields,
+					});
 					showSuccessToast(toast.yourProfileHasBeenUpdated);
 					setIsLoading(false); // Stop loading on success
 				} catch (error) {
@@ -193,7 +193,7 @@ const SettingsPage: React.FC = () => {
 				setValue={setValue}
 				errors={errors}
 				uid={uid}
-				profile_picture={profile_picture}
+				profile_picture={photo}
 			/>
 			{isLoading && <Loading />}
 		</View>

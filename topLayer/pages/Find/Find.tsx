@@ -46,7 +46,7 @@ const Find = ({
 					}
 				});
 			} else {
-				if (user.pp_url !== '') {
+				if (user.profile_picture !== '') {
 					usersToAdd.push(user);
 				} else {
 					foreignUserIDs.push(user);
