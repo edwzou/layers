@@ -100,22 +100,29 @@ const SettingsFields = ({
 		try {
 			console.log('uid:', uid);
 			// Use Promise.all to send multiple requests simultaneously
-			const [
-				deleteOutfitsResponse,
-				deleteClothingItemsResponse,
-				deleteUserResponse,
-			] = await Promise.all([
-				// this may not work because there might be an order for deletion
-				axios.delete(`${baseUrl}/api/private/outfits/all`),
-				axios.delete(`${baseUrl}/api/private/clothing_items/all`),
-				axios.delete(`${baseUrl}/api/private/users`),
-			]);
+			// const [
+			// 	deleteOutfitsResponse,
+			// 	deleteClothingItemsResponse,
+			// 	deleteUserResponse,
+			// ] = await Promise.all([
+			// 	// this may not work because there might be an order for deletion
+			// 	axios.delete(`${baseUrl}/api/private/outfits/all`),
+			// 	axios.delete(`${baseUrl}/api/private/clothing_items/all`),
+			// 	axios.delete(`${baseUrl}/api/private/users`),
+			// ]);
+			const deleteOutfitsResponse = await axios.delete(
+				// just testing out outfits first
+				`${baseUrl}/api/private/outfits/`
+			);
+			const deleteClothingItemsResponse = await axios.delete(
+				// clothing items after
+				`${baseUrl}/api/private/clothing_items/`
+			);
 
 			// Check the HTTP status codes for each response
 			if (
 				deleteOutfitsResponse.status === 200 &&
-				deleteClothingItemsResponse.status === 200 &&
-				deleteUserResponse.status === 200
+				deleteClothingItemsResponse.status === 200
 			) {
 				// All requests were successful
 				// setShouldRefreshMainPage(true); // need to figure out what happens after the account has been deleted
