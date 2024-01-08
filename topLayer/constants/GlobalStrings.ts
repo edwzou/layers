@@ -34,7 +34,7 @@ export const itemEdit = {
 export const settings = {
 	pleaseEnterAValidEmail: 'Please enter a valid email.',
 	passwordMustBe8CharactersOrMore: 'Password must be 8 characters or more.',
-	deleteAccount: 'Delete account?',
+	deleteProfile: 'Delete profile?',
 	youCannotUndoThisAction: 'You cannot undo this action.',
 	cancel: 'Cancel',
 	delete: 'Delete',

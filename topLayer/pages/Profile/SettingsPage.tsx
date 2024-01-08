@@ -22,7 +22,6 @@ import SettingsFields from '../../components/Settings/SettingsFields';
 import { Loading } from '../../components/Loading/Loading';
 
 interface FormValues {
-	uid: string;
 	first_name: string;
 	last_name: string;
 	email: string;
@@ -38,7 +37,6 @@ const SettingsPage: React.FC = () => {
 	const resetPhoto = usePhotoUpdate();
 
 	const {
-		uid,
 		first_name,
 		last_name,
 		email,
@@ -52,7 +50,6 @@ const SettingsPage: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const defaultForm = {
-		uid: uid,
 		first_name: first_name,
 		last_name: last_name,
 		email: email,
@@ -104,9 +101,6 @@ const SettingsPage: React.FC = () => {
 		// console.log('values: ', formValues.profile_picture.substring(0, 10));
 		const updatedFields: Partial<FormValues> = {};
 
-		if (formValues.uid !== uid) {
-			updatedFields.uid = formValues.uid;
-		}
 		if (formValues.first_name !== first_name) {
 			updatedFields.first_name = formValues.first_name;
 		}
@@ -192,7 +186,6 @@ const SettingsPage: React.FC = () => {
 				control={control}
 				setValue={setValue}
 				errors={errors}
-				uid={uid}
 				profile_picture={photo}
 			/>
 			{isLoading && <Loading />}

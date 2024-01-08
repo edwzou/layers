@@ -165,27 +165,20 @@ router.delete('/', (req: Request, res: Response): void => {
 
 	const deleteAllClothingItems = async (): Promise<void> => {
 		try {
-			// Fetch the list of ciids for clothing items associated with the user
 			const ciidsResult = await pool.query(
 				'SELECT ciid FROM backend_schema.clothing_item WHERE uid = $1',
 				[uid]
 			);
-
-			// Extract ciids from the result
 			const ciids = ciidsResult.rows.map((row) => row.ciid);
-
-			// Delete corresponding objects from S3
 			await Promise.all(
 				ciids.map(async (ciid) => {
 					await deleteObjectFromS3(ciid);
 				})
 			);
-
 			const deleteClothingItems = await pool.query(
 				'DELETE FROM backend_schema.clothing_item WHERE uid = $1',
 				[uid]
 			);
-
 			responseCallbackDeleteAll(
 				null,
 				res,

@@ -33,10 +33,10 @@ import axios from 'axios';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { baseUrl } from '../../utils/apiUtils';
 import { showErrorToast, showSuccessToast } from '../Toasts/Toasts';
+import { useUpdateUser } from '../../Contexts/UserContext';
 
 interface SettingsFieldsType {
 	control: Control<{
-		uid: string;
 		first_name: string;
 		last_name: string;
 		email: string;
@@ -46,7 +46,6 @@ interface SettingsFieldsType {
 		profile_picture: string;
 	}>;
 	setValue: UseFormSetValue<{
-		uid: string;
 		first_name: string;
 		last_name: string;
 		email: string;
@@ -64,7 +63,6 @@ interface SettingsFieldsType {
 		private_option: boolean;
 		profile_picture: string;
 	}>;
-	uid: string;
 	profile_picture: string;
 }
 
@@ -72,15 +70,14 @@ const SettingsFields = ({
 	control,
 	setValue,
 	errors,
-	uid,
 	profile_picture,
 }: SettingsFieldsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
 	const [isLoading, setIsLoading] = useState(false);
+	const refreshUser = useUpdateUser();
 
 	const confirmDeletion = (): void => {
-		Alert.alert(settings.deleteAccount, settings.youCannotUndoThisAction, [
+		Alert.alert(settings.deleteProfile, settings.youCannotUndoThisAction, [
 			{
 				text: settings.cancel,
 				onPress: () => {},
@@ -98,41 +95,17 @@ const SettingsFields = ({
 	const handleDelete = async (): Promise<void> => {
 		setIsLoading(true);
 		try {
-			console.log('uid:', uid);
-			// Use Promise.all to send multiple requests simultaneously
-			// const [
-			// 	deleteOutfitsResponse,
-			// 	deleteClothingItemsResponse,
-			// 	deleteUserResponse,
-			// ] = await Promise.all([
-			// 	// this may not work because there might be an order for deletion
-			// 	axios.delete(`${baseUrl}/api/private/outfits/all`),
-			// 	axios.delete(`${baseUrl}/api/private/clothing_items/all`),
-			// 	axios.delete(`${baseUrl}/api/private/users`),
-			// ]);
-			const deleteOutfitsResponse = await axios.delete(
-				// just testing out outfits first
-				`${baseUrl}/api/private/outfits/`
+			const deleteUserResponse = await axios.delete(
+				`${baseUrl}/api/private/users/`
 			);
-			const deleteClothingItemsResponse = await axios.delete(
-				// clothing items after
-				`${baseUrl}/api/private/clothing_items/`
-			);
-
-			// Check the HTTP status codes for each response
-			if (
-				deleteOutfitsResponse.status === 200 &&
-				deleteClothingItemsResponse.status === 200
-			) {
-				// All requests were successful
-				// setShouldRefreshMainPage(true); // need to figure out what happens after the account has been deleted
-				// navigateToProfile();
+			if (deleteUserResponse.status === 200) {
+				refreshUser({
+					type: 'logout',
+				});
 				showSuccessToast(toast.yourProfileHasBeenDeleted);
 			} else {
-				// At least one of the requests failed
 				showErrorToast(toast.anErrorHasOccurredWhileDeletingProfile);
 			}
-
 			setIsLoading(false);
 		} catch (error) {
 			setIsLoading(false);
