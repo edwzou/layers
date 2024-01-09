@@ -1,12 +1,5 @@
 import { useState, type ReactElement } from 'react';
-import {
-	View,
-	Text,
-	StyleSheet,
-	Pressable,
-	Keyboard,
-	Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -20,19 +13,13 @@ import {
 	type PrivacyOption,
 	privacyOptions,
 } from '../../constants/PrivateOptions';
-import { settings, toast } from '../../constants/GlobalStrings';
+import { settings } from '../../constants/GlobalStrings';
 import {
 	type Control,
 	Controller,
 	type UseFormSetValue,
 	type FieldErrors,
 } from 'react-hook-form';
-import Icon from 'react-native-remix-icon';
-import { Loading } from '../Loading/Loading';
-import axios from 'axios';
-import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
-import { baseUrl } from '../../utils/apiUtils';
-import { showErrorToast, showSuccessToast } from '../Toasts/Toasts';
 import { useUpdateUser } from '../../Contexts/UserContext';
 
 interface SettingsFieldsType {
@@ -75,43 +62,6 @@ const SettingsFields = ({
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const [isLoading, setIsLoading] = useState(false);
 	const refreshUser = useUpdateUser();
-
-	const confirmDeletion = (): void => {
-		Alert.alert(settings.deleteProfile, settings.youCannotUndoThisAction, [
-			{
-				text: settings.cancel,
-				onPress: () => {},
-			},
-			{
-				text: settings.delete,
-				onPress: () => {
-					void handleDelete();
-				},
-				style: 'destructive',
-			},
-		]);
-	};
-
-	const handleDelete = async (): Promise<void> => {
-		setIsLoading(true);
-		try {
-			const deleteUserResponse = await axios.delete(
-				`${baseUrl}/api/private/users/`
-			);
-			if (deleteUserResponse.status === 200) {
-				refreshUser({
-					type: 'logout',
-				});
-				showSuccessToast(toast.yourProfileHasBeenDeleted);
-			} else {
-				showErrorToast(toast.anErrorHasOccurredWhileDeletingProfile);
-			}
-			setIsLoading(false);
-		} catch (error) {
-			setIsLoading(false);
-			axiosEndpointErrorHandler(error);
-		}
-	};
 
 	return (
 		<View style={{ gap: 40 }}>
@@ -244,19 +194,6 @@ const SettingsFields = ({
 						)}
 					</View>
 				</Pressable>
-				<View style={styles.deleteButtonContainer}>
-					<Pressable onPress={confirmDeletion}>
-						<View style={GlobalStyles.utils.deleteButton}>
-							<Icon
-								name={GlobalStyles.icons.closeOutline}
-								color={GlobalStyles.colorPalette.background}
-								size={GlobalStyles.sizing.icon.regular}
-							/>
-						</View>
-					</Pressable>
-				</View>
-
-				{isLoading && <Loading />}
 			</View>
 		</View>
 	);
@@ -295,11 +232,6 @@ const styles = StyleSheet.create({
 	settingsContainer: {
 		alignItems: 'center',
 		marginHorizontal: GlobalStyles.layout.xGap,
-	},
-	deleteButtonContainer: {
-		position: 'absolute',
-		bottom: 0,
-		alignSelf: 'center',
 	},
 });
 
