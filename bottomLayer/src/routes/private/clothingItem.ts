@@ -170,15 +170,13 @@ router.delete('/', (req: Request, res: Response): void => {
 				[uid]
 			);
 			const ciids = ciidsResult.rows.map((row) => row.ciid);
-			await Promise.all(
-				ciids.map(async (ciid) => {
-					await deleteObjectFromS3(ciid);
-				})
-			);
-			const deleteClothingItems = await pool.query(
-				'DELETE FROM backend_schema.clothing_item WHERE uid = $1',
-				[uid]
-			);
+			const [deleteClothingItems] = await Promise.all([
+				pool.query('DELETE FROM backend_schema.clothing_item WHERE uid = $1', [
+					uid,
+				]),
+				ciids.map((ciid) => deleteObjectFromS3(ciid)),
+			]);
+
 			responseCallbackDeleteAll(
 				null,
 				res,

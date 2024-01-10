@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
 	},
 	deleteButtonContainer: {
 		position: 'absolute',
-		bottom: 0,
+		bottom: 100,
 		alignSelf: 'center',
 	},
 });

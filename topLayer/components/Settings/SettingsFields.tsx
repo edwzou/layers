@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
@@ -20,7 +20,6 @@ import {
 	type UseFormSetValue,
 	type FieldErrors,
 } from 'react-hook-form';
-import { useUpdateUser } from '../../Contexts/UserContext';
 
 interface SettingsFieldsType {
 	control: Control<{
@@ -60,8 +59,6 @@ const SettingsFields = ({
 	profile_picture,
 }: SettingsFieldsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const [isLoading, setIsLoading] = useState(false);
-	const refreshUser = useUpdateUser();
 
 	return (
 		<View style={{ gap: 40 }}>
