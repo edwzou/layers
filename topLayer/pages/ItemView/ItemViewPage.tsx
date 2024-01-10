@@ -2,9 +2,8 @@ import ItemView from './ItemView';
 import ItemEdit from './ItemEdit';
 import { Stack, type StackTypes } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import { StackNavigation } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { headerButton } from '../../components/Modal/HeaderButton';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { type ReactElement } from 'react';
 
@@ -17,7 +16,9 @@ const ItemViewPage = ({ route }: any): ReactElement => {
 		navigation.navigate(StackNavigation.Profile, {});
 	};
 
-	const ItemViewComponent: React.FC = () => <ItemView clothingItem={item} />;
+	const ItemViewComponent: React.FC = () => (
+		<ItemView clothingItem={item} editable={editable} />
+	);
 	const ItemEditComponent: React.FC = () => (
 		<ItemEdit clothingItem={item} navigateToProfile={redirectToProfile} />
 	);
@@ -25,31 +26,13 @@ const ItemViewPage = ({ route }: any): ReactElement => {
 	return (
 		<NavigationContainer independent={true}>
 			<Stack.Navigator>
-				<Stack.Group
-					screenOptions={{
-						headerTitleStyle: GlobalStyles.typography.subtitle,
-						headerStyle: {
-							backgroundColor: GlobalStyles.colorPalette.background,
-						},
-						headerShadowVisible: false,
-					}}
-				>
+				<Stack.Group>
 					<Stack.Screen
 						name={StackNavigation.ItemView}
 						component={ItemViewComponent}
-						options={({ navigation }) => ({
-							headerTitle: item.title,
-							headerRight:
-								editable === true
-									? () =>
-											headerButton({
-												type: StepOverTypes.edit,
-												handlePress: () => {
-													navigation.navigate(StackNavigation.ItemEdit);
-												},
-											})
-									: undefined,
-						})}
+						options={{
+							headerShown: false,
+						}}
 					/>
 					<Stack.Screen
 						name={StackNavigation.ItemEdit}
