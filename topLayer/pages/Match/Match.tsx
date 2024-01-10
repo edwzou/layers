@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, Text, View } from 'react-native';
 import Header from '../../components/Header/Header';
 import Selector from './Selector';
 import Button from '../../components/Button/Button';
@@ -19,6 +19,9 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserAllItems } from '../../types/AllItems';
+
+import Icon from 'react-native-remix-icon';
+import { screenHeight } from '../../utils/modalMaxShow';
 
 const Match: React.FC = () => {
 	const { allItems } = useContext(MainPageContext);
@@ -133,13 +136,38 @@ const Match: React.FC = () => {
 					rightButton={true}
 					rightButtonNavigateTo={0}
 				/>
-				<Selector
-					outerwear={data.outerwear}
-					tops={data.tops}
-					bottoms={data.bottoms}
-					shoes={data.shoes}
-					selectedIndex={selectedIndex}
-				/>
+				{
+					data.outerwear.length !== 0 || data.tops.length !== 0 || data.bottoms.length !== 0 || data.shoes.length !== 0
+					? <Selector
+						outerwear={data.outerwear}
+						tops={data.tops}
+						bottoms={data.bottoms}
+						shoes={data.shoes}
+						selectedIndex={selectedIndex}
+					/>
+					: (<View
+						style={{
+							alignItems: 'center',
+							justifyContent: 'center',
+							height: screenHeight * 0.73,
+							gap: 5,
+						}}
+					>
+						<Icon
+							name={GlobalStyles.icons.shirtOutline}
+							color={GlobalStyles.colorPalette.primary[300]}
+							size={GlobalStyles.sizing.icon.large}
+						/>
+						<Text
+							style={[
+								GlobalStyles.typography.subtitle,
+								{ color: GlobalStyles.colorPalette.primary[300] },
+							]}
+						>
+							No clothing
+						</Text>
+					</View>)
+				}
 			</SafeAreaView>
 			<Button
 				text={match.preview}
@@ -150,6 +178,7 @@ const Match: React.FC = () => {
 					alignSelf: 'center',
 				}}
 				bgColor={GlobalStyles.colorPalette.primary[500]}
+				disabled={data.outerwear.length === 0 && data.tops.length === 0 && data.bottoms.length === 0 && data.shoes.length === 0 && true}
 			/>
 		</>
 	);
