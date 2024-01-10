@@ -170,7 +170,7 @@ const ForeignProfile = ({ route }: any): ReactElement => {
 						</Text>
 					</View>
 				) : (
-					<View style={{ top: 10 }}>
+					<View style={{ top: 5 }}>
 						<CategoryBar
 							selectedCategory={selectedCategory}
 							handleCategoryChange={handleCategoryChange}

@@ -181,14 +181,12 @@ const SettingsPage: React.FC = () => {
 					void handleSubmit(onSubmit)();
 				}}
 			/>
-			<View>
 			<SettingsFields
 				control={control}
 				setValue={setValue}
 				errors={errors}
 				profile_picture={photo}
 			/>
-			</View>
 			{isLoading && <Loading />}
 		</View>
 	);
@@ -222,7 +220,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		gap: 40,
+		gap: 30,
 		paddingTop: 20,
 	},
 	settingsContainer: {

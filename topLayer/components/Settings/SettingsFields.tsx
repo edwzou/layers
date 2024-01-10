@@ -242,11 +242,6 @@ const styles = StyleSheet.create({
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		padding: 15,
 	},
-	container: {
-		flex: 1,
-		gap: 15,
-		paddingTop: 20,
-	},
 	settingsContainer: {
 		alignItems: 'center',
 		marginHorizontal: GlobalStyles.layout.xGap,
