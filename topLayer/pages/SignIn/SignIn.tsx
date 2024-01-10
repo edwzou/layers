@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import InlineTextbox from '../../components/Textbox/InlineTextbox';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { baseUrl } from '../../utils/apiUtils';
@@ -10,6 +9,7 @@ import { toast } from '../../constants/GlobalStrings';
 import { showErrorToast } from '../../components/Toasts/Toasts';
 import { Loading } from '../../components/Loading/Loading';
 import { useUpdateUser } from '../../Contexts/UserContext';
+import LoginFields from '../../components/Settings/LogInFields';
 
 const SignIn: React.FC = () => {
 	const updateUser = useUpdateUser();
@@ -75,45 +75,7 @@ const SignIn: React.FC = () => {
 
 	return (
 		<View style={{ gap: 40, width: '100%' }}>
-			<View style={{ gap: GlobalStyles.layout.gap }}>
-				<Controller
-					control={control}
-					rules={{
-						required: true,
-						pattern: /^\S+@\S+\.\S+$/,
-						maxLength: 255,
-					}}
-					render={({ field: { onChange, value } }) => (
-						<InlineTextbox
-							autoCapitalize="none"
-							icon={GlobalStyles.icons.userOutline}
-							// placeholder="Email or Username"
-							placeholder="Email"
-							value={value}
-							onFieldChange={onChange}
-						/>
-					)}
-					name="email"
-				/>
-				<Controller
-					control={control}
-					rules={{
-						required: true,
-						minLength: 8,
-						maxLength: 100,
-					}}
-					render={({ field: { onChange, value } }) => (
-						<InlineTextbox
-							icon={GlobalStyles.icons.passwordOutline}
-							placeholder="Password"
-							value={value}
-							onFieldChange={onChange}
-							secure
-						/>
-					)}
-					name="password"
-				/>
-			</View>
+			<LoginFields control={control} />
 			<View style={{ alignSelf: 'center' }}>
 				<Button
 					text="Sign in"

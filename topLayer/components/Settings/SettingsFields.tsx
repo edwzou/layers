@@ -20,6 +20,7 @@ import {
 	type UseFormSetValue,
 	type FieldErrors,
 } from 'react-hook-form';
+import { userFieldRules } from 'constants/userConstraints';
 
 interface SettingsFieldsType {
 	control: Control<{
@@ -86,10 +87,7 @@ const SettingsFields = ({
 						>
 							<Controller
 								control={control}
-								rules={{
-									required: true,
-									maxLength: 50,
-								}}
+								rules={userFieldRules.firstName}
 								render={({ field: { onChange, value } }) => (
 									<StackedTextBox
 										label="First Name"
@@ -101,10 +99,7 @@ const SettingsFields = ({
 							/>
 							<Controller
 								control={control}
-								rules={{
-									required: true,
-									maxLength: 50,
-								}}
+								rules={userFieldRules.lastName}
 								render={({ field: { onChange, value } }) => (
 									<StackedTextBox
 										label="Last Name"
@@ -117,10 +112,7 @@ const SettingsFields = ({
 						</View>
 						<Controller
 							control={control}
-							rules={{
-								required: true,
-								maxLength: 20,
-							}}
+							rules={userFieldRules.username}
 							render={({ field: { onChange, value } }) => (
 								<StackedTextBox
 									autoCapitalize="none"
@@ -133,11 +125,7 @@ const SettingsFields = ({
 						/>
 						<Controller
 							control={control}
-							rules={{
-								required: true,
-								pattern: /^\S+@\S+\.\S+$/,
-								maxLength: 255,
-							}}
+							rules={userFieldRules.email}
 							render={({ field: { onChange, value } }) => (
 								<StackedTextBox
 									autoCapitalize="none"
@@ -150,11 +138,7 @@ const SettingsFields = ({
 						/>
 						<Controller
 							control={control}
-							rules={{
-								required: true,
-								minLength: 8,
-								maxLength: 100,
-							}}
+							rules={userFieldRules.password}
 							render={({ field: { onChange, value } }) => (
 								<StackedTextBox
 									label="Password"
