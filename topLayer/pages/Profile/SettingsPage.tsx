@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { usePhoto, usePhotoUpdate } from '../../Contexts/CameraContext';
 import React, { useState, useEffect } from 'react';
@@ -174,6 +174,7 @@ const SettingsPage: React.FC = () => {
 			{
 				text: settings.cancel,
 				onPress: () => {},
+				style: 'cancel',
 			},
 			{
 				text: settings.delete,
@@ -229,6 +230,8 @@ const SettingsPage: React.FC = () => {
 				text={settings.deleteProfile}
 				onPress={confirmDeletion}
 				style={{
+					position: 'absolute',
+					bottom: GlobalStyles.layout.gap * 3,
 					alignSelf: 'center',
 				}}
 				bgColor={GlobalStyles.colorPalette.danger[600]}

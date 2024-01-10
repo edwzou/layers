@@ -146,7 +146,7 @@ const Match: React.FC = () => {
 				onPress={handlePress}
 				style={{
 					position: 'absolute',
-					bottom: GlobalStyles.layout.gap * 2.5,
+					bottom: GlobalStyles.layout.gap * 3,
 					alignSelf: 'center',
 				}}
 				bgColor={GlobalStyles.colorPalette.primary[500]}

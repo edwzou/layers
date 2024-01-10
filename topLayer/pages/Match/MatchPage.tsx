@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { StackNavigation } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer } from '@react-navigation/native';
@@ -31,5 +30,3 @@ const MatchPage: React.FC = () => {
 };
 
 export default MatchPage;
-
-const styles = StyleSheet.create({});

@@ -63,6 +63,12 @@ const SettingsFields = ({
 
 	const resetPhoto = usePhotoUpdate();
 
+	const navigateToCamera = (): void => {
+		navigation.navigate(StackNavigation.CameraWrapper, {
+			returnToPfp: true,
+		});
+	};
+
 	return (
 		<View style={styles.settingsContainer}>
 			<Pressable onPress={Keyboard.dismiss}>
@@ -72,29 +78,31 @@ const SettingsFields = ({
 					<View style={{ gap: 7 }}>
 						<Pressable
 							style={{ alignSelf: 'center' }}
-							onPress={() => {
-								navigation.navigate(StackNavigation.CameraWrapper, {
-									returnToPfp: true,
-								});
-							}}
+							onPress={navigateToCamera}
 						>
 							<ProfilePicture
 								imageUrl={profile_picture}
 								base64={profile_picture.slice(0, 5) !== 'https'}
 							/>
 						</Pressable>
-						{ profile_picture !== '' &&
-						<Pressable
-							style={{ alignSelf: 'center' }}
-							onPress={() => {
-								resetPhoto({
-								type: 'null photo',
-								image: '',
-							});
-						}}
-						>
-							<Text style={styles.removeText}>Remove</Text>
-						</Pressable>
+						{ profile_picture !== ''
+							? <Pressable
+								style={{ alignSelf: 'center' }}
+								onPress={() => {
+									resetPhoto({
+									type: 'null photo',
+									image: '',
+									});
+								}}
+							>
+								<Text style={styles.removeText}>Remove</Text>
+							</Pressable>
+							: <Pressable
+								style={{ alignSelf: 'center' }}
+								onPress={navigateToCamera}
+							>
+								<Text style={styles.removeText}>Upload</Text>
+							</Pressable>
 						}
 					</View>
 
