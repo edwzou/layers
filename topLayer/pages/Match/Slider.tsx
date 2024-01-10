@@ -1,5 +1,5 @@
 import React, { type ReactElement, useCallback, useRef } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet, View, type ViewToken } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { type UserClothing } from '../../types/Clothing';
 import ItemCell from '../../components/Cell/ItemCell';
@@ -39,33 +39,39 @@ const Slider = ({
 	const scrollX = useRef(new Animated.Value(0)).current;
 
 	const currentIndex = useRef<number>(0);
-	const flatListRef = useRef<FlatList<any>>(null);
+	const flatListRef =
+		useRef<FlatList<UserClothing | Record<string, number>>>(null);
 
-	const handleOnViewableItemsChanged = useCallback(({ viewableItems }: any) => {
-		const itemsInView = viewableItems.filter(
-			({ item }: { item: UserClothing }) =>
-				(item.image_url !== null &&
-					item.image_url !== undefined &&
-					item.image_url !== '' &&
-					item.category !== null &&
-					item.category !== undefined &&
-					item.category !== '') ||
-				item.ciid === ''
-		);
+	const handleOnViewableItemsChanged = useCallback(
+		({ viewableItems }: { viewableItems: ViewToken[] }) => {
+			const itemsInView = viewableItems.filter(
+				({ item }: { item: UserClothing }) =>
+					(item.image_url !== null &&
+						item.image_url !== undefined &&
+						item.image_url !== '' &&
+						item.category !== null &&
+						item.category !== undefined &&
+						item.category !== '') ||
+					item.ciid === ''
+			);
 
-		if (itemsInView.length === 0) {
-			return;
-		}
+			if (itemsInView.length === 0) {
+				return;
+			}
 
-		currentIndex.current = itemsInView[0].index;
+			if (itemsInView[0].index !== null) {
+				currentIndex.current = itemsInView[0].index;
+			}
 
-		const rawItemIndex = currentIndex.current - 1;
+			const rawItemIndex = currentIndex.current - 1;
 
-		selectedIndex(category, rawItemIndex);
-	}, []);
+			selectedIndex(category, rawItemIndex);
+		},
+		[]
+	);
 
 	const getItemLayout = (
-		unused: any,
+		_unused: Array<UserClothing | Record<string, number>> | null | undefined,
 		index: number
 	): { length: number; offset: number; index: number } => ({
 		length: SNAP_ITEM_SIZE,
@@ -137,7 +143,7 @@ const Slider = ({
 								]}
 							>
 								{item.ciid !== '' ? (
-									<ItemCell imageUrl={item.image_url} disablePress />
+									<ItemCell imageUrl={`${item.image_url}`} disablePress />
 								) : (
 									<Icon
 										name={GlobalStyles.icons.forbidOutline}
@@ -154,9 +160,9 @@ const Slider = ({
 				showsHorizontalScrollIndicator={false}
 				keyExtractor={(data, index) => {
 					if (data?.ciid !== undefined && data?.ciid !== null) {
-						return data.ciid;
+						return `${data.ciid}`;
 					} else {
-						return index;
+						return `${index}`;
 					}
 				}}
 				bounces={false}

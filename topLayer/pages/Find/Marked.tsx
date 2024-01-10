@@ -2,16 +2,12 @@ import React, { useState, useEffect, type ReactElement } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
-import { type User } from '../../types/User';
+import { isUserArray, type User } from '../../types/User';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import { previewLength } from '../../constants/Find';
 
 interface MarkedPropsType {
 	foreignUserIDs?: Array<string | User>; // foreignUserIDs is now optional
-}
-
-function isUserArray(arr: any[]): arr is User[] {
-	return arr.every((item) => typeof item === 'object');
 }
 
 const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType): ReactElement => {

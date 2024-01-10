@@ -24,7 +24,6 @@ module.exports = {
 		sourceType: 'module',
 		project: './tsconfig.json',
 		tsconfigRootDir: __dirname,
-		// For react-native plugin
 		ecmaFeatures: {
 			jsx: true,
 		},
@@ -45,6 +44,7 @@ module.exports = {
 			{
 				selector: 'variableLike',
 				format: ['snake_case', 'camelCase', 'UPPER_CASE', 'PascalCase'],
+				leadingUnderscore: 'allow',
 			},
 		],
 		'@typescript-eslint/member-delimiter-style': [

@@ -83,7 +83,7 @@ const SettingsPage: React.FC = () => {
 		return unsubscribe;
 	});
 
-	const onSubmit = async (formValues: FormValues | any): Promise<void> => {
+	const onSubmit = async (formValues: FormValues): Promise<void> => {
 		// console.log('values: ', formValues.profile_picture.substring(0, 10));
 		const updatedFields: Partial<FormValues> = {};
 

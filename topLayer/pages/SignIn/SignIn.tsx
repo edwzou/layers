@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import axios from 'axios';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -10,6 +10,12 @@ import { showErrorToast } from '../../components/Toasts/Toasts';
 import { Loading } from '../../components/Loading/Loading';
 import { useUpdateUser } from '../../Contexts/UserContext';
 import LoginFields from '../../components/Settings/LogInFields';
+
+interface Form {
+	username: string;
+	email: string;
+	password: string;
+}
 
 const SignIn: React.FC = () => {
 	const updateUser = useUpdateUser();
@@ -27,7 +33,7 @@ const SignIn: React.FC = () => {
 		},
 	});
 
-	const onSubmit = (formData: any): void => {
+	const onSubmit: SubmitHandler<Form> = (formData): void => {
 		let formValues: Record<string, string> = {};
 		if (formData.username !== '') {
 			formValues = {
@@ -43,17 +49,12 @@ const SignIn: React.FC = () => {
 			throw new Error('No Username or Email');
 		}
 
-		const onSubmitInner = async (): Promise<any> => {
+		const onSubmitInner = async (): Promise<void> => {
 			setIsLoading(true); // Start loading
 			try {
 				const { data: userData, status } = await axios.post(
 					`${baseUrl}/login`,
-					formValues,
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					}
+					formValues
 				);
 
 				if (status === 200) {

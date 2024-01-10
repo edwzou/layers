@@ -1,5 +1,12 @@
 import React, { useRef, useState, useEffect, type ReactElement } from 'react';
-import { View, Pressable, StyleSheet, type FlatList, Text } from 'react-native';
+import {
+	View,
+	Pressable,
+	StyleSheet,
+	type FlatList,
+	Text,
+	type ViewToken,
+} from 'react-native';
 import Icon from 'react-native-remix-icon';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
@@ -122,15 +129,17 @@ const ForeignProfile = ({ route }: any): ReactElement => {
 		}
 	};
 
-	const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
-		if (viewableItems.length > 0) {
-			const visibleItem = viewableItems[0];
-			const index = allItems.findIndex(
-				(item) => item.category === visibleItem.item.category
-			);
-			setSelectedCategory(IndexToCategory[index]);
+	const handleViewableItemsChanged = useRef(
+		({ viewableItems }: { viewableItems: ViewToken[] }) => {
+			if (viewableItems.length > 0) {
+				const visibleItem = viewableItems[0];
+				const index = allItems.findIndex(
+					(item) => item.category === visibleItem.item.category
+				);
+				setSelectedCategory(IndexToCategory[index]);
+			}
 		}
-	}).current;
+	).current;
 
 	return (
 		<>
