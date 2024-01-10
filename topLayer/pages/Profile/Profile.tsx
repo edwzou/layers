@@ -1,13 +1,11 @@
 import React, { useRef, useState, useContext } from 'react';
 import { View, Pressable, StyleSheet, type FlatList } from 'react-native';
-
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
 import CategoryBar from '../../components/Category/CategoryBar';
 import CategorySlides from '../../components/Category/CategorySlides';
 import Navbar from '../../components/Bar/Navbar';
-
 import {
 	CategoryToIndex,
 	IndexToCategory,
@@ -15,7 +13,6 @@ import {
 	ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
