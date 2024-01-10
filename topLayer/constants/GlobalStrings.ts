@@ -38,8 +38,9 @@ export const settings = {
 	youCannotUndoThisAction: 'You cannot undo this action.',
 	cancel: 'Cancel',
 	remove: 'Remove',
-	deleteProfile: 'Delete profile?',
+	deleteProfileConfirm: 'Delete profile?',
 	delete: 'Delete',
+	deleteProfile: 'Delete profile'
 } as const;
 
 export const toast = {

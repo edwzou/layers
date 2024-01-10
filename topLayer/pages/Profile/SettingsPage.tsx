@@ -19,7 +19,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import SettingsFields from '../../components/Settings/SettingsFields';
 import { Loading } from '../../components/Loading/Loading';
-import Icon from 'react-native-remix-icon';
+import Button from '../../components/Button/Button';
 
 interface FormValues {
 	first_name: string;
@@ -170,7 +170,7 @@ const SettingsPage: React.FC = () => {
 	};
 
 	const confirmDeletion = (): void => {
-		Alert.alert(settings.deleteProfile, settings.youCannotUndoThisAction, [
+		Alert.alert(settings.deleteProfileConfirm, settings.youCannotUndoThisAction, [
 			{
 				text: settings.cancel,
 				onPress: () => {},
@@ -225,17 +225,14 @@ const SettingsPage: React.FC = () => {
 				errors={errors}
 				profile_picture={photo}
 			/>
-			<View style={styles.deleteButtonContainer}>
-				<Pressable onPress={confirmDeletion}>
-					<View style={GlobalStyles.utils.deleteButton}>
-						<Icon
-							name={GlobalStyles.icons.closeOutline}
-							color={GlobalStyles.colorPalette.background}
-							size={GlobalStyles.sizing.icon.regular}
-						/>
-					</View>
-				</Pressable>
-			</View>
+			<Button
+				text={settings.deleteProfile}
+				onPress={confirmDeletion}
+				style={{
+					alignSelf: 'center',
+				}}
+				bgColor={GlobalStyles.colorPalette.danger[600]}
+			/>
 			{isLoading && <Loading />}
 		</View>
 	);
@@ -275,11 +272,6 @@ const styles = StyleSheet.create({
 	settingsContainer: {
 		alignItems: 'center',
 		marginHorizontal: GlobalStyles.layout.xGap,
-	},
-	deleteButtonContainer: {
-		position: 'absolute',
-		bottom: 100,
-		alignSelf: 'center',
 	},
 });
 
