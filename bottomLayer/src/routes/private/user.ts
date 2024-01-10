@@ -52,8 +52,6 @@ router.delete('/', (req: Request, res: Response): void => {
 				deleteObjectFromS3(userId),
 			]);
 
-			console.log(deleteUser);
-
 			responseCallbackDelete(null, userId, res, 'User', deleteUser.rowCount);
 		} catch (error) {
 			responseCallbackDelete(error, userId, res, 'User');
