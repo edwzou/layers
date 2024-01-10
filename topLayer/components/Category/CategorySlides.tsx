@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList, Dimensions, type ViewToken } from 'react-native';
+import { FlatList, Dimensions, type ViewToken } from 'react-native';
 import React, { type RefObject, type ReactElement } from 'react';
 import CategorySlide from './CategorySlide';
 import { CategoryToIndex } from '../../constants/Enums';
@@ -56,4 +56,3 @@ const CategorySlides = ({
 };
 
 export default CategorySlides;
-const styles = StyleSheet.create({});

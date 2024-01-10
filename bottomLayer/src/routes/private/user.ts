@@ -10,6 +10,7 @@ import { convertImage } from '../../s3/convert-image';
 import { upload } from '../../utils/multer';
 import { downloadURLFromS3 } from '../../s3/download-url-from-s3';
 import { type User } from '../../types/user';
+import { deleteObjectFromS3 } from '../../s3/delete-object-from-s3';
 const router = express.Router();
 
 // Endpooint for getting the current user
@@ -40,10 +41,17 @@ router.delete('/', (req: Request, res: Response): void => {
 	if (userId == null) return;
 	const deleteUser = async (): Promise<void> => {
 		try {
-			const deleteUser = await pool.query(
-				'DELETE FROM backend_schema.user WHERE uid = $1',
+			const ciidsResult = await pool.query(
+				'SELECT ciid FROM backend_schema.clothing_item WHERE uid = $1',
 				[userId]
 			);
+			const ciids = ciidsResult.rows.map((row) => row.ciid);
+			const [deleteUser] = await Promise.all([
+				pool.query('DELETE FROM backend_schema.user WHERE uid = $1', [userId]),
+				ciids.map((ciid) => deleteObjectFromS3(ciid)),
+				deleteObjectFromS3(userId),
+			]);
+
 			responseCallbackDelete(null, userId, res, 'User', deleteUser.rowCount);
 		} catch (error) {
 			responseCallbackDelete(error, userId, res, 'User');

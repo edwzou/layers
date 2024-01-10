@@ -95,7 +95,7 @@ const CategorySlide = ({
 					{slide()}
 				</View>
 			) : (
-				<Empty />
+				<Empty category={itemsData.category} />
 			)}
 		</>
 	);

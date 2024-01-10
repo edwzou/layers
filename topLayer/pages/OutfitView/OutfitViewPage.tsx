@@ -4,9 +4,8 @@ import OutfitView from './OutfitView';
 import OutfitEdit from './OutfitEdit';
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { StackNavigation, StepOverTypes } from '../../constants/Enums';
+import { StackNavigation } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { headerButton } from '../../components/Modal/HeaderButton';
 import { type UserClothing } from '../../types/Clothing';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
@@ -15,7 +14,7 @@ import { type UserOutfit } from '../../types/Outfit';
 const OutfitViewPage = ({ route }: any): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const { item, editable }: { item: UserOutfit; editable?: boolean } =
+	const { item, editable }: { item: UserOutfit; editable: boolean } =
 		route.params;
 	const { oid, clothing_items, title } = item;
 
@@ -32,7 +31,11 @@ const OutfitViewPage = ({ route }: any): ReactElement => {
 	};
 
 	const OutfitViewComponent = (): ReactElement => (
-		<OutfitView clothingItems={getFlatArrayOfValues(clothing_items)} />
+		<OutfitView
+			title={title}
+			clothingItems={getFlatArrayOfValues(clothing_items)}
+			editable={editable}
+		/>
 	);
 	const OutfitEditComponent = (): ReactElement => (
 		<OutfitEdit
@@ -47,31 +50,13 @@ const OutfitViewPage = ({ route }: any): ReactElement => {
 	return (
 		<NavigationContainer independent={true}>
 			<Stack.Navigator>
-				<Stack.Group
-					screenOptions={{
-						headerTitleStyle: GlobalStyles.typography.subtitle,
-						headerStyle: {
-							backgroundColor: GlobalStyles.colorPalette.background,
-						},
-						headerShadowVisible: false,
-					}}
-				>
+				<Stack.Group>
 					<Stack.Screen
 						name={StackNavigation.OutfitView} // FIX THIS
 						component={OutfitViewComponent}
-						options={({ navigation }) => ({
-							headerTitle: item.title,
-							headerRight:
-								editable === true
-									? () =>
-											headerButton({
-												type: StepOverTypes.edit,
-												handlePress: () => {
-													navigation.navigate(StackNavigation.OutfitEdit);
-												},
-											})
-									: undefined,
-						})}
+						options={{
+							headerShown: false,
+						}}
 					/>
 					<Stack.Screen
 						name={StackNavigation.OutfitEdit} // FIX THIS

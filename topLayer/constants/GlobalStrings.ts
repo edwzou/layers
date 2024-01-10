@@ -34,6 +34,13 @@ export const itemEdit = {
 export const settings = {
 	pleaseEnterAValidEmail: 'Please enter a valid email.',
 	passwordMustBe8CharactersOrMore: 'Password must be 8 characters or more.',
+	removeProfilePicture: 'Remove profile picture?',
+	youCannotUndoThisAction: 'You cannot undo this action.',
+	cancel: 'Cancel',
+	remove: 'Remove',
+	deleteProfileConfirm: 'Delete profile?',
+	delete: 'Delete',
+	deleteProfile: 'Delete profile'
 } as const;
 
 export const toast = {
@@ -64,6 +71,8 @@ export const toast = {
 		'An error has occurred while deleting your item.',
 	anErrorHasOccurredWhileUpdatingProfile:
 		'An error has occurred while updating your profile.',
+	anErrorHasOccurredWhileDeletingProfile:
+		'An error has occurred while deleting your profile.',
 	anErrorHasOccurredWhileSendingFeedback:
 		'An error has occurred while sending your feedback.',
 	anErrorHasOccurredWhileCreatingProfile:

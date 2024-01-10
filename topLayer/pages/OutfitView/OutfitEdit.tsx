@@ -64,6 +64,7 @@ const OutfitEdit = ({
 			{
 				text: outfitEdit.cancel,
 				onPress: () => {},
+				style: 'cancel'
 			},
 			{
 				text: outfitEdit.delete,

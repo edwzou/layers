@@ -6,7 +6,7 @@ import SignUp from './SignUp';
 
 const SignUpPage: React.FC = () => {
 	return (
-		<View style={{ gap: 40 }}>
+		<View style={{ gap: 30 }}>
 			<Header text="Sign up" leftBack={true} leftButton={true} />
 			<View style={styles.container}>
 				<SignUp />

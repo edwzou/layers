@@ -21,6 +21,7 @@ import {
 	type FieldErrors,
 } from 'react-hook-form';
 import { userFieldRules } from '../../constants/userConstraints';
+import { usePhotoUpdate } from '../../Contexts/CameraContext';
 
 interface SettingsFieldsType {
 	control: Control<{
@@ -60,24 +61,45 @@ const SettingsFields = ({
 	profile_picture,
 }: SettingsFieldsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
+	const resetPhoto = usePhotoUpdate();
+
+	const navigateToCamera = (): void => {
+		navigation.navigate(StackNavigation.CameraWrapper, {
+			returnToPfp: true,
+		});
+	};
+
 	return (
-		<View style={{ gap: 40 }}>
-			<View style={styles.settingsContainer}>
-				<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
-					<View style={{ gap: GlobalStyles.layout.gap }}>
+		<View style={styles.settingsContainer}>
+			<Pressable onPress={Keyboard.dismiss}>
+				<View style={{ gap: 30 }}>
+					<View style={{ gap: 7 }}>
 						<Pressable
 							style={{ alignSelf: 'center' }}
-							onPress={() => {
-								navigation.navigate(StackNavigation.CameraWrapper, {
-									returnToPfp: true,
-								});
-							}}
+							onPress={navigateToCamera}
 						>
 							<ProfilePicture
 								imageUrl={profile_picture}
 								base64={profile_picture.slice(0, 5) !== 'https'}
 							/>
 						</Pressable>
+						{profile_picture !== '' && (
+							<Pressable
+								style={{ alignSelf: 'center' }}
+								onPress={() => {
+									resetPhoto({
+										type: 'null photo',
+										image: '',
+									});
+								}}
+							>
+								<Text style={styles.removeText}>Remove</Text>
+							</Pressable>
+						)}
+					</View>
+
+					<View style={{ gap: GlobalStyles.layout.gap }}>
 						<View
 							style={{
 								flexDirection: 'row',
@@ -173,8 +195,8 @@ const SettingsFields = ({
 							</Text>
 						)}
 					</View>
-				</Pressable>
-			</View>
+				</View>
+			</Pressable>
 		</View>
 	);
 };
@@ -204,14 +226,13 @@ const styles = StyleSheet.create({
 		borderRadius: GlobalStyles.utils.smallRadius.borderRadius,
 		padding: 15,
 	},
-	container: {
-		flex: 1,
-		gap: 15,
-		paddingTop: 20,
-	},
 	settingsContainer: {
 		alignItems: 'center',
 		marginHorizontal: GlobalStyles.layout.xGap,
+	},
+	removeText: {
+		color: GlobalStyles.colorPalette.info[500],
+		...GlobalStyles.typography.body,
 	},
 });
 

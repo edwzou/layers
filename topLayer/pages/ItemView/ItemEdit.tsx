@@ -234,6 +234,7 @@ const ItemEdit = ({
 			{
 				text: itemEdit.cancel,
 				onPress: () => {},
+				style: 'cancel'
 			},
 			{
 				text: itemEdit.delete,
