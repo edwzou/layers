@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../../components/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -101,7 +100,5 @@ const SignUp: React.FC = () => {
 		</>
 	);
 };
-
-const styles = StyleSheet.create({});
 
 export default SignUp;

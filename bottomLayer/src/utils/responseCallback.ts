@@ -139,6 +139,30 @@ export const responseCallbackDelete = (
 	}
 };
 
+export const responseCallbackDeleteAll = (
+	error: any,
+	res: Response,
+	target: string = '',
+	rowCount: number | null = 1
+): Callback<any> => {
+	if (rowCount === 0) {
+		res.status(404).json({ message: 'No ' + target + 's found to delete' });
+		return error;
+	} else if (error != null) {
+		console.log(error);
+		res.status(500).json({
+			message: 'Internal Server Error, Failed to Delete All ' + target + 's',
+			error,
+		});
+		return error;
+	} else {
+		res
+			.status(200)
+			.json({ message: 'Successfully Deleted All ' + target + 's' });
+		return error;
+	}
+};
+
 export const responseCallbackUpdate = (
 	error: any,
 	id: string,

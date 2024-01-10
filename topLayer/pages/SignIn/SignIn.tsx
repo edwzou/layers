@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
 import InlineTextbox from '../../components/Textbox/InlineTextbox';
@@ -129,7 +129,5 @@ const SignIn: React.FC = () => {
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({});
 
 export default SignIn;

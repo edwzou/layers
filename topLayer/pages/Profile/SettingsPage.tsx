@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { usePhoto, usePhotoUpdate } from '../../Contexts/CameraContext';
 import React, { useState, useEffect } from 'react';
@@ -7,19 +7,19 @@ import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
-import { toast } from '../../constants/GlobalStrings';
+import { settings, toast } from '../../constants/GlobalStrings';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
-import { updateUser } from '../../endpoints/getUser';
 import { useUpdateUser, useUser } from '../../Contexts/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import SettingsFields from '../../components/Settings/SettingsFields';
 import { Loading } from '../../components/Loading/Loading';
+import Button from '../../components/Button/Button';
 
 interface FormValues {
 	first_name: string;
@@ -169,6 +169,44 @@ const SettingsPage: React.FC = () => {
 		}
 	};
 
+	const confirmDeletion = (): void => {
+		Alert.alert(settings.deleteProfileConfirm, settings.youCannotUndoThisAction, [
+			{
+				text: settings.cancel,
+				onPress: () => {},
+				style: 'cancel',
+			},
+			{
+				text: settings.delete,
+				onPress: () => {
+					void handleDelete();
+				},
+				style: 'destructive',
+			},
+		]);
+	};
+
+	const handleDelete = async (): Promise<void> => {
+		setIsLoading(true);
+		try {
+			const deleteUserResponse = await axios.delete(
+				`${baseUrl}/api/private/users/`
+			);
+			if (deleteUserResponse.status === 200) {
+				refreshUser({
+					type: 'logout',
+				});
+				showSuccessToast(toast.yourProfileHasBeenDeleted);
+			} else {
+				showErrorToast(toast.anErrorHasOccurredWhileDeletingProfile);
+			}
+			setIsLoading(false);
+		} catch (error) {
+			setIsLoading(false);
+			axiosEndpointErrorHandler(error);
+		}
+	};
+
 	return (
 		<View style={styles.container}>
 			<Header
@@ -187,6 +225,16 @@ const SettingsPage: React.FC = () => {
 				setValue={setValue}
 				errors={errors}
 				profile_picture={photo}
+			/>
+			<Button
+				text={settings.deleteProfile}
+				onPress={confirmDeletion}
+				style={{
+					position: 'absolute',
+					bottom: GlobalStyles.layout.gap * 3,
+					alignSelf: 'center',
+				}}
+				bgColor={GlobalStyles.colorPalette.danger[600]}
 			/>
 			{isLoading && <Loading />}
 		</View>
@@ -221,7 +269,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		gap: 15,
+		gap: 30,
 		paddingTop: 20,
 	},
 	settingsContainer: {
