@@ -20,7 +20,7 @@ import {
 	ClothingTypes,
 } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { useNavigation } from '@react-navigation/native';
+import { type RouteProp, useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserClothing } from '../../types/Clothing';
@@ -32,8 +32,13 @@ import {
 } from '../../endpoints/wardrobe';
 import { useMarkUserFunc } from '../../Contexts/ForeignUserContext';
 import { type UserAllItems } from '../../types/AllItems';
+import { type RouteTypes } from 'types/Routes';
 
-const ForeignProfile = ({ route }: any): ReactElement => {
+const ForeignProfile = ({
+	route,
+}: {
+	route: RouteProp<RouteTypes, 'ForeignProfile'>;
+}): ReactElement => {
 	const user: markedUser = route.params.markedUser;
 	// console.log('Route: ', route, route.params);
 

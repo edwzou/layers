@@ -2,15 +2,24 @@ import React, { type ReactElement, useState } from 'react';
 import CameraComponent from './Camera';
 import ItemCreate from '../../pages/ItemView/ItemCreate';
 import { Stack, type StackTypes } from '../../utils/StackNavigation';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import {
+	NavigationContainer,
+	type RouteProp,
+	useNavigation,
+} from '@react-navigation/native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StackNavigation } from '../../constants/Enums';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteTypes } from 'types/Routes';
 
 const dummyId = 'createID: ';
 let createCount = 0;
 
-const CameraWrapper = ({ route }: any): ReactElement => {
+const CameraWrapper = ({
+	route,
+}: {
+	route: RouteProp<RouteTypes, 'CameraWrapper'>;
+}): ReactElement => {
 	const returnToPfp = route.params.returnToPfp;
 	// console.log('params: ', route);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
