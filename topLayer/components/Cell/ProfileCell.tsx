@@ -56,18 +56,16 @@ const ProfileCell = ({
 		if (user.uid !== '') {
 			if (iconName === GlobalStyles.icons.bookmarkFill) {
 				handleBookmarkPress(true);
-				setIconName(GlobalStyles.icons.bookmarkOutline);
-				userProcessed.marked = false;
 			} else {
 				handleBookmarkPress(false);
-				setIconName(GlobalStyles.icons.bookmarkFill);
-				userProcessed.marked = true;
 			}
 		}
 	};
 
 	const handleBookmarkPress = (marked: boolean): void => {
 		if (marked) {
+			setIconName(GlobalStyles.icons.bookmarkOutline);
+			userProcessed.marked = false;
 			void unFollowUser(userProcessed.uid);
 			index.current = handleRelationRender(
 				userProcessed.uid,
@@ -76,6 +74,8 @@ const ProfileCell = ({
 				userProcessed
 			);
 		} else {
+			setIconName(GlobalStyles.icons.bookmarkFill);
+			userProcessed.marked = true;
 			void followUser(userProcessed.uid);
 			index.current = handleRelationRender(
 				userProcessed.uid,
