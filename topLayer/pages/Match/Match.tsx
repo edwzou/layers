@@ -178,6 +178,7 @@ const Match: React.FC = () => {
 					alignSelf: 'center',
 				}}
 				bgColor={GlobalStyles.colorPalette.primary[500]}
+				disabled={data.outerwear.length === 0 && data.tops.length === 0 && data.bottoms.length === 0 && data.shoes.length === 0 && true}
 			/>
 		</>
 	);
