@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { type Control, Controller } from 'react-hook-form';
 import InlineTextbox from '../../components/Textbox/InlineTextbox';
-import { userFieldRules } from 'constants/userConstraints';
+import { userFieldRules } from '../../constants/userConstraints';
 
 interface LoginFieldsType {
 	control: Control<{ username: string; email: string; password: string }>;

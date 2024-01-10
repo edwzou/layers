@@ -20,7 +20,7 @@ import {
 	type UseFormSetValue,
 	type FieldErrors,
 } from 'react-hook-form';
-import { userFieldRules } from 'constants/userConstraints';
+import { userFieldRules } from '../../constants/userConstraints';
 
 interface SettingsFieldsType {
 	control: Control<{
