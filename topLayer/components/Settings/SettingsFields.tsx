@@ -20,6 +20,7 @@ import {
 	type UseFormSetValue,
 	type FieldErrors,
 } from 'react-hook-form';
+import { usePhotoUpdate } from '../../Contexts/CameraContext';
 
 interface SettingsFieldsType {
 	control: Control<{
@@ -59,11 +60,16 @@ const SettingsFields = ({
 	profile_picture,
 }: SettingsFieldsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
+	const resetPhoto = usePhotoUpdate();
+
 	return (
-		<View style={{ gap: 40 }}>
-			<View style={styles.settingsContainer}>
-				<Pressable onPress={Keyboard.dismiss} style={{ gap: 40 }}>
-					<View style={{ gap: GlobalStyles.layout.gap }}>
+		<View style={styles.settingsContainer}>
+			<Pressable onPress={Keyboard.dismiss}>
+
+				<View style={{ gap: 30 }}>
+
+					<View style={{ gap: 7 }}>
 						<Pressable
 							style={{ alignSelf: 'center' }}
 							onPress={() => {
@@ -77,6 +83,22 @@ const SettingsFields = ({
 								base64={profile_picture.slice(0, 5) !== 'https'}
 							/>
 						</Pressable>
+						{ profile_picture !== '' &&
+						<Pressable
+							style={{ alignSelf: 'center' }}
+							onPress={() => {
+								resetPhoto({
+								type: 'null photo',
+								image: '',
+							});
+						}}
+						>
+							<Text style={styles.removeText}>Remove</Text>
+						</Pressable>
+						}
+					</View>
+
+					<View style={{ gap: GlobalStyles.layout.gap }}>
 						<View
 							style={{
 								flexDirection: 'row',
@@ -178,19 +200,19 @@ const SettingsFields = ({
 						/>
 					</View>
 					<View style={{ alignItems: 'center' }}>
-						{errors.email != null && (
-							<Text style={styles.error}>
-								{settings.pleaseEnterAValidEmail}
-							</Text>
-						)}
-						{errors.password != null && (
-							<Text style={styles.error}>
-								{settings.passwordMustBe8CharactersOrMore}
-							</Text>
-						)}
-					</View>
-				</Pressable>
-			</View>
+					{errors.email != null && (
+						<Text style={styles.error}>
+							{settings.pleaseEnterAValidEmail}
+						</Text>
+					)}
+					{errors.password != null && (
+						<Text style={styles.error}>
+							{settings.passwordMustBe8CharactersOrMore}
+						</Text>
+					)}
+				</View>
+				</View>
+			</Pressable>
 		</View>
 	);
 };
@@ -228,6 +250,10 @@ const styles = StyleSheet.create({
 	settingsContainer: {
 		alignItems: 'center',
 		marginHorizontal: GlobalStyles.layout.xGap,
+	},
+	removeText: {
+		color: GlobalStyles.colorPalette.info[500],
+		...GlobalStyles.typography.body,
 	},
 });
 

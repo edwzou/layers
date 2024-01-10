@@ -97,7 +97,7 @@ const Profile: React.FC = () => {
 					<Username username={data.username} />
 				</View>
 			</View>
-			<View style={{ top: 5 }}>
+			<View style={{ top: 10 }}>
 				<CategoryBar
 					selectedCategory={selectedCategory}
 					handleCategoryChange={handleCategoryChange}

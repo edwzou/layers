@@ -13,7 +13,6 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
-import { updateUser } from '../../endpoints/getUser';
 import { useUpdateUser, useUser } from '../../Contexts/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -182,12 +181,14 @@ const SettingsPage: React.FC = () => {
 					void handleSubmit(onSubmit)();
 				}}
 			/>
+			<View>
 			<SettingsFields
 				control={control}
 				setValue={setValue}
 				errors={errors}
 				profile_picture={photo}
 			/>
+			</View>
 			{isLoading && <Loading />}
 		</View>
 	);
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		gap: 15,
+		gap: 40,
 		paddingTop: 20,
 	},
 	settingsContainer: {
