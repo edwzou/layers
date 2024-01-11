@@ -85,8 +85,8 @@ const SettingsFields = ({
 								base64={profile_picture.slice(0, 5) !== 'https'}
 							/>
 						</Pressable>
-						{ profile_picture !== ''
-							? <Pressable
+						{ profile_picture !== '' &&
+							<Pressable
 								style={{ alignSelf: 'center' }}
 								onPress={() => {
 									resetPhoto({
@@ -96,12 +96,6 @@ const SettingsFields = ({
 								}}
 							>
 								<Text style={styles.removeText}>Remove</Text>
-							</Pressable>
-							: <Pressable
-								style={{ alignSelf: 'center' }}
-								onPress={navigateToCamera}
-							>
-								<Text style={styles.removeText}>Upload</Text>
 							</Pressable>
 						}
 					</View>

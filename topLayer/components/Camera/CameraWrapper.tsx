@@ -63,15 +63,7 @@ const CameraWrapper = ({ route }: any): ReactElement => {
 	return (
 		<NavigationContainer independent={true}>
 			<Stack.Navigator>
-				<Stack.Group
-					screenOptions={{
-						headerTitleStyle: GlobalStyles.typography.subtitle,
-						headerStyle: {
-							backgroundColor: GlobalStyles.colorPalette.background,
-						},
-						headerShadowVisible: false,
-					}}
-				>
+				<Stack.Group>
 					<Stack.Screen
 						name={StackNavigation.CameraComponents}
 						component={CameraComponents}
