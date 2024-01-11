@@ -1,4 +1,9 @@
-import React, { useState, useRef, type ReactElement } from 'react';
+import React, {
+	useState,
+	useRef,
+	type ReactElement,
+	MutableRefObject,
+} from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
 
@@ -40,16 +45,16 @@ const ProfileCell = ({
 	const index = useRef<number>(-1);
 	const setUserMarkFunc = useMarkUserFuncDispatch();
 
-	let userProcessed: markedUser;
+	let userProcessed: MutableRefObject<markedUser>;
 	if (isPrivateUser(user)) {
-		userProcessed = {
+		userProcessed = useRef({
 			...user,
 			email: '',
 			followers: [],
 			following: [],
-		};
+		});
 	} else {
-		userProcessed = user;
+		userProcessed = useRef(user);
 	}
 
 	const handleIconPress = (user: markedUser): void => {
@@ -65,23 +70,24 @@ const ProfileCell = ({
 	const handleBookmarkPress = (marked: boolean): void => {
 		if (marked) {
 			setIconName(GlobalStyles.icons.bookmarkOutline);
-			userProcessed.marked = false;
-			void unFollowUser(userProcessed.uid);
+			userProcessed.current.marked = false;
+			console.log('user mark change: ', userProcessed.current.marked);
+			void unFollowUser(userProcessed.current.uid);
 			index.current = handleRelationRender(
-				userProcessed.uid,
+				userProcessed.current.uid,
 				false,
 				index.current,
-				userProcessed
+				userProcessed.current
 			);
 		} else {
 			setIconName(GlobalStyles.icons.bookmarkFill);
-			userProcessed.marked = true;
-			void followUser(userProcessed.uid);
+			userProcessed.current.marked = true;
+			void followUser(userProcessed.current.uid);
 			index.current = handleRelationRender(
-				userProcessed.uid,
+				userProcessed.current.uid,
 				true,
 				index.current,
-				userProcessed
+				userProcessed.current
 			);
 		}
 	};
@@ -92,6 +98,7 @@ const ProfileCell = ({
 				type: 'new user',
 				func: handleBookmarkPress,
 			});
+			console.log('user: ', user.marked, userProcessed.current.marked);
 			navigation.navigate(StackNavigation.ForeignProfile, {
 				markedUser: user,
 			});
@@ -102,27 +109,27 @@ const ProfileCell = ({
 		<Pressable
 			style={styles.container}
 			onPress={() => {
-				handleProfilePress(userProcessed);
+				handleProfilePress(userProcessed.current);
 			}}
 		>
 			{/* Use the ProfilePicture component to render the user's profile picture */}
 			<View style={styles.profilePicture}>
 				<ProfilePicture
-					imageUrl={userProcessed.profile_picture}
+					imageUrl={userProcessed.current.profile_picture}
 					base64={false}
 					size={GlobalStyles.sizing.pfp.small}
 					shadow={false}
 				/>
 			</View>
 			<View style={styles.textContainer}>
-				<Text style={styles.username}>{userProcessed.username}</Text>
+				<Text style={styles.username}>{userProcessed.current.username}</Text>
 				<Text style={styles.fullName}>
-					{`${userProcessed.first_name} ${userProcessed.last_name}`}
+					{`${userProcessed.current.first_name} ${userProcessed.current.last_name}`}
 				</Text>
 			</View>
 			<Pressable
 				onPress={() => {
-					handleIconPress(userProcessed);
+					handleIconPress(userProcessed.current);
 				}}
 			>
 				<Icon
