@@ -1,13 +1,21 @@
 import ItemView from './ItemView';
 import ItemEdit from './ItemEdit';
 import { Stack, type StackTypes } from '../../utils/StackNavigation';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import {
+	NavigationContainer,
+	type RouteProp,
+	useNavigation,
+} from '@react-navigation/native';
 import { StackNavigation } from '../../constants/Enums';
-import GlobalStyles from '../../constants/GlobalStyles';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { type ReactElement } from 'react';
+import { type RouteTypes } from 'types/Routes';
 
-const ItemViewPage = ({ route }: any): ReactElement => {
+const ItemViewPage = ({
+	route,
+}: {
+	route: RouteProp<RouteTypes, 'ItemViewPage'>;
+}): ReactElement => {
 	const { item, editable } = route.params;
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();

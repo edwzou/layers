@@ -73,9 +73,7 @@ const SettingsFields = ({
 	return (
 		<View style={styles.settingsContainer}>
 			<Pressable onPress={Keyboard.dismiss}>
-
 				<View style={{ gap: 30 }}>
-
 					<View style={{ gap: 7 }}>
 						<Pressable
 							style={{ alignSelf: 'center' }}
@@ -86,19 +84,19 @@ const SettingsFields = ({
 								base64={profile_picture.slice(0, 5) !== 'https'}
 							/>
 						</Pressable>
-						{ profile_picture !== '' &&
+						{profile_picture !== '' && (
 							<Pressable
 								style={{ alignSelf: 'center' }}
 								onPress={() => {
 									resetPhoto({
-									type: 'null photo',
-									image: '',
+										type: 'null photo',
+										image: '',
 									});
 								}}
 							>
 								<Text style={styles.removeText}>Remove</Text>
 							</Pressable>
-						}
+						)}
 					</View>
 
 					<View style={{ gap: GlobalStyles.layout.gap }}>
@@ -186,17 +184,17 @@ const SettingsFields = ({
 						/>
 					</View>
 					<View style={{ alignItems: 'center' }}>
-					{errors.email != null && (
-						<Text style={styles.error}>
-							{settings.pleaseEnterAValidEmail}
-						</Text>
-					)}
-					{errors.password != null && (
-						<Text style={styles.error}>
-							{settings.passwordMustBe8CharactersOrMore}
-						</Text>
-					)}
-				</View>
+						{errors.email != null && (
+							<Text style={styles.error}>
+								{settings.pleaseEnterAValidEmail}
+							</Text>
+						)}
+						{errors.password != null && (
+							<Text style={styles.error}>
+								{settings.passwordMustBe8CharactersOrMore}
+							</Text>
+						)}
+					</View>
 				</View>
 			</Pressable>
 		</View>

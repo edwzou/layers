@@ -7,7 +7,7 @@ interface ButtonPropsType {
 	onPress: (data: any) => void;
 	disabled?: boolean;
 	style?: ViewStyle;
-	bgColor: any; // !!! fix any type
+	bgColor: string;
 }
 
 const Button = ({

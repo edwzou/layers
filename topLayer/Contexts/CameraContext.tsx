@@ -18,7 +18,7 @@ interface photoReducerProps {
 	image: string;
 }
 
-const photoReducer = (state: string, action: photoReducerProps): string => {
+const photoReducer = (_state: string, action: photoReducerProps): string => {
 	switch (action.type) {
 		case 'new photo': {
 			return action.image;

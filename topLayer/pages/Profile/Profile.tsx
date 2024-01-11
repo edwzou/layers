@@ -1,5 +1,11 @@
 import React, { useRef, useState, useContext } from 'react';
-import { View, Pressable, StyleSheet, type FlatList } from 'react-native';
+import {
+	View,
+	Pressable,
+	StyleSheet,
+	type FlatList,
+	type ViewToken,
+} from 'react-native';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import FullName from '../../components/Name/FullName';
 import Username from '../../components/Name/Username';
@@ -57,15 +63,17 @@ const Profile: React.FC = () => {
 		}
 	};
 
-	const handleViewableItemsChanged = useRef(({ viewableItems }: any) => {
-		if (viewableItems.length > 0) {
-			const visibleItem = viewableItems[0];
-			const index = allItems.findIndex(
-				(item) => item.category === visibleItem.item.category
-			);
-			setSelectedCategory(IndexToCategory[index]);
+	const handleViewableItemsChanged = useRef(
+		({ viewableItems }: { viewableItems: ViewToken[] }) => {
+			if (viewableItems.length > 0) {
+				const visibleItem = viewableItems[0];
+				const index = allItems.findIndex(
+					(item) => item.category === visibleItem.item.category
+				);
+				setSelectedCategory(IndexToCategory[index]);
+			}
 		}
-	}).current;
+	).current;
 
 	const toggleFeedbackModal = (): void => {
 		navigation.navigate(StackNavigation.Feedback, {});

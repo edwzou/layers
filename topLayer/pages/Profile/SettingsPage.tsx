@@ -84,7 +84,7 @@ const SettingsPage: React.FC = () => {
 		return unsubscribe;
 	});
 
-	const onSubmit = async (formValues: FormValues | any): Promise<void> => {
+	const updateUser = async (formValues: FormValues): Promise<void> => {
 		// console.log('values: ', formValues.profile_picture.substring(0, 10));
 		const updatedFields: Partial<FormValues> = {};
 
@@ -133,6 +133,12 @@ const SettingsPage: React.FC = () => {
 						type: 'change fields',
 						...updatedFields,
 					});
+					if (updatedFields.profile_picture !== undefined) {
+						resetPhoto({
+							type: 'new photo',
+							image: profile_picture,
+						});
+					}
 					navigation.goBack();
 					showSuccessToast(toast.yourProfileHasBeenUpdated);
 					setIsLoading(false); // Stop loading on success
@@ -150,20 +156,24 @@ const SettingsPage: React.FC = () => {
 	};
 
 	const confirmDeletion = (): void => {
-		Alert.alert(settings.deleteProfileConfirm, settings.youCannotUndoThisAction, [
-			{
-				text: settings.cancel,
-				onPress: () => {},
-				style: 'cancel',
-			},
-			{
-				text: settings.delete,
-				onPress: () => {
-					void handleDelete();
+		Alert.alert(
+			settings.deleteProfileConfirm,
+			settings.youCannotUndoThisAction,
+			[
+				{
+					text: settings.cancel,
+					onPress: () => {},
+					style: 'cancel',
 				},
-				style: 'destructive',
-			},
-		]);
+				{
+					text: settings.delete,
+					onPress: () => {
+						void handleDelete();
+					},
+					style: 'destructive',
+				},
+			]
+		);
 	};
 
 	const handleDelete = async (): Promise<void> => {
@@ -199,7 +209,7 @@ const SettingsPage: React.FC = () => {
 				rightButton={true}
 				rightStepOverType={StepOverTypes.update}
 				rightButtonAction={() => {
-					void handleSubmit(onSubmit)();
+					void handleSubmit(updateUser)();
 				}}
 			/>
 			<SettingsFields
