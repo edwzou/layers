@@ -52,8 +52,6 @@ const SearchUsers = ({
 
 			if (status === 200) {
 				setSearchResults(data.data);
-			} else {
-				console.log('Failed to fetch foreign user ProfileCell');
 			}
 		} catch (error) {
 			axiosEndpointErrorHandlerNoAlert(error);

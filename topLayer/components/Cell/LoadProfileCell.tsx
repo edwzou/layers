@@ -48,8 +48,6 @@ const FetchProfileCell = ({
 					...data.data,
 					marked: marked,
 				});
-			} else {
-				console.log('Failed to fetch foreign user ProfileCell');
 			}
 		} catch (error) {
 			axiosEndpointErrorHandlerNoAlert(error);
