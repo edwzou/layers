@@ -13,6 +13,7 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
+import { handleLogout } from '../../endpoints/getUser';
 import { useUpdateUser, useUser } from '../../Contexts/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -45,7 +46,6 @@ const SettingsPage: React.FC = () => {
 		profile_picture,
 	} = data;
 
-	const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
@@ -68,24 +68,11 @@ const SettingsPage: React.FC = () => {
 		defaultValues: defaultForm,
 	});
 
-	const handleLogout = async (): Promise<void> => {
-		await axios(`${baseUrl}/logout`);
-		refreshUser({
-			type: 'logout',
-		});
-	};
 	const photo = usePhoto();
 
 	useEffect(() => {
 		setValue('profile_picture', photo);
 	}, [photo]);
-
-	useEffect(() => {
-		if (showSuccessUpdate) {
-			navigation.goBack();
-			setShowSuccessUpdate(false);
-		}
-	}, [showSuccessUpdate]);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -128,9 +115,7 @@ const SettingsPage: React.FC = () => {
 			console.log('No changes to update');
 			return;
 		}
-
 		setIsLoading(true); // Start loading
-
 		try {
 			const response = await axios.put(
 				`${baseUrl}/api/private/users`,
@@ -144,16 +129,11 @@ const SettingsPage: React.FC = () => {
 
 			if (response.status === 200) {
 				try {
-					// Causes a huge mess. Look into later. Just refresh and re-fetch for now.
-					// const sessionData = JSON.stringify(response.data.data);
-					// await AsyncStorage.setItem('session', sessionData);
-					// updateData(sessionData);
-					setShowSuccessUpdate(true);
-					// void updateUser(refreshUser);
 					refreshUser({
 						type: 'change fields',
 						...updatedFields,
 					});
+					navigation.goBack();
 					showSuccessToast(toast.yourProfileHasBeenUpdated);
 					setIsLoading(false); // Stop loading on success
 				} catch (error) {
@@ -213,7 +193,9 @@ const SettingsPage: React.FC = () => {
 				text={StackNavigation.Settings}
 				leftButton={true}
 				leftStepOverType={StepOverTypes.logout}
-				leftButtonAction={handleLogout}
+				leftButtonAction={() => {
+					void handleLogout(refreshUser);
+				}}
 				rightButton={true}
 				rightStepOverType={StepOverTypes.update}
 				rightButtonAction={() => {

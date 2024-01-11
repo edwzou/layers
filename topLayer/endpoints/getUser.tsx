@@ -46,3 +46,12 @@ export const updateUser = async (
 		user: promUser,
 	});
 };
+
+export const handleLogout = async (
+	dispatch: Dispatch<UserReducerProps>
+): Promise<void> => {
+	await axios(`${baseUrl}/logout`);
+	dispatch({
+		type: 'logout',
+	});
+};
