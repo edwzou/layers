@@ -9,11 +9,7 @@ LogBox.ignoreLogs(['Require cycle:']);
 LogBox.ignoreLogs(['Constants.platform.ios.model has been deprecated']);
 
 const AppAdmin: React.FC = () => {
-	return (
-		<StrictMode>
-			<AppProvider />;
-		</StrictMode>
-	);
+	return <AppProvider />;
 };
 
 export default AppAdmin;
