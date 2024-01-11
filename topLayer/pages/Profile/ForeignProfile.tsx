@@ -28,7 +28,6 @@ import { type UserAllItems } from '../../types/AllItems';
 
 const ForeignProfile = ({ route }: any): ReactElement => {
 	const user: markedUser = route.params.markedUser;
-	// console.log('Route: ', route, route.params);
 
 	const markUserFunc = useMarkUserFunc();
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);

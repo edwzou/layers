@@ -45,13 +45,11 @@ const FindPage: React.FC = () => {
 						})
 				);
 				setFollowed(top3Users.concat(followedUsersData.slice(previewLength)));
-				console.log('followed2: ', followedUsersData);
 			} catch (error) {
 				axiosEndpointErrorHandler(error);
 			}
 		};
 
-		console.log('followed: ', followedUsersData);
 		if (
 			followedUsersData
 				.slice(0, previewLength)

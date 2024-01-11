@@ -40,7 +40,7 @@ export const settings = {
 	remove: 'Remove',
 	deleteProfileConfirm: 'Delete profile?',
 	delete: 'Delete',
-	deleteProfile: 'Delete profile'
+	deleteProfile: 'Delete profile',
 } as const;
 
 export const toast = {

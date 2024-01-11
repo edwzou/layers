@@ -136,16 +136,19 @@ const Match: React.FC = () => {
 					rightButton={true}
 					rightButtonNavigateTo={0}
 				/>
-				{
-					data.outerwear.length !== 0 || data.tops.length !== 0 || data.bottoms.length !== 0 || data.shoes.length !== 0
-					? <Selector
+				{data.outerwear.length !== 0 ||
+				data.tops.length !== 0 ||
+				data.bottoms.length !== 0 ||
+				data.shoes.length !== 0 ? (
+					<Selector
 						outerwear={data.outerwear}
 						tops={data.tops}
 						bottoms={data.bottoms}
 						shoes={data.shoes}
 						selectedIndex={selectedIndex}
 					/>
-					: (<View
+				) : (
+					<View
 						style={{
 							alignItems: 'center',
 							justifyContent: 'center',
@@ -166,8 +169,8 @@ const Match: React.FC = () => {
 						>
 							No clothing
 						</Text>
-					</View>)
-				}
+					</View>
+				)}
 			</SafeAreaView>
 			<Button
 				text={match.preview}
@@ -178,7 +181,13 @@ const Match: React.FC = () => {
 					alignSelf: 'center',
 				}}
 				bgColor={GlobalStyles.colorPalette.primary[500]}
-				disabled={data.outerwear.length === 0 && data.tops.length === 0 && data.bottoms.length === 0 && data.shoes.length === 0 && true}
+				disabled={
+					data.outerwear.length === 0 &&
+					data.tops.length === 0 &&
+					data.bottoms.length === 0 &&
+					data.shoes.length === 0 &&
+					true
+				}
 			/>
 		</>
 	);

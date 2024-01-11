@@ -31,7 +31,6 @@ const getAllOutfitsHandler = async (
 		const { data, status } = await axios.get(query);
 
 		if (status === 200) {
-			console.log('Successfully Fetched Outfits');
 			updateOutfits(data.data);
 		} else {
 			throw new Error(`An Get All Outfits Error Has Occurred: ${status}`);
@@ -49,7 +48,6 @@ export const getForeignAllClothingItems = async (
 	setAllBottoms: (wear: UserClothing[]) => void,
 	setAllShoes: (wear: UserClothing[]) => void
 ): Promise<void> => {
-	console.log('Foreign Clothing Items');
 	void getAllClothingItemsHandler(
 		setAllOuterwear,
 		setAllTops,
@@ -85,8 +83,6 @@ const getAllClothingItemsHandler = async (
 		const { data, status } = await axios.get(query);
 
 		if (status === 200) {
-			console.log('Successfully Fetched Clothing Items');
-			// console.log(data.data);
 			setAllOuterwear(data.data.outerwear);
 			setAllTops(data.data.tops);
 			setAllBottoms(data.data.bottoms);
@@ -104,5 +100,3 @@ const getAllClothingItemsHandler = async (
 		setAllShoes([]);
 	}
 };
-
-// export const allItemsGenerator = (outfits: UserOutfit[], out)

@@ -19,7 +19,6 @@ const LoginFields = ({ control }: LoginFieldsType): ReactElement => {
 					<InlineTextbox
 						autoCapitalize="none"
 						icon={GlobalStyles.icons.userOutline}
-						// placeholder="Email or Username"
 						placeholder="Email"
 						value={value}
 						onFieldChange={onChange}

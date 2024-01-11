@@ -5,7 +5,6 @@ import OutfitEdit from './OutfitEdit';
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { StackNavigation } from '../../constants/Enums';
-import GlobalStyles from '../../constants/GlobalStyles';
 import { type UserClothing } from '../../types/Clothing';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';

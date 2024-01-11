@@ -47,8 +47,6 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		// paddingVertical: 20,
-		// paddingHorizontal: GlobalStyles.layout.xGap,
 		marginLeft: -5, // half of the space
 		marginRight: -5, // half of the space
 	},

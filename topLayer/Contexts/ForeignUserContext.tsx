@@ -32,7 +32,6 @@ const markUserFuncReducer = (
 	}
 };
 
-// eslint-disable-next-line @typescript-eslint/no-extra-parens
 export const MarkUserFuncContext = createContext<StateType>(
 	(marked: boolean) => {}
 );

@@ -3,7 +3,6 @@ import CameraComponent from './Camera';
 import ItemCreate from '../../pages/ItemView/ItemCreate';
 import { Stack, type StackTypes } from '../../utils/StackNavigation';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import GlobalStyles from '../../constants/GlobalStyles';
 import { StackNavigation } from '../../constants/Enums';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -12,7 +11,6 @@ let createCount = 0;
 
 const CameraWrapper = ({ route }: any): ReactElement => {
 	const returnToPfp = route.params.returnToPfp;
-	// console.log('params: ', route);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [clothingItem, setClothingItem] = useState({

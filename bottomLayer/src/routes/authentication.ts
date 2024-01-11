@@ -28,7 +28,6 @@ const loginStrate = new LocalStrategy(
 			options?: IVerifyOptions
 		) => void
 	) => {
-		console.log('data', email, password);
 		const login = async (): Promise<void> => {
 			try {
 				const result = await pool.query(
@@ -52,10 +51,8 @@ const loginStrate = new LocalStrategy(
 					return;
 				}
 
-				console.log('full query data: ', result.rows);
 				done(null, result.rows[0]);
 			} catch (err) {
-				console.log(err);
 				done(err);
 			}
 		};
@@ -84,16 +81,6 @@ const signupStrate = new LocalStrategy(
 			private_option,
 			profile_picture,
 		} = req.body;
-		console.log(
-			'data: ',
-			first_name,
-			last_name,
-			email,
-			username,
-			password,
-			private_option,
-			profile_picture
-		);
 
 		const signup = async (): Promise<void> => {
 			try {
@@ -163,7 +150,6 @@ const getUser = async (
 		const imgRef = userFields.profile_picture;
 		userFields.profile_picture = await downloadURLFromS3(imgRef);
 
-		console.log('Extracted User: ', userFields);
 		responseCallbackLogin(null, userFields, res);
 		next();
 	} catch (error) {
@@ -187,7 +173,6 @@ const login = (req: Request, res: Response, next: NextFunction): any => {
 				'Unknown User Error, User Not Defined'
 			);
 		}
-		console.log('full user data: ', user);
 		req.logIn(user, { session: true }, (err) => {
 			if (err !== null && err !== undefined) {
 				return responseCallbackLogin(err, '', res);
@@ -213,8 +198,6 @@ const signup = (req: Request, res: Response, next: NextFunction): any => {
 				'Unknown User Error, User Not Defined'
 			);
 		}
-
-		console.log('full user data: ', user);
 		req.logIn(user, { session: true }, (err) => {
 			if (err !== null && err !== undefined) {
 				return responseCallbackSignUp(err, '', res);

@@ -102,14 +102,11 @@ const OutfitPreview = ({ route }: any): ReactElement => {
 
 				setIsLoading(false); // Stop loading
 				if (response.status === 200) {
-					// alert(`You have created: ${JSON.stringify(response.data)}`);
 					navigation.goBack();
 					setShouldRefreshMainPage(true);
-					// navigationArray[1](); // Uncomment this to navigate to profile page
 					showSuccessToast(toast.yourOutfitHasBeenCreated);
 				} else {
 					showErrorToast(toast.anErrorHasOccurredWhileCreatingOutfit);
-					// throw new Error('An error has occurred while submitting outfit');
 				}
 			} catch (error) {
 				setIsLoading(false); // Stop loading

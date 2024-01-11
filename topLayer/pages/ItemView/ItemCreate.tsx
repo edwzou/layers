@@ -73,9 +73,6 @@ const ItemCreate = ({
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 	const [currentColorTags, setColorTags] = useState(clothingItem.color);
-	// const [itemName, setItemName] = useState(
-	// 	clothingItem.title ? clothingItem.title : ''
-	// );
 
 	const [sizeOpen, setSizeOpen] = useState(false);
 	// sets the size stored in the database
@@ -238,7 +235,6 @@ const ItemCreate = ({
 	}, [clothingItem.image_url]);
 
 	const handleCreate = async (values: FormValues | any): Promise<void> => {
-		console.log(values);
 		if (values.category === '') {
 			throw new Error('Category Value Not Filled Out.');
 		}
@@ -259,7 +255,6 @@ const ItemCreate = ({
 			);
 
 			if (status === 200) {
-				console.log('item create data: ', data);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
 				showSuccessToast(toast.yourItemHasBeenCreated);
