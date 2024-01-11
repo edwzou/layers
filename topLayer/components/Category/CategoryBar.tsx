@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
 	},
 	currentTitle: {
 		backgroundColor: GlobalStyles.colorPalette.primary[500],
-		// marginHorizontal: 5,
 		...GlobalStyles.utils.tagShape,
 		shadowColor: GlobalStyles.colorPalette.primary[400],
 	},

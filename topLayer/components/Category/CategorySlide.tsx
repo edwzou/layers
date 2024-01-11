@@ -31,7 +31,6 @@ const CategorySlide = ({
 				<FlatList
 					data={itemsData.data as UserOutfit[]}
 					renderItem={({ item }) => {
-						// console.log(item)
 						return (
 							<OutfitCard
 								title={item.title}
@@ -57,7 +56,6 @@ const CategorySlide = ({
 				<FlatList
 					data={itemsData.data as UserClothing[]}
 					renderItem={({ item }) => {
-						// console.log(item);
 						return (
 							<View style={{ width: ITEM_SIZE(2) }}>
 								<ItemCell

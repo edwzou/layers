@@ -6,6 +6,7 @@ import { Stack } from '../../utils/StackNavigation';
 import {
 	NavigationContainer,
 	useNavigation,
+	useRoute,
 	type RouteProp,
 } from '@react-navigation/native';
 import { StackNavigation } from '../../constants/Enums';
@@ -15,11 +16,9 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserOutfit } from '../../types/Outfit';
 import { type RouteTypes } from 'types/Routes';
 
-const OutfitViewPage = ({
-	route,
-}: {
-	route: RouteProp<RouteTypes, 'OutfitViewPage'>;
-}): ReactElement => {
+const OutfitViewPage = (): ReactElement => {
+	const route = useRoute<RouteProp<RouteTypes, 'OutfitViewPage'>>();
+
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const { item, editable }: { item: UserOutfit; editable: boolean } =

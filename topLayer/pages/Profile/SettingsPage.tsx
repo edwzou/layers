@@ -85,7 +85,6 @@ const SettingsPage: React.FC = () => {
 	});
 
 	const updateUser = async (formValues: FormValues): Promise<void> => {
-		// console.log('values: ', formValues.profile_picture.substring(0, 10));
 		const updatedFields: Partial<FormValues> = {};
 
 		if (formValues.first_name !== first_name) {
@@ -107,12 +106,10 @@ const SettingsPage: React.FC = () => {
 			updatedFields.private_option = formValues.private_option;
 		}
 		if (formValues.profile_picture !== profile_picture) {
-			console.log('pp: ', formValues.profile_picture);
 			updatedFields.profile_picture = formValues.profile_picture;
 		}
 
 		if (Object.keys(updatedFields).length === 0) {
-			console.log('No changes to update');
 			return;
 		}
 		setIsLoading(true); // Start loading
@@ -144,7 +141,6 @@ const SettingsPage: React.FC = () => {
 					setIsLoading(false); // Stop loading on success
 				} catch (error) {
 					setIsLoading(false); // Stop loading on error
-					console.log(error);
 					showErrorToast(toast.anErrorHasOccurredWhileUpdatingProfile);
 				}
 			} else {
@@ -156,22 +152,19 @@ const SettingsPage: React.FC = () => {
 	};
 
 	const confirmDeletion = (): void => {
-		Alert.alert(
-			settings.deleteProfileConfirm,
-			settings.youCannotUndoThisAction,
-			[
-				{
-					text: settings.cancel,
-					onPress: () => {},
-					style: 'cancel',
+		Alert.alert(settings.deleteProfile, settings.youCannotUndoThisAction, [
+			{
+				text: settings.cancel,
+				onPress: () => {},
+				style: 'cancel',
+			},
+			{
+				text: settings.delete,
+				onPress: () => {
+					void handleDelete();
 				},
-				{
-					text: settings.delete,
-					onPress: () => {
-						void handleDelete();
-					},
-					style: 'destructive',
-				},
+				style: 'destructive',
+			},
 			]
 		);
 	};
@@ -218,16 +211,18 @@ const SettingsPage: React.FC = () => {
 				errors={errors}
 				profile_picture={photo}
 			/>
+
 			<Button
-				text={settings.deleteProfile}
+				text={settings.delete}
 				onPress={confirmDeletion}
 				style={{
 					position: 'absolute',
 					bottom: GlobalStyles.layout.gap * 3,
 					alignSelf: 'center',
 				}}
-				bgColor={GlobalStyles.colorPalette.danger[600]}
+				bgColor={GlobalStyles.colorPalette.danger[500]}
 			/>
+
 			{isLoading && <Loading />}
 		</View>
 	);

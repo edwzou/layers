@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Keyboard, Alert } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -70,6 +70,29 @@ const SettingsFields = ({
 		});
 	};
 
+	const showProfileOptions = (): void => {
+		Alert.alert(settings.editProfilePicture, '', [
+			{
+				text: settings.cancel,
+				onPress: () => {},
+				style: 'cancel',
+			},
+			{
+				text: settings.change,
+				onPress: navigateToCamera,
+			},
+			{
+				text: settings.remove,
+				onPress: () => {
+					resetPhoto({
+					type: 'null photo',
+					image: '',
+					});
+				},
+			},
+		]);
+	};
+
 	return (
 		<View style={styles.settingsContainer}>
 			<Pressable onPress={Keyboard.dismiss}>
@@ -77,26 +100,13 @@ const SettingsFields = ({
 					<View style={{ gap: 7 }}>
 						<Pressable
 							style={{ alignSelf: 'center' }}
-							onPress={navigateToCamera}
+							onPress={ profile_picture !== '' ? showProfileOptions : navigateToCamera}
 						>
 							<ProfilePicture
 								imageUrl={profile_picture}
 								base64={profile_picture.slice(0, 5) !== 'https'}
 							/>
 						</Pressable>
-						{profile_picture !== '' && (
-							<Pressable
-								style={{ alignSelf: 'center' }}
-								onPress={() => {
-									resetPhoto({
-										type: 'null photo',
-										image: '',
-									});
-								}}
-							>
-								<Text style={styles.removeText}>Remove</Text>
-							</Pressable>
-						)}
 					</View>
 
 					<View style={{ gap: GlobalStyles.layout.gap }}>
@@ -183,7 +193,9 @@ const SettingsFields = ({
 							}
 						/>
 					</View>
-					<View style={{ alignItems: 'center' }}>
+					{
+						(errors.email != null || errors.password != null) &&
+						<View style={{ alignItems: 'center' }}>
 						{errors.email != null && (
 							<Text style={styles.error}>
 								{settings.pleaseEnterAValidEmail}
@@ -195,6 +207,7 @@ const SettingsFields = ({
 							</Text>
 						)}
 					</View>
+					}
 				</View>
 			</Pressable>
 		</View>

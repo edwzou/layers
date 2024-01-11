@@ -12,7 +12,6 @@ import SettingsPage from './SettingsPage';
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { NavigationContainer } from '@react-navigation/native';
-import GlobalStyles from '../../constants/GlobalStyles';
 import CameraWrapper from '../../components/Camera/CameraWrapper';
 
 // Define the context type

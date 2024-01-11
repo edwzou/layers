@@ -6,8 +6,8 @@ import {
 	NavigationContainer,
 	type RouteProp,
 	useNavigation,
+	useRoute,
 } from '@react-navigation/native';
-import GlobalStyles from '../../constants/GlobalStyles';
 import { StackNavigation } from '../../constants/Enums';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteTypes } from 'types/Routes';
@@ -15,13 +15,9 @@ import { type RouteTypes } from 'types/Routes';
 const dummyId = 'createID: ';
 let createCount = 0;
 
-const CameraWrapper = ({
-	route,
-}: {
-	route: RouteProp<RouteTypes, 'CameraWrapper'>;
-}): ReactElement => {
+const CameraWrapper = (): ReactElement => {
+	const route = useRoute<RouteProp<RouteTypes, 'CameraWrapper'>>();
 	const returnToPfp = route.params.returnToPfp;
-	// console.log('params: ', route);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [clothingItem, setClothingItem] = useState({

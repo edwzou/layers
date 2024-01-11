@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: screenHeight,
 		gap: 5,
-		// ...GlobalStyles.utils.mediumRadius,
 		zIndex: 10,
 		flex: 1,
 		shadowColor: GlobalStyles.colorPalette.primary[500],

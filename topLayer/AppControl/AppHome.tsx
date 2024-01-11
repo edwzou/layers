@@ -42,6 +42,13 @@ const AppHome: React.FC = () => {
 							<Stack.Screen
 								name={StackNavigation.CameraWrapper}
 								component={CameraWrapper}
+								options={{
+									presentation: 'fullScreenModal',
+									animation: 'slide_from_bottom',
+									gestureEnabled: true,
+									gestureDirection: 'vertical',
+									headerShown: false,
+								}}
 							/>
 						</>
 					) : (
