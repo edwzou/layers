@@ -15,6 +15,7 @@ import { Loading } from '../../components/Loading/Loading';
 import { useUpdateUser } from '../../Contexts/UserContext';
 import { usePhoto } from '../../Contexts/CameraContext';
 import SettingsFields from '../../components/Settings/SettingsFields';
+import { View } from 'react-native';
 
 interface FormValues {
 	first_name: string;
@@ -41,8 +42,8 @@ const SignUp: React.FC = () => {
 		defaultValues: defaultFormUser,
 	});
 
-	const onSubmit = (values: FormValues | any): void => {
-		const formValues: Record<string, any> = {
+	const onSubmit = (values: FormValues): void => {
+		const formValues: FormValues = {
 			first_name: values.first_name,
 			last_name: values.last_name,
 			username: values.username,
@@ -88,14 +89,18 @@ const SignUp: React.FC = () => {
 				errors={errors}
 				profile_picture={profile_picture}
 			/>
-			<Button
-				text="Sign up"
-				onPress={() => {
-					void handleSubmit(onSubmit)();
-				}}
-				disabled={isLoading || Object.keys(dirtyFields).length < 5}
-				bgColor={GlobalStyles.colorPalette.primary[500]}
-			/>
+
+			<View style={{ paddingTop: 40 }}>
+				<Button
+					text="Sign up"
+					onPress={() => {
+						void handleSubmit(onSubmit)();
+					}}
+					disabled={isLoading || Object.keys(dirtyFields).length < 5}
+					bgColor={GlobalStyles.colorPalette.primary[500]}
+				/>
+			</View>
+
 			{isLoading && <Loading />}
 		</>
 	);

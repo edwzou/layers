@@ -19,7 +19,7 @@ interface MarkUserFuncUpdateProps {
 type StateType = (marked: boolean) => void;
 
 const markUserFuncReducer = (
-	state: StateType,
+	_state: StateType,
 	action: MarkUserFuncUpdateProps
 ): ((marked: boolean) => void) => {
 	switch (action.type) {
@@ -33,7 +33,7 @@ const markUserFuncReducer = (
 };
 
 export const MarkUserFuncContext = createContext<StateType>(
-	(marked: boolean) => {}
+	(_marked: boolean) => {}
 );
 export const MarkUserFuncDispatchContext = createContext<
 	Dispatch<MarkUserFuncUpdateProps>
@@ -44,7 +44,7 @@ export function MarkUserFuncProvider({
 }: MarkUserFuncProviderProps): ReactElement {
 	const [tasks, dispatch] = useReducer(
 		markUserFuncReducer,
-		(marked: boolean) => {}
+		(_marked: boolean) => {}
 	);
 
 	return (

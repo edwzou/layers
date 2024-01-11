@@ -84,8 +84,8 @@ const GeneralModal = forwardRef(
 
 		const backdropProps = useAnimatedProps(() => {
 			return {
-				pointerEvents: active.value ? 'auto' : 'none',
-			} as any;
+				pointerEvents: active.value ? ('auto' as const) : ('none' as const),
+			};
 		}, []);
 
 		return (

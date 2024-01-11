@@ -34,11 +34,12 @@ const Find = ({
 	};
 
 	const handleEmptyString = (relationChanges: Array<string | User>): void => {
-		const usersToAdd = [];
 		const length = foreignUserIDs.length;
+		const usersToAdd = [];
+		let foreignUserCopy = [...foreignUserIDs];
 		for (const user of relationChanges) {
 			if (typeof user === 'string') {
-				foreignUserIDs = foreignUserIDs.filter((value) => {
+				foreignUserCopy = foreignUserCopy.filter((value) => {
 					if (typeof value === 'string') {
 						return value !== user;
 					} else {
@@ -46,15 +47,11 @@ const Find = ({
 					}
 				});
 			} else {
-				if (user.profile_picture !== '') {
-					usersToAdd.push(user);
-				} else {
-					foreignUserIDs.push(user);
-				}
+				usersToAdd.push(user);
 			}
 		}
-		if (usersToAdd.length > 0 || length !== foreignUserIDs.length) {
-			usersToAdd.push(...foreignUserIDs);
+		if (usersToAdd.length > 0 || length !== foreignUserCopy.length) {
+			usersToAdd.push(...foreignUserCopy);
 			updateFollowed(usersToAdd);
 		}
 		setComponentVisible(true);

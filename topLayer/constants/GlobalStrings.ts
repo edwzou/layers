@@ -34,13 +34,15 @@ export const itemEdit = {
 export const settings = {
 	pleaseEnterAValidEmail: 'Please enter a valid email.',
 	passwordMustBe8CharactersOrMore: 'Password must be 8 characters or more.',
-	removeProfilePicture: 'Remove profile picture?',
+	removeProfilePictureConfirm: 'Remove profile picture?',
 	youCannotUndoThisAction: 'You cannot undo this action.',
 	cancel: 'Cancel',
 	remove: 'Remove',
-	deleteProfileConfirm: 'Delete profile?',
+	deleteProfile: 'Delete profile?',
 	delete: 'Delete',
-	deleteProfile: 'Delete profile',
+	update: 'Update',
+	change: 'Change',
+	editProfilePicture: 'Edit profile picture',
 } as const;
 
 export const toast = {

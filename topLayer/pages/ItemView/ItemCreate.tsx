@@ -234,7 +234,7 @@ const ItemCreate = ({
 		setValue('image', clothingItem.image_url);
 	}, [clothingItem.image_url]);
 
-	const handleCreate = async (values: FormValues | any): Promise<void> => {
+	const handleCreate = async (values: FormValues): Promise<void> => {
 		if (values.category === '') {
 			throw new Error('Category Value Not Filled Out.');
 		}
@@ -244,7 +244,7 @@ const ItemCreate = ({
 		if (values.size === '') {
 			throw new Error('Size Value Not Filled Out.');
 		}
-		if (values.image_url === '') {
+		if (values.image === '') {
 			throw new Error('Image Value Not Filled Out.');
 		}
 		setIsLoading(true); // Start loading

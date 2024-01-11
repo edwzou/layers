@@ -11,14 +11,13 @@ import Icon from 'react-native-remix-icon';
 DropDownPicker.setListMode('SCROLLVIEW');
 
 interface DropdownType {
-	// !!! Fix Types
 	label: string;
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
 	value: string;
 	setValue: Dispatch<SetStateAction<string>>;
 	items: Array<{ label: string; value: any }>;
-	setItems: any;
+	setItems: Dispatch<SetStateAction<any[]>>;
 }
 
 const Dropdown = ({

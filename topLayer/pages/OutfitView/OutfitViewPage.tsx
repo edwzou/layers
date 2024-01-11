@@ -3,14 +3,22 @@ import React, { type ReactElement, useRef } from 'react';
 import OutfitView from './OutfitView';
 import OutfitEdit from './OutfitEdit';
 import { Stack } from '../../utils/StackNavigation';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import {
+	NavigationContainer,
+	useNavigation,
+	useRoute,
+	type RouteProp,
+} from '@react-navigation/native';
 import { StackNavigation } from '../../constants/Enums';
 import { type UserClothing } from '../../types/Clothing';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserOutfit } from '../../types/Outfit';
+import { type RouteTypes } from 'types/Routes';
 
-const OutfitViewPage = ({ route }: any): ReactElement => {
+const OutfitViewPage = (): ReactElement => {
+	const route = useRoute<RouteProp<RouteTypes, 'OutfitViewPage'>>();
+
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const { item, editable }: { item: UserOutfit; editable: boolean } =

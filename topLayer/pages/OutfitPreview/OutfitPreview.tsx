@@ -20,7 +20,11 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
-import { useNavigation } from '@react-navigation/native';
+import {
+	type RouteProp,
+	useNavigation,
+	useRoute,
+} from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from 'utils/StackNavigation';
 import { Loading } from '../../components/Loading/Loading';
@@ -28,8 +32,10 @@ import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import Header from '../../components/Header/Header';
 import { emptyClothing } from '../../constants/Clothing';
 import { MainPageContext } from '../../pages/Main/MainPage';
+import { type RouteTypes } from 'types/Routes';
 
-const OutfitPreview = ({ route }: any): ReactElement => {
+const OutfitPreview = (): ReactElement => {
+	const route = useRoute<RouteProp<RouteTypes, 'OutfitPreview'>>();
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);

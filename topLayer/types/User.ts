@@ -48,3 +48,7 @@ export const isPrivateUser = (
 ): obj is markedPrivateUser | privateUser => {
 	return obj.private_option === true;
 };
+
+export const isUserArray = (arr: any[]): arr is User[] => {
+	return arr.every((item) => typeof item === 'object');
+};

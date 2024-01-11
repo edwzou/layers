@@ -31,6 +31,18 @@ export interface UserSelectedClothingList {
 	shoes: number;
 }
 
+export interface outfitType {
+	outerwear: UserClothing;
+	tops: UserClothing;
+	bottoms: UserClothing;
+	shoes: UserClothing;
+}
+
+export interface matchType {
+	previewData: outfitType;
+	matchName: string;
+}
+
 export interface UserClothingPadding {
 	outerwear: Array<UserClothing | Record<string, number>>;
 	tops: Array<UserClothing | Record<string, number>>;

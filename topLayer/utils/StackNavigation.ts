@@ -14,10 +14,10 @@ export interface StackNavigatorType {
 	item?: UserClothing | UserOutfit;
 	editable?: boolean;
 	matchItems?: {
-		outerwear?: UserClothing;
-		tops?: UserClothing;
-		bottoms?: UserClothing;
-		shoes?: UserClothing;
+		outerwear: UserClothing;
+		tops: UserClothing;
+		bottoms: UserClothing;
+		shoes: UserClothing;
 	};
 	returnTo?: NativeStackNavigationProp<StackTypes>;
 	returnToPfp?: boolean;
