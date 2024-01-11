@@ -18,6 +18,7 @@ import { type UserOutfit } from '../../types/Outfit';
 import { type UserClothing } from '../../types/Clothing';
 import { getAllClothingItems, getAllOutfits } from '../../endpoints/wardrobe';
 import { type UserAllItems } from '../../types/AllItems';
+import { type NativeSyntheticEvent } from 'react-native';
 
 export const MainPageContext = createContext({
 	navigationArray: [() => {}],
@@ -86,7 +87,9 @@ const MainPage: React.FC = () => {
 		ref.current?.setPage(2);
 	};
 
-	const onPageScroll = (event: any): void => {
+	const onPageScroll = (
+		event: NativeSyntheticEvent<Readonly<{ position: number }>>
+	): void => {
 		const { position } = event.nativeEvent;
 		if (prevPage === 2) {
 			setRefresh(!refresh);

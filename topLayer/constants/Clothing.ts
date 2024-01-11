@@ -1,11 +1,13 @@
-export const emptyClothing = {
-	ciid: [],
-	image_url: [],
-	category: [],
-	title: [],
-	uid: [],
+import { type UserClothing } from '../types/Clothing';
+
+export const emptyClothing: UserClothing = {
+	ciid: '',
+	image_url: '',
+	category: '',
+	title: '',
+	uid: '',
 	brands: [],
-	size: [],
+	size: '',
 	color: [],
-	created_at: [],
+	created_at: '',
 };

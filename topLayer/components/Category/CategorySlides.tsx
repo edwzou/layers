@@ -1,15 +1,21 @@
-import { FlatList, Dimensions } from 'react-native';
-import React, { type ReactElement } from 'react';
+import { FlatList, Dimensions, type ViewToken } from 'react-native';
+import React, { type RefObject, type ReactElement } from 'react';
 import CategorySlide from './CategorySlide';
 import { CategoryToIndex } from '../../constants/Enums';
 import { type UserAllItems } from '../../types/AllItems';
+import { type UserClothing } from 'types/Clothing';
+import { type UserOutfit } from 'types/Outfit';
 
 interface CategorySlidesPropsType {
-	categorySlidesRef: any; /// !!! Fix any type
+	categorySlidesRef: RefObject<FlatList<UserAllItems>>;
 	allItemsData: UserAllItems[];
 	selectedCategory: string;
-	handleItemChange: (item: any) => void;
-	handleViewableItemsChanged: ({ viewableItems }: any) => void;
+	handleItemChange: (item: UserClothing | UserOutfit) => void;
+	handleViewableItemsChanged: ({
+		viewableItems,
+	}: {
+		viewableItems: ViewToken[];
+	}) => void;
 }
 
 const CategorySlides = ({

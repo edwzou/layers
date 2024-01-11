@@ -42,8 +42,8 @@ const SignUp: React.FC = () => {
 		defaultValues: defaultFormUser,
 	});
 
-	const onSubmit = (values: FormValues | any): void => {
-		const formValues: Record<string, any> = {
+	const onSubmit = (values: FormValues): void => {
+		const formValues: FormValues = {
 			first_name: values.first_name,
 			last_name: values.last_name,
 			username: values.username,

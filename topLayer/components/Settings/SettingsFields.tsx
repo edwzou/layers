@@ -96,9 +96,7 @@ const SettingsFields = ({
 	return (
 		<View style={styles.settingsContainer}>
 			<Pressable onPress={Keyboard.dismiss}>
-
 				<View style={{ gap: 30 }}>
-
 					<View style={{ gap: 7 }}>
 						<Pressable
 							style={{ alignSelf: 'center' }}

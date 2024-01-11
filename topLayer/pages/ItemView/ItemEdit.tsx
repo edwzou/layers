@@ -41,12 +41,12 @@ interface ItemEditPropsType {
 }
 
 interface FormValues {
-	image: string;
+	// image: string;
 	category: string;
 	title: string;
 	size: string;
 	color: string[];
-	brands: string[];
+	// brands: string[];
 }
 
 interface UpdateData {
@@ -246,7 +246,7 @@ const ItemEdit = ({
 		]);
 	};
 
-	const handleUpdate = async (values: FormValues | any): Promise<void> => {
+	const handleUpdate = async (values: FormValues): Promise<void> => {
 		const dataToUpdate: UpdateData = {};
 
 		// Add fields to dataToUpdate only if they have been set

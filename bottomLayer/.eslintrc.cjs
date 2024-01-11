@@ -32,6 +32,7 @@ module.exports = {
 			{
 				selector: 'variableLike',
 				format: ['snake_case', 'camelCase', 'UPPER_CASE', 'PascalCase'],
+				leadingUnderscore: 'allow',
 			},
 		],
 		'@typescript-eslint/member-delimiter-style': [
