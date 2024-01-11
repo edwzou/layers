@@ -67,21 +67,23 @@ const Header: React.FC<HeaderPropType> = ({
 	return (
 		<SafeAreaView>
 			<View style={styles.header}>
-				{leftButton === true &&
-					headerButtons({
-						type: leftStepOverType,
-						left: true,
-						handlePress: handleLeftPress,
-						disabled: false,
-					})}
+				{leftButton === true
+					? headerButtons({
+							type: leftStepOverType,
+							left: true,
+							handlePress: handleLeftPress,
+							disabled: false,
+					  })
+					: null}
 
-				{rightButton === true &&
-					headerButtons({
-						type: rightStepOverType,
-						left: false,
-						handlePress: handleRightPress,
-						disabled: rightButtonDisabled,
-					})}
+				{rightButton === true
+					? headerButtons({
+							type: rightStepOverType,
+							left: false,
+							handlePress: handleRightPress,
+							disabled: rightButtonDisabled,
+					  })
+					: null}
 				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
 			</View>
 		</SafeAreaView>

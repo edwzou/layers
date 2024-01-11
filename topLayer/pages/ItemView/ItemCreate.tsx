@@ -367,7 +367,7 @@ const ItemCreate = ({
 				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
 				dim={false}
 			/>
-			{isLoading && <Loading />}
+			{isLoading ? <Loading /> : null}
 		</View>
 	);
 };

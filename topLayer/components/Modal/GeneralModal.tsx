@@ -107,11 +107,11 @@ const GeneralModal = forwardRef(
 				/>
 				<GestureDetector gesture={gesture}>
 					<Animated.View style={[styles.container, modalGestureStyle]}>
-						{title !== null && title !== undefined && title !== '' && (
+						{title !== null && title !== undefined && title !== '' ? (
 							<View style={styles.header}>
 								<Text style={GlobalStyles.typography.subtitle}>{title}</Text>
 							</View>
-						)}
+						) : null}
 						<View style={{ flex: 1 }}>{content}</View>
 					</Animated.View>
 				</GestureDetector>

@@ -165,8 +165,7 @@ const SettingsPage: React.FC = () => {
 				},
 				style: 'destructive',
 			},
-			]
-		);
+		]);
 	};
 
 	const handleDelete = async (): Promise<void> => {
@@ -223,7 +222,7 @@ const SettingsPage: React.FC = () => {
 				bgColor={GlobalStyles.colorPalette.danger[500]}
 			/>
 
-			{isLoading && <Loading />}
+			{isLoading ? <Loading /> : null}
 		</View>
 	);
 };

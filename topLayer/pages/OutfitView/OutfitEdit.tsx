@@ -159,7 +159,7 @@ const OutfitEdit = ({
 					</Pressable>
 				</View>
 
-				{isLoading && <Loading />}
+				{isLoading ? <Loading /> : null}
 			</View>
 		</View>
 	);

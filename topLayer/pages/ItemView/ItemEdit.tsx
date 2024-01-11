@@ -419,7 +419,7 @@ const ItemEdit = ({
 					dim={false}
 				/>
 			</>
-			{isLoading && <Loading />}
+			{isLoading ? <Loading /> : null}
 		</View>
 	);
 };

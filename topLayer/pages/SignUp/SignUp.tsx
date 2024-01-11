@@ -104,7 +104,7 @@ const SignUp: React.FC = () => {
 				bgColor={GlobalStyles.colorPalette.primary[500]}
 			/>
 
-			{isLoading && <Loading />}
+			{isLoading ? <Loading /> : null}
 		</View>
 	);
 };
