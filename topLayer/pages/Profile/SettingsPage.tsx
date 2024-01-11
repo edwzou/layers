@@ -156,22 +156,19 @@ const SettingsPage: React.FC = () => {
 	};
 
 	const confirmDeletion = (): void => {
-		Alert.alert(
-			settings.deleteProfileConfirm,
-			settings.youCannotUndoThisAction,
-			[
-				{
-					text: settings.cancel,
-					onPress: () => {},
-					style: 'cancel',
+		Alert.alert(settings.deleteProfile, settings.youCannotUndoThisAction, [
+			{
+				text: settings.cancel,
+				onPress: () => {},
+				style: 'cancel',
+			},
+			{
+				text: settings.delete,
+				onPress: () => {
+					void handleDelete();
 				},
-				{
-					text: settings.delete,
-					onPress: () => {
-						void handleDelete();
-					},
-					style: 'destructive',
-				},
+				style: 'destructive',
+			},
 			]
 		);
 	};
@@ -218,16 +215,18 @@ const SettingsPage: React.FC = () => {
 				errors={errors}
 				profile_picture={photo}
 			/>
+
 			<Button
-				text={settings.deleteProfile}
+				text={settings.delete}
 				onPress={confirmDeletion}
 				style={{
 					position: 'absolute',
 					bottom: GlobalStyles.layout.gap * 3,
 					alignSelf: 'center',
 				}}
-				bgColor={GlobalStyles.colorPalette.danger[600]}
+				bgColor={GlobalStyles.colorPalette.danger[500]}
 			/>
+
 			{isLoading && <Loading />}
 		</View>
 	);
