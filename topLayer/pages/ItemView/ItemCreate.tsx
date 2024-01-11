@@ -259,6 +259,7 @@ const ItemCreate = ({
 			);
 
 			if (status === 200) {
+				console.log('item create data: ', data);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
 				showSuccessToast(toast.yourItemHasBeenCreated);
