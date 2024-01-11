@@ -2,14 +2,12 @@ import React, {
 	useState,
 	useRef,
 	type ReactElement,
-	MutableRefObject,
+	type MutableRefObject,
 } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-remix-icon';
-
 import GlobalStyles from '../../constants/GlobalStyles';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
-
 import {
 	isPrivateUser,
 	type markedPrivateUser,
@@ -71,7 +69,6 @@ const ProfileCell = ({
 		if (marked) {
 			setIconName(GlobalStyles.icons.bookmarkOutline);
 			userProcessed.current.marked = false;
-			console.log('user mark change: ', userProcessed.current.marked);
 			void unFollowUser(userProcessed.current.uid);
 			index.current = handleRelationRender(
 				userProcessed.current.uid,
@@ -98,7 +95,6 @@ const ProfileCell = ({
 				type: 'new user',
 				func: handleBookmarkPress,
 			});
-			console.log('user: ', user.marked, userProcessed.current.marked);
 			navigation.navigate(StackNavigation.ForeignProfile, {
 				markedUser: user,
 			});
