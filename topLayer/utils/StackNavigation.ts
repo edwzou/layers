@@ -2,7 +2,7 @@ import {
 	createNativeStackNavigator,
 	type NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import { type UserClothing } from '../types/Clothing';
+import { UserClothingListSingle, type UserClothing } from '../types/Clothing';
 import { type UserOutfit } from '../types/Outfit';
 
 import { type markedUser } from '../types/User';
@@ -13,12 +13,7 @@ export interface StackNavigatorType {
 	markedUser?: markedUser;
 	item?: UserClothing | UserOutfit;
 	editable?: boolean;
-	matchItems?: {
-		outerwear: UserClothing;
-		tops: UserClothing;
-		bottoms: UserClothing;
-		shoes: UserClothing;
-	};
+	matchItems?: UserClothingListSingle;
 	returnTo?: NativeStackNavigationProp<StackTypes>;
 	returnToPfp?: boolean;
 }

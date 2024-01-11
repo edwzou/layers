@@ -1,4 +1,5 @@
 import axios, { type AxiosError } from 'axios';
+import { Alert } from 'react-native';
 
 export const axiosEndpointErrorHandler = (err: unknown): void => {
 	const error = err as Error | AxiosError;
@@ -9,10 +10,10 @@ export const axiosEndpointErrorHandler = (err: unknown): void => {
 	) {
 		console.log(error.response.data);
 		console.log(error.response.status);
-		alert(error.response.data.message);
+		Alert.alert(error.response.data.message);
 	} else {
 		console.log(error); // Just a stock error
-		alert(error);
+		Alert.alert(error.message);
 	}
 };
 

@@ -284,7 +284,7 @@ const ItemEdit = ({
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {
 			setIsLoading(false); // Stop loading on error
-			alert(error);
+			axiosEndpointErrorHandler(error);
 		}
 	};
 
@@ -308,7 +308,6 @@ const ItemEdit = ({
 		} catch (error) {
 			setIsLoading(false); // Stop loading on error
 			axiosEndpointErrorHandler(error);
-			alert(error);
 		}
 	};
 
