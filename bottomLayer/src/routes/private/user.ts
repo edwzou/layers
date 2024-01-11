@@ -40,16 +40,24 @@ router.delete('/', (req: Request, res: Response): void => {
 	const userId = req.user as string;
 	if (userId == null) return;
 	const deleteUser = async (): Promise<void> => {
+		const client = pool.connect();
 		try {
 			const ciidsResult = await pool.query(
 				'SELECT ciid FROM backend_schema.clothing_item WHERE uid = $1',
 				[userId]
 			);
+			const cli = await client;
 			const ciids = ciidsResult.rows.map((row) => row.ciid);
 			const [deleteUser] = await Promise.all([
 				pool.query('DELETE FROM backend_schema.user WHERE uid = $1', [userId]),
-				ciids.map((ciid) => deleteObjectFromS3(ciid)),
+				ciids.map(async (ciid) => {
+					await deleteObjectFromS3(ciid);
+				}),
 				deleteObjectFromS3(userId),
+				cli.query(
+					`UPDATE backend_schema.user SET followers = array_remove(followers, '${userId}'),
+            following = array_remove(following, '${userId}');`
+				),
 			]);
 
 			responseCallbackDelete(null, userId, res, 'User', deleteUser.rowCount);
