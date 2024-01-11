@@ -1,5 +1,5 @@
 import { LogBox } from 'react-native';
-import React from 'react';
+import React, { StrictMode } from 'react';
 import AppProvider from './AppProviders';
 
 LogBox.ignoreLogs(['Require cycle:']);
