@@ -75,11 +75,11 @@ const Find = ({
 					handleNonEmptyString={handleNonEmptyString}
 				/>
 
-				{isComponentVisible && (
+				{isComponentVisible ? (
 					<Pressable onPress={handlePress}>
 						<MarkedBar foreignUserIDs={foreignUserIDs} />
 					</Pressable>
-				)}
+				) : null}
 			</View>
 		</SafeAreaView>
 	);

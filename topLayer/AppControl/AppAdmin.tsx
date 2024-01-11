@@ -1,5 +1,5 @@
 import { LogBox } from 'react-native';
-import React, { StrictMode } from 'react';
+import React from 'react';
 import AppProvider from './AppProviders';
 
 LogBox.ignoreLogs(['Require cycle:']);
@@ -9,11 +9,7 @@ LogBox.ignoreLogs(['Require cycle:']);
 LogBox.ignoreLogs(['Constants.platform.ios.model has been deprecated']);
 
 const AppAdmin: React.FC = () => {
-	return (
-		<StrictMode>
-			<AppProvider />;
-		</StrictMode>
-	);
+	return <AppProvider />;
 };
 
 export default AppAdmin;

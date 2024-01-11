@@ -1,7 +1,7 @@
 import { StyleSheet, StatusBar, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
-import React from 'react';
+import React, { StrictMode } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from '../utils/StackNavigation';

@@ -185,8 +185,7 @@ const Match: React.FC = () => {
 					data.outerwear.length === 0 &&
 					data.tops.length === 0 &&
 					data.bottoms.length === 0 &&
-					data.shoes.length === 0 &&
-					true
+					data.shoes.length === 0
 				}
 			/>
 		</>

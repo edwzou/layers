@@ -1,5 +1,12 @@
 import { type ReactElement } from 'react';
-import { View, Text, StyleSheet, Pressable, Keyboard, Alert } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	Pressable,
+	Keyboard,
+	Alert,
+} from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -85,8 +92,8 @@ const SettingsFields = ({
 				text: settings.remove,
 				onPress: () => {
 					resetPhoto({
-					type: 'null photo',
-					image: '',
+						type: 'null photo',
+						image: '',
 					});
 				},
 			},
@@ -100,7 +107,9 @@ const SettingsFields = ({
 					<View style={{ gap: 7 }}>
 						<Pressable
 							style={{ alignSelf: 'center' }}
-							onPress={ profile_picture !== '' ? showProfileOptions : navigateToCamera}
+							onPress={
+								profile_picture !== '' ? showProfileOptions : navigateToCamera
+							}
 						>
 							<ProfilePicture
 								imageUrl={profile_picture}
@@ -193,21 +202,20 @@ const SettingsFields = ({
 							}
 						/>
 					</View>
-					{
-						(errors.email != null || errors.password != null) &&
+					{errors.email != null || errors.password != null ? (
 						<View style={{ alignItems: 'center' }}>
-						{errors.email != null && (
-							<Text style={styles.error}>
-								{settings.pleaseEnterAValidEmail}
-							</Text>
-						)}
-						{errors.password != null && (
-							<Text style={styles.error}>
-								{settings.passwordMustBe8CharactersOrMore}
-							</Text>
-						)}
-					</View>
-					}
+							{errors.email != null ? (
+								<Text style={styles.error}>
+									{settings.pleaseEnterAValidEmail}
+								</Text>
+							) : null}
+							{errors.password != null ? (
+								<Text style={styles.error}>
+									{settings.passwordMustBe8CharactersOrMore}
+								</Text>
+							) : null}
+						</View>
+					) : null}
 				</View>
 			</Pressable>
 		</View>

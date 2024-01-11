@@ -88,7 +88,7 @@ const SignIn: React.FC = () => {
 				/>
 			</View>
 
-			{isLoading && <Loading />}
+			{isLoading ? <Loading /> : null}
 		</View>
 	);
 };

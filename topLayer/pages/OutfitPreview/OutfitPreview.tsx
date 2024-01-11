@@ -155,7 +155,7 @@ const OutfitPreview = (): ReactElement => {
 					style={{ height: screenHeight - 350 }}
 				/>
 
-				{isLoading && <Loading />}
+				{isLoading ? <Loading /> : null}
 			</View>
 		</View>
 	);

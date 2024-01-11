@@ -34,11 +34,11 @@ const ColorTagsList = ({
 					/>
 				</View>
 			))}
-			{tagAction !== TagAction.static && (
+			{tagAction !== TagAction.static ? (
 				<View style={styles.item}>
 					<ColorTag action={TagAction.add} onPress={onAddPress} />
 				</View>
-			)}
+			) : null}
 		</View>
 	);
 };
