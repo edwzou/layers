@@ -1,10 +1,7 @@
 import React, { type ReactElement, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
-
+import { StyleSheet, View, FlatList, Text } from 'react-native';
 import ProfileCell from '../../components/Cell/ProfileCell';
-
 import GlobalStyles from '../../constants/GlobalStyles';
-
 import { type markedUser, type User } from '../../types/User';
 import FetchProfileCell from '../../components/Cell/LoadProfileCell';
 import { find } from '../../constants/GlobalStrings';
@@ -14,6 +11,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import Header from '../../components/Header/Header';
 import { screenHeight } from '../../utils/modalMaxShow';
+import Icon from 'react-native-remix-icon';
 
 interface MarkedListPropsType {
 	foreignUserIDs: Array<User | string>;
@@ -28,14 +26,6 @@ const MarkedList = ({
 	const [preLoad, setPreLoad] = useState(false);
 	const unmarked = useRef<string[]>([]);
 	const [count, setCount] = useState<number>(foreignUserIDs.length);
-	const [isComponentVisible, setComponentVisible] = useState(true);
-	const handleEmptyString = (): void => {
-		setComponentVisible(true);
-	};
-
-	const handleNonEmptyString = (): void => {
-		setComponentVisible(false);
-	};
 
 	useEffect(() => {
 		if (
@@ -109,7 +99,7 @@ const MarkedList = ({
 	return (
 		<View style={styles.container}>
 			<Header text={`${count} ${find.marked}`} />
-			{preLoad && isComponentVisible && (
+			{count !== 0 && preLoad ? (
 				<FlatList
 					data={foreignUserIDs}
 					ListFooterComponent={
@@ -125,7 +115,30 @@ const MarkedList = ({
 						}
 					}}
 				/>
-			)}
+			) : count === 0 ? (
+				<View
+					style={{
+						alignItems: 'center',
+						justifyContent: 'center',
+						height: screenHeight * 0.73,
+						gap: 5,
+					}}
+				>
+					<Icon
+						name={GlobalStyles.icons.userOutline2}
+						color={GlobalStyles.colorPalette.primary[300]}
+						size={GlobalStyles.sizing.icon.large}
+					/>
+					<Text
+						style={[
+							GlobalStyles.typography.subtitle,
+							{ color: GlobalStyles.colorPalette.primary[300] },
+						]}
+					>
+						No users
+					</Text>
+				</View>
+			) : null}
 		</View>
 	);
 };
