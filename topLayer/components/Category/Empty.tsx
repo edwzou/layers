@@ -2,7 +2,13 @@ import { View, Text } from 'react-native';
 import Icon from 'react-native-remix-icon';
 import { screenWidth } from '../../utils/modalMaxShow';
 import GlobalStyles from '../../constants/GlobalStyles';
-const Empty: React.FC = () => {
+import { type ReactElement } from 'react';
+
+interface EmptyPropsType {
+	category: string;
+}
+
+const Empty = ({ category }: EmptyPropsType): ReactElement => {
 	return (
 		<View
 			style={{
@@ -24,7 +30,7 @@ const Empty: React.FC = () => {
 					{ color: GlobalStyles.colorPalette.primary[300] },
 				]}
 			>
-				Empty
+				No {category}
 			</Text>
 		</View>
 	);

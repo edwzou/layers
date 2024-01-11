@@ -41,11 +41,6 @@ const ProfilePage: React.FC = () => {
 				<Stack.Group
 					screenOptions={{
 						presentation: 'modal',
-						headerTitleStyle: GlobalStyles.typography.subtitle,
-						headerStyle: {
-							backgroundColor: GlobalStyles.colorPalette.background,
-						},
-						headerShadowVisible: false,
 					}}
 				>
 					<Stack.Screen

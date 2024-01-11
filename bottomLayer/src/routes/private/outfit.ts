@@ -1,5 +1,6 @@
 import {
 	responseCallbackDelete,
+	responseCallbackDeleteAll,
 	responseCallbackPost,
 	responseCallbackUpdate,
 } from '../../utils/responseCallback';
@@ -135,6 +136,26 @@ router.get('/', (req: Request, res: Response): void => {
 		const queryBasic = `SELECT * FROM backend_schema.outfit WHERE uid = '${uid}'`;
 		void getAllOutfits(queryBasic, res);
 	}
+});
+
+// Endpoint for deleting all of the user's outfits
+router.delete('/', (req: Request, res: Response): void => {
+	const uid = req.user as string;
+
+	const deleteAllOutfits = async (): Promise<void> => {
+		try {
+			const deleteOutfits = await pool.query(
+				'DELETE FROM backend_schema.outfit WHERE uid = $1',
+				[uid]
+			);
+
+			responseCallbackDeleteAll(null, res, 'Outfit', deleteOutfits.rowCount);
+		} catch (error) {
+			responseCallbackDeleteAll(error, res, 'Outfit');
+		}
+	};
+
+	void deleteAllOutfits();
 });
 
 export { router as default, router as privateOutfitRoute };

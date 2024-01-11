@@ -2,6 +2,7 @@ import express, { type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import {
 	responseCallbackDelete,
+	responseCallbackDeleteAll,
 	responseCallbackPost,
 	responseCallbackUpdate,
 } from '../../utils/responseCallback';
@@ -156,6 +157,38 @@ router.get('/', (req: Request, res: Response): void => {
 	} else {
 		void getAllClothing(query, res);
 	}
+});
+
+// Endpoint for deleting all clothing items associated with the user
+router.delete('/', (req: Request, res: Response): void => {
+	const uid = req.user as string;
+
+	const deleteAllClothingItems = async (): Promise<void> => {
+		try {
+			const ciidsResult = await pool.query(
+				'SELECT ciid FROM backend_schema.clothing_item WHERE uid = $1',
+				[uid]
+			);
+			const ciids = ciidsResult.rows.map((row) => row.ciid);
+			const [deleteClothingItems] = await Promise.all([
+				pool.query('DELETE FROM backend_schema.clothing_item WHERE uid = $1', [
+					uid,
+				]),
+				ciids.map((ciid) => deleteObjectFromS3(ciid)),
+			]);
+
+			responseCallbackDeleteAll(
+				null,
+				res,
+				'Clothing Item',
+				deleteClothingItems.rowCount
+			);
+		} catch (error) {
+			responseCallbackDeleteAll(error, res, 'Clothing Item');
+		}
+	};
+
+	void deleteAllClothingItems();
 });
 
 export { router as default, router as privateClothingRoute };

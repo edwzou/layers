@@ -1,3 +1,4 @@
+import { deleteObjectFromS3 } from './delete-object-from-s3';
 import { removeBackground } from './remove-background';
 import { uploadBufferToS3 } from './upload-buffer-to-s3';
 import sharp from 'sharp';
@@ -25,6 +26,7 @@ async function convertImage(
 	remove: boolean
 ): Promise<string> {
 	if (base64 === '') {
+		await deleteObjectFromS3(key);
 		return '';
 	}
 	if (!(await isValidBase64String(base64))) {

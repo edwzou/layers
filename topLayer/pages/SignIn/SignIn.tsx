@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Button from '../../components/Button/Button';
@@ -91,7 +91,5 @@ const SignIn: React.FC = () => {
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({});
 
 export default SignIn;
