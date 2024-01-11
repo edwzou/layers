@@ -75,7 +75,7 @@ const SignIn: React.FC = () => {
 	};
 
 	return (
-		<View style={{ gap: 40, width: '100%' }}>
+		<View style={{ gap: 65, width: '100%' }}>
 			<LoginFields control={control} />
 			<View style={{ alignSelf: 'center' }}>
 				<Button
