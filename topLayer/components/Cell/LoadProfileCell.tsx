@@ -44,15 +44,10 @@ const FetchProfileCell = ({
 			const { data, status } = await axios.get(`${baseUrl}/api/users/${id}`);
 
 			if (status === 200) {
-				console.log('Successfully fetched foreign user ProfileCell6');
 				setUser({
 					...data.data,
 					marked: marked,
 				});
-
-				console.log('fetched user: ', userProcessed);
-			} else {
-				console.log('Failed to fetch foreign user ProfileCell');
 			}
 		} catch (error) {
 			axiosEndpointErrorHandlerNoAlert(error);

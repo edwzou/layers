@@ -67,7 +67,6 @@ const ItemEdit = ({
 }: ItemEditPropsType): ReactElement => {
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
-	// const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const colorPickerRef = useRef<refPropType>(null);
 
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
@@ -234,7 +233,7 @@ const ItemEdit = ({
 			{
 				text: itemEdit.cancel,
 				onPress: () => {},
-				style: 'cancel'
+				style: 'cancel',
 			},
 			{
 				text: itemEdit.delete,

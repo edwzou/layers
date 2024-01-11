@@ -18,7 +18,6 @@ let createCount = 0;
 const CameraWrapper = (): ReactElement => {
 	const route = useRoute<RouteProp<RouteTypes, 'CameraWrapper'>>();
 	const returnToPfp = route.params.returnToPfp;
-	// console.log('params: ', route);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const [clothingItem, setClothingItem] = useState({

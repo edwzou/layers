@@ -41,7 +41,6 @@ import { type RouteTypes } from 'types/Routes';
 const ForeignProfile = (): ReactElement => {
 	const route = useRoute<RouteProp<RouteTypes, 'ForeignProfile'>>();
 	const user: markedUser = route.params.markedUser;
-	// console.log('Route: ', route, route.params);
 
 	const markUserFunc = useMarkUserFunc();
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);

@@ -95,7 +95,6 @@ router.put('/:oid', (req: Request, res: Response): void => {
 			query = query.slice(0, -1);
 			query += ` WHERE oid = '${oid}' AND uid = '${uid}'`;
 
-			console.log('update fit: ', query);
 			// Update the outfit in the database
 			const updateOutfit = await pool.query(query);
 

@@ -193,7 +193,6 @@ const SettingsFields = ({
 							}
 						/>
 					</View>
-
 					{
 						(errors.email != null || errors.password != null) &&
 						<View style={{ alignItems: 'center' }}>

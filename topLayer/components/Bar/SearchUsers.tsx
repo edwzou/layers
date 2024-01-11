@@ -51,11 +51,7 @@ const SearchUsers = ({
 			);
 
 			if (status === 200) {
-				// console.log('Successfully Searched For Username');
-				// console.log('Data: ', data.data);
 				setSearchResults(data.data);
-			} else {
-				console.log('Failed to fetch foreign user ProfileCell');
 			}
 		} catch (error) {
 			axiosEndpointErrorHandlerNoAlert(error);

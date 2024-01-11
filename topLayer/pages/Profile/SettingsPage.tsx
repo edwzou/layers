@@ -85,7 +85,6 @@ const SettingsPage: React.FC = () => {
 	});
 
 	const updateUser = async (formValues: FormValues): Promise<void> => {
-		// console.log('values: ', formValues.profile_picture.substring(0, 10));
 		const updatedFields: Partial<FormValues> = {};
 
 		if (formValues.first_name !== first_name) {
@@ -107,12 +106,10 @@ const SettingsPage: React.FC = () => {
 			updatedFields.private_option = formValues.private_option;
 		}
 		if (formValues.profile_picture !== profile_picture) {
-			console.log('pp: ', formValues.profile_picture);
 			updatedFields.profile_picture = formValues.profile_picture;
 		}
 
 		if (Object.keys(updatedFields).length === 0) {
-			console.log('No changes to update');
 			return;
 		}
 		setIsLoading(true); // Start loading
@@ -144,7 +141,6 @@ const SettingsPage: React.FC = () => {
 					setIsLoading(false); // Stop loading on success
 				} catch (error) {
 					setIsLoading(false); // Stop loading on error
-					console.log(error);
 					showErrorToast(toast.anErrorHasOccurredWhileUpdatingProfile);
 				}
 			} else {

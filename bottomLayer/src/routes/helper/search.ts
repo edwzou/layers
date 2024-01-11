@@ -61,8 +61,6 @@ export const userSearchMarked = async (
 	try {
 		const query = pool.query(queryString);
 		const result = await query;
-
-		console.log('query result: ', result);
 		const users = result.rows;
 
 		if (users.length === 0) {
@@ -92,7 +90,6 @@ export const userSearchMarked = async (
 					downloadConditions.profile_picture
 				);
 				users[i] = dummy;
-				console.log('This User is Private, uid: ' + String(user.uid));
 			} else {
 				void asyncHandler(
 					user.profile_picture,
@@ -151,7 +148,6 @@ export const userSearch = async (
 					downloadConditions.profile_picture
 				);
 				users[i] = dummy;
-				console.log('This User is Private, uid: ' + String(user.uid));
 			} else {
 				void asyncHandler(
 					user.profile_picture,

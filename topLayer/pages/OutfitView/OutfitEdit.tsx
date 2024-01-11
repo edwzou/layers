@@ -26,14 +26,6 @@ import {
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
 
-// type OutfitPreviewPropsType = {
-//     outerwear: UserOutfit,
-//     tops: UserOutfit,
-//     bottoms: UserOutfit,
-//     shoes: UserOutfit,
-//     matchName: (text: string) => void;
-// }
-
 interface OutfitViewPropsType {
 	id: string;
 	title: string;
@@ -64,7 +56,7 @@ const OutfitEdit = ({
 			{
 				text: outfitEdit.cancel,
 				onPress: () => {},
-				style: 'cancel'
+				style: 'cancel',
 			},
 			{
 				text: outfitEdit.delete,
@@ -87,13 +79,11 @@ const OutfitEdit = ({
 			});
 
 			if (response.status === 200) {
-				// alert(`You have updated: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
 				showSuccessToast(toast.yourOutfitHasBeenUpdated);
 			} else {
 				showErrorToast(toast.anErrorHasOccurredWhileUpdatingOutfit);
-				// throw new Error('An error has occurred while updating outfit');
 			}
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {
@@ -110,13 +100,11 @@ const OutfitEdit = ({
 			);
 
 			if (response.status === 200) {
-				// alert(`You have deleted: ${JSON.stringify(response.data)}`);
 				setShouldRefreshMainPage(true);
 				navigateToProfile();
 				showSuccessToast(toast.yourOutfitHasBeenDeleted);
 			} else {
 				showErrorToast(toast.anErrorHasOccurredWhileDeletingOutfit);
-				// throw new Error('An error has occurred while deleting outfit');
 			}
 			setIsLoading(false); // Stop loading on success
 		} catch (error) {

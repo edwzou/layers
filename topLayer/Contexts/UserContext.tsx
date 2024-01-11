@@ -30,7 +30,6 @@ export interface UserReducerProps {
 }
 
 const userReducer = (draft: User, action: UserReducerProps): User => {
-	console.log('User: ', action);
 	switch (action.type) {
 		case 'logout': {
 			return nullUser;
@@ -104,7 +103,6 @@ const setUserProps = (draft: User, action: UserReducerProps): User => {
 		draft.following = action.following;
 	}
 	if (action.profile_picture !== null && action.profile_picture !== undefined) {
-		console.log('pp2: ', action.profile_picture);
 		draft.profile_picture = action.profile_picture;
 	}
 	return draft;

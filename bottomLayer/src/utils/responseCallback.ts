@@ -23,7 +23,6 @@ export const responseCallbackGet = (
 	notFoundObject = ''
 ): Callback<any> => {
 	if (error != null) {
-		console.log(error);
 		res.status(500).json({ message: 'Internal Server Error', err: error });
 		return error;
 	} else if (element.length === 0) {
@@ -38,7 +37,6 @@ export const responseCallbackGet = (
 export const responseCallbackLogin = (
 	error: any,
 	user: any,
-	// { uid: any; first_name: any; last_name: any; email: any; username: any; }
 	res: Response,
 	info: string = ''
 ): Callback<any> => {
@@ -60,7 +58,6 @@ export const responseCallbackLogin = (
 export const responseCallbackSignUp = (
 	error: any,
 	user: any,
-	// { uid: any; first_name: any; last_name: any; email: any; username: any; }
 	res: Response,
 	info: string = ''
 ): Callback<any> => {
@@ -84,7 +81,6 @@ export const responseCallbackConnect = (
 	res: Response
 ): Callback<any> => {
 	if (error != null) {
-		console.log(error);
 		res.status(500).json({
 			message: 'Internal Server Error: Failed To Connect To Pool',
 			err: error,
@@ -106,7 +102,6 @@ export const responseCallbackPost = (
 	target = ''
 ): Callback<any> => {
 	if (error != null) {
-		console.log(error);
 		res.status(500).json({ message: 'Internal Server Error', err: error });
 		return error;
 	} else {
@@ -125,7 +120,6 @@ export const responseCallbackDelete = (
 	if (rowCount === 0) {
 		throw new NotFoundError(target + ' Not Found, id: ' + id);
 	} else if (error != null) {
-		console.log(error);
 		res.status(500).json({
 			message: 'Internal Server Error, Failed to Delete ' + target + ': ' + id,
 			error,
@@ -149,7 +143,6 @@ export const responseCallbackDeleteAll = (
 		res.status(404).json({ message: 'No ' + target + 's found to delete' });
 		return error;
 	} else if (error != null) {
-		console.log(error);
 		res.status(500).json({
 			message: 'Internal Server Error, Failed to Delete All ' + target + 's',
 			error,
@@ -173,7 +166,6 @@ export const responseCallbackUpdate = (
 	if (rowCount === 0) {
 		throw new NotFoundError(target + ' Not Found, id: ' + id);
 	} else if (error != null) {
-		console.log(error);
 		res.status(500).json({
 			message: 'Internal Server Error, Failed to Update ' + target + ': ' + id,
 			err: error.message,
@@ -182,7 +174,6 @@ export const responseCallbackUpdate = (
 	} else {
 		res.status(200).json({
 			message: 'Successfully Updated ' + target + ': ' + id,
-			// data: userData
 		});
 		return error;
 	}
@@ -195,7 +186,6 @@ export const responseCallbackFollow = (
 	res: Response
 ): Callback<any> => {
 	if (error != null) {
-		console.log(error);
 		res.status(500).json({
 			message:
 				'Internal Server Error: ' +
@@ -221,7 +211,6 @@ export const responseCallbackUnFollow = (
 	res: Response
 ): Callback<any> => {
 	if (error != null) {
-		console.log(error);
 		res.status(500).json({
 			message:
 				'Internal Server Error: ' +

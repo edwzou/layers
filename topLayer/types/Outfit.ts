@@ -8,11 +8,6 @@ export interface UserOutfit {
 	created_at: string;
 }
 
-// export interface UserOutfits {
-// 	category: string;
-// 	data: UserOutfit[];
-// }
-
 export const isUserOutfit = (obj: any): obj is UserOutfit =>
 	obj !== null &&
 	obj !== undefined &&

@@ -9,7 +9,6 @@ async function deleteObjectFromS3(objectKey: string) {
 
 	try {
 		const result = await s3.send(new DeleteObjectCommand(params));
-		console.log(`Deleted object with key ${objectKey}:`, result);
 	} catch (error) {
 		console.error(`Error deleting object with key ${objectKey}:`, error);
 		throw error;

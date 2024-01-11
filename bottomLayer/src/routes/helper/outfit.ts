@@ -100,7 +100,6 @@ export const getOutfitByIdCate = async (
 					downloadConditions.outfit
 				);
 			} else {
-				console.log('Item has No Image, ciid: ' + String(item.item_ciid));
 				asyncManager.complete(
 					'Item has No Image, ciid: ' + String(item.item_ciid)
 				);
@@ -108,7 +107,6 @@ export const getOutfitByIdCate = async (
 		}
 		const outfits: Record<string, any> = {};
 		for (const field of Object.values(outfitFields)) {
-			// console.log('test', result[0][field]);
 			outfits[field] = result[0][field];
 		}
 		const categories: Record<string, any> = {};
@@ -120,16 +118,11 @@ export const getOutfitByIdCate = async (
 			throw new Error('Some Url Download Requests Failed');
 		}
 		for (const item of result) {
-			console.log('Item: ', item);
 			if (item.item_category === null) {
 				continue;
 			}
 			const itemFilter: Record<string, any> = {};
-			// if (item[`item_ciid`] === null) {
-			//
-			// }
 			for (const field of Object.values(itemFields)) {
-				// console.log(field, item[`item_${field}`]);
 				itemFilter[field] = item[`item_${field}`];
 			}
 			categories[item.item_category].push(itemFilter);
@@ -195,7 +188,6 @@ export const getAllOutfitsCate = async (
 					downloadConditions.outfit
 				);
 			} else {
-				console.log('Item has No Image, ciid: ' + String(item.item_ciid));
 				asyncManager.complete(
 					'Item has No Image, ciid: ' + String(item.item_ciid)
 				);
