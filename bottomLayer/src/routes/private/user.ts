@@ -63,6 +63,8 @@ router.delete('/', (req: Request, res: Response): void => {
 			responseCallbackDelete(null, userId, res, 'User', deleteUser.rowCount);
 		} catch (error) {
 			responseCallbackDelete(error, userId, res, 'User');
+		} finally {
+			(await client).release();
 		}
 	};
 	void deleteUser();
