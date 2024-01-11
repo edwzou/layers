@@ -82,7 +82,7 @@ const SignUp: React.FC = () => {
 	};
 
 	return (
-		<>
+		<View style={{ flex: 1 }}>
 			<SettingsFields
 				control={control}
 				setValue={setValue}
@@ -90,19 +90,22 @@ const SignUp: React.FC = () => {
 				profile_picture={profile_picture}
 			/>
 
-			<View style={{ paddingTop: 40 }}>
-				<Button
-					text="Sign up"
-					onPress={() => {
-						void handleSubmit(onSubmit)();
-					}}
-					disabled={isLoading || Object.keys(dirtyFields).length < 5}
-					bgColor={GlobalStyles.colorPalette.primary[500]}
-				/>
-			</View>
+			<Button
+				text="Sign up"
+				onPress={() => {
+					void handleSubmit(onSubmit)();
+				}}
+				style={{
+					position: 'absolute',
+					bottom: GlobalStyles.layout.gap * 3,
+					alignSelf: 'center',
+				}}
+				disabled={isLoading || Object.keys(dirtyFields).length < 5}
+				bgColor={GlobalStyles.colorPalette.primary[500]}
+			/>
 
 			{isLoading && <Loading />}
-		</>
+		</View>
 	);
 };
 
