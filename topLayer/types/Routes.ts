@@ -2,6 +2,8 @@ import { type UserClothing, type outfitType } from './Clothing';
 import { type UserOutfit } from './Outfit';
 import { type markedUser } from './User';
 
+interface empty {}
+
 export interface RouteTypes {
 	[key: string]: object;
 	ForeignProfile: {
@@ -18,7 +20,6 @@ export interface RouteTypes {
 		item: UserClothing;
 		editable: boolean;
 	};
-	CameraWrapper: {
-		returnToPfp: boolean;
-	};
+	ItemCamera: empty;
+	CameraPfp: empty;
 }

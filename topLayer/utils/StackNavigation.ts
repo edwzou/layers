@@ -2,7 +2,10 @@ import {
 	createNativeStackNavigator,
 	type NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import { UserClothingListSingle, type UserClothing } from '../types/Clothing';
+import {
+	type UserClothingListSingle,
+	type UserClothing,
+} from '../types/Clothing';
 import { type UserOutfit } from '../types/Outfit';
 
 import { type markedUser } from '../types/User';
@@ -33,7 +36,8 @@ export interface StackTypes {
 	OutfitEdit: StackNavigatorType;
 	Feedback: StackNavigatorType;
 	Find: StackNavigatorType;
-	CameraWrapper: StackNavigatorType;
+	ItemCamera: StackNavigatorType;
+	CameraPfp: StackNavigatorType;
 	CameraComponents: StackNavigatorType;
 	Settings: StackNavigatorType;
 	MarkedList: StackNavigatorType;

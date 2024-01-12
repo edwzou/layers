@@ -72,9 +72,7 @@ const SettingsFields = ({
 	const resetPhoto = usePhotoUpdate();
 
 	const navigateToCamera = (): void => {
-		navigation.navigate(StackNavigation.CameraWrapper, {
-			returnToPfp: true,
-		});
+		navigation.navigate(StackNavigation.CameraPfp, {});
 	};
 
 	const showProfileOptions = (): void => {
