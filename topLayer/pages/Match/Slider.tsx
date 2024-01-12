@@ -71,7 +71,10 @@ const Slider = ({
 	);
 
 	const getItemLayout = (
-		_unused: Array<UserClothing | Record<string, number>> | null | undefined,
+		_unused:
+			| ArrayLike<UserClothing | Record<string, number>>
+			| null
+			| undefined,
 		index: number
 	): { length: number; offset: number; index: number } => ({
 		length: SNAP_ITEM_SIZE,

@@ -1,7 +1,7 @@
 {
 	"expo": {
 		"name": "Layers",
-		"slug": "Layers",
+		"slug": "layers",
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
@@ -55,8 +55,9 @@
 		],
 		"extra": {
 			"eas": {
-				"projectId": "d768eb34-78e0-4e51-a082-b77dce755e30"
+				"projectId": "29d58af4-b6f5-4f3b-9e4d-f6ca06d274eb"
 			}
-		}
+		},
+		"owner": "layersapp"
 	}
 }
