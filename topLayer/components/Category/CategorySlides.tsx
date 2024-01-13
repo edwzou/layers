@@ -46,7 +46,7 @@ const CategorySlides = ({
 			onViewableItemsChanged={handleViewableItemsChanged}
 			viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
 			initialScrollIndex={CategoryToIndex[selectedCategory]}
-			getItemLayout={(data, index) => ({
+			getItemLayout={(_data, index) => ({
 				length: windowWidth,
 				offset: windowWidth * index,
 				index,

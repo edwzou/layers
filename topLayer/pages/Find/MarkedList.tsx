@@ -102,9 +102,7 @@ const MarkedList = ({
 			{count !== 0 && preLoad ? (
 				<FlatList
 					data={foreignUserIDs}
-					ListFooterComponent={
-						<View style={{ height: screenHeight * 0.15 }}></View>
-					}
+					ListFooterComponent={<View style={{ height: screenHeight * 0.15 }} />}
 					showsVerticalScrollIndicator={false}
 					renderItem={renderProfile}
 					keyExtractor={(item) => {

@@ -41,7 +41,9 @@ const FetchProfileCell = ({
 
 	const getUser = async (id: string): Promise<void> => {
 		try {
-			const { data, status } = await axios.get(`${baseUrl}/api/users/${id}`);
+			const { data, status } = await axios.get<{ data: User }>(
+				`${baseUrl}/api/users/${id}`
+			);
 
 			if (status === 200) {
 				setUser({

@@ -7,13 +7,10 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-
 import PagerView from 'react-native-pager-view';
-
 import ProfilePage from '../Profile/ProfilePage';
 import MatchPage from '../Match/MatchPage';
 import FindPage from '../Find/FindPage';
-
 import { type UserOutfit } from '../../types/Outfit';
 import { type UserClothing } from '../../types/Clothing';
 import { getAllClothingItems, getAllOutfits } from '../../endpoints/wardrobe';

@@ -68,9 +68,7 @@ const SettingsFields = ({
 	profile_picture,
 }: SettingsFieldsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
 	const resetPhoto = usePhotoUpdate();
-
 	const navigateToCamera = (): void => {
 		navigation.navigate(StackNavigation.CameraPfp, {});
 	};

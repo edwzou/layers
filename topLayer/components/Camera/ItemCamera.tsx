@@ -16,7 +16,6 @@ const ItemCamera = (): ReactElement => {
 	const [clothingItem, setClothingItem] = useState({ ...emptyClothing });
 
 	const cameraFunction = (image: string): void => {
-		navigation.navigate(StackNavigation.ItemCreate, {});
 		createCount += 1;
 		const newId = dummyId + createCount.toString();
 		setClothingItem({
@@ -24,6 +23,7 @@ const ItemCamera = (): ReactElement => {
 			image_url: image,
 			ciid: newId,
 		});
+		navigation.navigate(StackNavigation.ItemCreate, {});
 	};
 
 	const redirectToProfile = (): void => {

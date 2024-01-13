@@ -4,21 +4,10 @@ import {
 	Pressable,
 	StyleSheet,
 	type FlatList,
-	Text,
 	type ViewToken,
 } from 'react-native';
 import Icon from 'react-native-remix-icon';
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
-import FullName from '../../components/Name/FullName';
-import Username from '../../components/Name/Username';
-import CategoryBar from '../../components/Category/CategoryBar';
-import CategorySlides from '../../components/Category/CategorySlides';
-import {
-	CategoryToIndex,
-	IndexToCategory,
-	StackNavigation,
-	ClothingTypes,
-} from '../../constants/Enums';
+import { IndexToCategory, ClothingTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
 import {
 	type RouteProp,
@@ -37,12 +26,22 @@ import {
 import { useMarkUserFunc } from '../../Contexts/ForeignUserContext';
 import { type UserAllItems } from '../../types/AllItems';
 import { type RouteTypes } from 'types/Routes';
+import ProfileHeading from '../../components/Profile/ProfileHeading';
+import PrivateProfile from '../../components/Profile/Private';
+import CategoryComponent from '../../components/Category/Category';
+import {
+	handleCategoryChange,
+	handleItemChange,
+} from '../../components/Profile/profileFunctions';
 
 const ForeignProfile = (): ReactElement => {
 	const route = useRoute<RouteProp<RouteTypes, 'ForeignProfile'>>();
 	const user: markedUser = route.params.markedUser;
-
 	const markUserFunc = useMarkUserFunc();
+
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+	const flatListRef = useRef<FlatList<UserAllItems>>(null);
+
 	const [allOutfits, setAllOutfits] = useState<UserOutfit[]>([]);
 	const [allOuterwear, setAllOuterwear] = useState<UserClothing[]>([]);
 	const [allTops, setAllTops] = useState<UserClothing[]>([]);
@@ -73,20 +72,6 @@ const ForeignProfile = (): ReactElement => {
 		},
 	];
 
-	useEffect(() => {
-		void getForeignAllOutfits(user.uid, setAllOutfits);
-		void getForeignAllClothingItems(
-			user.uid,
-			setAllOuterwear,
-			setAllTops,
-			setAllBottoms,
-			setAllShoes
-		);
-	}, []);
-
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const flatListRef = useRef<FlatList>(null);
-
 	const [selectedCategory, setSelectedCategory] = useState(
 		ClothingTypes.outfits as string
 	);
@@ -96,43 +81,6 @@ const ForeignProfile = (): ReactElement => {
 			? GlobalStyles.icons.bookmarkFill
 			: GlobalStyles.icons.bookmarkOutline
 	);
-
-	const handleItemChange = (item: UserClothing | UserOutfit): void => {
-		if ('oid' in item) {
-			navigation.navigate(StackNavigation.OutfitView, {
-				item: item,
-				editable: false,
-			});
-		} else {
-			navigation.navigate(StackNavigation.ItemView, {
-				item: item,
-				editable: false,
-			});
-		}
-	};
-
-	const handleCategoryChange = (category: string): void => {
-		setSelectedCategory(category);
-		handleIndexChange(CategoryToIndex[category]);
-	};
-
-	const handleBookmarkPress = (): void => {
-		if (iconName === GlobalStyles.icons.bookmarkFill) {
-			markUserFunc(true);
-			setIconName(GlobalStyles.icons.bookmarkOutline);
-			user.marked = false;
-		} else {
-			markUserFunc(false);
-			setIconName(GlobalStyles.icons.bookmarkFill);
-			user.marked = true;
-		}
-	};
-
-	const handleIndexChange = (index: number): void => {
-		if (flatListRef.current != null) {
-			flatListRef.current?.scrollToIndex({ index, animated: false });
-		}
-	};
 
 	const handleViewableItemsChanged = useRef(
 		({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -146,57 +94,49 @@ const ForeignProfile = (): ReactElement => {
 		}
 	).current;
 
+	useEffect(() => {
+		void getForeignAllOutfits(user.uid, setAllOutfits);
+		void getForeignAllClothingItems(
+			user.uid,
+			setAllOuterwear,
+			setAllTops,
+			setAllBottoms,
+			setAllShoes
+		);
+	}, []);
+
+	const handleBookmarkPress = (): void => {
+		if (iconName === GlobalStyles.icons.bookmarkFill) {
+			markUserFunc(true);
+			setIconName(GlobalStyles.icons.bookmarkOutline);
+			user.marked = false;
+		} else {
+			markUserFunc(false);
+			setIconName(GlobalStyles.icons.bookmarkFill);
+			user.marked = true;
+		}
+	};
+
 	return (
 		<>
 			<View style={{ paddingVertical: GlobalStyles.layout.modalTopPadding }} />
 			<View style={{ flex: 1 }}>
-				<View style={styles.profilePicture}>
-					<ProfilePicture imageUrl={user?.profile_picture ?? ''} />
-					<View>
-						<FullName
-							firstName={user?.first_name ?? ''}
-							lastName={user?.last_name ?? ''}
-						/>
-						<Username username={user?.username ?? ''} />
-					</View>
-				</View>
+				<ProfileHeading user={user} />
 				{user.private_option ? (
-					<View
-						style={{
-							alignItems: 'center',
-							flex: 1,
-							top: GlobalStyles.layout.pageStateTopMargin,
-							gap: 5,
-						}}
-					>
-						<Icon
-							name={GlobalStyles.icons.privateOutline}
-							color={GlobalStyles.colorPalette.primary[300]}
-							size={GlobalStyles.sizing.icon.large}
-						/>
-						<Text
-							style={[
-								GlobalStyles.typography.subtitle,
-								{ color: GlobalStyles.colorPalette.primary[300] },
-							]}
-						>
-							Private
-						</Text>
-					</View>
+					<PrivateProfile />
 				) : (
-					<View style={{ top: 5 }}>
-						<CategoryBar
-							selectedCategory={selectedCategory}
-							handleCategoryChange={handleCategoryChange}
-						/>
-						<CategorySlides
-							categorySlidesRef={flatListRef}
-							allItemsData={allItems}
-							selectedCategory={selectedCategory}
-							handleItemChange={handleItemChange}
-							handleViewableItemsChanged={handleViewableItemsChanged}
-						/>
-					</View>
+					<CategoryComponent
+						allItems={allItems}
+						selectedCategory={selectedCategory}
+						flatListRef={flatListRef}
+						handleCategoryChange={(category: string) => {
+							handleCategoryChange(category, flatListRef, setSelectedCategory);
+						}}
+						handleItemChange={(item: UserClothing | UserOutfit) => {
+							handleItemChange(item, navigation, false);
+						}}
+						handleViewableItemsChanged={handleViewableItemsChanged}
+					/>
 				)}
 
 				<View style={styles.bookmarkIconWrapper}>
@@ -218,10 +158,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: 0,
 		right: GlobalStyles.layout.xGap,
-	},
-	profilePicture: {
-		alignItems: 'center',
-		gap: 7,
 	},
 });
 

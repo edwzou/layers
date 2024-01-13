@@ -21,7 +21,7 @@ const Button = ({
 		<Pressable
 			style={[
 				styles.button,
-				style != null ? style : null,
+				style ?? null,
 				{
 					backgroundColor: disabled
 						? GlobalStyles.colorPalette.primary[200]

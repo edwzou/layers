@@ -1,15 +1,11 @@
 import { StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-
 import Find from './Find';
 import MarkedList from './MarkedList';
 import ForeignProfile from '../../pages/Profile/ForeignProfile';
-
 import { Stack } from '../../utils/StackNavigation';
 import { NavigationContainer } from '@react-navigation/native';
-
 import { StackNavigation } from '../../constants/Enums';
-
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';

@@ -10,7 +10,7 @@ import {
 import { StackNavigation } from '../../constants/Enums';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { type ReactElement } from 'react';
-import { type RouteTypes } from 'types/Routes';
+import { type RouteTypes } from '../../types/Routes';
 
 const ItemViewPage = (): ReactElement => {
 	const route = useRoute<RouteProp<RouteTypes, 'ItemViewPage'>>();

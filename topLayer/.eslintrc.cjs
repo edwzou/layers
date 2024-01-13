@@ -8,6 +8,7 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:react/recommended',
 		'plugin:import/typescript',
+		'plugin:@typescript-eslint/recommended',
 		'standard-with-typescript',
 	],
 	overrides: [
@@ -19,6 +20,7 @@ module.exports = {
 			},
 		},
 	],
+	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
@@ -29,6 +31,11 @@ module.exports = {
 		},
 	},
 	plugins: ['react', 'react-native', '@typescript-eslint', 'prettier'],
+	settings: {
+		react: {
+			version: 'detect',
+		},
+	},
 	rules: {
 		'object-shorthand': 'off',
 		'no-tabs': ['error', { allowIndentationTabs: true }],

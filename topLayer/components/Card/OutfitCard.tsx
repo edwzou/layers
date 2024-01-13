@@ -18,13 +18,12 @@ export default function OutfitCard({
 	clothingItems,
 	onPress,
 }: OutfitCardPropsType): ReactElement {
-	const truncatedTitle = title.length > 70 ? title.slice(0, 70) + '...' : title;
 	const clothingArray = Object.values(clothingItems).flat().slice(0, 4);
 
 	return (
 		<Pressable style={styles.container} onPress={onPress}>
 			<View style={styles.infoBox}>
-				<Text style={styles.title}>{truncatedTitle}</Text>
+				<Text style={styles.title}>{title}</Text>
 				<Text>
 					<View style={[styles.label]}>
 						<Text style={styles.labelText}>{clothingArray.length} items</Text>

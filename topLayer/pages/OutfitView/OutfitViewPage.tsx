@@ -18,9 +18,7 @@ import { type RouteTypes } from 'types/Routes';
 
 const OutfitViewPage = (): ReactElement => {
 	const route = useRoute<RouteProp<RouteTypes, 'OutfitViewPage'>>();
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
 	const { item, editable }: { item: UserOutfit; editable: boolean } =
 		route.params;
 	const { oid, clothing_items, title } = item;
