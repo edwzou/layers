@@ -17,7 +17,10 @@ const ProfileHeading = ({
 	return (
 		<View style={styles.profilePicture}>
 			<Pressable onPress={profilePicturePress}>
-				<ProfilePicture imageUrl={user?.profile_picture ?? ''} />
+				<ProfilePicture
+					imageUrl={user?.profile_picture ?? ''}
+					base64={user?.profile_picture.slice(0, 5) !== 'https'}
+				/>
 			</Pressable>
 			<View>
 				<FullName
