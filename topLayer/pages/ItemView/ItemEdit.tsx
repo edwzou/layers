@@ -262,6 +262,8 @@ const ItemEdit = ({
 			dataToUpdate.color = values.color;
 		}
 
+		console.log('data: ', dataToUpdate);
+		console.log('values: ', values);
 		setIsLoading(true); // Start loading
 		try {
 			const response = await axios.put(

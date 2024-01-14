@@ -108,7 +108,9 @@ router.put('/:ciid', (req: any, res: any): void => {
 			}
 			if (color !== undefined) {
 				const formattedUuidArray = color.map((col) => `'${col}'::color_enum`);
-				query += ` color = ARRAY[${formattedUuidArray.join(', ')}],`;
+				query += ` color = ARRAY[${formattedUuidArray.join(
+					', '
+				)}]::color_enum[],`;
 			}
 
 			// Check if at least one field is provided
