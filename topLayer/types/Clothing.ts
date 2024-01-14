@@ -1,3 +1,8 @@
+export interface Sizes {
+	label: string;
+	value: string;
+}
+
 export interface UserClothing {
 	ciid: string;
 	image_url: string;
@@ -8,6 +13,14 @@ export interface UserClothing {
 	size: string;
 	color: string[];
 	created_at: string;
+}
+
+export interface editableClothingTypes {
+	category: string;
+	title: string;
+	size: string;
+	color: string[];
+	// missing: image and brands
 }
 
 export interface UserClothingList {

@@ -117,25 +117,22 @@ const SettingsPage: React.FC = () => {
 			);
 
 			if (response.status === 200) {
-				try {
-					refreshUser({
-						type: 'change fields',
-						...updatedFields,
-					});
-					if (updatedFields.profile_picture !== undefined) {
-						profile_picture.current = photo;
-					}
-					navigation.goBack();
-					showSuccessToast(toast.yourProfileHasBeenUpdated);
-					setIsLoading(false); // Stop loading on success
-				} catch (error) {
-					setIsLoading(false); // Stop loading on error
-					showErrorToast(toast.anErrorHasOccurredWhileUpdatingProfile);
+				refreshUser({
+					type: 'change fields',
+					...updatedFields,
+				});
+				if (updatedFields.profile_picture !== undefined) {
+					profile_picture.current = photo;
 				}
+				navigation.goBack();
+				showSuccessToast(toast.yourProfileHasBeenUpdated);
+				setIsLoading(false); // Stop loading on success
 			} else {
 				throw new Error('An error has occurred');
 			}
 		} catch (error) {
+			setIsLoading(false); // Stop loading on error
+			showErrorToast(toast.anErrorHasOccurredWhileUpdatingProfile);
 			axiosEndpointErrorHandler(error);
 		}
 	};
