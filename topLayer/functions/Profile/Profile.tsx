@@ -25,20 +25,34 @@ export const handleCategoryChange = (
 	handleIndexChange(CategoryToIndex[category], flatListRef);
 };
 
-export const handleItemChange = (
+export const handleForeignItemPress = (
 	item: UserClothing | UserOutfit,
-	navigation: NativeStackNavigationProp<StackTypes>,
-	editable: boolean
+	navigation: NativeStackNavigationProp<StackTypes>
 ): void => {
 	if ('oid' in item) {
-		navigation.navigate(StackNavigation.OutfitView, {
+		navigation.navigate(StackNavigation.OutfitViewPage, {
 			item: item,
-			editable: editable,
 		});
 	} else {
 		navigation.navigate(StackNavigation.ItemView, {
 			item: item,
-			editable: editable,
+			editable: false,
+		});
+	}
+};
+
+export const handleItemChange = (
+	item: UserClothing | UserOutfit,
+	navigation: NativeStackNavigationProp<StackTypes>
+): void => {
+	if ('oid' in item) {
+		navigation.navigate(StackNavigation.OutfitFullPage, {
+			item: item,
+		});
+	} else {
+		navigation.navigate(StackNavigation.ItemView, {
+			item: item,
+			editable: true,
 		});
 	}
 };

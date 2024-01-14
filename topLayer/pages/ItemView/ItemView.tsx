@@ -39,7 +39,7 @@ const ItemView = ({
 				/>
 				<View style={styles.content}>
 					<View style={{ flex: 1 }}>
-						<ItemCell imageUrl={clothingItem.image_url} disablePress />
+						<ItemCell imageUrl={clothingItem.image_url} />
 					</View>
 					<View style={styles.categoryContainer}>
 						{clothingItem.color.length > 0 ? (

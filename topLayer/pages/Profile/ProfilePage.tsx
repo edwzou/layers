@@ -9,10 +9,10 @@ import Profile from './Profile';
 import FeedbackPage from '../Feedback/FeedbackPage';
 import SettingsPage from './SettingsPage';
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
-import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { NavigationContainer } from '@react-navigation/native';
 import ItemCamera from '../../components/Camera/ItemCamera';
 import CameraPfp from '../../components/Camera/CameraPfp';
+import OutfitFullPage from '../../pages/OutfitView/OutfitFullPage';
 
 // Define the context type
 interface ProfilePageContextType {
@@ -64,8 +64,8 @@ const ProfilePage: React.FC = () => {
 						}}
 					/>
 					<Stack.Screen
-						name={StackNavigation.OutfitView}
-						component={OutfitViewPage}
+						name={StackNavigation.OutfitFullPage}
+						component={OutfitFullPage}
 						options={{
 							headerShown: false,
 						}}

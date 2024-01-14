@@ -10,8 +10,6 @@ import {
 	isUserClothingArray,
 	type UserClothing,
 	type UserClothingList,
-	type UserClothingListSingle,
-	type UserSelectedClothingList,
 } from '../../types/Clothing';
 import { match } from '../../constants/GlobalStrings';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -22,6 +20,10 @@ import { type UserAllItems } from '../../types/AllItems';
 
 import Icon from 'react-native-remix-icon';
 import { screenHeight } from '../../utils/modalMaxShow';
+import {
+	UserClothingListSingle,
+	UserSelectedClothingList,
+} from '../../types/Outfit';
 
 const Match: React.FC = () => {
 	const { allItems } = useContext(MainPageContext);

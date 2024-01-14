@@ -55,6 +55,7 @@ const CategorySlide = ({
 						return (
 							<View style={{ width: ITEM_SIZE(2) }}>
 								<ItemCell
+									disablePress={false}
 									imageUrl={item.image_url}
 									key={item.ciid}
 									onPress={() => {

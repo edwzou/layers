@@ -15,10 +15,6 @@
     "moduleDetection": "force",
     "typeRoots": ["./node_modules/@types", "./types"],
     "jsx": "react-native",
-    "paths": {
-      "@/types/*": ["./types/*"],
-      "@/components/*": ["./components/*"]
-    }
 	},
   "include": ["**/*.ts", "**/*.tsx", ".eslintrc.cjs", "App.tsx", "babel.config.js"],
   "exclude": ["node_modules", "metro.config.js", "jest.config.js"]

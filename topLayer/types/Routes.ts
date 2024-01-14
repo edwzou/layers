@@ -1,5 +1,5 @@
-import { type UserClothing, type outfitType } from './Clothing';
-import { type UserOutfit } from './Outfit';
+import { type UserClothing } from './Clothing';
+import { UserOutfit, outfitType } from './Outfit';
 import { type markedUser } from './User';
 
 interface empty {}
@@ -14,7 +14,9 @@ export interface RouteTypes {
 	};
 	OutfitViewPage: {
 		item: UserOutfit;
-		editable: boolean;
+	};
+	OutfitFullPage: {
+		item: UserOutfit;
 	};
 	ItemViewPage: {
 		item: UserClothing;

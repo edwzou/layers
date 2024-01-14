@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ItemCell from '../Cell/ItemCell';
 import { screenWidth } from '../../utils/modalMaxShow';
-import { type UserClothing } from '../../types/Clothing';
+import { outfitClothingItemsType } from 'types/Outfit';
 
 const itemCellSize = (screenWidth - 60) / 4;
 
 interface OutfitCardPropsType {
 	title: string;
-	clothingItems: UserClothing[];
+	clothingItems: outfitClothingItemsType;
 	onPress: () => void;
 }
 
@@ -37,7 +37,6 @@ export default function OutfitCard({
 						<View style={styles.itemContainer}>
 							<ItemCell
 								imageUrl={item.image_url}
-								disablePress={true}
 								imageStyle={{ width: '85%', height: '85%' }}
 							/>
 						</View>

@@ -17,32 +17,6 @@ export interface UserClothingList {
 	shoes: UserClothing[];
 }
 
-export interface UserClothingListSingle {
-	outerwear: UserClothing | undefined;
-	tops: UserClothing | undefined;
-	bottoms: UserClothing | undefined;
-	shoes: UserClothing | undefined;
-}
-
-export interface UserSelectedClothingList {
-	outerwear: number;
-	tops: number;
-	bottoms: number;
-	shoes: number;
-}
-
-export interface outfitType {
-	outerwear: UserClothing;
-	tops: UserClothing;
-	bottoms: UserClothing;
-	shoes: UserClothing;
-}
-
-export interface matchType {
-	previewData: outfitType;
-	matchName: string;
-}
-
 export interface UserClothingPadding {
 	outerwear: Array<UserClothing | Record<string, number>>;
 	tops: Array<UserClothing | Record<string, number>>;

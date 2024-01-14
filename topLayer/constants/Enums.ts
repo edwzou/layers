@@ -37,6 +37,8 @@ export const StackNavigation = {
 	ItemView: 'ItemView',
 	ItemCreate: 'ItemCreate',
 	ItemEdit: 'ItemEdit',
+	OutfitFullPage: 'OutfitFullPage',
+	OutfitViewPage: 'OutfitViewPage',
 	OutfitView: 'OutfitView',
 	OutfitEdit: 'OutfitEdit',
 	ItemCamera: 'ItemCamera',

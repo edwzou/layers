@@ -4,41 +4,32 @@ import ItemCell from '../../components/Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { FlatList } from 'react-native-gesture-handler';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
-import {
-	StackNavigation,
-	StepOverTypes,
-	TagAction,
-} from '../../constants/Enums';
+import { StepOverTypes, TagAction } from '../../constants/Enums';
 import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserClothing } from '../../types/Clothing';
 import Header from '../../components/Header/Header';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from '../../utils/StackNavigation';
-import { useNavigation } from '@react-navigation/native';
 
 interface OutfitViewPropsType {
 	title: string;
 	clothingItems: UserClothing[];
-	editable: boolean;
+	directToOutfitEdit?: () => void;
 }
 
 const OutfitView = ({
 	title,
 	clothingItems,
-	editable,
+	directToOutfitEdit,
 }: OutfitViewPropsType): ReactElement => {
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const allColors = clothingItems.flatMap((item) => item.color);
 	const uniqueColors = Array.from(new Set(allColors));
-	const directToOutfitEdit = (): void => {
-		navigation.navigate(StackNavigation.OutfitEdit, {});
-	};
 
 	return (
 		<View style={styles.container}>
 			<Header
 				text={title}
-				rightButton={editable}
+				rightButton={
+					directToOutfitEdit !== null && directToOutfitEdit !== undefined
+				}
 				rightStepOverType={StepOverTypes.edit}
 				rightButtonAction={directToOutfitEdit}
 			/>
@@ -48,7 +39,7 @@ const OutfitView = ({
 				renderItem={({ item }) => {
 					return (
 						<View style={{ flex: 1 / 2 }}>
-							<ItemCell imageUrl={item.image_url} disablePress />
+							<ItemCell imageUrl={item.image_url} />
 						</View>
 					);
 				}}

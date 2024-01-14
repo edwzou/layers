@@ -31,8 +31,8 @@ import PrivateProfile from '../../components/Profile/Private';
 import CategoryComponent from '../../components/Category/Category';
 import {
 	handleCategoryChange,
-	handleItemChange,
-} from '../../components/Profile/profileFunctions';
+	handleForeignItemPress,
+} from '../../functions/Profile/Profile';
 
 const ForeignProfile = (): ReactElement => {
 	const route = useRoute<RouteProp<RouteTypes, 'ForeignProfile'>>();
@@ -133,7 +133,7 @@ const ForeignProfile = (): ReactElement => {
 							handleCategoryChange(category, flatListRef, setSelectedCategory);
 						}}
 						handleItemChange={(item: UserClothing | UserOutfit) => {
-							handleItemChange(item, navigation, false);
+							handleForeignItemPress(item, navigation);
 						}}
 						handleViewableItemsChanged={handleViewableItemsChanged}
 					/>

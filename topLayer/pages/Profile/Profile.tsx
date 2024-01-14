@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserClothing } from '../../types/Clothing';
-import { type UserOutfit } from '../../types/Outfit';
+import { UserOutfit } from '../../types/Outfit';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useUser } from '../../Contexts/UserContext';
@@ -19,8 +19,8 @@ import CategoryComponent from '../../components/Category/Category';
 import {
 	handleCategoryChange,
 	handleItemChange,
-} from '../../components/Profile/profileFunctions';
-import { type UserAllItems } from '../../types/AllItems';
+} from '../../functions/Profile/Profile';
+import { UserAllItems } from '../../types/AllItems';
 
 const Profile: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -64,7 +64,7 @@ const Profile: React.FC = () => {
 					handleCategoryChange(category, flatListRef, setSelectedCategory);
 				}}
 				handleItemChange={(item: UserClothing | UserOutfit) => {
-					handleItemChange(item, navigation, true);
+					handleItemChange(item, navigation);
 				}}
 				handleViewableItemsChanged={handleViewableItemsChanged}
 			/>

@@ -15,7 +15,6 @@ import { type RouteTypes } from '../../types/Routes';
 const ItemViewPage = (): ReactElement => {
 	const route = useRoute<RouteProp<RouteTypes, 'ItemViewPage'>>();
 	const { item, editable } = route.params;
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
 	const redirectToProfile = (): void => {
