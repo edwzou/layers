@@ -99,7 +99,7 @@ const MarkedList = ({
 	return (
 		<View style={styles.container}>
 			<Header text={`${count} ${find.marked}`} />
-			{count !== 0 && preLoad ? (
+			{foreignUserIDs.length !== 0 && preLoad ? (
 				<FlatList
 					data={foreignUserIDs}
 					ListFooterComponent={<View style={{ height: screenHeight * 0.15 }} />}
@@ -113,7 +113,7 @@ const MarkedList = ({
 						}
 					}}
 				/>
-			) : count === 0 ? (
+			) : foreignUserIDs.length === 0 ? (
 				<View
 					style={{
 						alignItems: 'center',
