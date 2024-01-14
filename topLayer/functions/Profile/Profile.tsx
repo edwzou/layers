@@ -34,9 +34,8 @@ export const handleForeignItemPress = (
 			item: item,
 		});
 	} else {
-		navigation.navigate(StackNavigation.ItemView, {
+		navigation.navigate(StackNavigation.ItemViewPage, {
 			item: item,
-			editable: false,
 		});
 	}
 };
@@ -46,13 +45,12 @@ export const handleItemChange = (
 	navigation: NativeStackNavigationProp<StackTypes>
 ): void => {
 	if ('oid' in item) {
-		navigation.navigate(StackNavigation.OutfitFullPage, {
+		navigation.navigate(StackNavigation.OutfitPage, {
 			item: item,
 		});
 	} else {
-		navigation.navigate(StackNavigation.ItemView, {
+		navigation.navigate(StackNavigation.ItemPage, {
 			item: item,
-			editable: true,
 		});
 	}
 };

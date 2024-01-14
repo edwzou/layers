@@ -12,7 +12,8 @@ import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import { NavigationContainer } from '@react-navigation/native';
 import ItemCamera from '../../components/Camera/ItemCamera';
 import CameraPfp from '../../components/Camera/CameraPfp';
-import OutfitFullPage from '../../pages/OutfitView/OutfitFullPage';
+import OutfitPage from '../OutfitView/OutfitPage';
+import ItemPage from '../../pages/ItemView/ItemPage';
 
 // Define the context type
 interface ProfilePageContextType {
@@ -57,15 +58,15 @@ const ProfilePage: React.FC = () => {
 						}}
 					/>
 					<Stack.Screen
-						name={StackNavigation.ItemView}
-						component={ItemViewPage}
+						name={StackNavigation.ItemPage}
+						component={ItemPage}
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name={StackNavigation.OutfitFullPage}
-						component={OutfitFullPage}
+						name={StackNavigation.OutfitPage}
+						component={OutfitPage}
 						options={{
 							headerShown: false,
 						}}

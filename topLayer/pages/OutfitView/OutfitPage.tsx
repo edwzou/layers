@@ -11,12 +11,11 @@ import { useRoute, type RouteProp } from '@react-navigation/native';
 import { type RouteTypes } from '../../types/Routes';
 import { getFlatArrayOfValues } from '../../functions/Outfit/Outfit';
 
-const OutfitFullPage = (): ReactElement => {
-	const route = useRoute<RouteProp<RouteTypes, 'OutfitFullPage'>>();
+const OutfitPage = (): ReactElement => {
+	const route = useRoute<RouteProp<RouteTypes, 'OutfitPage'>>();
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { item } = route.params;
 	const { oid, clothing_items, title } = item;
-	console.log('clothing items: ', clothing_items);
 	const clothingItems = getFlatArrayOfValues(clothing_items);
 
 	const redirectToProfile = (): void => {
@@ -65,6 +64,6 @@ const OutfitFullPage = (): ReactElement => {
 	);
 };
 
-export default OutfitFullPage;
+export default OutfitPage;
 
 const styles = StyleSheet.create({});

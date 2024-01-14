@@ -15,12 +15,14 @@ export interface RouteTypes {
 	OutfitViewPage: {
 		item: UserOutfit;
 	};
-	OutfitFullPage: {
+	OutfitPage: {
 		item: UserOutfit;
 	};
 	ItemViewPage: {
 		item: UserClothing;
-		editable: boolean;
+	};
+	ItemPage: {
+		item: UserClothing;
 	};
 	ItemCamera: empty;
 	CameraPfp: empty;

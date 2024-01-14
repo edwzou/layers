@@ -101,7 +101,7 @@ const FindPage: React.FC = () => {
 							}}
 						/>
 						<Stack.Screen
-							name={StackNavigation.ItemView}
+							name={StackNavigation.ItemViewPage}
 							component={ItemViewPage}
 							options={{
 								headerShown: false,

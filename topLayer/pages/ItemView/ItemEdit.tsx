@@ -335,89 +335,87 @@ const ItemEdit = ({
 				rightStepOverType={StepOverTypes.done}
 				rightButtonAction={handleSubmit(handleUpdate)}
 			/>
-			<>
-				<ScrollView
-					contentContainerStyle={GlobalStyles.sizing.bottomSpacingPadding}
+			<ScrollView
+				contentContainerStyle={GlobalStyles.sizing.bottomSpacingPadding}
+			>
+				<View
+					style={{
+						marginHorizontal: GlobalStyles.layout.xGap,
+						gap: GlobalStyles.layout.gap,
+					}}
 				>
+					<Controller
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<StackedTextBox
+								label={itemEdit.itemName}
+								onFieldChange={(value) => {
+									onChange(value);
+									setValue('title', value);
+								}}
+								value={value.trim()}
+							/>
+						)}
+						name="title"
+					/>
+					<ItemCell imageUrl={clothingItem.image_url} />
 					<View
-						style={{
-							marginHorizontal: GlobalStyles.layout.xGap,
-							gap: GlobalStyles.layout.gap,
-						}}
+						style={{ flexDirection: 'row', justifyContent: 'space-between' }}
 					>
-						<Controller
-							control={control}
-							render={({ field: { onChange, value } }) => (
-								<StackedTextBox
-									label={itemEdit.itemName}
-									onFieldChange={(value) => {
-										onChange(value);
-										setValue('title', value);
-									}}
-									value={value.trim()}
-								/>
-							)}
-							name="title"
-						/>
-						<ItemCell imageUrl={clothingItem.image_url} />
-						<View
-							style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-						>
-							<View style={{ width: ITEM_SIZE(2) }}>
-								<Dropdown
-									label="Item type"
-									open={itemTypeOpen}
-									setOpen={setItemTypeOpen}
-									setItems={setItemTypes}
-									setValue={(value) => {
-										setItemTypeValue(value);
-									}}
-									items={itemTypes}
-									value={itemTypeValue}
-								/>
-							</View>
-							<View style={{ width: ITEM_SIZE(2) }}>
-								<Dropdown
-									label="Size"
-									open={sizeOpen}
-									setOpen={setSizeOpen}
-									setItems={setSizes}
-									setValue={(value) => {
-										setSizeValue(value);
-									}}
-									items={sizes}
-									value={sizeValue}
-								/>
-							</View>
-						</View>
-						<ColorTagsList
-							data={currentColorTags}
-							tagAction={TagAction.remove}
-							onAddPress={() => {
-								colorPickerRef.current?.scrollTo(modalLowTranslateY);
-							}}
-							onRemovePress={handleOnRemovePress}
-						/>
-					</View>
-				</ScrollView>
-				<View style={styles.deleteButtonContainer}>
-					<Pressable onPress={confirmDeletion}>
-						<View style={GlobalStyles.utils.deleteButton}>
-							<Icon
-								name={GlobalStyles.icons.closeOutline}
-								color={GlobalStyles.colorPalette.background}
-								size={GlobalStyles.sizing.icon.regular}
+						<View style={{ width: ITEM_SIZE(2) }}>
+							<Dropdown
+								label="Item type"
+								open={itemTypeOpen}
+								setOpen={setItemTypeOpen}
+								setItems={setItemTypes}
+								setValue={(value) => {
+									setItemTypeValue(value);
+								}}
+								items={itemTypes}
+								value={itemTypeValue}
 							/>
 						</View>
-					</Pressable>
+						<View style={{ width: ITEM_SIZE(2) }}>
+							<Dropdown
+								label="Size"
+								open={sizeOpen}
+								setOpen={setSizeOpen}
+								setItems={setSizes}
+								setValue={(value) => {
+									setSizeValue(value);
+								}}
+								items={sizes}
+								value={sizeValue}
+							/>
+						</View>
+					</View>
+					<ColorTagsList
+						data={currentColorTags}
+						tagAction={TagAction.remove}
+						onAddPress={() => {
+							colorPickerRef.current?.scrollTo(modalLowTranslateY);
+						}}
+						onRemovePress={handleOnRemovePress}
+					/>
 				</View>
-				<GeneralModal
-					ref={colorPickerRef}
-					height={modalLowTranslateY}
-					content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
-					dim={false}
-				/>
-			</>
+			</ScrollView>
+			<View style={styles.deleteButtonContainer}>
+				<Pressable onPress={confirmDeletion}>
+					<View style={GlobalStyles.utils.deleteButton}>
+						<Icon
+							name={GlobalStyles.icons.closeOutline}
+							color={GlobalStyles.colorPalette.background}
+							size={GlobalStyles.sizing.icon.regular}
+						/>
+					</View>
+				</Pressable>
+			</View>
+			<GeneralModal
+				ref={colorPickerRef}
+				height={modalLowTranslateY}
+				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
+				dim={false}
+			/>
 			{isLoading ? <Loading /> : null}
 		</View>
 	);
