@@ -42,6 +42,17 @@ module.exports = {
 		'prettier',
 		'import',
 	],
+	settings: {
+		'import/parsers': {
+			'@typescript-eslint/parser': ['.ts', '.tsx'],
+		},
+		'import/resolver': {
+			typescript: {
+				alwaysTryTypes: true,
+				project: project,
+			},
+		},
+	},
 	rules: {
 		'import/no-unresolved': 'error',
 		'import/extensions': 'off',
@@ -75,16 +86,5 @@ module.exports = {
 				},
 			},
 		],
-	},
-	settings: {
-		'import/parsers': {
-			'@typescript-eslint/parser': ['.ts', '.tsx'],
-		},
-		'import/resolver': {
-			typescript: {
-				alwaysTryTypes: true,
-				project: project,
-			},
-		},
 	},
 };

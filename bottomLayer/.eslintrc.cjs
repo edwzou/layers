@@ -1,8 +1,15 @@
 module.exports = {
+	root: true,
 	env: {
 		es2024: true,
 	},
-	extends: 'standard-with-typescript',
+	extends: [
+		'eslint:recommended',
+		'plugin:import/typescript',
+		'plugin:import/recommended',
+		'plugin:@typescript-eslint/recommended',
+		'standard-with-typescript',
+	],
 	overrides: [
 		{
 			files: ['*.ts', '*.tsx', '*.cjs'],
@@ -12,12 +19,28 @@ module.exports = {
 			},
 		},
 	],
+	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		ecmaVersion: 'latest',
+		sourceType: 'module',
 		project: ['./tsconfig.json'],
 		tsconfigRootDir: __dirname,
 	},
+	plugins: ['prettier', 'import', '@typescript-eslint'],
+	settings: {
+		'import/parsers': {
+			'@typescript-eslint/parser': ['.ts', '.tsx'],
+		},
+		'import/resolver': {
+			typescript: {
+				alwaysTryTypes: true,
+				project: project,
+			},
+		},
+	},
 	rules: {
+		'import/no-unresolved': 'error',
+		'import/extensions': 'off',
 		'object-shorthand': 'off',
 		'no-tabs': ['error', { allowIndentationTabs: true }],
 		semi: [2, 'always'],
