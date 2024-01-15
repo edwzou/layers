@@ -1,3 +1,6 @@
+const { resolve } = require('node:path');
+const project = resolve(process.cwd(), 'tsconfig.json');
+
 module.exports = {
 	root: true,
 	env: {
@@ -9,6 +12,7 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:react/recommended',
 		'plugin:import/typescript',
+		'plugin:import/recommended',
 		'plugin:@typescript-eslint/recommended',
 		'standard-with-typescript',
 	],
@@ -31,8 +35,16 @@ module.exports = {
 			jsx: true,
 		},
 	},
-	plugins: ['react', 'react-native', '@typescript-eslint', 'prettier'],
+	plugins: [
+		'react',
+		'react-native',
+		'@typescript-eslint',
+		'prettier',
+		'import',
+	],
 	rules: {
+		'import/no-unresolved': 'error',
+		'import/extensions': 'off',
 		'object-shorthand': 'off',
 		'no-tabs': ['error', { allowIndentationTabs: true }],
 		semi: [2, 'always'],
@@ -63,5 +75,16 @@ module.exports = {
 				},
 			},
 		],
+	},
+	settings: {
+		'import/parsers': {
+			'@typescript-eslint/parser': ['.ts', '.tsx'],
+		},
+		'import/resolver': {
+			typescript: {
+				alwaysTryTypes: true,
+				project: project,
+			},
+		},
 	},
 };
