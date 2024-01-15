@@ -1,5 +1,6 @@
 node_modules/
-sessions
+build/
+sessions/
 
 .env
 certs/*

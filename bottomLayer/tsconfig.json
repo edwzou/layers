@@ -7,10 +7,8 @@
     "outDir": "build",
     "rootDir": "./",
     "strict": true,
-    "noImplicitAny": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "moduleDetection": "force",
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
     "include": [
@@ -18,5 +16,9 @@
     "src/**/*.tsx", // TypeScript JSX files
     ".eslintrc.cjs", // Path to your ESLint configuration file
     "server.ts"
+  ], 
+  "exclude": [
+    "node_modules",
+    "sessions"
   ]
 }

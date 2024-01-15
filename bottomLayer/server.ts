@@ -9,16 +9,16 @@ import passport from 'passport';
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import ConnectFileStore from 'session-file-store';
+import timeout from 'connect-timeout';
 
 const app = express();
 
 const FileStore = ConnectFileStore(session);
-const timeout = require('connect-timeout');
 require('dotenv').config();
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb' }));
-app.use(timeout(300000));
+app.use(timeout(5000));
 
 app.use(
 	session({

@@ -1,4 +1,5 @@
 module.exports = {
+	root: true,
 	env: {
 		browser: true,
 		es2024: true,
@@ -31,11 +32,6 @@ module.exports = {
 		},
 	},
 	plugins: ['react', 'react-native', '@typescript-eslint', 'prettier'],
-	settings: {
-		react: {
-			version: 'detect',
-		},
-	},
 	rules: {
 		'object-shorthand': 'off',
 		'no-tabs': ['error', { allowIndentationTabs: true }],
@@ -67,10 +63,5 @@ module.exports = {
 				},
 			},
 		],
-
-		'react/react-in-jsx-scope': ['off'],
-		'react/jsx-uses-react': ['off'],
-		'react/jsx-props-no-spreading': ['warn'],
-		'react/no-unescaped-entities': ['off'],
 	},
 };
