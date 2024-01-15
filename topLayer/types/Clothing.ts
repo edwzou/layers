@@ -23,6 +23,15 @@ export interface editableClothingTypes {
 	// missing: image and brands
 }
 
+export interface creationClothingTypes {
+	category: string;
+	title: string;
+	size: string;
+	color: string[];
+	image: string;
+	// missing: image and brands
+}
+
 export interface UserClothingList {
 	outerwear: UserClothing[];
 	tops: UserClothing[];

@@ -3,7 +3,7 @@ import React, { type ReactElement } from 'react';
 import ProfilePicture from '../ProfilePicture/ProfilePicture';
 import FullName from '../Name/FullName';
 import Username from '../Name/Username';
-import { type User, type markedUser } from '@/types/User';
+import { type User, type markedUser } from '../../types/User';
 
 interface ProfileHeadingProps {
 	user: markedUser | User;

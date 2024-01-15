@@ -22,11 +22,10 @@ import ColorPicker from '../../components/ColorManager/ColorPicker';
 import GeneralModal, {
 	type refPropType,
 } from '../../components/Modal/GeneralModal';
-import { capitalizeFirstLetter } from '../../utils/misc';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
-import { type UserClothing } from '../../types/Clothing';
+import { creationClothingTypes, type UserClothing } from '../../types/Clothing';
 import { useForm, Controller } from 'react-hook-form';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -41,20 +40,8 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
-
-interface FormValues {
-	image: string;
-	category: string;
-	title: string;
-	size: string;
-	color: string[];
-	brands: string[];
-}
-
-interface Sizes {
-	label: string;
-	value: string;
-}
+import { setClothingTypeSize } from '../../functions/ClothingItem/Sizes';
+import { clothingItemTypes } from '../../constants/Clothing';
 
 interface ItemCreatePropsType {
 	clothingItem: UserClothing;
@@ -66,144 +53,20 @@ const ItemCreate = ({
 	navigateToProfile,
 }: ItemCreatePropsType): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const colorPickerRef = useRef<refPropType>(null);
-
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
-	const [isLoading, setIsLoading] = useState(false); // Add loading state
-
+	const colorPickerRef = useRef<refPropType>(null);
+	const [isLoading, setIsLoading] = useState(false);
 	const [currentColorTags, setColorTags] = useState(clothingItem.color);
-
 	const [sizeOpen, setSizeOpen] = useState(false);
-	// sets the size stored in the database
 	const [sizeValue, setSizeValue] = useState(clothingItem.size ?? '');
-	// helper function for setting the size options based on given clothing category
-	const helpSetSizes = (category: string): Sizes[] => {
-		if (
-			category === ClothingTypes.outerwear ||
-			category === ClothingTypes.tops
-		) {
-			return [
-				{
-					label: 'XXS',
-					value: 'xxs',
-				},
-				{
-					label: 'XS',
-					value: 'xs',
-				},
-				{
-					label: 'S',
-					value: 's',
-				},
-				{
-					label: 'M',
-					value: 'm',
-				},
-				{
-					label: 'L',
-					value: 'l',
-				},
-				{
-					label: 'XL',
-					value: 'xl',
-				},
-				{
-					label: 'XXL',
-					value: 'xxl',
-				},
-			];
-		} else if (category === ClothingTypes.bottoms) {
-			return [
-				{
-					label: 'US 28',
-					value: 'xxs',
-				},
-				{
-					label: 'US 30',
-					value: 'xs',
-				},
-				{
-					label: 'US 32',
-					value: 's',
-				},
-				{
-					label: 'US 34',
-					value: 'm',
-				},
-				{
-					label: 'US 36',
-					value: 'l',
-				},
-				{
-					label: 'US 38',
-					value: 'xl',
-				},
-				{
-					label: 'US 40',
-					value: 'xxl',
-				},
-			];
-		} else {
-			return [
-				{
-					label: 'US 7',
-					value: 'xxs',
-				},
-				{
-					label: 'US 8',
-					value: 'xs',
-				},
-				{
-					label: 'US 9',
-					value: 's',
-				},
-				{
-					label: 'US 10',
-					value: 'm',
-				},
-				{
-					label: 'US 11',
-					value: 'l',
-				},
-				{
-					label: 'US 12',
-					value: 'xl',
-				},
-				{
-					label: 'US 13',
-					value: 'xxl',
-				},
-			];
-		}
-	};
-	// sets the size options (ex. {S, M, L}, {US 10, US 11, US 12}, etc.)
-	const [sizes, setSizes] = useState(helpSetSizes(clothingItem.category));
-
+	const [sizes, setSizes] = useState(
+		setClothingTypeSize(clothingItem.category)
+	);
 	const [itemTypeOpen, setItemTypeOpen] = useState(false);
-	// sets the item type value to be stored in the database
 	const [itemTypeValue, setItemTypeValue] = useState(
 		clothingItem.category ?? ''
 	);
-	// sets the item type options
-	const [itemTypes, setItemTypes] = useState([
-		{
-			label: capitalizeFirstLetter(ClothingTypes.outerwear),
-			value: ClothingTypes.outerwear,
-		},
-		{
-			label: capitalizeFirstLetter(ClothingTypes.tops),
-			value: ClothingTypes.tops,
-		},
-		{
-			label: capitalizeFirstLetter(ClothingTypes.bottoms),
-			value: ClothingTypes.bottoms,
-		},
-		{
-			label: capitalizeFirstLetter(ClothingTypes.shoes),
-			value: ClothingTypes.shoes,
-		},
-	]);
 
 	const { control, handleSubmit, setValue } = useForm({
 		defaultValues: {
@@ -218,7 +81,7 @@ const ItemCreate = ({
 
 	// sets new sizing options when a new item type (ex. outerwear) is selected
 	useEffect(() => {
-		setSizes(helpSetSizes(itemTypeValue));
+		setSizes(setClothingTypeSize(itemTypeValue));
 		setValue('category', itemTypeValue);
 	}, [itemTypeValue]);
 
@@ -234,7 +97,7 @@ const ItemCreate = ({
 		setValue('image', clothingItem.image_url);
 	}, [clothingItem.image_url]);
 
-	const handleCreate = async (values: FormValues): Promise<void> => {
+	const handleCreate = async (values: creationClothingTypes): Promise<void> => {
 		if (values.category === '') {
 			throw new Error('Category Value Not Filled Out.');
 		}
@@ -326,14 +189,13 @@ const ItemCreate = ({
 					>
 						<View style={{ width: ITEM_SIZE(2) }}>
 							<Dropdown
-								label="Item type"
+								label="Category"
 								open={itemTypeOpen}
 								setOpen={setItemTypeOpen}
-								setItems={setItemTypes}
 								setValue={(value) => {
 									setItemTypeValue(value);
 								}}
-								items={itemTypes}
+								items={clothingItemTypes}
 								value={itemTypeValue}
 							/>
 						</View>
@@ -342,7 +204,6 @@ const ItemCreate = ({
 								label="Size"
 								open={sizeOpen}
 								setOpen={setSizeOpen}
-								setItems={setSizes}
 								setValue={(value) => {
 									setSizeValue(value);
 								}}

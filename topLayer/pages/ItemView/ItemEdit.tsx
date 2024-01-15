@@ -205,7 +205,7 @@ const ItemEdit = ({
 					>
 						<View style={{ width: ITEM_SIZE(2) }}>
 							<Dropdown
-								label="Item type"
+								label="Category"
 								open={itemTypeOpen}
 								setOpen={setItemTypeOpen}
 								setValue={(value) => {
