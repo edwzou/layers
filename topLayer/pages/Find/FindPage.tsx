@@ -19,7 +19,6 @@ const FindPage: React.FC = () => {
 	const data = useUser();
 	// this only gets the foreignUsersData from UserContext on initial load
 	const foreignUsersIDs: string[] = data?.following ?? [];
-	console.log('IDs: ', foreignUsersIDs);
 	const [followedUsersData, setFollowed] =
 		useState<Array<string | User>>(foreignUsersIDs);
 
