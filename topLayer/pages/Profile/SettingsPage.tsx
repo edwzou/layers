@@ -54,7 +54,8 @@ const SettingsPage: React.FC = () => {
 		last_name: last_name,
 		email: email,
 		username: username,
-		password: '**********',
+		password: '**********', // maybe theres a way to decrypt the value here so we get the password value instead of
+		// password: password,  // the hashed value
 		private_option: private_option,
 		profile_picture: profile_picture,
 	};
