@@ -3,43 +3,34 @@ import React, { type ReactElement } from 'react';
 import ItemCell from '../../components/Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
-import {
-	StackNavigation,
-	StepOverTypes,
-	TagAction,
-} from '../../constants/Enums';
+import { StepOverTypes, TagAction } from '../../constants/Enums';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
 import { type UserClothing } from '../../types/Clothing';
 import Header from '../../components/Header/Header';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
-import { type StackTypes } from '../../utils/StackNavigation';
 
 interface ItemViewPropsType {
 	clothingItem: UserClothing;
-	editable: boolean;
+	directToItemEdit?: () => void;
 }
 
 const ItemView = ({
 	clothingItem,
-	editable,
+	directToItemEdit,
 }: ItemViewPropsType): ReactElement => {
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-	const directToItemEdit = (): void => {
-		navigation.navigate(StackNavigation.ItemEdit, {});
-	};
 	return (
 		<ScrollView>
 			<View style={styles.container}>
 				<Header
 					text={clothingItem.title}
-					rightButton={editable}
+					rightButton={
+						directToItemEdit !== null && directToItemEdit !== undefined
+					}
 					rightStepOverType={StepOverTypes.edit}
 					rightButtonAction={directToItemEdit}
 				/>
 				<View style={styles.content}>
 					<View style={{ flex: 1 }}>
-						<ItemCell imageUrl={clothingItem.image_url} disablePress />
+						<ItemCell imageUrl={clothingItem.image_url} />
 					</View>
 					<View style={styles.categoryContainer}>
 						{clothingItem.color.length > 0 ? (

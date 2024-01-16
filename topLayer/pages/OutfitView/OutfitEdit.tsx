@@ -1,10 +1,5 @@
 import { View, StyleSheet, Pressable, Alert } from 'react-native';
-import React, {
-	useState,
-	useContext,
-	type MutableRefObject,
-	type ReactElement,
-} from 'react';
+import React, { useState, useContext, type ReactElement } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import ItemCell from '../../components/Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -26,11 +21,10 @@ import {
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
 
-interface OutfitViewPropsType {
+interface OutfitEditPropsType {
 	id: string;
 	title: string;
 	clothingItems: UserClothing[];
-	titleRef: MutableRefObject<string>;
 	navigateToProfile: () => void;
 }
 
@@ -38,9 +32,8 @@ const OutfitEdit = ({
 	id,
 	title,
 	clothingItems,
-	titleRef,
 	navigateToProfile,
-}: OutfitViewPropsType): ReactElement => {
+}: OutfitEditPropsType): ReactElement => {
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
 	const [text, setText] = useState(title);
@@ -48,7 +41,6 @@ const OutfitEdit = ({
 
 	const onInputChange = (text: string): void => {
 		setText(text);
-		titleRef.current = text;
 	};
 
 	const confirmDeletion = (): void => {
@@ -70,12 +62,10 @@ const OutfitEdit = ({
 
 	// Only updates title
 	const handleUpdate = async (): Promise<void> => {
-		const updatedTitle = titleRef.current;
-
 		setIsLoading(true); // Start loading
 		try {
 			const response = await axios.put(`${baseUrl}/api/private/outfits/${id}`, {
-				title: updatedTitle,
+				title: text,
 			});
 
 			if (response.status === 200) {
@@ -127,18 +117,14 @@ const OutfitEdit = ({
 				<StackedTextbox
 					label={outfitEdit.outfitName}
 					onFieldChange={onInputChange}
-					value={title ?? text}
+					value={text}
 				/>
 				<FlatList
 					data={clothingItems}
 					renderItem={({ item }) => {
 						return (
 							<View style={{ width: ITEM_SIZE(2) }}>
-								<ItemCell
-									imageUrl={item.image_url}
-									disablePress={false}
-									key={item.ciid}
-								/>
+								<ItemCell imageUrl={item.image_url} key={item.ciid} />
 							</View>
 						);
 					}}

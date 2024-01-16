@@ -12,7 +12,7 @@ interface ItemCellPropsType {
 
 const ItemCell = ({
 	imageUrl,
-	disablePress = false,
+	disablePress = true,
 	imageStyle,
 	onPress,
 	base64,

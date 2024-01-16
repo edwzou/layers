@@ -1,6 +1,8 @@
-import { type UserClothing, type outfitType } from './Clothing';
-import { type UserOutfit } from './Outfit';
+import { type UserClothing } from './Clothing';
+import { UserOutfit, outfitType } from './Outfit';
 import { type markedUser } from './User';
+
+interface empty {}
 
 export interface RouteTypes {
 	[key: string]: object;
@@ -12,13 +14,16 @@ export interface RouteTypes {
 	};
 	OutfitViewPage: {
 		item: UserOutfit;
-		editable: boolean;
+	};
+	OutfitPage: {
+		item: UserOutfit;
 	};
 	ItemViewPage: {
 		item: UserClothing;
-		editable: boolean;
 	};
-	CameraWrapper: {
-		returnToPfp: boolean;
+	ItemPage: {
+		item: UserClothing;
 	};
+	ItemCamera: empty;
+	CameraPfp: empty;
 }

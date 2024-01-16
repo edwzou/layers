@@ -14,7 +14,7 @@ import { type StackTypes } from 'utils/StackNavigation';
 import GlobalStyles from '../../constants/GlobalStyles';
 import SignIn from './SignIn';
 
-const LoginPage: React.FC = () => {
+const SignInPage: React.FC = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	return (
 		<>
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default LoginPage;
+export default SignInPage;

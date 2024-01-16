@@ -33,27 +33,17 @@ import Animated, {
 	useSharedValue,
 	withTiming,
 } from 'react-native-reanimated';
-
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
-import { StackNavigation } from '../../constants/Enums';
-
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { usePhotoUpdate } from '../../Contexts/CameraContext';
 
 interface CameraPropType {
-	data: (photo: string) => void;
-	returnToNavigation: NativeStackNavigationProp<StackTypes>;
-	returnToPfp: boolean;
+	cameraFunction: (photo: string) => void;
 }
 
 export default function CameraComponent({
-	data,
-	returnToNavigation,
-	returnToPfp,
+	cameraFunction,
 }: CameraPropType): ReactElement {
-	const setPfpUrl = usePhotoUpdate();
-
 	const [orientation, setOrientation] = useState(CameraType.back);
 	const flash = FlashMode.auto;
 	const [cameraPermission, requestCameraPermission] =
@@ -63,9 +53,7 @@ export default function CameraComponent({
 	const scale = useSharedValue(0);
 	const shutterWidth = useSharedValue(0);
 	const rippleOpacity = useSharedValue(1);
-
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
 	const cameraRef = useRef<Camera>(null);
 	const aRef = useAnimatedRef<View>();
 
@@ -85,7 +73,6 @@ export default function CameraComponent({
 	const takePicture = useCallback(async () => {
 		if (cameraRef.current == null) return;
 		const newPhoto = await cameraRef.current.takePictureAsync(takePhotoOptions);
-
 		if (
 			newPhoto?.uri !== null &&
 			newPhoto?.uri !== undefined &&
@@ -105,16 +92,7 @@ export default function CameraComponent({
 						croppedImage?.data !== undefined &&
 						croppedImage?.data !== ''
 					) {
-						if (returnToPfp) {
-							setPfpUrl({
-								type: 'new photo',
-								image: croppedImage.data,
-							});
-							returnToNavigation.goBack();
-						} else {
-							data(croppedImage.data); // use the base64 string
-							navigation.navigate(StackNavigation.ItemCreate, {});
-						}
+						cameraFunction(croppedImage.data);
 					}
 				})
 				.catch((error) => {
@@ -131,7 +109,6 @@ export default function CameraComponent({
 				const layout = measure(aRef);
 				if (layout == null) return;
 				shutterWidth.value = layout.width;
-
 				rippleOpacity.value = 1;
 				scale.value = 0;
 				scale.value = withTiming(1, { duration: 400 });
@@ -191,21 +168,12 @@ export default function CameraComponent({
 			quality: 0,
 		});
 		if (result.canceled) return;
-
 		if (
 			result.assets[0].base64 !== null &&
 			result.assets[0].base64 !== undefined &&
 			result.assets[0].base64 !== ''
 		) {
-			if (returnToPfp) {
-				setPfpUrl({
-					type: 'new photo',
-					image: result.assets[0].base64,
-				});
-				returnToNavigation.goBack();
-			}
-			data(result.assets[0].base64);
-			navigation.navigate(StackNavigation.ItemCreate, {});
+			cameraFunction(result.assets[0].base64);
 		} else {
 			console.log('result.assets[0].base64 is undefined!');
 		}
@@ -237,7 +205,7 @@ export default function CameraComponent({
 				>
 					<Pressable
 						onPress={() => {
-							returnToNavigation.goBack();
+							navigation.goBack();
 						}}
 					>
 						<Icon

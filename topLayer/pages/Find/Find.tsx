@@ -1,16 +1,9 @@
 import React, { type ReactElement, useState } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
-
+import { View, StyleSheet } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { StackNavigation } from '../../constants/Enums';
 import { find } from '../../constants/GlobalStrings';
-
-import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from '../../utils/StackNavigation';
-
 import Header from '../../components/Header/Header';
-
 import MarkedBar from './Marked';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchUsers from '../../components/Bar/SearchUsers';
@@ -25,13 +18,7 @@ const Find = ({
 	foreignUserIDs,
 	updateFollowed,
 }: FindPropsType): ReactElement => {
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
 	const [isComponentVisible, setComponentVisible] = useState(true);
-
-	const handlePress = (): void => {
-		navigation.navigate(StackNavigation.MarkedList, {});
-	};
 
 	const handleEmptyString = (relationChanges: Array<string | User>): void => {
 		const length = foreignUserIDs.length;
@@ -76,9 +63,7 @@ const Find = ({
 				/>
 
 				{isComponentVisible ? (
-					<Pressable onPress={handlePress}>
-						<MarkedBar foreignUserIDs={foreignUserIDs} />
-					</Pressable>
+					<MarkedBar foreignUserIDs={foreignUserIDs} />
 				) : null}
 			</View>
 		</SafeAreaView>

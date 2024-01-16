@@ -1,22 +1,11 @@
-import React, { useState, useEffect, type ReactElement } from 'react';
+import React, { useState, useEffect, type ReactElement, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { type markedUser, type User } from '../../types/User';
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandlerNoAlert } from '../../utils/ErrorHandlers';
 import ProfileCell from './ProfileCell';
-
-const defaultUser: User = {
-	uid: '',
-	first_name: '',
-	last_name: '',
-	email: '',
-	username: '',
-	private_option: false,
-	followers: [],
-	following: [],
-	profile_picture: '',
-};
+import { nullUser } from '../../constants/baseUsers';
 
 interface FetchProfileCellPropsType {
 	userID: string;
@@ -35,15 +24,19 @@ const FetchProfileCell = ({
 	handleRelationRender,
 }: FetchProfileCellPropsType): ReactElement => {
 	const [userProcessed, setUser] = useState<markedUser>({
-		...defaultUser,
+		...nullUser,
 		marked: marked,
 	});
+	const rendered = useRef('not rendered');
 
 	const getUser = async (id: string): Promise<void> => {
 		try {
-			const { data, status } = await axios.get(`${baseUrl}/api/users/${id}`);
+			const { data, status } = await axios.get<{ data: User }>(
+				`${baseUrl}/api/users/${id}`
+			);
 
 			if (status === 200) {
+				rendered.current = 'rendered';
 				setUser({
 					...data.data,
 					marked: marked,
@@ -60,6 +53,7 @@ const FetchProfileCell = ({
 
 	return (
 		<ProfileCell
+			key={rendered.current}
 			user={userProcessed}
 			handleRelationRender={handleRelationRender}
 		/>

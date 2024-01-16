@@ -142,11 +142,7 @@ const OutfitPreview = (): ReactElement => {
 					data={data}
 					renderItem={({ item }) => (
 						<View style={{ width: ITEM_SIZE(2) }}>
-							<ItemCell
-								imageUrl={item.image_url}
-								disablePress={false}
-								key={item.ciid}
-							/>
+							<ItemCell imageUrl={item.image_url} key={item.ciid} />
 						</View>
 					)}
 					numColumns={2}

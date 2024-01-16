@@ -11,10 +11,6 @@ import Empty from './Empty';
 import { type UserAllItems } from '../../types/AllItems';
 
 interface CategorySlidePropsType {
-	// ex)
-	// [{"clothing_items": {"bottoms": [Array], "outerwear": [Array], "shoes": [Array], "tops": [Array]},
-	// "created_at": "2023-10-14T07:15:07.986Z", "oid": "a11bdae9-9ecb-48f4-8ac2-802809034a0f",
-	// "title": "Weekend Casual", "uid": "890e7fad-1352-4998-8f2f-ff8b74b04b86"}]
 	itemsData: UserAllItems;
 	handleItemChange: (item: UserClothing | UserOutfit) => void;
 }
@@ -59,6 +55,7 @@ const CategorySlide = ({
 						return (
 							<View style={{ width: ITEM_SIZE(2) }}>
 								<ItemCell
+									disablePress={false}
 									imageUrl={item.image_url}
 									key={item.ciid}
 									onPress={() => {

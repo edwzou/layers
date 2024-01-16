@@ -146,7 +146,7 @@ const Slider = ({
 								]}
 							>
 								{item.ciid !== '' ? (
-									<ItemCell imageUrl={`${item.image_url}`} disablePress />
+									<ItemCell imageUrl={`${item.image_url}`} />
 								) : (
 									<Icon
 										name={GlobalStyles.icons.forbidOutline}

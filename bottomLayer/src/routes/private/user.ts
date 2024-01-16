@@ -133,7 +133,9 @@ router.put(
 						(uuid) => `'${uuid}'::UUID`
 					);
 
-					query += ` followers = ARRAY[${formattedUuidArray.join(', ')}],`;
+					query += ` followers = ARRAY[${formattedUuidArray.join(
+						', '
+					)}]::UUID[],`;
 				}
 
 				if (fieldsToUpdate.following !== undefined) {
@@ -141,7 +143,9 @@ router.put(
 						(uuid) => `'${uuid}'::UUID`
 					);
 
-					query += ` following = ARRAY[${formattedUuidArray.join(', ')}],`;
+					query += ` following = ARRAY[${formattedUuidArray.join(
+						', '
+					)}]::UUID[],`;
 				}
 
 				if (query === 'UPDATE backend_schema.user SET') {

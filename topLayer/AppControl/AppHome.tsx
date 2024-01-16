@@ -2,22 +2,19 @@ import { StyleSheet, StatusBar, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import * as Device from 'expo-device';
 import React from 'react';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { Stack } from '../utils/StackNavigation';
 import { StackNavigation } from '../constants/Enums';
 import { navigationRef } from '../Navigation/RootNavigation';
-
 import SignInPage from '../pages/SignIn/SignInPage';
 import SignUpPage from '../pages/SignUp/SignUpPage';
 import MainPage from '../pages/Main/MainPage';
-
 import GlobalStyles from '../constants/GlobalStyles';
-import CameraWrapper from '../components/Camera/CameraWrapper';
 import { type User } from '../types/User';
 import Toast from 'react-native-toast-message';
 import { useUser } from '../Contexts/UserContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import CameraPfp from '../components/Camera/CameraPfp';
 
 const AppHome: React.FC = () => {
 	const user: User = useUser();
@@ -42,8 +39,8 @@ const AppHome: React.FC = () => {
 									component={SignUpPage}
 								/>
 								<Stack.Screen
-									name={StackNavigation.CameraWrapper}
-									component={CameraWrapper}
+									name={StackNavigation.CameraPfp}
+									component={CameraPfp}
 									options={{
 										presentation: 'fullScreenModal',
 										animation: 'slide_from_bottom',

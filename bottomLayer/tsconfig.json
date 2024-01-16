@@ -1,22 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "strict": true,
+		"baseUrl": ".",
     "module": "commonjs",
-    "lib": ["es6"],
-    "allowJs": true,
     "outDir": "build",
     "rootDir": "./",
-    "strict": true,
-    "noImplicitAny": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "target": "es6",
+    "lib": ["es6"],
+    "allowJs": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "moduleDetection": "force",
-    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-    "include": [
-    "src/**/*.ts", // Adjust the path to match your TypeScript source files
-    "src/**/*.tsx", // TypeScript JSX files
-    ".eslintrc.cjs", // Path to your ESLint configuration file
-    "server.ts"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", ".eslintrc.cjs", "server.ts"],
+  "exclude": [ "node_modules", "sessions" ]
 }

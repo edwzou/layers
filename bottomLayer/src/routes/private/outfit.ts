@@ -84,7 +84,9 @@ router.put('/:oid', (req: Request, res: Response): void => {
 			const formattedUuidArray = clothing_items.map(
 				(uuid) => `'${uuid}'::UUID`
 			);
-			query += ` clothing_items = ARRAY[${formattedUuidArray.join(', ')}],`;
+			query += ` clothing_items = ARRAY[${formattedUuidArray.join(
+				', '
+			)}]::UUID[],`;
 		}
 
 		try {

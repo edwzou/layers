@@ -17,7 +17,7 @@ interface DropdownType {
 	value: string;
 	setValue: Dispatch<SetStateAction<string>>;
 	items: Array<{ label: string; value: any }>;
-	setItems: Dispatch<SetStateAction<any[]>>;
+	onChangeValue?: (value: string | null) => void;
 }
 
 const Dropdown = ({
@@ -27,7 +27,7 @@ const Dropdown = ({
 	value,
 	setValue,
 	items,
-	setItems,
+	onChangeValue,
 }: DropdownType): ReactElement => {
 	return (
 		<View
@@ -61,7 +61,7 @@ const Dropdown = ({
 				items={items}
 				setOpen={setOpen}
 				setValue={setValue}
-				setItems={setItems}
+				onChangeValue={onChangeValue ?? undefined}
 				selectedItemContainerStyle={{
 					backgroundColor: GlobalStyles.colorPalette.primary[300] + '50',
 				}}

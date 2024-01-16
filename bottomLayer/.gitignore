@@ -1,6 +1,12 @@
 node_modules/
-sessions
+build/
+sessions/
+# need package-lock for digital ocean
+# package-lock.json
 
 .env
 certs/*
 !certs/README.md
+
+# macOS
+.DS_Store
