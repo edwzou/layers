@@ -52,6 +52,9 @@ module.exports = {
 				project: project,
 			},
 		},
+		react: {
+			version: 'detect'
+		},
 	},
 	rules: {
 		'import/no-unresolved': 'error',
