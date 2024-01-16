@@ -1,7 +1,11 @@
 node_modules/
 build/
 sessions/
+package-lock.json
 
 .env
 certs/*
 !certs/README.md
+
+# macOS
+.DS_Store
