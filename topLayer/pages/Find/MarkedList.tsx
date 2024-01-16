@@ -86,14 +86,15 @@ const MarkedList = ({
 					handleRelationRender={handleMarking}
 				/>
 			);
+		} else {
+			return (
+				<FetchProfileCell
+					userID={item}
+					marked={true}
+					handleRelationRender={handleMarking}
+				/>
+			);
 		}
-		return (
-			<FetchProfileCell
-				userID={item}
-				marked={true}
-				handleRelationRender={handleMarking}
-			/>
-		);
 	};
 
 	return (
