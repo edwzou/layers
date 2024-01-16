@@ -1,3 +1,6 @@
+const { resolve } = require('node:path');
+const project = resolve(process.cwd(), 'tsconfig.json');
+
 module.exports = {
 	root: true,
 	env: {
@@ -12,7 +15,7 @@ module.exports = {
 	],
 	overrides: [
 		{
-			files: ['*.ts', '*.tsx', '*.cjs'],
+			files: ['*.ts', '*.tsx', '*.cjs', '*.js'],
 			rules: {
 				'@typescript-eslint/comma-dangle': 'off',
 				'comma-dangle': 'off',
@@ -23,7 +26,7 @@ module.exports = {
 	parserOptions: {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
-		project: ['./tsconfig.json'],
+		project: './tsconfig.json',
 		tsconfigRootDir: __dirname,
 	},
 	plugins: ['prettier', 'import', '@typescript-eslint'],
