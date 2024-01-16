@@ -6,6 +6,7 @@ export const userConstraints = {
 	emailPattern: /^\S+@\S+\.\S+$/,
 	passwordMin: 8,
 	passwordMax: 100,
+	titleMax: 255,
 };
 
 export const userFieldRules = {
@@ -30,5 +31,8 @@ export const userFieldRules = {
 		required: true,
 		minLength: userConstraints.passwordMin,
 		maxLength: userConstraints.passwordMax,
+	},
+	title: {
+		maxLength: userConstraints.titleMax,
 	},
 };

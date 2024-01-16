@@ -1,10 +1,14 @@
 import React, { useState, useEffect, type ReactElement } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { find } from '../../constants/GlobalStrings';
 import { isUserArray, type User } from '../../types/User';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import { previewLength } from '../../constants/Find';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigation } from '../../constants/Enums';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type StackTypes } from '../../utils/StackNavigation';
 
 interface MarkedPropsType {
 	foreignUserIDs?: Array<string | User>; // foreignUserIDs is now optional
@@ -13,6 +17,11 @@ interface MarkedPropsType {
 const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType): ReactElement => {
 	// Default to an empty array if foreignUserIDs is undefined
 	const [users, setUsers] = useState<User[]>([]);
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
+
+	const handlePress = (): void => {
+		navigation.navigate(StackNavigation.MarkedList, {});
+	};
 
 	useEffect(() => {
 		const preview = foreignUserIDs.slice(0, previewLength);
@@ -22,25 +31,27 @@ const MarkedBar = ({ foreignUserIDs = [] }: MarkedPropsType): ReactElement => {
 	}, [foreignUserIDs]);
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.textArea}>
-				<Text style={GlobalStyles.typography.body}>
-					{foreignUserIDs.length} {find.marked}
-				</Text>
-				<Text style={styles.label}>{find.viewYourMarkedProfiles}</Text>
+		<Pressable onPress={handlePress}>
+			<View style={styles.container}>
+				<View style={styles.textArea}>
+					<Text style={GlobalStyles.typography.body}>
+						{foreignUserIDs.length} {find.marked}
+					</Text>
+					<Text style={styles.label}>{find.viewYourMarkedProfiles}</Text>
+				</View>
+				<View style={styles.profilePicturesContainer}>
+					{users.slice(0, previewLength).map((user, index) => (
+						<View key={index} style={styles.profilePicture}>
+							<ProfilePicture
+								imageUrl={user?.profile_picture ?? ''}
+								size={GlobalStyles.sizing.pfp.small}
+								border={true}
+							/>
+						</View>
+					))}
+				</View>
 			</View>
-			<View style={styles.profilePicturesContainer}>
-				{users.slice(0, previewLength).map((user, index) => (
-					<View key={index} style={styles.profilePicture}>
-						<ProfilePicture
-							imageUrl={user?.profile_picture ?? ''}
-							size={GlobalStyles.sizing.pfp.small}
-							border={true}
-						/>
-					</View>
-				))}
-			</View>
-		</View>
+		</Pressable>
 	);
 };
 

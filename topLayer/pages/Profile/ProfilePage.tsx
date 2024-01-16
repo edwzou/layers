@@ -3,16 +3,17 @@ import React, {
 	type Dispatch,
 	type SetStateAction,
 } from 'react';
-
 import { StackNavigation } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
 import Profile from './Profile';
 import FeedbackPage from '../Feedback/FeedbackPage';
 import SettingsPage from './SettingsPage';
 import ItemViewPage from '../../pages/ItemView/ItemViewPage';
-import OutfitViewPage from '../../pages/OutfitView/OutfitViewPage';
 import { NavigationContainer } from '@react-navigation/native';
-import CameraWrapper from '../../components/Camera/CameraWrapper';
+import ItemCamera from '../../components/Camera/ItemCamera';
+import CameraPfp from '../../components/Camera/CameraPfp';
+import OutfitPage from '../OutfitView/OutfitPage';
+import ItemPage from '../../pages/ItemView/ItemPage';
 
 // Define the context type
 interface ProfilePageContextType {
@@ -57,22 +58,33 @@ const ProfilePage: React.FC = () => {
 						}}
 					/>
 					<Stack.Screen
-						name={StackNavigation.ItemView}
-						component={ItemViewPage}
+						name={StackNavigation.ItemPage}
+						component={ItemPage}
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name={StackNavigation.OutfitView}
-						component={OutfitViewPage}
+						name={StackNavigation.OutfitPage}
+						component={OutfitPage}
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name={StackNavigation.CameraWrapper}
-						component={CameraWrapper}
+						name={StackNavigation.ItemCamera}
+						component={ItemCamera}
+						options={{
+							presentation: 'fullScreenModal',
+							animation: 'slide_from_bottom',
+							gestureEnabled: true,
+							gestureDirection: 'vertical',
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name={StackNavigation.CameraPfp}
+						component={CameraPfp}
 						options={{
 							presentation: 'fullScreenModal',
 							animation: 'slide_from_bottom',

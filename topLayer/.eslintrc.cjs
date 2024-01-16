@@ -1,4 +1,8 @@
+const path = require('node:path');
+const project = path.resolve(process.cwd(), 'tsconfig.json');
+
 module.exports = {
+	root: true,
 	env: {
 		browser: true,
 		es2024: true,
@@ -8,6 +12,8 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:react/recommended',
 		'plugin:import/typescript',
+		'plugin:import/recommended',
+		'plugin:@typescript-eslint/recommended',
 		'standard-with-typescript',
 	],
 	overrides: [
@@ -19,6 +25,7 @@ module.exports = {
 			},
 		},
 	],
+	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
@@ -28,8 +35,30 @@ module.exports = {
 			jsx: true,
 		},
 	},
-	plugins: ['react', 'react-native', '@typescript-eslint', 'prettier'],
+	plugins: [
+		'react',
+		'react-native',
+		'@typescript-eslint',
+		'prettier',
+		'import',
+	],
+	settings: {
+		'import/parsers': {
+			'@typescript-eslint/parser': ['.ts', '.tsx'],
+		},
+		'import/resolver': {
+			typescript: {
+				alwaysTryTypes: true,
+				project: project,
+			},
+		},
+		react: {
+			version: 'detect',
+		},
+	},
 	rules: {
+		'import/no-unresolved': 'error',
+		'import/extensions': 'off',
 		'object-shorthand': 'off',
 		'no-tabs': ['error', { allowIndentationTabs: true }],
 		semi: [2, 'always'],
@@ -60,10 +89,5 @@ module.exports = {
 				},
 			},
 		],
-
-		'react/react-in-jsx-scope': ['off'],
-		'react/jsx-uses-react': ['off'],
-		'react/jsx-props-no-spreading': ['warn'],
-		'react/no-unescaped-entities': ['off'],
 	},
 };

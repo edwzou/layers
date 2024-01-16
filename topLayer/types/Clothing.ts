@@ -1,3 +1,8 @@
+export interface Sizes {
+	label: string;
+	value: string;
+}
+
 export interface UserClothing {
 	ciid: string;
 	image_url: string;
@@ -10,37 +15,28 @@ export interface UserClothing {
 	created_at: string;
 }
 
+export interface editableClothingTypes {
+	category: string;
+	title: string;
+	size: string;
+	color: string[];
+	// missing: image and brands
+}
+
+export interface creationClothingTypes {
+	category: string;
+	title: string;
+	size: string;
+	color: string[];
+	image: string;
+	// missing: image and brands
+}
+
 export interface UserClothingList {
 	outerwear: UserClothing[];
 	tops: UserClothing[];
 	bottoms: UserClothing[];
 	shoes: UserClothing[];
-}
-
-export interface UserClothingListSingle {
-	outerwear: UserClothing | undefined;
-	tops: UserClothing | undefined;
-	bottoms: UserClothing | undefined;
-	shoes: UserClothing | undefined;
-}
-
-export interface UserSelectedClothingList {
-	outerwear: number;
-	tops: number;
-	bottoms: number;
-	shoes: number;
-}
-
-export interface outfitType {
-	outerwear: UserClothing;
-	tops: UserClothing;
-	bottoms: UserClothing;
-	shoes: UserClothing;
-}
-
-export interface matchType {
-	previewData: outfitType;
-	matchName: string;
 }
 
 export interface UserClothingPadding {

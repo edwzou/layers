@@ -48,7 +48,7 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType): ReactElement => {
 			<View style={styles.icons}>
 				<Pressable
 					onPress={() => {
-						navigation.navigate(StackNavigation.CameraWrapper, {});
+						navigation.navigate(StackNavigation.ItemCamera, {});
 					}}
 				>
 					<Icon

@@ -86,25 +86,24 @@ const MarkedList = ({
 					handleRelationRender={handleMarking}
 				/>
 			);
+		} else {
+			return (
+				<FetchProfileCell
+					userID={item}
+					marked={true}
+					handleRelationRender={handleMarking}
+				/>
+			);
 		}
-		return (
-			<FetchProfileCell
-				userID={item}
-				marked={true}
-				handleRelationRender={handleMarking}
-			/>
-		);
 	};
 
 	return (
 		<View style={styles.container}>
 			<Header text={`${count} ${find.marked}`} />
-			{count !== 0 && preLoad ? (
+			{foreignUserIDs.length !== 0 && preLoad ? (
 				<FlatList
 					data={foreignUserIDs}
-					ListFooterComponent={
-						<View style={{ height: screenHeight * 0.15 }}></View>
-					}
+					ListFooterComponent={<View style={{ height: screenHeight * 0.15 }} />}
 					showsVerticalScrollIndicator={false}
 					renderItem={renderProfile}
 					keyExtractor={(item) => {
@@ -115,7 +114,7 @@ const MarkedList = ({
 						}
 					}}
 				/>
-			) : count === 0 ? (
+			) : foreignUserIDs.length === 0 ? (
 				<View
 					style={{
 						alignItems: 'center',

@@ -1,7 +1,7 @@
 import { View, StyleSheet, Alert } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { usePhoto, usePhotoUpdate } from '../../Contexts/CameraContext';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header/Header';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import { useForm } from 'react-hook-form';
@@ -36,15 +36,9 @@ const SettingsPage: React.FC = () => {
 	const data = useUser();
 	const refreshUser = useUpdateUser();
 	const resetPhoto = usePhotoUpdate();
-
-	const {
-		first_name,
-		last_name,
-		email,
-		username,
-		private_option,
-		profile_picture,
-	} = data;
+	const photo = usePhoto();
+	const { first_name, last_name, email, username, private_option } = data;
+	const profile_picture = useRef(data.profile_picture);
 
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
@@ -57,7 +51,7 @@ const SettingsPage: React.FC = () => {
 		password: '**********', // maybe theres a way to decrypt the value here so we get the password value instead of
 		// password: password,  // the hashed value
 		private_option: private_option,
-		profile_picture: profile_picture,
+		profile_picture: profile_picture.current,
 	};
 
 	const {
@@ -69,8 +63,6 @@ const SettingsPage: React.FC = () => {
 		defaultValues: defaultForm,
 	});
 
-	const photo = usePhoto();
-
 	useEffect(() => {
 		setValue('profile_picture', photo);
 	}, [photo]);
@@ -79,7 +71,7 @@ const SettingsPage: React.FC = () => {
 		const unsubscribe = navigation.addListener('beforeRemove', () => {
 			resetPhoto({
 				type: 'new photo',
-				image: profile_picture,
+				image: profile_picture.current,
 			});
 		});
 		return unsubscribe;
@@ -106,7 +98,7 @@ const SettingsPage: React.FC = () => {
 		if (formValues.private_option !== private_option) {
 			updatedFields.private_option = formValues.private_option;
 		}
-		if (formValues.profile_picture !== profile_picture) {
+		if (formValues.profile_picture !== profile_picture.current) {
 			updatedFields.profile_picture = formValues.profile_picture;
 		}
 
@@ -126,28 +118,22 @@ const SettingsPage: React.FC = () => {
 			);
 
 			if (response.status === 200) {
-				try {
-					refreshUser({
-						type: 'change fields',
-						...updatedFields,
-					});
-					if (updatedFields.profile_picture !== undefined) {
-						resetPhoto({
-							type: 'new photo',
-							image: profile_picture,
-						});
-					}
-					navigation.goBack();
-					showSuccessToast(toast.yourProfileHasBeenUpdated);
-					setIsLoading(false); // Stop loading on success
-				} catch (error) {
-					setIsLoading(false); // Stop loading on error
-					showErrorToast(toast.anErrorHasOccurredWhileUpdatingProfile);
+				refreshUser({
+					type: 'change fields',
+					...updatedFields,
+				});
+				if (updatedFields.profile_picture !== undefined) {
+					profile_picture.current = photo;
 				}
+				navigation.goBack();
+				showSuccessToast(toast.yourProfileHasBeenUpdated);
+				setIsLoading(false); // Stop loading on success
 			} else {
 				throw new Error('An error has occurred');
 			}
 		} catch (error) {
+			setIsLoading(false); // Stop loading on error
+			showErrorToast(toast.anErrorHasOccurredWhileUpdatingProfile);
 			axiosEndpointErrorHandler(error);
 		}
 	};

@@ -16,7 +16,7 @@ CREATE TYPE color_enum AS ENUM (
     '#121212', -- Black
     '#CDCDCD', -- Grey
     '#FFFFF7', -- White
-    '#FFFBEB', -- Cream
+    '#FFFBEB' -- Cream
 );
 
 CREATE TYPE item_categories AS ENUM (
