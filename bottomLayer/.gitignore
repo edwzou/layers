@@ -1,7 +1,8 @@
 node_modules/
 build/
 sessions/
-package-lock.json
+# need package-lock for digital ocean
+# package-lock.json
 
 .env
 certs/*
