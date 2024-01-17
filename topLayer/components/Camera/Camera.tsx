@@ -45,7 +45,7 @@ export default function CameraComponent({
 	cameraFunction,
 }: CameraPropType): ReactElement {
 	const [orientation, setOrientation] = useState(CameraType.back);
-	const flash = FlashMode.auto;
+	const [flashMode, setFlashMode] = useState(FlashMode.off);
 	const [cameraPermission, requestCameraPermission] =
 		Camera.useCameraPermissions();
 	const [mediaPermission, requestMediaPermission] =
@@ -179,6 +179,14 @@ export default function CameraComponent({
 		}
 	};
 
+	const toggleFlash = () => {
+		if (flashMode === FlashMode.off) {
+			setFlashMode(FlashMode.on);
+		} else {
+			setFlashMode(FlashMode.off);
+		}
+	};
+
 	const GridOverlay = () => {
 		return (
 			<View style={styles.grid}>
@@ -193,7 +201,7 @@ export default function CameraComponent({
 				style={styles.container}
 				ref={cameraRef}
 				type={orientation}
-				flashMode={flash}
+				flashMode={flashMode}
 			>
 				<GridOverlay />
 			</Camera>
@@ -208,9 +216,10 @@ export default function CameraComponent({
 			>
 				<View
 					style={{
-						justifyContent: 'flex-start',
+						flexDirection: 'row',
+						justifyContent: 'space-between',
 						width: screenWidth,
-						left: GlobalStyles.layout.xGap,
+						padding: GlobalStyles.layout.xGap,
 					}}
 				>
 					<Pressable
@@ -222,6 +231,17 @@ export default function CameraComponent({
 							name={GlobalStyles.icons.closeOutline}
 							color={GlobalStyles.colorPalette.background}
 							size={GlobalStyles.sizing.icon.regular}
+						/>
+					</Pressable>
+					<Pressable onPress={toggleFlash}>
+						<Icon
+							name={
+								flashMode == FlashMode.on
+									? GlobalStyles.icons.flashlightFill
+									: GlobalStyles.icons.flashlightOutline
+							} // Replace with your icon name
+							size={GlobalStyles.sizing.icon.regular}
+							color={GlobalStyles.colorPalette.background}
 						/>
 					</Pressable>
 				</View>
