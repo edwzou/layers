@@ -80,8 +80,8 @@ export default function CameraComponent({
 		) {
 			ImageCropPicker.openCropper({
 				path: newPhoto.uri,
-				width: 2000, // set your desired width
-				height: 2000, // set your desired height
+				width: 800, // set your desired width
+				height: 800, // set your desired height
 				cropping: true,
 				includeBase64: true,
 				mediaType: 'photo', // specify media type as 'photo'
@@ -179,18 +179,20 @@ export default function CameraComponent({
 		}
 	};
 
-	const toggleFlash = () => {
+	const toggleFlash = (): void => {
 		if (flashMode === FlashMode.off) {
-			setFlashMode(FlashMode.on);
+			setFlashMode(FlashMode.torch);
 		} else {
 			setFlashMode(FlashMode.off);
 		}
 	};
 
-	const GridOverlay = () => {
+	const GridOverlay = (): ReactElement => {
 		return (
-			<View style={styles.grid}>
-				<View style={styles.centerSquare} />
+			<View style={styles.overlay}>
+				<View style={styles.topShade} />
+				<View style={styles.bottomShade} />
+				<View style={styles.centerHole} />
 			</View>
 		);
 	};
@@ -214,14 +216,7 @@ export default function CameraComponent({
 					justifyContent: 'space-between',
 				}}
 			>
-				<View
-					style={{
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-						width: screenWidth,
-						padding: GlobalStyles.layout.xGap,
-					}}
-				>
+				<View style={styles.topContainer}>
 					<Pressable
 						onPress={() => {
 							navigation.goBack();
@@ -236,7 +231,7 @@ export default function CameraComponent({
 					<Pressable onPress={toggleFlash}>
 						<Icon
 							name={
-								flashMode == FlashMode.on
+								flashMode === FlashMode.torch
 									? GlobalStyles.icons.flashlightFill
 									: GlobalStyles.icons.flashlightOutline
 							} // Replace with your icon name
@@ -250,7 +245,6 @@ export default function CameraComponent({
 						onPress={() => {
 							void pickImage();
 						}}
-						style={styles.button}
 					>
 						<Icon
 							name={GlobalStyles.icons.imageFill}
@@ -267,7 +261,7 @@ export default function CameraComponent({
 							</Animated.View>
 						</TapGestureHandler>
 					</View>
-					<Pressable onPress={flipCamera} style={styles.button}>
+					<Pressable onPress={flipCamera}>
 						<Icon
 							name={GlobalStyles.icons.flipCameraOutline}
 							size={GlobalStyles.sizing.icon.regular}
@@ -297,23 +291,18 @@ const styles = StyleSheet.create({
 		flex: 1,
 		borderRadius: 35,
 	},
-	button: {
-		padding: 10,
-		backgroundColor: GlobalStyles.colorPalette.primary[500] + '80',
-		...GlobalStyles.utils.fullRadius,
-	},
 	buttonInverse: {
 		padding: 10,
 		backgroundColor: GlobalStyles.colorPalette.background,
 		...GlobalStyles.utils.fullRadius,
 	},
-	bottomContainer: {
-		width: screenWidth,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-evenly',
-	},
 	topContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		width: screenWidth,
+		padding: GlobalStyles.layout.xGap,
+	},
+	bottomContainer: {
 		width: screenWidth,
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -329,8 +318,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	grid: {
-		flex: 1,
+	overlay: {
 		position: 'absolute',
 		left: 0,
 		top: 0,
@@ -339,56 +327,27 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	centerSquare: {
-		width: screenWidth * 0.95,
-		height: screenWidth * 0.95,
-		borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
-		borderWidth: 1,
-		borderColor: 'white',
-		position: 'absolute',
-	},
-	shadeTop: {
+	topShade: {
 		position: 'absolute',
 		top: 0,
 		left: 0,
 		right: 0,
-		height: '50%',
-		borderBottomLeftRadius: GlobalStyles.utils.mediumRadius.borderRadius,
-		borderBottomRightRadius: GlobalStyles.utils.mediumRadius.borderRadius,
-		backgroundColor: 'rgba(0, 0, 0, 0.6)',
+		height: (screenHeight - screenWidth) / 2, // Adjusted for top area
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
 	},
-	shadeBottom: {
+	bottomShade: {
 		position: 'absolute',
 		bottom: 0,
 		left: 0,
 		right: 0,
-		height: '50%',
-		borderTopLeftRadius: GlobalStyles.utils.mediumRadius.borderRadius,
-		borderTopRightRadius: GlobalStyles.utils.mediumRadius.borderRadius,
-		backgroundColor: 'rgba(0, 0, 0, 0.6)',
+		height: (screenHeight - screenWidth) / 2, // Adjusted for bottom area
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
 	},
-	shadeLeft: {
+	centerHole: {
+		width: screenWidth,
+		height: screenWidth,
 		position: 'absolute',
-		left: 0,
-		top: '50%',
-		bottom: '50%',
-		width: '50%',
-		borderTopRightRadius: GlobalStyles.utils.mediumRadius.borderRadius,
-		borderBottomRightRadius: GlobalStyles.utils.mediumRadius.borderRadius,
-		backgroundColor: 'rgba(0, 0, 0, 0.6)',
-		marginTop: -(screenWidth * 0.95) / 2,
-		marginBottom: -(screenWidth * 0.95) / 2,
-	},
-	shadeRight: {
-		position: 'absolute',
-		right: 0,
-		top: '50%',
-		bottom: '50%',
-		width: '50%',
-		borderTopLeftRadius: GlobalStyles.utils.mediumRadius.borderRadius,
-		borderBottomLeftRadius: GlobalStyles.utils.mediumRadius.borderRadius,
-		backgroundColor: 'rgba(0, 0, 0, 0.6)',
-		marginTop: -(screenWidth * 0.95) / 2,
-		marginBottom: -(screenWidth * 0.95) / 2,
+		borderColor: GlobalStyles.colorPalette.primary[300],
+		borderWidth: 0.5,
 	},
 });
