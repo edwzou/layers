@@ -46,6 +46,7 @@ export default function CameraComponent({
 }: CameraPropType): ReactElement {
 	const [orientation, setOrientation] = useState(CameraType.back);
 	const [flashMode, setFlashMode] = useState(FlashMode.off);
+	const [isGridVisible, setIsGridVisible] = useState(false);
 	const [cameraPermission, requestCameraPermission] =
 		Camera.useCameraPermissions();
 	const [mediaPermission, requestMediaPermission] =
@@ -187,14 +188,32 @@ export default function CameraComponent({
 		}
 	};
 
-	const GridOverlay = (): ReactElement => {
+	const SquareFrame = (): ReactElement => {
 		return (
-			<View style={styles.overlay}>
+			<View style={styles.squareFrame}>
 				<View style={styles.topShade} />
 				<View style={styles.bottomShade} />
-				<View style={styles.centerHole} />
+				<View
+					style={[styles.centerHole, isGridVisible && { borderColor: 'white' }]}
+				/>
 			</View>
 		);
+	};
+
+	const GridLines = (): ReactElement | null => {
+		if (!isGridVisible) return null;
+		return (
+			<View style={styles.gridContainer}>
+				<View style={styles.upperGridLineHorizontal} />
+				<View style={styles.lowerGridLineHorizontal} />
+				<View style={styles.leftGridLineVertical} />
+				<View style={styles.rightGridLineVertical} />
+			</View>
+		);
+	};
+
+	const toggleGrid = (): void => {
+		setIsGridVisible(!isGridVisible);
 	};
 
 	return (
@@ -205,7 +224,8 @@ export default function CameraComponent({
 				type={orientation}
 				flashMode={flashMode}
 			>
-				<GridOverlay />
+				<SquareFrame />
+				<GridLines />
 			</Camera>
 			<SafeAreaView
 				style={{
@@ -252,6 +272,17 @@ export default function CameraComponent({
 							color={GlobalStyles.colorPalette.background}
 						/>
 					</Pressable>
+					<Pressable onPress={toggleGrid}>
+						<Icon
+							name={
+								isGridVisible
+									? GlobalStyles.icons.gridFill
+									: GlobalStyles.icons.gridOutline
+							}
+							size={GlobalStyles.sizing.icon.regular}
+							color={GlobalStyles.colorPalette.background}
+						/>
+					</Pressable>
 					<View ref={aRef} style={styles.shutterButton}>
 						<TapGestureHandler onGestureEvent={tapGestureEvent}>
 							<Animated.View
@@ -261,6 +292,13 @@ export default function CameraComponent({
 							</Animated.View>
 						</TapGestureHandler>
 					</View>
+					<Pressable>
+						<Icon
+							name={GlobalStyles.icons.gridFill}
+							size={GlobalStyles.sizing.icon.regular}
+							color={GlobalStyles.colorPalette.background}
+						/>
+					</Pressable>
 					<Pressable onPress={flipCamera}>
 						<Icon
 							name={GlobalStyles.icons.flipCameraOutline}
@@ -301,12 +339,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		width: screenWidth,
 		padding: GlobalStyles.layout.xGap,
+		alignItems: 'center',
 	},
 	bottomContainer: {
-		width: screenWidth,
 		flexDirection: 'row',
+		justifyContent: 'space-between',
+		width: screenWidth,
+		padding: GlobalStyles.layout.xGap,
 		alignItems: 'center',
-		justifyContent: 'space-evenly',
 	},
 	shutterButton: {
 		borderRadius: 75,
@@ -318,7 +358,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	overlay: {
+	squareFrame: {
 		position: 'absolute',
 		left: 0,
 		top: 0,
@@ -347,7 +387,44 @@ const styles = StyleSheet.create({
 		width: screenWidth,
 		height: screenWidth,
 		position: 'absolute',
-		borderColor: GlobalStyles.colorPalette.primary[300],
+		borderColor: GlobalStyles.colorPalette.primary[400],
 		borderWidth: 0.5,
+	},
+	gridContainer: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+	},
+	upperGridLineHorizontal: {
+		position: 'absolute',
+		height: 0.5,
+		width: '100%',
+		backgroundColor: 'white',
+		top: (screenHeight - screenWidth) / 2 + screenWidth * (1 / 3),
+	},
+	lowerGridLineHorizontal: {
+		position: 'absolute',
+		height: 0.5,
+		width: '100%',
+		backgroundColor: 'white',
+		bottom: (screenHeight - screenWidth) / 2 + screenWidth * (1 / 3),
+	},
+	leftGridLineVertical: {
+		position: 'absolute',
+		top: (screenHeight - screenWidth) / 2,
+		bottom: (screenHeight - screenWidth) / 2,
+		width: 0.5,
+		backgroundColor: 'white',
+		left: screenWidth * (1 / 3),
+	},
+	rightGridLineVertical: {
+		position: 'absolute',
+		top: (screenHeight - screenWidth) / 2,
+		bottom: (screenHeight - screenWidth) / 2,
+		width: 0.5,
+		backgroundColor: 'white',
+		right: screenWidth * (1 / 3),
 	},
 });
