@@ -33,6 +33,8 @@ const SignUp: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
+	let passwordValue = '';
+
 	const {
 		control,
 		handleSubmit,
@@ -43,6 +45,8 @@ const SignUp: React.FC = () => {
 	});
 
 	const onSubmit = (values: FormValues): void => {
+		passwordValue = values.password;
+
 		const formValues: FormValues = {
 			first_name: values.first_name,
 			last_name: values.last_name,
@@ -52,6 +56,8 @@ const SignUp: React.FC = () => {
 			profile_picture: profile_picture,
 			private_option: values.private_option,
 		};
+
+		console.log(values.password); // this is where the unhashed value of the password is.
 
 		const onSubmitInner = async (): Promise<void> => {
 			setIsLoading(true); // Start loading

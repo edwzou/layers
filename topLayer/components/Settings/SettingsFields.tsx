@@ -6,6 +6,8 @@ import {
 	Pressable,
 	Keyboard,
 	Alert,
+	KeyboardAvoidingView,
+	Platform,
 } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
@@ -29,6 +31,7 @@ import {
 } from 'react-hook-form';
 import { userFieldRules } from '../../constants/userConstraints';
 import { usePhotoUpdate } from '../../Contexts/CameraContext';
+import React from 'react';
 
 interface SettingsFieldsType {
 	control: Control<{
@@ -97,6 +100,10 @@ const SettingsFields = ({
 	};
 
 	return (
+		// <KeyboardAvoidingView
+		// 	behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+		// 	style={{ flex: 1 }}
+		// >
 		<View style={styles.settingsContainer}>
 			<Pressable onPress={Keyboard.dismiss}>
 				<View style={{ gap: 30 }}>
@@ -215,6 +222,7 @@ const SettingsFields = ({
 				</View>
 			</Pressable>
 		</View>
+		//</KeyboardAvoidingView>
 	);
 };
 const styles = StyleSheet.create({

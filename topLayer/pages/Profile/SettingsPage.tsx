@@ -93,7 +93,9 @@ const SettingsPage: React.FC = () => {
 			updatedFields.username = formValues.username;
 		}
 		if (formValues.password !== '**********') {
+			console.log(updatedFields.password); // undefined
 			updatedFields.password = formValues.password;
+			console.log(formValues.password); // the actual password
 		}
 		if (formValues.private_option !== private_option) {
 			updatedFields.private_option = formValues.private_option;
