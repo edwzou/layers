@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		height: (screenHeight - screenWidth) / 2, // Adjusted for top area
-		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+		backgroundColor: 'rgba(0, 0, 0, 0.6)',
 	},
 	bottomShade: {
 		position: 'absolute',
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		height: (screenHeight - screenWidth) / 2, // Adjusted for bottom area
-		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+		backgroundColor: 'rgba(0, 0, 0, 0.6)',
 	},
 	centerHole: {
 		width: screenWidth,
