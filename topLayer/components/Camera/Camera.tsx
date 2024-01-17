@@ -248,17 +248,6 @@ export default function CameraComponent({
 							size={GlobalStyles.sizing.icon.regular}
 						/>
 					</Pressable>
-					<Pressable onPress={toggleFlash}>
-						<Icon
-							name={
-								flashMode === FlashMode.torch
-									? GlobalStyles.icons.flashlightFill
-									: GlobalStyles.icons.flashlightOutline
-							} // Replace with your icon name
-							size={GlobalStyles.sizing.icon.regular}
-							color={GlobalStyles.colorPalette.background}
-						/>
-					</Pressable>
 				</View>
 				<View style={styles.bottomContainer}>
 					<Pressable
@@ -292,9 +281,13 @@ export default function CameraComponent({
 							</Animated.View>
 						</TapGestureHandler>
 					</View>
-					<Pressable>
+					<Pressable onPress={toggleFlash}>
 						<Icon
-							name={GlobalStyles.icons.gridFill}
+							name={
+								flashMode === FlashMode.torch
+									? GlobalStyles.icons.flashlightFill
+									: GlobalStyles.icons.flashlightOutline
+							}
 							size={GlobalStyles.sizing.icon.regular}
 							color={GlobalStyles.colorPalette.background}
 						/>
@@ -338,14 +331,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		width: screenWidth,
-		padding: GlobalStyles.layout.xGap,
+		paddingHorizontal: GlobalStyles.layout.xGap,
 		alignItems: 'center',
 	},
 	bottomContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		width: screenWidth,
-		padding: GlobalStyles.layout.xGap,
+		paddingHorizontal: GlobalStyles.layout.xGap,
 		alignItems: 'center',
 	},
 	shutterButton: {
@@ -399,14 +392,14 @@ const styles = StyleSheet.create({
 	},
 	upperGridLineHorizontal: {
 		position: 'absolute',
-		height: 0.5,
+		height: 0.4,
 		width: '100%',
 		backgroundColor: 'white',
 		top: (screenHeight - screenWidth) / 2 + screenWidth * (1 / 3),
 	},
 	lowerGridLineHorizontal: {
 		position: 'absolute',
-		height: 0.5,
+		height: 0.3, // intentionally smaller than other grid lines because setting it the same as others renders a larger line for unknown reason
 		width: '100%',
 		backgroundColor: 'white',
 		bottom: (screenHeight - screenWidth) / 2 + screenWidth * (1 / 3),
@@ -415,7 +408,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: (screenHeight - screenWidth) / 2,
 		bottom: (screenHeight - screenWidth) / 2,
-		width: 0.5,
+		width: 0.4,
 		backgroundColor: 'white',
 		left: screenWidth * (1 / 3),
 	},
@@ -423,7 +416,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: (screenHeight - screenWidth) / 2,
 		bottom: (screenHeight - screenWidth) / 2,
-		width: 0.5,
+		width: 0.4,
 		backgroundColor: 'white',
 		right: screenWidth * (1 / 3),
 	},
