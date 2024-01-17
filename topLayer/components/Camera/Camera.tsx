@@ -179,6 +179,14 @@ export default function CameraComponent({
 		}
 	};
 
+	const GridOverlay = () => {
+		return (
+			<View style={styles.grid}>
+				<View style={styles.centerSquare} />
+			</View>
+		);
+	};
+
 	return (
 		<>
 			<Camera
@@ -186,7 +194,9 @@ export default function CameraComponent({
 				ref={cameraRef}
 				type={orientation}
 				flashMode={flash}
-			/>
+			>
+				<GridOverlay />
+			</Camera>
 			<SafeAreaView
 				style={{
 					position: 'absolute',
@@ -254,8 +264,6 @@ export default function CameraComponent({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		width: screenWidth,
-		height: screenHeight,
 	},
 	previewContainer: {
 		flex: 1,
@@ -300,5 +308,67 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.background,
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	grid: {
+		flex: 1,
+		position: 'absolute',
+		left: 0,
+		top: 0,
+		right: 0,
+		bottom: 0,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	centerSquare: {
+		width: screenWidth * 0.95,
+		height: screenWidth * 0.95,
+		borderRadius: GlobalStyles.utils.mediumRadius.borderRadius,
+		borderWidth: 1,
+		borderColor: 'white',
+		position: 'absolute',
+	},
+	shadeTop: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		height: '50%',
+		borderBottomLeftRadius: GlobalStyles.utils.mediumRadius.borderRadius,
+		borderBottomRightRadius: GlobalStyles.utils.mediumRadius.borderRadius,
+		backgroundColor: 'rgba(0, 0, 0, 0.6)',
+	},
+	shadeBottom: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
+		height: '50%',
+		borderTopLeftRadius: GlobalStyles.utils.mediumRadius.borderRadius,
+		borderTopRightRadius: GlobalStyles.utils.mediumRadius.borderRadius,
+		backgroundColor: 'rgba(0, 0, 0, 0.6)',
+	},
+	shadeLeft: {
+		position: 'absolute',
+		left: 0,
+		top: '50%',
+		bottom: '50%',
+		width: '50%',
+		borderTopRightRadius: GlobalStyles.utils.mediumRadius.borderRadius,
+		borderBottomRightRadius: GlobalStyles.utils.mediumRadius.borderRadius,
+		backgroundColor: 'rgba(0, 0, 0, 0.6)',
+		marginTop: -(screenWidth * 0.95) / 2,
+		marginBottom: -(screenWidth * 0.95) / 2,
+	},
+	shadeRight: {
+		position: 'absolute',
+		right: 0,
+		top: '50%',
+		bottom: '50%',
+		width: '50%',
+		borderTopLeftRadius: GlobalStyles.utils.mediumRadius.borderRadius,
+		borderBottomLeftRadius: GlobalStyles.utils.mediumRadius.borderRadius,
+		backgroundColor: 'rgba(0, 0, 0, 0.6)',
+		marginTop: -(screenWidth * 0.95) / 2,
+		marginBottom: -(screenWidth * 0.95) / 2,
 	},
 });
