@@ -236,6 +236,10 @@ const icons = {
 	privateOutline: 'ri-lock-line',
 	bubbleOutline: 'ri-bubble-chart-line',
 	forbidOutline: 'ri-forbid-line',
+	flashlightOutline: 'ri-flashlight-line',
+	flashlightFill: 'ri-flashlight-fill',
+	gridOutline: 'ri-grid-line',
+	gridFill: 'ri-grid-fill',
 };
 
 export default {
