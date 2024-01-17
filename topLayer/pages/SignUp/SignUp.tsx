@@ -33,8 +33,6 @@ const SignUp: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 
-	let passwordValue = '';
-
 	const {
 		control,
 		handleSubmit,
@@ -45,8 +43,6 @@ const SignUp: React.FC = () => {
 	});
 
 	const onSubmit = (values: FormValues): void => {
-		passwordValue = values.password;
-
 		const formValues: FormValues = {
 			first_name: values.first_name,
 			last_name: values.last_name,

@@ -40,14 +40,14 @@ const StackedTextBox = ({
 					onFieldChange(text);
 				}}
 				// secureTextEntry={secure}
-				secureTextEntry={secure && !isPasswordVisible}
+				secureTextEntry={(secure ?? false) && !isPasswordVisible}
 				clearButtonMode="while-editing"
 				ref={textRef}
 			/>
-			{secure && (
+			{(secure ?? false) && (
 				<Pressable
 					style={styles.eyeIcon}
-					onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+					onPress={() => { setIsPasswordVisible(!isPasswordVisible); }}
 				>
 					<FontAwesome5
 						name={isPasswordVisible ? 'eye' : 'eye-slash'}
