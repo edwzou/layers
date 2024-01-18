@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import React, { useContext } from 'react';
+import React, { type ReactElement, useContext } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -65,6 +65,22 @@ const Header: React.FC<HeaderPropType> = ({
 			navigationArray[leftButtonNavigateTo]();
 		}
 	};
+
+	const TextRender = (): ReactElement => {
+		if (text !== '') {
+			return <Text style={GlobalStyles.typography.subtitle}>{text}</Text>;
+		} else {
+			return (
+				<View
+					style={{
+						height: 24,
+						backgroundColor: GlobalStyles.colorPalette.primary[900],
+					}}
+				/>
+			);
+		}
+	};
+
 	return (
 		<SafeAreaView>
 			<View style={styles.header}>
@@ -85,7 +101,7 @@ const Header: React.FC<HeaderPropType> = ({
 							disabled: rightButtonDisabled,
 						})
 					: null}
-				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
+				{TextRender()}
 			</View>
 		</SafeAreaView>
 	);
