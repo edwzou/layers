@@ -32,7 +32,6 @@ import {
 } from 'react-hook-form';
 import { userFieldRules } from '../../constants/userConstraints';
 import { usePhotoUpdate } from '../../Contexts/CameraContext';
-import React from 'react';
 
 interface SettingsFieldsType {
 	control: Control<{

@@ -1,11 +1,7 @@
 import { View, StyleSheet, Pressable, Alert } from 'react-native';
 import React, { useState, useContext, type ReactElement } from 'react';
-import { FlatList } from 'react-native-gesture-handler';
-import ItemCell from '../../components/Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import StackedTextbox from '../../components/Textbox/StackedTextbox';
-import { ITEM_SIZE } from '../../utils/GapCalc';
-import { screenHeight } from '../../utils/modalMaxShow';
 import { outfitEdit, toast } from '../../constants/GlobalStrings';
 import Icon from 'react-native-remix-icon';
 import { type UserClothing } from '../../types/Clothing';
@@ -20,6 +16,7 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
+import OutfitBlockLayout from '../../components/Outfit/OutfitBlockLayout';
 
 interface OutfitEditPropsType {
 	id: string;
@@ -38,10 +35,6 @@ const OutfitEdit = ({
 
 	const [text, setText] = useState(title);
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
-
-	const onInputChange = (text: string): void => {
-		setText(text);
-	};
 
 	const confirmDeletion = (): void => {
 		Alert.alert(outfitEdit.deleteOutfit, outfitEdit.youCannotUndoThisAction, [
@@ -116,23 +109,12 @@ const OutfitEdit = ({
 			<View style={styles.editContainer}>
 				<StackedTextbox
 					label={outfitEdit.outfitName}
-					onFieldChange={onInputChange}
+					onFieldChange={(text: string) => {
+						setText(text);
+					}}
 					value={text}
 				/>
-				<FlatList
-					data={clothingItems}
-					renderItem={({ item }) => {
-						return (
-							<View style={{ width: ITEM_SIZE(2) }}>
-								<ItemCell imageUrl={item.image_url} key={item.ciid} />
-							</View>
-						);
-					}}
-					numColumns={2}
-					contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-					columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
-					style={{ height: screenHeight - 350, padding: 6 }}
-				/>
+				<OutfitBlockLayout data={clothingItems} />
 				<View style={styles.deleteButtonContainer}>
 					<Pressable onPress={confirmDeletion}>
 						<View style={GlobalStyles.utils.deleteButton}>
@@ -158,7 +140,7 @@ const styles = StyleSheet.create({
 		paddingTop: 20,
 	},
 	editContainer: {
-		marginHorizontal: GlobalStyles.layout.xGap - 6, // Gives extra room for the item cell delete button to render
+		marginHorizontal: GlobalStyles.layout.xGap, // Gives extra room for the item cell delete button to render
 		gap: GlobalStyles.layout.gap,
 		flex: 1,
 	},

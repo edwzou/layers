@@ -68,10 +68,12 @@ const SettingsPage: React.FC = () => {
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('beforeRemove', () => {
-			resetPhoto({
-				type: 'new photo',
-				image: profile_picture.current,
-			});
+			if (photo !== profile_picture.current) {
+				resetPhoto({
+					type: 'new photo',
+					image: profile_picture.current,
+				});
+			}
 		});
 		return unsubscribe;
 	});

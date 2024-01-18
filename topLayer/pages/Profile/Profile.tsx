@@ -49,7 +49,7 @@ const Profile: React.FC = () => {
 	};
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
+		<SafeAreaView style={styles.container}>
 			<Navbar />
 			<ProfileHeading user={data} profilePicturePress={toggleSettingsModal} />
 			<CategoryComponent
@@ -68,6 +68,10 @@ const Profile: React.FC = () => {
 	);
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+});
 
 export default Profile;
