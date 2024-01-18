@@ -48,8 +48,7 @@ const SettingsPage: React.FC = () => {
 		last_name: last_name,
 		email: email,
 		username: username,
-		password: '**********', // maybe theres a way to decrypt the value here so we get the password value instead of
-		// password: password,  // the hashed value
+		password: '**********',
 		private_option: private_option,
 		profile_picture: profile_picture.current,
 	};
@@ -93,9 +92,7 @@ const SettingsPage: React.FC = () => {
 			updatedFields.username = formValues.username;
 		}
 		if (formValues.password !== '**********') {
-			console.log(updatedFields.password); // undefined
 			updatedFields.password = formValues.password;
-			console.log(formValues.password); // the actual password
 		}
 		if (formValues.private_option !== private_option) {
 			updatedFields.private_option = formValues.private_option;

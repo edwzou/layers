@@ -1,7 +1,7 @@
 import { TextInput, StyleSheet, Text, Pressable } from 'react-native';
 import React, { type ReactElement, useRef, useState } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
-import { FontAwesome5 } from '@expo/vector-icons';
+// import Icon from 'react-native-remix-icon';
 
 interface StackedTextboxPropsType {
 	label: string;
@@ -19,7 +19,7 @@ const StackedTextBox = ({
 	autoCapitalize = 'sentences',
 }: StackedTextboxPropsType): ReactElement => {
 	const [fieldText, setFieldText] = useState(value ?? '');
-	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	// const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const textRef = useRef<TextInput>(null);
 
 	const handlePress = (): void => {
@@ -39,23 +39,29 @@ const StackedTextBox = ({
 					setFieldText(text);
 					onFieldChange(text);
 				}}
-				// secureTextEntry={secure}
-				secureTextEntry={(secure ?? false) && !isPasswordVisible}
+				secureTextEntry={secure}
+				// secureTextEntry={(secure ?? false) && !isPasswordVisible}
 				clearButtonMode="while-editing"
 				ref={textRef}
 			/>
-			{(secure ?? false) && (
+			{/* {(secure ?? false) && (
 				<Pressable
 					style={styles.eyeIcon}
-					onPress={() => { setIsPasswordVisible(!isPasswordVisible); }}
+					onPress={() => {
+						setIsPasswordVisible(!isPasswordVisible);
+					}}
 				>
-					<FontAwesome5
-						name={isPasswordVisible ? 'eye' : 'eye-slash'}
-						size={18}
+					<Icon
+						name={
+							isPasswordVisible
+								? GlobalStyles.icons.eye
+								: GlobalStyles.icons.eyeOff
+						}
+						size={GlobalStyles.sizing.icon.xSmall}
 						color={GlobalStyles.colorPalette.danger[600]}
 					/>
 				</Pressable>
-			)}
+			)} */}
 		</Pressable>
 	);
 };
@@ -69,10 +75,10 @@ const styles = StyleSheet.create({
 		color: GlobalStyles.colorPalette.primary[500],
 		gap: 5,
 	},
-	eyeIcon: {
-		position: 'absolute',
-		right: 10,
-	},
+	// eyeIcon: {
+	// position: 'absolute',
+	// right: 10,
+	// },
 });
 
 export default StackedTextBox;

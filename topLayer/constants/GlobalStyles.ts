@@ -236,6 +236,8 @@ const icons = {
 	privateOutline: 'ri-lock-line',
 	bubbleOutline: 'ri-bubble-chart-line',
 	forbidOutline: 'ri-forbid-line',
+	eye: 'ri-eye-line',
+	eyeOff: 'ri-eye-off-line',
 };
 
 export default {

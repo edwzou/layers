@@ -53,8 +53,6 @@ const SignUp: React.FC = () => {
 			private_option: values.private_option,
 		};
 
-		console.log(values.password); // this is where the unhashed value of the password is.
-
 		const onSubmitInner = async (): Promise<void> => {
 			setIsLoading(true); // Start loading
 			try {
