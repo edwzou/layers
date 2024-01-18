@@ -6,6 +6,9 @@ import {
 	Pressable,
 	Keyboard,
 	Alert,
+	KeyboardAvoidingView,
+	Platform,
+	ScrollView,
 } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
@@ -29,6 +32,7 @@ import {
 } from 'react-hook-form';
 import { userFieldRules } from '../../constants/userConstraints';
 import { usePhotoUpdate } from '../../Contexts/CameraContext';
+import React from 'react';
 
 interface SettingsFieldsType {
 	control: Control<{
@@ -97,124 +101,137 @@ const SettingsFields = ({
 	};
 
 	return (
-		<View style={styles.settingsContainer}>
-			<Pressable onPress={Keyboard.dismiss}>
-				<View style={{ gap: 30 }}>
-					<View style={{ gap: 7 }}>
-						<Pressable
-							style={{ alignSelf: 'center' }}
-							onPress={
-								profile_picture !== '' ? showProfileOptions : navigateToCamera
-							}
-						>
-							<ProfilePicture
-								imageUrl={profile_picture}
-								base64={profile_picture.slice(0, 5) !== 'https'}
-							/>
-						</Pressable>
-					</View>
+		<KeyboardAvoidingView
+			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+			style={{ flex: 1 }}
+		>
+			<ScrollView
+				contentContainerStyle={{ flexGrow: 1 }}
+				keyboardShouldPersistTaps="handled"
+				showsVerticalScrollIndicator={false}
+			>
+				<View style={styles.settingsContainer}>
+					<Pressable onPress={Keyboard.dismiss}>
+						<View style={{ gap: 30 }}>
+							<View style={{ gap: 7 }}>
+								<Pressable
+									style={{ alignSelf: 'center' }}
+									onPress={
+										profile_picture !== ''
+											? showProfileOptions
+											: navigateToCamera
+									}
+								>
+									<ProfilePicture
+										imageUrl={profile_picture}
+										base64={profile_picture.slice(0, 5) !== 'https'}
+									/>
+								</Pressable>
+							</View>
 
-					<View style={{ gap: GlobalStyles.layout.gap }}>
-						<View
-							style={{
-								flexDirection: 'row',
-								gap: GlobalStyles.layout.gap,
-								width: ITEM_SIZE(),
-							}}
-						>
-							<Controller
-								control={control}
-								rules={userFieldRules.firstName}
-								render={({ field: { onChange, value } }) => (
-									<StackedTextBox
-										label="First Name"
-										onFieldChange={onChange}
-										value={value.trim()}
+							<View style={{ gap: GlobalStyles.layout.gap }}>
+								<View
+									style={{
+										flexDirection: 'row',
+										gap: GlobalStyles.layout.gap,
+										width: ITEM_SIZE(),
+									}}
+								>
+									<Controller
+										control={control}
+										rules={userFieldRules.firstName}
+										render={({ field: { onChange, value } }) => (
+											<StackedTextBox
+												label="First Name"
+												onFieldChange={onChange}
+												value={value.trim()}
+											/>
+										)}
+										name="first_name"
 									/>
-								)}
-								name="first_name"
-							/>
-							<Controller
-								control={control}
-								rules={userFieldRules.lastName}
-								render={({ field: { onChange, value } }) => (
-									<StackedTextBox
-										label="Last Name"
-										onFieldChange={onChange}
-										value={value.trim()}
+									<Controller
+										control={control}
+										rules={userFieldRules.lastName}
+										render={({ field: { onChange, value } }) => (
+											<StackedTextBox
+												label="Last Name"
+												onFieldChange={onChange}
+												value={value.trim()}
+											/>
+										)}
+										name="last_name"
 									/>
-								)}
-								name="last_name"
-							/>
-						</View>
-						<Controller
-							control={control}
-							rules={userFieldRules.username}
-							render={({ field: { onChange, value } }) => (
-								<StackedTextBox
-									autoCapitalize="none"
-									label="Username"
-									onFieldChange={onChange}
-									value={value.trim()}
+								</View>
+								<Controller
+									control={control}
+									rules={userFieldRules.username}
+									render={({ field: { onChange, value } }) => (
+										<StackedTextBox
+											autoCapitalize="none"
+											label="Username"
+											onFieldChange={onChange}
+											value={value.trim()}
+										/>
+									)}
+									name="username"
 								/>
-							)}
-							name="username"
-						/>
-						<Controller
-							control={control}
-							rules={userFieldRules.email}
-							render={({ field: { onChange, value } }) => (
-								<StackedTextBox
-									autoCapitalize="none"
-									label="Email"
-									onFieldChange={onChange}
-									value={value.trim()}
+								<Controller
+									control={control}
+									rules={userFieldRules.email}
+									render={({ field: { onChange, value } }) => (
+										<StackedTextBox
+											autoCapitalize="none"
+											label="Email"
+											onFieldChange={onChange}
+											value={value.trim()}
+										/>
+									)}
+									name="email"
 								/>
-							)}
-							name="email"
-						/>
-						<Controller
-							control={control}
-							rules={userFieldRules.password}
-							render={({ field: { onChange, value } }) => (
-								<StackedTextBox
-									label="Password"
-									onFieldChange={onChange}
-									value={value}
-									secure
+								<Controller
+									control={control}
+									rules={userFieldRules.password}
+									render={({ field: { onChange, value } }) => (
+										<StackedTextBox
+											label="Password"
+											onFieldChange={onChange}
+											value={value}
+											secure
+										/>
+									)}
+									name="password"
 								/>
-							)}
-							name="password"
-						/>
-						<RadioButton
-							privateData={privacyOptions}
-							onSelect={(selectedOption: PrivacyOption) => {
-								setValue('private_option', selectedOption.boolean);
-							}}
-							choice={
-								control._defaultValues.private_option === true
-									? privacyOptions[1].value
-									: privacyOptions[0].value
-							}
-						/>
-					</View>
-					{errors.email != null || errors.password != null ? (
-						<View style={{ alignItems: 'center' }}>
-							{errors.email != null ? (
-								<Text style={styles.error}>
-									{settings.pleaseEnterAValidEmail}
-								</Text>
+								<RadioButton
+									privateData={privacyOptions}
+									onSelect={(selectedOption: PrivacyOption) => {
+										setValue('private_option', selectedOption.boolean);
+									}}
+									choice={
+										control._defaultValues.private_option === true
+											? privacyOptions[1].value
+											: privacyOptions[0].value
+									}
+								/>
+							</View>
+							{errors.email != null || errors.password != null ? (
+								<View style={{ alignItems: 'center' }}>
+									{errors.email != null ? (
+										<Text style={styles.error}>
+											{settings.pleaseEnterAValidEmail}
+										</Text>
+									) : null}
+									{errors.password != null ? (
+										<Text style={styles.error}>
+											{settings.passwordMustBe8CharactersOrMore}
+										</Text>
+									) : null}
+								</View>
 							) : null}
-							{errors.password != null ? (
-								<Text style={styles.error}>
-									{settings.passwordMustBe8CharactersOrMore}
-								</Text>
-							) : null}
 						</View>
-					) : null}
+					</Pressable>
 				</View>
-			</Pressable>
-		</View>
+			</ScrollView>
+		</KeyboardAvoidingView>
 	);
 };
 const styles = StyleSheet.create({
