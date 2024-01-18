@@ -238,6 +238,10 @@ const icons = {
 	forbidOutline: 'ri-forbid-line',
 	eye: 'ri-eye-line',
 	eyeOff: 'ri-eye-off-line',
+	flashlightOutline: 'ri-flashlight-line',
+	flashlightFill: 'ri-flashlight-fill',
+	gridOutline: 'ri-grid-line',
+	gridFill: 'ri-grid-fill',
 };
 
 export default {
