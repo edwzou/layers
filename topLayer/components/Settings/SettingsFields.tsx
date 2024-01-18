@@ -108,6 +108,7 @@ const SettingsFields = ({
 			<ScrollView
 				contentContainerStyle={{ flexGrow: 1 }}
 				keyboardShouldPersistTaps="handled"
+				showsVerticalScrollIndicator={false}
 			>
 				<View style={styles.settingsContainer}>
 					<Pressable onPress={Keyboard.dismiss}>
