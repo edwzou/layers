@@ -45,7 +45,8 @@ export default function CameraComponent({
 	cameraFunction,
 }: CameraPropType): ReactElement {
 	const [orientation, setOrientation] = useState(CameraType.back);
-	const flash = FlashMode.auto;
+	const [flashMode, setFlashMode] = useState(FlashMode.off);
+	const [isGridVisible, setIsGridVisible] = useState(false);
 	const [cameraPermission, requestCameraPermission] =
 		Camera.useCameraPermissions();
 	const [mediaPermission, requestMediaPermission] =
@@ -80,8 +81,8 @@ export default function CameraComponent({
 		) {
 			ImageCropPicker.openCropper({
 				path: newPhoto.uri,
-				width: 2000, // set your desired width
-				height: 2000, // set your desired height
+				width: 800, // set your desired width
+				height: 800, // set your desired height
 				cropping: true,
 				includeBase64: true,
 				mediaType: 'photo', // specify media type as 'photo'
@@ -179,14 +180,53 @@ export default function CameraComponent({
 		}
 	};
 
+	const toggleFlash = (): void => {
+		if (flashMode === FlashMode.off) {
+			setFlashMode(FlashMode.torch);
+		} else {
+			setFlashMode(FlashMode.off);
+		}
+	};
+
+	const SquareFrame = (): ReactElement => {
+		return (
+			<View style={styles.squareFrame}>
+				<View style={styles.topShade} />
+				<View style={styles.bottomShade} />
+				<View
+					style={[styles.centerHole, isGridVisible && { borderColor: 'white' }]}
+				/>
+			</View>
+		);
+	};
+
+	const GridLines = (): ReactElement | null => {
+		if (!isGridVisible) return null;
+		return (
+			<View style={styles.gridContainer}>
+				<View style={styles.upperGridLineHorizontal} />
+				<View style={styles.lowerGridLineHorizontal} />
+				<View style={styles.leftGridLineVertical} />
+				<View style={styles.rightGridLineVertical} />
+			</View>
+		);
+	};
+
+	const toggleGrid = (): void => {
+		setIsGridVisible(!isGridVisible);
+	};
+
 	return (
 		<>
 			<Camera
 				style={styles.container}
 				ref={cameraRef}
 				type={orientation}
-				flashMode={flash}
-			/>
+				flashMode={flashMode}
+			>
+				<SquareFrame />
+				<GridLines />
+			</Camera>
 			<SafeAreaView
 				style={{
 					position: 'absolute',
@@ -196,13 +236,7 @@ export default function CameraComponent({
 					justifyContent: 'space-between',
 				}}
 			>
-				<View
-					style={{
-						justifyContent: 'flex-start',
-						width: screenWidth,
-						left: GlobalStyles.layout.xGap,
-					}}
-				>
+				<View style={styles.topContainer}>
 					<Pressable
 						onPress={() => {
 							navigation.goBack();
@@ -220,10 +254,20 @@ export default function CameraComponent({
 						onPress={() => {
 							void pickImage();
 						}}
-						style={styles.button}
 					>
 						<Icon
 							name={GlobalStyles.icons.imageFill}
+							size={GlobalStyles.sizing.icon.regular}
+							color={GlobalStyles.colorPalette.background}
+						/>
+					</Pressable>
+					<Pressable onPress={toggleGrid}>
+						<Icon
+							name={
+								isGridVisible
+									? GlobalStyles.icons.gridFill
+									: GlobalStyles.icons.gridOutline
+							}
 							size={GlobalStyles.sizing.icon.regular}
 							color={GlobalStyles.colorPalette.background}
 						/>
@@ -237,7 +281,18 @@ export default function CameraComponent({
 							</Animated.View>
 						</TapGestureHandler>
 					</View>
-					<Pressable onPress={flipCamera} style={styles.button}>
+					<Pressable onPress={toggleFlash}>
+						<Icon
+							name={
+								flashMode === FlashMode.torch
+									? GlobalStyles.icons.flashlightFill
+									: GlobalStyles.icons.flashlightOutline
+							}
+							size={GlobalStyles.sizing.icon.regular}
+							color={GlobalStyles.colorPalette.background}
+						/>
+					</Pressable>
+					<Pressable onPress={flipCamera}>
 						<Icon
 							name={GlobalStyles.icons.flipCameraOutline}
 							size={GlobalStyles.sizing.icon.regular}
@@ -254,8 +309,6 @@ export default function CameraComponent({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		width: screenWidth,
-		height: screenHeight,
 	},
 	previewContainer: {
 		flex: 1,
@@ -269,27 +322,24 @@ const styles = StyleSheet.create({
 		flex: 1,
 		borderRadius: 35,
 	},
-	button: {
-		padding: 10,
-		backgroundColor: GlobalStyles.colorPalette.primary[500] + '80',
-		...GlobalStyles.utils.fullRadius,
-	},
 	buttonInverse: {
 		padding: 10,
 		backgroundColor: GlobalStyles.colorPalette.background,
 		...GlobalStyles.utils.fullRadius,
 	},
-	bottomContainer: {
-		width: screenWidth,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-evenly',
-	},
 	topContainer: {
-		width: screenWidth,
 		flexDirection: 'row',
+		justifyContent: 'space-between',
+		width: screenWidth,
+		paddingHorizontal: GlobalStyles.layout.xGap,
 		alignItems: 'center',
-		justifyContent: 'space-evenly',
+	},
+	bottomContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		width: screenWidth,
+		paddingHorizontal: GlobalStyles.layout.xGap,
+		alignItems: 'center',
 	},
 	shutterButton: {
 		borderRadius: 75,
@@ -300,5 +350,74 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colorPalette.background,
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	squareFrame: {
+		position: 'absolute',
+		left: 0,
+		top: 0,
+		right: 0,
+		bottom: 0,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	topShade: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		height: (screenHeight - screenWidth) / 2, // Adjusted for top area
+		backgroundColor: 'rgba(0, 0, 0, 0.6)',
+	},
+	bottomShade: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
+		height: (screenHeight - screenWidth) / 2, // Adjusted for bottom area
+		backgroundColor: 'rgba(0, 0, 0, 0.6)',
+	},
+	centerHole: {
+		width: screenWidth,
+		height: screenWidth,
+		position: 'absolute',
+		borderColor: GlobalStyles.colorPalette.primary[400],
+		borderWidth: 0.5,
+	},
+	gridContainer: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+	},
+	upperGridLineHorizontal: {
+		position: 'absolute',
+		height: 0.4,
+		width: '100%',
+		backgroundColor: 'white',
+		top: (screenHeight - screenWidth) / 2 + screenWidth * (1 / 3),
+	},
+	lowerGridLineHorizontal: {
+		position: 'absolute',
+		height: 0.3, // intentionally smaller than other grid lines because setting it the same as others renders a larger line for unknown reason
+		width: '100%',
+		backgroundColor: 'white',
+		bottom: (screenHeight - screenWidth) / 2 + screenWidth * (1 / 3),
+	},
+	leftGridLineVertical: {
+		position: 'absolute',
+		top: (screenHeight - screenWidth) / 2,
+		bottom: (screenHeight - screenWidth) / 2,
+		width: 0.4,
+		backgroundColor: 'white',
+		left: screenWidth * (1 / 3),
+	},
+	rightGridLineVertical: {
+		position: 'absolute',
+		top: (screenHeight - screenWidth) / 2,
+		bottom: (screenHeight - screenWidth) / 2,
+		width: 0.4,
+		backgroundColor: 'white',
+		right: screenWidth * (1 / 3),
 	},
 });
