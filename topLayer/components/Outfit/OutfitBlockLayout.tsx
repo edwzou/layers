@@ -5,6 +5,7 @@ import GlobalStyles from '../../constants/GlobalStyles';
 import { FlatList } from 'react-native-gesture-handler';
 import { type UserClothing } from '../../types/Clothing';
 import { ITEM_SIZE } from '../../utils/GapCalc';
+import { screenHeight } from '../../utils/modalMaxShow';
 
 interface OutfitLayoutProps {
 	data: UserClothing[];
@@ -32,10 +33,16 @@ const OutfitBlockLayout = ({
 			}}
 			style={styles.content}
 			numColumns={2}
+			showsVerticalScrollIndicator={false}
 			contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
 			columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
 			ListHeaderComponent={headerComponent}
-			ListFooterComponent={footerComponent}
+			ListFooterComponent={
+				<>
+					{footerComponent}
+					<View style={{ padding: screenHeight * 0.05 }} />
+				</>
+			}
 		/>
 	);
 };
