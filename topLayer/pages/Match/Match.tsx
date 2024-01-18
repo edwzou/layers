@@ -21,15 +21,14 @@ import { type UserAllItems } from '../../types/AllItems';
 import Icon from 'react-native-remix-icon';
 import { screenHeight } from '../../utils/modalMaxShow';
 import {
-	UserClothingListSingle,
-	UserSelectedClothingList,
+	type UserClothingListSingle,
+	type UserSelectedClothingList,
 } from '../../types/Outfit';
 
 const Match: React.FC = () => {
 	const { allItems } = useContext(MainPageContext);
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
 	const [selectedIndexes, setSelectedIndexes] =
 		useState<UserSelectedClothingList>({
 			outerwear: 0,
@@ -37,7 +36,6 @@ const Match: React.FC = () => {
 			bottoms: 0,
 			shoes: 0,
 		});
-
 	const [data, setData] = useState<UserClothingList>({
 		outerwear: [] as UserClothing[],
 		tops: [] as UserClothing[],

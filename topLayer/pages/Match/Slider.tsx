@@ -7,7 +7,7 @@ import { screenWidth } from '../../utils/modalMaxShow';
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Icon from 'react-native-remix-icon';
-
+import { emptyClothing } from '../../constants/Clothing';
 const SNAP_ITEM_SIZE = ITEM_SIZE() * 1.15;
 const HORIZONTAL_SPACING = ITEM_SIZE() * 0.15; // Cell gap
 const VERTICAL_SPACING = SNAP_ITEM_SIZE + HORIZONTAL_SPACING;
@@ -24,17 +24,7 @@ const Slider = ({
 	selectedIndex,
 	category,
 }: SliderPropsType): ReactElement => {
-	const emptyItem: UserClothing = {
-		ciid: '',
-		image_url: '',
-		category: '',
-		title: '',
-		uid: '',
-		brands: [],
-		size: '',
-		color: [],
-		created_at: '',
-	};
+	const emptyItem: UserClothing = { ...emptyClothing };
 
 	const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -92,7 +82,7 @@ const Slider = ({
 								...data.slice(0, data.length - 1),
 								emptyItem,
 								...data.slice(data.length - 1, data.length),
-						  ] // eslint-disable-line no-mixed-spaces-and-tabs
+							] // eslint-disable-line no-mixed-spaces-and-tabs
 						: null
 				}
 				renderItem={({ item, index }) => {

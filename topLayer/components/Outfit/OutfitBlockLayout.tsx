@@ -30,10 +30,9 @@ const OutfitBlockLayout = ({
 			keyExtractor={(item) => {
 				return item.ciid;
 			}}
-			style={styles.content}
 			numColumns={2}
-			contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-			columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
+			contentContainerStyle={styles.gap}
+			columnWrapperStyle={styles.gap}
 			ListHeaderComponent={headerComponent}
 			ListFooterComponent={footerComponent}
 		/>
@@ -43,9 +42,7 @@ const OutfitBlockLayout = ({
 export default OutfitBlockLayout;
 
 const styles = StyleSheet.create({
-	content: {
-		paddingHorizontal: GlobalStyles.layout.xGap,
+	gap: {
 		gap: GlobalStyles.layout.gap,
-		flex: 1,
 	},
 });

@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
 	container: {
 		paddingTop: 20,
 		gap: GlobalStyles.layout.gap,
+		marginHorizontal: GlobalStyles.layout.xGap,
 		flex: 1,
 	},
 	subheader: {
