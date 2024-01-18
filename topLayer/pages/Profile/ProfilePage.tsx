@@ -8,7 +8,6 @@ import { Stack } from '../../utils/StackNavigation';
 import Profile from './Profile';
 import FeedbackPage from '../Feedback/FeedbackPage';
 import SettingsPage from './SettingsPage';
-import ItemViewPage from '../../pages/ItemView/ItemViewPage';
 import { NavigationContainer } from '@react-navigation/native';
 import ItemCamera from '../../components/Camera/ItemCamera';
 import CameraPfp from '../../components/Camera/CameraPfp';

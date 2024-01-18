@@ -51,12 +51,14 @@ export default function CameraComponent({
 		Camera.useCameraPermissions();
 	const [mediaPermission, requestMediaPermission] =
 		MediaLibrary.usePermissions();
+
 	const scale = useSharedValue(0);
 	const shutterWidth = useSharedValue(0);
 	const rippleOpacity = useSharedValue(1);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const cameraRef = useRef<Camera>(null);
 	const aRef = useAnimatedRef<View>();
+	const canTakePictureRef = useRef(true);
 
 	const takePhotoOptions: CameraPictureOptions = {
 		quality: 0,
@@ -72,35 +74,48 @@ export default function CameraComponent({
 	};
 
 	const takePicture = useCallback(async () => {
-		if (cameraRef.current == null) return;
-		const newPhoto = await cameraRef.current.takePictureAsync(takePhotoOptions);
-		if (
-			newPhoto?.uri !== null &&
-			newPhoto?.uri !== undefined &&
-			newPhoto?.uri !== ''
-		) {
-			ImageCropPicker.openCropper({
-				path: newPhoto.uri,
-				width: 800, // set your desired width
-				height: 800, // set your desired height
-				cropping: true,
-				includeBase64: true,
-				mediaType: 'photo', // specify media type as 'photo'
-			})
-				.then((croppedImage) => {
-					if (
-						croppedImage?.data !== null &&
-						croppedImage?.data !== undefined &&
-						croppedImage?.data !== ''
-					) {
-						cameraFunction(croppedImage.data);
-					}
+		if (cameraRef.current == null || !canTakePictureRef.current) return;
+
+		canTakePictureRef.current = false;
+
+		try {
+			const newPhoto =
+				await cameraRef.current.takePictureAsync(takePhotoOptions);
+			if (
+				newPhoto?.uri !== null &&
+				newPhoto?.uri !== undefined &&
+				newPhoto?.uri !== ''
+			) {
+				ImageCropPicker.openCropper({
+					path: newPhoto.uri,
+					width: 800,
+					height: 800,
+					cropping: true,
+					includeBase64: true,
+					mediaType: 'photo',
 				})
-				.catch((error) => {
-					console.log('Cropping failed', error);
-				});
-		} else {
-			console.log('photo.uri is undefined!');
+					.then((croppedImage) => {
+						if (
+							croppedImage?.data !== null &&
+							croppedImage?.data !== undefined &&
+							croppedImage?.data !== ''
+						) {
+							cameraFunction(croppedImage.data);
+						}
+					})
+					.catch((error) => {
+						console.log('Cropping failed', error);
+					})
+					.finally(() => {
+						canTakePictureRef.current = true;
+					});
+			} else {
+				console.log('photo.uri is undefined!');
+				canTakePictureRef.current = true;
+			}
+		} catch (error) {
+			console.error('Error taking picture:', error);
+			canTakePictureRef.current = true;
 		}
 	}, []);
 
@@ -182,7 +197,7 @@ export default function CameraComponent({
 
 	const toggleFlash = (): void => {
 		if (flashMode === FlashMode.off) {
-			setFlashMode(FlashMode.torch);
+			setFlashMode(FlashMode.on);
 		} else {
 			setFlashMode(FlashMode.off);
 		}
@@ -284,7 +299,7 @@ export default function CameraComponent({
 					<Pressable onPress={toggleFlash}>
 						<Icon
 							name={
-								flashMode === FlashMode.torch
+								flashMode === FlashMode.on
 									? GlobalStyles.icons.flashlightFill
 									: GlobalStyles.icons.flashlightOutline
 							}
