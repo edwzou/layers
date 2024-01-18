@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from 'utils/StackNavigation';
+import { type StackTypes } from '../../utils/StackNavigation';
 import { StepOverTypes } from '../../constants/Enums';
 
 import { MainPageContext } from '../../pages/Main/MainPage';
@@ -40,8 +40,9 @@ const Header: React.FC<HeaderPropType> = ({
 	rightButtonNavigateTo = -1,
 	leftButtonNavigateTo = -1,
 }: HeaderPropType) => {
-	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const { navigationArray } = useContext(MainPageContext);
+
+	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const handleRightPress = (): void => {
 		if (rightButtonAction !== null && rightButtonAction !== undefined) {
 			rightButtonAction();
@@ -73,7 +74,7 @@ const Header: React.FC<HeaderPropType> = ({
 							left: true,
 							handlePress: handleLeftPress,
 							disabled: false,
-					  })
+						})
 					: null}
 
 				{rightButton === true
@@ -82,7 +83,7 @@ const Header: React.FC<HeaderPropType> = ({
 							left: false,
 							handlePress: handleRightPress,
 							disabled: rightButtonDisabled,
-					  })
+						})
 					: null}
 				<Text style={GlobalStyles.typography.subtitle}>{text}</Text>
 			</View>

@@ -25,11 +25,12 @@ import {
 } from '../../endpoints/wardrobe';
 import { useMarkUserFunc } from '../../Contexts/ForeignUserContext';
 import { type UserAllItems } from '../../types/AllItems';
-import { type RouteTypes } from 'types/Routes';
+import { type RouteTypes } from '../../types/Routes';
 import ProfileHeading from '../../components/Profile/ProfileHeading';
 import PrivateProfile from '../../components/Profile/Private';
 import CategoryComponent from '../../components/Category/Category';
 import {
+	allUserItems,
 	handleCategoryChange,
 	handleForeignItemPress,
 } from '../../functions/Profile/Profile';
@@ -49,28 +50,13 @@ const ForeignProfile = (): ReactElement => {
 	const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
 
 	// initializes an array of clothing categories and their data
-	const allItems: UserAllItems[] = [
-		{
-			category: 'outfits',
-			data: allOutfits,
-		},
-		{
-			category: 'outerwear',
-			data: allOuterwear,
-		},
-		{
-			category: 'tops',
-			data: allTops,
-		},
-		{
-			category: 'bottoms',
-			data: allBottoms,
-		},
-		{
-			category: 'shoes',
-			data: allShoes,
-		},
-	];
+	const allItems: UserAllItems[] = allUserItems(
+		allOutfits,
+		allOuterwear,
+		allTops,
+		allBottoms,
+		allShoes
+	);
 
 	const [selectedCategory, setSelectedCategory] = useState(
 		ClothingTypes.outfits as string

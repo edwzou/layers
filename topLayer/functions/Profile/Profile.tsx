@@ -54,3 +54,35 @@ export const handleItemChange = (
 		});
 	}
 };
+
+export const allUserItems = (
+	allOutfits: UserOutfit[],
+	allOuterwear: UserClothing[],
+	allTops: UserClothing[],
+	allBottoms: UserClothing[],
+	allShoes: UserClothing[]
+): UserAllItems[] => {
+	const items = [
+		{
+			category: 'outfits',
+			data: allOutfits,
+		},
+		{
+			category: 'outerwear',
+			data: allOuterwear,
+		},
+		{
+			category: 'tops',
+			data: allTops,
+		},
+		{
+			category: 'bottoms',
+			data: allBottoms,
+		},
+		{
+			category: 'shoes',
+			data: allShoes,
+		},
+	];
+	return items;
+};

@@ -3,8 +3,8 @@ import React, { type RefObject, type ReactElement } from 'react';
 import CategorySlide from './CategorySlide';
 import { CategoryToIndex } from '../../constants/Enums';
 import { type UserAllItems } from '../../types/AllItems';
-import { type UserClothing } from 'types/Clothing';
-import { type UserOutfit } from 'types/Outfit';
+import { type UserClothing } from '../../types/Clothing';
+import { type UserOutfit } from '../../types/Outfit';
 
 interface CategorySlidesPropsType {
 	categorySlidesRef: RefObject<FlatList<UserAllItems>>;

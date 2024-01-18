@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import {
+import React, {
 	View,
 	Text,
 	StyleSheet,
