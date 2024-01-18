@@ -10,7 +10,7 @@ import {
 import { StackNavigation } from '../../constants/Enums';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from 'utils/StackNavigation';
+import { type StackTypes } from '../../utils/StackNavigation';
 import GlobalStyles from '../../constants/GlobalStyles';
 import SignIn from './SignIn';
 

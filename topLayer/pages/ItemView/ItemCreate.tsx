@@ -9,7 +9,6 @@ import React, {
 	type ReactElement,
 } from 'react';
 import {
-	ClothingTypes,
 	StackNavigation,
 	StepOverTypes,
 	TagAction,
@@ -25,7 +24,10 @@ import GeneralModal, {
 import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ColorTagsList from '../../components/ColorManager/ColorTagsList';
-import { creationClothingTypes, type UserClothing } from '../../types/Clothing';
+import {
+	type creationClothingTypes,
+	type UserClothing,
+} from '../../types/Clothing';
 import { useForm, Controller } from 'react-hook-form';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -112,7 +114,7 @@ const ItemCreate = ({
 		}
 		setIsLoading(true); // Start loading
 		try {
-			const { data, status } = await axios.post(
+			const { status } = await axios.post(
 				`${baseUrl}/api/private/clothing_items`,
 				values
 			);

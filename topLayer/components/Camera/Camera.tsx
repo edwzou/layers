@@ -228,7 +228,7 @@ export default function CameraComponent({
 	};
 
 	const toggleGrid = (): void => {
-		setIsGridVisible(!isGridVisible);
+		setIsGridVisible((isGridVisible) => !isGridVisible);
 	};
 
 	return (
