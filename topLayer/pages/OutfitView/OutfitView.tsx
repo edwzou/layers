@@ -32,29 +32,24 @@ const OutfitView = ({
 				rightStepOverType={StepOverTypes.edit}
 				rightButtonAction={directToOutfitEdit}
 			/>
-			<View style={styles.xgap}>
-				<OutfitBlockLayout
-					data={clothingItems.slice(1)}
-					headerComponent={
-						clothingItems.length > 0 ? (
-							<ItemCell imageUrl={clothingItems[0].image_url} />
-						) : undefined
-					}
-					footerComponent={
-						<View style={styles.colorContainer}>
-							<View style={styles.categoryContainer}>
-								{uniqueColors.length > 0 ? (
-									<Text style={styles.subheader}>Colors</Text>
-								) : null}
-								<ColorTagsList
-									data={uniqueColors}
-									tagAction={TagAction.static}
-								/>
-							</View>
+			<OutfitBlockLayout
+				data={clothingItems.slice(1)}
+				headerComponent={
+					clothingItems.length > 0 ? (
+						<ItemCell imageUrl={clothingItems[0].image_url} />
+					) : undefined
+				}
+				footerComponent={
+					<View style={styles.colorContainer}>
+						<View style={styles.categoryContainer}>
+							{uniqueColors.length > 0 ? (
+								<Text style={styles.subheader}>Colors</Text>
+							) : null}
+							<ColorTagsList data={uniqueColors} tagAction={TagAction.static} />
 						</View>
-					}
-				/>
-			</View>
+					</View>
+				}
+			/>
 		</View>
 	);
 };
