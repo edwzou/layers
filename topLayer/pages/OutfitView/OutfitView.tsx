@@ -32,24 +32,29 @@ const OutfitView = ({
 				rightStepOverType={StepOverTypes.edit}
 				rightButtonAction={directToOutfitEdit}
 			/>
-			<OutfitBlockLayout
-				data={clothingItems.slice(1)}
-				headerComponent={
-					clothingItems.length > 0 ? (
-						<ItemCell imageUrl={clothingItems[0].image_url} />
-					) : undefined
-				}
-				footerComponent={
-					<View style={styles.colorContainer}>
-						<View style={styles.categoryContainer}>
-							{uniqueColors.length > 0 ? (
-								<Text style={styles.subheader}>Colors</Text>
-							) : null}
-							<ColorTagsList data={uniqueColors} tagAction={TagAction.static} />
+			<View style={styles.xgap}>
+				<OutfitBlockLayout
+					data={clothingItems.slice(1)}
+					headerComponent={
+						clothingItems.length > 0 ? (
+							<ItemCell imageUrl={clothingItems[0].image_url} />
+						) : undefined
+					}
+					footerComponent={
+						<View style={styles.colorContainer}>
+							<View style={styles.categoryContainer}>
+								{uniqueColors.length > 0 ? (
+									<Text style={styles.subheader}>Colors</Text>
+								) : null}
+								<ColorTagsList
+									data={uniqueColors}
+									tagAction={TagAction.static}
+								/>
+							</View>
 						</View>
-					</View>
-				}
-			/>
+					}
+				/>
+			</View>
 		</View>
 	);
 };
@@ -67,7 +72,6 @@ const styles = StyleSheet.create({
 	container: {
 		paddingTop: 20,
 		gap: GlobalStyles.layout.gap,
-		marginHorizontal: GlobalStyles.layout.xGap,
 		flex: 1,
 	},
 	subheader: {

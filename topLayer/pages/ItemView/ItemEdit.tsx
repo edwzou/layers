@@ -166,7 +166,7 @@ const ItemEdit = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		gap: 15,
+		gap: GlobalStyles.layout.gap,
 		paddingTop: 20,
 	},
 	deleteButtonContainer: {
