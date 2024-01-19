@@ -18,20 +18,18 @@ const ItemView = ({
 	directToItemEdit,
 }: ItemViewPropsType): ReactElement => {
 	return (
-		<ScrollView>
-			<View style={styles.container}>
-				<Header
-					text={clothingItem.title}
-					rightButton={
-						directToItemEdit !== null && directToItemEdit !== undefined
-					}
-					rightStepOverType={StepOverTypes.edit}
-					rightButtonAction={directToItemEdit}
-				/>
+		<View style={styles.container}>
+			<Header
+				text={clothingItem.title}
+				rightButton={
+					directToItemEdit !== null && directToItemEdit !== undefined
+				}
+				rightStepOverType={StepOverTypes.edit}
+				rightButtonAction={directToItemEdit}
+			/>
+			<ScrollView>
 				<View style={styles.content}>
-					<View style={styles.flex}>
-						<ItemCell imageUrl={clothingItem.image_url} />
-					</View>
+					<ItemCell imageUrl={clothingItem.image_url} />
 					<View style={styles.categoryContainer}>
 						{clothingItem.color.length > 0 ? (
 							<Text style={styles.subheader}>Colors</Text>
@@ -42,17 +40,14 @@ const ItemView = ({
 						/>
 					</View>
 				</View>
-			</View>
-		</ScrollView>
+			</ScrollView>
+		</View>
 	);
 };
 
 export default ItemView;
 
 const styles = StyleSheet.create({
-	flex: {
-		flex: 1,
-	},
 	container: {
 		gap: GlobalStyles.layout.gap,
 		flex: 1,
@@ -62,21 +57,10 @@ const styles = StyleSheet.create({
 		gap: GlobalStyles.layout.gap,
 		paddingHorizontal: GlobalStyles.layout.xGap,
 	},
-	items: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		flexWrap: 'wrap',
-		gap: GlobalStyles.layout.gap,
-		flex: 1,
-	},
 	subheader: {
 		...GlobalStyles.typography.body,
 	},
 	categoryContainer: {
-		gap: 10,
-	},
-	tagsContainer: {
-		flexDirection: 'row',
 		gap: 10,
 	},
 });
