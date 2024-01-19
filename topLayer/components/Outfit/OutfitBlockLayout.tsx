@@ -51,7 +51,6 @@ export default OutfitBlockLayout;
 
 const styles = StyleSheet.create({
 	content: {
-		paddingHorizontal: GlobalStyles.layout.xGap,
 		gap: GlobalStyles.layout.gap,
 		flex: 1,
 	},

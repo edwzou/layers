@@ -55,17 +55,17 @@ const MarkedList = ({
 
 	const handleMarking = (
 		uid: string,
-		marked: boolean,
+		_marked: boolean,
 		index: number,
-		user: markedUser
+		_user: markedUser
 	): number => {
 		if (index !== -1) {
 			unmarked.current.splice(index, 1);
-			setCount(count + 1);
+			setCount((count) => count + 1);
 			return -1;
 		} else {
 			unmarked.current.push(uid);
-			setCount(count - 1);
+			setCount((count) => count - 1);
 			return unmarked.current.length - 1;
 		}
 	};
