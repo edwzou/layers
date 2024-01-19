@@ -24,13 +24,14 @@ import {
 	getForeignAllOutfits,
 } from '../../endpoints/wardrobe';
 import { useMarkUserFunc } from '../../Contexts/ForeignUserContext';
-import { type UserAllItems } from '../../types/AllItems';
+import { type UserAllItems2, type UserAllItems } from '../../types/AllItems';
 import { type RouteTypes } from '../../types/Routes';
 import ProfileHeading from '../../components/Profile/ProfileHeading';
 import PrivateProfile from '../../components/Profile/Private';
 import CategoryComponent from '../../components/Category/Category';
 import {
 	allUserItems,
+	allUserItems2,
 	handleCategoryChange,
 	handleForeignItemPress,
 } from '../../functions/Profile/Profile';

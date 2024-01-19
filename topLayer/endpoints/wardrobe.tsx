@@ -1,8 +1,8 @@
 import { baseUrl } from '../utils/apiUtils';
 import axios from 'axios';
 import { axiosEndpointErrorHandlerNoAlert } from '../utils/ErrorHandlers';
-import { type UserOutfit } from '../types/Outfit';
-import { type UserClothingList, type UserClothing } from '../types/Clothing';
+import { type outfitClothingItemsType, type UserOutfit } from '../types/Outfit';
+import { type UserClothing } from '../types/Clothing';
 
 export const getForeignAllOutfits = async (
 	uid: string,
@@ -32,7 +32,7 @@ const getAllOutfitsHandler = async (
 
 		if (status === 200) {
 			updateOutfits(data.data);
-			// console.log('outfits: ', data.data);
+			// console.log('outfits: ', data.data[0].clothing_items.outerwear);
 		} else {
 			throw new Error(`An Get All Outfits Error Has Occurred: ${status}`);
 		}
@@ -81,7 +81,9 @@ const getAllClothingItemsHandler = async (
 	query: string
 ): Promise<void> => {
 	try {
-		const { data, status } = await axios.get<{ data: UserClothingList }>(query);
+		const { data, status } = await axios.get<{ data: outfitClothingItemsType }>(
+			query
+		);
 
 		if (status === 200) {
 			setAllOuterwear(data.data.outerwear);

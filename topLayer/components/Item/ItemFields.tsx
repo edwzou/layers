@@ -26,24 +26,14 @@ import { setClothingTypeSize } from '../../functions/ClothingItem/Sizes';
 import { clothingItemTypes } from '../../constants/Clothing';
 import { modalLowTranslateY } from '../../utils/modalMaxShow';
 import { TagAction } from '../../constants/Enums';
-import { type UserClothing } from '../../types/Clothing';
+import {
+	type creationClothingTypes,
+	type UserClothing,
+} from '../../types/Clothing';
 
 interface ItemFieldProps {
-	control: Control<{
-		image: string;
-		category: string;
-		title: string;
-		size: string;
-		color: string[];
-	}>;
-	setValue: UseFormSetValue<{
-		image: string;
-		category: string;
-		title: string;
-		size: string;
-		color: string[];
-	}>;
-
+	control: Control<creationClothingTypes>;
+	setValue: UseFormSetValue<creationClothingTypes>;
 	clothingItem: UserClothing;
 }
 
@@ -64,7 +54,6 @@ const ItemFields = ({
 		clothingItem.category ?? ''
 	);
 
-	console.log('item fields: ', clothingItem.image_url.substring(0, 100));
 	return (
 		<>
 			<ScrollView

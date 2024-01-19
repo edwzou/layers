@@ -11,7 +11,9 @@ import { type UserReducerProps } from '../Contexts/UserContext';
 
 export const getForeignUser = async (userId: string): Promise<User> => {
 	try {
-		const { data, status } = await axios.get(`${baseUrl}/api/users/${userId}`);
+		const { data, status } = await axios.get<{ data: User }>(
+			`${baseUrl}/api/users/${userId}`
+		);
 
 		if (status === 200) {
 			return data.data;
@@ -19,7 +21,24 @@ export const getForeignUser = async (userId: string): Promise<User> => {
 	} catch (error) {
 		axiosEndpointErrorHandler(error);
 	}
-	return nullUser;
+	return { ...nullUser };
+};
+
+export const getForeignUser2 = async (
+	id: string,
+	func: (data: User) => void
+): Promise<void> => {
+	try {
+		const { data, status } = await axios.get<{ data: User }>(
+			`${baseUrl}/api/users/${id}`
+		);
+
+		if (status === 200) {
+			func(data.data);
+		}
+	} catch (error) {
+		axiosEndpointErrorHandlerNoAlert(error);
+	}
 };
 
 const returnGetUser = async (): Promise<User> => {
@@ -34,7 +53,7 @@ const returnGetUser = async (): Promise<User> => {
 	} catch (error) {
 		axiosEndpointErrorHandlerNoAlert(error);
 	}
-	return nullUser;
+	return { ...nullUser };
 };
 
 export const updateUser = async (

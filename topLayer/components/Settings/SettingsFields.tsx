@@ -32,35 +32,12 @@ import {
 } from 'react-hook-form';
 import { userFieldRules } from '../../constants/userConstraints';
 import { usePhotoUpdate } from '../../Contexts/CameraContext';
+import { type formUser } from '../../types/User';
 
 interface SettingsFieldsType {
-	control: Control<{
-		first_name: string;
-		last_name: string;
-		email: string;
-		username: string;
-		password: string;
-		private_option: boolean;
-		profile_picture: string;
-	}>;
-	setValue: UseFormSetValue<{
-		first_name: string;
-		last_name: string;
-		email: string;
-		username: string;
-		password: string;
-		private_option: boolean;
-		profile_picture: string;
-	}>;
-	errors: FieldErrors<{
-		first_name: string;
-		last_name: string;
-		email: string;
-		username: string;
-		password: string;
-		private_option: boolean;
-		profile_picture: string;
-	}>;
+	control: Control<formUser>;
+	setValue: UseFormSetValue<formUser>;
+	errors: FieldErrors<formUser>;
 	profile_picture: string;
 }
 

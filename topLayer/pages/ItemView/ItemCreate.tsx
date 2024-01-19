@@ -47,9 +47,7 @@ const ItemCreate = ({
 		},
 	});
 
-	console.log('itemcreate: ', clothingItem.image_url.substring(0, 100));
 	useEffect(() => {
-		console.log('image: ', clothingItem.image_url.substring(0, 100));
 		setValue('image', clothingItem.image_url);
 	}, [clothingItem.image_url]);
 
