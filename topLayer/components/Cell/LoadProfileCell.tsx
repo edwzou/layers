@@ -1,11 +1,9 @@
 import React, { useState, useEffect, type ReactElement, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { type markedUser, type User } from '../../types/User';
-import { baseUrl } from '../../utils/apiUtils';
-import axios from 'axios';
-import { axiosEndpointErrorHandlerNoAlert } from '../../utils/ErrorHandlers';
 import ProfileCell from './ProfileCell';
 import { nullUser } from '../../constants/baseUsers';
+import { getForeignUser2 } from '../../endpoints/getUser';
 
 interface FetchProfileCellPropsType {
 	userID: string;
@@ -29,26 +27,16 @@ const FetchProfileCell = ({
 	});
 	const rendered = useRef('not rendered');
 
-	const getUser = async (id: string): Promise<void> => {
-		try {
-			const { data, status } = await axios.get<{ data: User }>(
-				`${baseUrl}/api/users/${id}`
-			);
-
-			if (status === 200) {
-				rendered.current = 'rendered';
-				setUser({
-					...data.data,
-					marked: marked,
-				});
-			}
-		} catch (error) {
-			axiosEndpointErrorHandlerNoAlert(error);
-		}
+	const setUserFunc = (data: User): void => {
+		rendered.current = 'rendered';
+		setUser({
+			...data,
+			marked: marked,
+		});
 	};
 
 	useEffect(() => {
-		void getUser(userID);
+		void getForeignUser2(userID, setUserFunc);
 	}, []);
 
 	return (

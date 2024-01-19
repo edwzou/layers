@@ -1,4 +1,4 @@
-import express, { type Request, type Response } from 'express';
+import { Router, type Request, type Response } from 'express';
 import { pool } from '../../utils/sqlImport';
 import {
 	responseCallbackDelete,
@@ -14,23 +14,58 @@ import {
 	getAllClothing,
 	getAllClothingCate,
 } from '../helper/clothingItem';
-import { type itemCategories } from '../../utils/constants/itemCategories';
-import { type colors } from '../../utils/constants/colors';
-const router = express.Router();
+import { type ClothingCreationProps } from '../../../src/types/items';
+const router = Router();
 
 // Endpoint for creating a specific clothing item
 router.post('/', (req: Request, res: Response): void => {
 	const uid = req.user as string;
-	const { image, category, title, brands, size, color } = req.body;
-	const insertClothingItem = async (): Promise<any> => {
+	const { image, category, title, brands, size, color }: ClothingCreationProps =
+		req.body;
+	const insertClothingItem = async (): Promise<void> => {
 		try {
+			if (
+				image === null ||
+				image === undefined ||
+				image.trim() === '' ||
+				category === null ||
+				category === undefined
+			) {
+				throw new Error('Missing Image or Category Fields');
+			}
+			let query = `INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
+      VALUES (`;
+
 			const ciid = uuidv4();
+			query += `'${ciid}', `;
 			const imgRef = await convertImage(image, ciid, false);
-			await pool.query(
-				`INSERT INTO backend_schema.clothing_item (ciid, image_url, category, title, brands, size, color, uid)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-				[ciid, imgRef, category, title, brands, size, color, uid]
-			);
+			query += `'${imgRef}', `;
+			query += `'${category}', `;
+			if (title !== undefined && title !== null) {
+				query += `'${title}', `;
+			} else {
+				query += "'', ";
+			}
+			if (brands !== undefined && brands !== null) {
+				const brandsArray = brands.map((brand) => `'${brand}'::string`);
+				query += `ARRAY[${brandsArray.join(', ')}]::string[], `;
+			} else {
+				query += 'ARRAY[]::VARCHAR[], ';
+			}
+			if (size !== undefined && size !== null) {
+				query += `'${size}', `;
+			} else {
+				query += "'', ";
+			}
+			if (color !== undefined && color !== null) {
+				const colorsArray = color.map((col) => `'${col}'::color_enum`);
+				query += `ARRAY[${colorsArray.join(', ')}]::color_enum[], `;
+			} else {
+				query += 'ARRAY[]::color_enum[], ';
+			}
+			query += `'${uid}')`;
+
+			await pool.query(query);
 
 			responseCallbackPost(null, res, 'Clothing Item: ' + ciid);
 		} catch (error) {
@@ -78,39 +113,27 @@ router.delete('/:ciid', (req: Request, res: Response): void => {
 });
 
 // Endpoint for updating a specific clothing_item
-router.put('/:ciid', (req: any, res: any): void => {
+router.put('/:ciid', (req: Request, res: Response): void => {
 	const uid = req.user as string;
 	const { ciid } = req.params;
-	const {
-		category,
-		title,
-		size,
-		color,
-	}: {
-		category: itemCategories;
-		title: string;
-		size: string;
-		color: colors[];
-	} = req.body;
+	const { category, title, size, color }: ClothingCreationProps = req.body;
 
 	const updateItem = async (ciid: string): Promise<void> => {
 		try {
 			let query = 'UPDATE backend_schema.clothing_item SET';
 
-			if (category !== undefined) {
+			if (category !== undefined && category !== null) {
 				query += ` category = '${category}',`;
 			}
-			if (title !== undefined) {
+			if (title !== undefined && title !== null) {
 				query += ` title = '${title}',`;
 			}
-			if (size !== undefined) {
+			if (size !== undefined && size !== null) {
 				query += ` size = '${size}',`;
 			}
-			if (color !== undefined) {
-				const formattedUuidArray = color.map((col) => `'${col}'::color_enum`);
-				query += ` color = ARRAY[${formattedUuidArray.join(
-					', '
-				)}]::color_enum[],`;
+			if (color !== undefined && color !== null) {
+				const colorsArray = color.map((col) => `'${col}'::color_enum`);
+				query += ` color = ARRAY[${colorsArray.join(', ')}]::color_enum[],`;
 			}
 
 			// Check if at least one field is provided

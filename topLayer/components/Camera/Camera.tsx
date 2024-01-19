@@ -35,7 +35,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
-import ImageCropPicker from 'react-native-image-crop-picker';
+import { openCropper } from 'react-native-image-crop-picker';
 
 interface CameraPropType {
 	cameraFunction: (photo: string) => void;
@@ -79,7 +79,7 @@ export default function CameraComponent({
 			newPhoto?.uri !== undefined &&
 			newPhoto?.uri !== ''
 		) {
-			ImageCropPicker.openCropper({
+			openCropper({
 				path: newPhoto.uri,
 				width: 800, // set your desired width
 				height: 800, // set your desired height
@@ -145,7 +145,6 @@ export default function CameraComponent({
 	}
 
 	if (!cameraPermission.granted) {
-		// If an error is thrown nothing happens
 		void requestCameraPermission();
 		return <></>;
 	}
@@ -155,7 +154,6 @@ export default function CameraComponent({
 	}
 
 	if (!mediaPermission.granted) {
-		// If an error is thrown nothing happens
 		void requestMediaPermission();
 		return <></>;
 	}

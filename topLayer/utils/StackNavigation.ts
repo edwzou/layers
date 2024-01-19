@@ -3,8 +3,7 @@ import {
 	type NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import { type UserClothing } from '../types/Clothing';
-import { UserOutfit, UserClothingListSingle } from '../types/Outfit';
-
+import { type outfitType, type UserOutfit } from '../types/Outfit';
 import { type markedUser } from '../types/User';
 
 // DO NOT ADD ANY FUNCTIONS UNDER StackNavigatorType
@@ -13,7 +12,7 @@ export interface StackNavigatorType {
 	markedUser?: markedUser;
 	item?: UserClothing | UserOutfit;
 	editable?: boolean;
-	matchItems?: UserClothingListSingle;
+	matchItems?: outfitType;
 	returnTo?: NativeStackNavigationProp<StackTypes>;
 	returnToPfp?: boolean;
 }

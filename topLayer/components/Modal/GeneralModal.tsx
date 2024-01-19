@@ -34,21 +34,16 @@ export interface ModalPropTypes {
 const GeneralModal = forwardRef(
 	({ title, height, content, dim = true }: ModalPropTypes, ref) => {
 		const active = useSharedValue(false);
-
 		const translateY = useSharedValue(0);
 		const context = useSharedValue({ y: 0 });
-
 		const isActive = useCallback(() => {
 			return active.value;
 		}, []);
-
 		const scrollTo = useCallback((destination: number) => {
 			'worklet';
-
 			active.value = destination !== 0;
 			translateY.value = withSpring(destination, { damping: 20 });
 		}, []);
-
 		useImperativeHandle(ref, () => ({ scrollTo, isActive }), [
 			scrollTo,
 			isActive,

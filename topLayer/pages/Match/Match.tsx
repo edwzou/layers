@@ -9,7 +9,7 @@ import { MainPageContext } from '../../pages/Main/MainPage';
 import {
 	isUserClothingArray,
 	type UserClothing,
-	type UserClothingList,
+	type UserSelectedClothingList,
 } from '../../types/Clothing';
 import { match } from '../../constants/GlobalStrings';
 import GlobalStyles from '../../constants/GlobalStyles';
@@ -21,15 +21,16 @@ import { type UserAllItems } from '../../types/AllItems';
 import Icon from 'react-native-remix-icon';
 import { screenHeight } from '../../utils/modalMaxShow';
 import {
-	UserClothingListSingle,
-	UserSelectedClothingList,
+	type outfitType,
+	type outfitClothingItemsType,
 } from '../../types/Outfit';
+import { emptyClothing } from '../../constants/Clothing';
 
 const Match: React.FC = () => {
 	const { allItems } = useContext(MainPageContext);
+	console.log('allItems match: ', allItems[1].data);
 
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
-
 	const [selectedIndexes, setSelectedIndexes] =
 		useState<UserSelectedClothingList>({
 			outerwear: 0,
@@ -37,18 +38,17 @@ const Match: React.FC = () => {
 			bottoms: 0,
 			shoes: 0,
 		});
-
-	const [data, setData] = useState<UserClothingList>({
+	const [data, setData] = useState<outfitClothingItemsType>({
 		outerwear: [] as UserClothing[],
 		tops: [] as UserClothing[],
 		bottoms: [] as UserClothing[],
 		shoes: [] as UserClothing[],
 	});
-	const [previewData, setPreviewData] = useState<UserClothingListSingle>({
-		outerwear: undefined,
-		tops: undefined,
-		bottoms: undefined,
-		shoes: undefined,
+	const [previewData, setPreviewData] = useState<outfitType>({
+		outerwear: { ...emptyClothing },
+		tops: { ...emptyClothing },
+		bottoms: { ...emptyClothing },
+		shoes: { ...emptyClothing },
 	});
 
 	useEffect(() => {
@@ -58,7 +58,7 @@ const Match: React.FC = () => {
 				.filter((value) => value.category.toString() === type);
 		};
 
-		const newData: UserClothingList = {
+		const newData: outfitClothingItemsType = {
 			outerwear: [],
 			tops: [],
 			bottoms: [],

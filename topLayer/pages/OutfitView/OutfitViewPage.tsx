@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native';
 import React, { type ReactElement } from 'react';
 import { Stack } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
@@ -31,5 +30,3 @@ const OutfitViewPage = (): ReactElement => {
 };
 
 export default OutfitViewPage;
-
-const styles = StyleSheet.create({});

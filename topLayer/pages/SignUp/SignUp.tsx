@@ -16,16 +16,7 @@ import { useUpdateUser } from '../../Contexts/UserContext';
 import { usePhoto } from '../../Contexts/CameraContext';
 import SettingsFields from '../../components/Settings/SettingsFields';
 import { View } from 'react-native';
-
-interface FormValues {
-	first_name: string;
-	last_name: string;
-	username: string;
-	email: string;
-	password: string;
-	private_option: boolean;
-	profile_picture: string;
-}
+import { type formUser } from '../../types/User';
 
 const SignUp: React.FC = () => {
 	const updateUser = useUpdateUser();
@@ -39,11 +30,11 @@ const SignUp: React.FC = () => {
 		setValue,
 		formState: { dirtyFields, errors },
 	} = useForm({
-		defaultValues: defaultFormUser,
+		defaultValues: { ...defaultFormUser },
 	});
 
-	const onSubmit = (values: FormValues): void => {
-		const formValues: FormValues = {
+	const onSubmit = (values: formUser): void => {
+		const formValues: formUser = {
 			first_name: values.first_name,
 			last_name: values.last_name,
 			username: values.username,

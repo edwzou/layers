@@ -34,6 +34,8 @@ const ProfileCell = ({
 	user,
 	handleRelationRender,
 }: ProfileCellPropsType): ReactElement => {
+	const setUserMarkFunc = useMarkUserFuncDispatch();
+
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const [iconName, setIconName] = useState(
 		user.marked
@@ -41,8 +43,6 @@ const ProfileCell = ({
 			: GlobalStyles.icons.bookmarkOutline
 	);
 	const index = useRef<number>(-1);
-	const setUserMarkFunc = useMarkUserFuncDispatch();
-
 	let userProcessed: MutableRefObject<markedUser>;
 	if (isPrivateUser(user)) {
 		userProcessed = useRef({
