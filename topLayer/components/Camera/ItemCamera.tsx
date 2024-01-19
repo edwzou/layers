@@ -44,7 +44,6 @@ const ItemCamera = (): ReactElement => {
 	return (
 		<Stack.Navigator
 			screenOptions={{
-				detachPreviousScreen: false,
 				headerShown: false,
 				cardStyle: { backgroundColor: 'black', opacity: 1 },
 			}}
