@@ -8,6 +8,7 @@ import { ITEM_SIZE } from '../../utils/GapCalc';
 import GlobalStyles from '../../constants/GlobalStyles';
 import Icon from 'react-native-remix-icon';
 import { emptyClothing } from '../../constants/Clothing';
+
 const SNAP_ITEM_SIZE = ITEM_SIZE() * 1.15;
 const HORIZONTAL_SPACING = ITEM_SIZE() * 0.15; // Cell gap
 const VERTICAL_SPACING = SNAP_ITEM_SIZE + HORIZONTAL_SPACING;

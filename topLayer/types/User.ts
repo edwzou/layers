@@ -20,6 +20,12 @@ export interface formUser {
 	profile_picture: string;
 }
 
+export interface loginUser {
+	username: string;
+	email: string;
+	password: string;
+}
+
 export interface markedUser extends User {
 	marked: boolean;
 }

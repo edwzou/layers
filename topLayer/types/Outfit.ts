@@ -1,24 +1,5 @@
 import { isUserClothingArray, type UserClothing } from './Clothing';
 
-export interface UserClothingListSingle {
-	outerwear: UserClothing | undefined;
-	tops: UserClothing | undefined;
-	bottoms: UserClothing | undefined;
-	shoes: UserClothing | undefined;
-}
-
-export interface UserSelectedClothingList {
-	outerwear: number;
-	tops: number;
-	bottoms: number;
-	shoes: number;
-}
-
-export interface matchType {
-	previewData: UserClothingListSingle;
-	matchName: string;
-}
-
 export interface outfitType {
 	outerwear: UserClothing;
 	tops: UserClothing;

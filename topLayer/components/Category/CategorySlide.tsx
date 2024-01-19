@@ -6,7 +6,7 @@ import OutfitCard from '../Card/OutfitCard';
 import ItemCell from '../Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { type UserClothing } from '../../types/Clothing';
-import { type UserOutfit } from '../../types/Outfit';
+import { isUserOutfitArray, type UserOutfit } from '../../types/Outfit';
 import Empty from './Empty';
 import { type UserAllItems } from '../../types/AllItems';
 
@@ -22,10 +22,10 @@ const CategorySlide = ({
 	const windowWidth = Dimensions.get('window').width;
 
 	const slide = (): ReactElement => {
-		if (itemsData.category === 'outfits') {
+		if (isUserOutfitArray(itemsData.data)) {
 			return (
 				<FlatList
-					data={itemsData.data as UserOutfit[]}
+					data={itemsData.data}
 					renderItem={({ item }) => {
 						return (
 							<OutfitCard
@@ -50,7 +50,7 @@ const CategorySlide = ({
 		} else {
 			return (
 				<FlatList
-					data={itemsData.data as UserClothing[]}
+					data={itemsData.data}
 					renderItem={({ item }) => {
 						return (
 							<View style={{ width: ITEM_SIZE(2) }}>

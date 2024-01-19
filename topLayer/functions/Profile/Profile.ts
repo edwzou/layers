@@ -1,4 +1,4 @@
-import { type UserAllItems } from '../../types/AllItems';
+import { UserAllItems2, type UserAllItems } from '../../types/AllItems';
 import { type UserClothing } from '../../types/Clothing';
 import { type UserOutfit } from '../../types/Outfit';
 import { CategoryToIndex, StackNavigation } from '../../constants/Enums';
@@ -84,5 +84,22 @@ export const allUserItems = (
 			data: allShoes,
 		},
 	];
+	return items;
+};
+
+export const allUserItems2 = (
+	allOutfits: UserOutfit[],
+	allOuterwear: UserClothing[],
+	allTops: UserClothing[],
+	allBottoms: UserClothing[],
+	allShoes: UserClothing[]
+): UserAllItems2 => {
+	const items = {
+		Outfits: allOutfits,
+		Outerwear: allOuterwear,
+		Tops: allTops,
+		Bottoms: allBottoms,
+		Shoes: allShoes,
+	};
 	return items;
 };
