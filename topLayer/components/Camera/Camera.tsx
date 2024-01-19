@@ -75,7 +75,6 @@ export default function CameraComponent({
 
 	const takePicture = useCallback(async () => {
 		if (cameraRef.current == null || !canTakePictureRef.current) return;
-
 		canTakePictureRef.current = false;
 
 		try {
