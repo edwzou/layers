@@ -29,7 +29,7 @@ const ItemView = ({
 					rightButtonAction={directToItemEdit}
 				/>
 				<View style={styles.content}>
-					<View style={{ flex: 1 }}>
+					<View style={styles.flex}>
 						<ItemCell imageUrl={clothingItem.image_url} />
 					</View>
 					<View style={styles.categoryContainer}>
@@ -50,6 +50,9 @@ const ItemView = ({
 export default ItemView;
 
 const styles = StyleSheet.create({
+	flex: {
+		flex: 1,
+	},
 	container: {
 		gap: GlobalStyles.layout.gap,
 		flex: 1,

@@ -16,6 +16,7 @@ import { type UserClothing } from '../../types/Clothing';
 import { getAllClothingItems, getAllOutfits } from '../../endpoints/wardrobe';
 import { type UserAllItems } from '../../types/AllItems';
 import { type NativeSyntheticEvent } from 'react-native';
+import { allUserItems } from '../../functions/Profile/Profile';
 
 export const MainPageContext = createContext({
 	navigationArray: [() => {}],
@@ -34,28 +35,13 @@ const MainPage: React.FC = () => {
 	const [allShoes, setAllShoes] = useState<UserClothing[]>([]);
 
 	// initializes an array of clothing categories and their data
-	const allItems: UserAllItems[] = [
-		{
-			category: 'outfits',
-			data: allOutfits,
-		},
-		{
-			category: 'outerwear',
-			data: allOuterwear,
-		},
-		{
-			category: 'tops',
-			data: allTops,
-		},
-		{
-			category: 'bottoms',
-			data: allBottoms,
-		},
-		{
-			category: 'shoes',
-			data: allShoes,
-		},
-	];
+	const allItems: UserAllItems[] = allUserItems(
+		allOutfits,
+		allOuterwear,
+		allTops,
+		allBottoms,
+		allShoes
+	);
 
 	// fetched all the outfits and clothings
 	useEffect(() => {

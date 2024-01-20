@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import ItemCell from '../Cell/ItemCell';
 import { screenWidth } from '../../utils/modalMaxShow';
-import { outfitClothingItemsType } from 'types/Outfit';
+import { type outfitClothingItemsType } from '../../types/Outfit';
 
 const itemCellSize = (screenWidth - 60) / 4;
 

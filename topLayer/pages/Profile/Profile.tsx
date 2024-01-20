@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { type UserClothing } from '../../types/Clothing';
-import { UserOutfit } from '../../types/Outfit';
+import { type UserOutfit } from '../../types/Outfit';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useUser } from '../../Contexts/UserContext';
@@ -20,17 +20,17 @@ import {
 	handleCategoryChange,
 	handleItemChange,
 } from '../../functions/Profile/Profile';
-import { UserAllItems } from '../../types/AllItems';
+import { type UserAllItems } from '../../types/AllItems';
 
 const Profile: React.FC = () => {
+	const data = useUser();
+	const { allItems } = useContext(MainPageContext);
+
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 	const flatListRef = useRef<FlatList<UserAllItems>>(null);
-
 	const [selectedCategory, setSelectedCategory] = useState(
 		ClothingTypes.outfits as string
 	);
-	const data = useUser();
-	const { allItems } = useContext(MainPageContext);
 
 	const handleViewableItemsChanged = useRef(
 		({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -44,17 +44,13 @@ const Profile: React.FC = () => {
 		}
 	).current;
 
-	const toggleFeedbackModal = (): void => {
-		navigation.navigate(StackNavigation.Feedback, {});
-	};
-
 	const toggleSettingsModal = (): void => {
 		navigation.navigate(StackNavigation.Settings, {});
 	};
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
-			<Navbar toggleFeedbackModal={toggleFeedbackModal} />
+		<SafeAreaView style={styles.container}>
+			<Navbar />
 			<ProfileHeading user={data} profilePicturePress={toggleSettingsModal} />
 			<CategoryComponent
 				allItems={allItems}
@@ -72,6 +68,10 @@ const Profile: React.FC = () => {
 	);
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+});
 
 export default Profile;

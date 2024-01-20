@@ -1,8 +1,8 @@
 import { type UserClothing } from './Clothing';
-import { UserOutfit, outfitType } from './Outfit';
+import { type UserOutfit, type outfitType } from './Outfit';
 import { type markedUser } from './User';
 
-interface empty {}
+type empty = Record<PropertyKey, never>;
 
 export interface RouteTypes {
 	[key: string]: object;

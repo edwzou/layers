@@ -11,11 +11,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type StackTypes } from '../../utils/StackNavigation';
 import { StackNavigation } from '../../constants/Enums';
 
-interface NavbarPropsType {
-	toggleFeedbackModal: () => void;
-}
-
-const Navbar = ({ toggleFeedbackModal }: NavbarPropsType): ReactElement => {
+const Navbar = (): ReactElement => {
 	const { navigationArray } = useContext(MainPageContext);
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
@@ -29,17 +25,6 @@ const Navbar = ({ toggleFeedbackModal }: NavbarPropsType): ReactElement => {
 				>
 					<Icon
 						name={GlobalStyles.icons.shirtOutline}
-						color={GlobalStyles.colorPalette.primary[900]}
-						size={GlobalStyles.sizing.icon.regular}
-					/>
-				</Pressable>
-				<Pressable
-					onPress={() => {
-						toggleFeedbackModal();
-					}}
-				>
-					<Icon
-						name={GlobalStyles.icons.feedbackOutline}
 						color={GlobalStyles.colorPalette.primary[900]}
 						size={GlobalStyles.sizing.icon.regular}
 					/>

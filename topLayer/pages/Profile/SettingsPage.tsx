@@ -21,16 +21,7 @@ import { type StackTypes } from '../../utils/StackNavigation';
 import SettingsFields from '../../components/Settings/SettingsFields';
 import { Loading } from '../../components/Loading/Loading';
 import Button from '../../components/Button/Button';
-
-interface FormValues {
-	first_name: string;
-	last_name: string;
-	email: string;
-	username: string;
-	password: string;
-	private_option: boolean;
-	profile_picture: string;
-}
+import { type formUser } from '../../types/User';
 
 const SettingsPage: React.FC = () => {
 	const data = useUser();
@@ -43,7 +34,7 @@ const SettingsPage: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(false); // Add loading state
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const defaultForm = {
+	const defaultForm: formUser = {
 		first_name: first_name,
 		last_name: last_name,
 		email: email,
@@ -68,16 +59,18 @@ const SettingsPage: React.FC = () => {
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('beforeRemove', () => {
-			resetPhoto({
-				type: 'new photo',
-				image: profile_picture.current,
-			});
+			if (photo !== profile_picture.current) {
+				resetPhoto({
+					type: 'new photo',
+					image: profile_picture.current,
+				});
+			}
 		});
 		return unsubscribe;
 	});
 
-	const updateUser = async (formValues: FormValues): Promise<void> => {
-		const updatedFields: Partial<FormValues> = {};
+	const updateUser = async (formValues: formUser): Promise<void> => {
+		const updatedFields: Partial<formUser> = {};
 
 		if (formValues.first_name !== first_name) {
 			updatedFields.first_name = formValues.first_name;

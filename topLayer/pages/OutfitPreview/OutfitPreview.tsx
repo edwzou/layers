@@ -5,14 +5,10 @@ import React, {
 	useContext,
 	type ReactElement,
 } from 'react';
-import { FlatList } from 'react-native-gesture-handler';
 import { baseUrl } from '../../utils/apiUtils';
 import axios from 'axios';
-import ItemCell from '../../components/Cell/ItemCell';
 import GlobalStyles from '../../constants/GlobalStyles';
 import StackedTextbox from '../../components/Textbox/StackedTextbox';
-import { ITEM_SIZE } from '../../utils/GapCalc';
-import { screenHeight } from '../../utils/modalMaxShow';
 import { type UserClothing } from '../../types/Clothing';
 import { axiosEndpointErrorHandler } from '../../utils/ErrorHandlers';
 import { toast, match as matchHeading } from '../../constants/GlobalStrings';
@@ -26,19 +22,21 @@ import {
 	useRoute,
 } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type StackTypes } from 'utils/StackNavigation';
+import { type StackTypes } from '../../utils/StackNavigation';
 import { Loading } from '../../components/Loading/Loading';
 import { StackNavigation, StepOverTypes } from '../../constants/Enums';
 import Header from '../../components/Header/Header';
 import { emptyClothing } from '../../constants/Clothing';
 import { MainPageContext } from '../../pages/Main/MainPage';
-import { type RouteTypes } from 'types/Routes';
+import { type RouteTypes } from '../../types/Routes';
+import OutfitBlockLayout from '../../components/Outfit/OutfitBlockLayout';
 
 const OutfitPreview = (): ReactElement => {
+	const { setShouldRefreshMainPage } = useContext(MainPageContext);
+
 	const route = useRoute<RouteProp<RouteTypes, 'OutfitPreview'>>();
 	const navigation = useNavigation<NativeStackNavigationProp<StackTypes>>();
 
-	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 	const { matchItems } = route.params;
 
 	const [text, setText] = useState('');
@@ -138,18 +136,7 @@ const OutfitPreview = (): ReactElement => {
 					onFieldChange={onInputChange}
 					value={text}
 				/>
-				<FlatList
-					data={data}
-					renderItem={({ item }) => (
-						<View style={{ width: ITEM_SIZE(2) }}>
-							<ItemCell imageUrl={item.image_url} key={item.ciid} />
-						</View>
-					)}
-					numColumns={2}
-					contentContainerStyle={{ gap: GlobalStyles.layout.gap }}
-					columnWrapperStyle={{ gap: GlobalStyles.layout.gap }}
-					style={{ height: screenHeight - 350 }}
-				/>
+				<OutfitBlockLayout data={data} />
 
 				{isLoading ? <Loading /> : null}
 			</View>

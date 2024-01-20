@@ -1,26 +1,15 @@
 import axios from 'axios';
 import { baseUrl } from '../../utils/apiUtils';
 import { View, StyleSheet, Pressable, Alert } from 'react-native';
-import React, { useState, useRef, useContext, type ReactElement } from 'react';
-import { TagAction, StepOverTypes } from '../../constants/Enums';
-import Dropdown from '../../components/Dropdown/Dropdown';
-import StackedTextBox from '../../components/Textbox/StackedTextbox';
-import ItemCell from '../../components/Cell/ItemCell';
-import { modalLowTranslateY } from '../../utils/modalMaxShow';
-import ColorPicker from '../../components/ColorManager/ColorPicker';
-import GeneralModal, {
-	type refPropType,
-} from '../../components/Modal/GeneralModal';
-import { ITEM_SIZE } from '../../utils/GapCalc';
+import React, { useState, useContext, type ReactElement } from 'react';
+import { StepOverTypes } from '../../constants/Enums';
 import GlobalStyles from '../../constants/GlobalStyles';
-import ColorTagsList from '../../components/ColorManager/ColorTagsList';
 import {
 	type editableClothingTypes,
 	type UserClothing,
 } from '../../types/Clothing';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Icon from 'react-native-remix-icon';
-import { ScrollView } from 'react-native-gesture-handler';
 import Header from '../../components/Header/Header';
 import { MainPageContext } from '../../pages/Main/MainPage';
 import { toast, itemEdit } from '../../constants/GlobalStrings';
@@ -30,10 +19,8 @@ import {
 	showErrorToast,
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
-import { setClothingTypeSize } from '../../functions/ClothingItem/Sizes';
-import { clothingItemTypes } from '../../constants/Clothing';
-import { userFieldRules } from '../../constants/userConstraints';
 import { areArraysEqual } from '../../functions/General/array';
+import ItemFields from '../../components/Item/ItemFields';
 
 interface ItemEditPropsType {
 	clothingItem: UserClothing;
@@ -46,21 +33,11 @@ const ItemEdit = ({
 }: ItemEditPropsType): ReactElement => {
 	const { setShouldRefreshMainPage } = useContext(MainPageContext);
 
-	const colorPickerRef = useRef<refPropType>(null);
 	const [isLoading, setIsLoading] = useState(false);
-	const [currentColorTags, setColorTags] = useState(clothingItem.color);
-	const [sizeOpen, setSizeOpen] = useState(false);
-	const [sizeValue, setSizeValue] = useState(clothingItem.size ?? '');
-	const [sizeOptions, setSizeOptions] = useState(
-		setClothingTypeSize(clothingItem.category)
-	);
-	const [itemTypeOpen, setItemTypeOpen] = useState(false);
-	const [itemTypeValue, setItemTypeValue] = useState(
-		clothingItem.category ?? ''
-	);
 
 	const { control, handleSubmit, setValue } = useForm({
 		defaultValues: {
+			image: '',
 			category: clothingItem.category,
 			title: clothingItem.title,
 			size: clothingItem.size,
@@ -154,23 +131,6 @@ const ItemEdit = ({
 		}
 	};
 
-	const handleOnRemovePress = (colorToDelete: string): void => {
-		const updatedColorTags = currentColorTags.filter(
-			(color: string) => color !== colorToDelete
-		);
-		setColorTags(updatedColorTags);
-		setValue('color', updatedColorTags);
-	};
-
-	const handleOnNewColorPress = (colorToAdd: string): void => {
-		if (!currentColorTags.some((color: string) => color === colorToAdd)) {
-			const colors = [...currentColorTags, colorToAdd];
-			setColorTags(colors);
-			setValue('color', colors);
-		}
-		colorPickerRef.current?.scrollTo(0);
-	};
-
 	return (
 		<View style={styles.container}>
 			<Header
@@ -181,77 +141,11 @@ const ItemEdit = ({
 				rightStepOverType={StepOverTypes.done}
 				rightButtonAction={handleSubmit(handleUpdate)}
 			/>
-			<ScrollView
-				contentContainerStyle={GlobalStyles.sizing.bottomSpacingPadding}
-			>
-				<View
-					style={{
-						marginHorizontal: GlobalStyles.layout.xGap,
-						gap: GlobalStyles.layout.gap,
-					}}
-				>
-					<Controller
-						control={control}
-						rules={userFieldRules.title}
-						render={({ field: { onChange, value } }) => (
-							<StackedTextBox
-								label={itemEdit.itemName}
-								onFieldChange={onChange}
-								value={value.trim()}
-							/>
-						)}
-						name="title"
-					/>
-					<ItemCell imageUrl={clothingItem.image_url} />
-					<View
-						style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-					>
-						<View style={{ width: ITEM_SIZE(2) }}>
-							<Dropdown
-								label="Category"
-								open={itemTypeOpen}
-								setOpen={setItemTypeOpen}
-								setValue={(value) => {
-									setItemTypeValue(value);
-								}}
-								onChangeValue={(value: string | null) => {
-									if (value !== null) {
-										setSizeOptions(setClothingTypeSize(value));
-										setValue('category', value);
-									}
-								}}
-								items={clothingItemTypes}
-								value={itemTypeValue}
-							/>
-						</View>
-						<View style={{ width: ITEM_SIZE(2) }}>
-							<Dropdown
-								label="Size"
-								open={sizeOpen}
-								setOpen={setSizeOpen}
-								setValue={(value) => {
-									setSizeValue(value);
-								}}
-								onChangeValue={(value) => {
-									if (value !== null) {
-										setValue('size', value);
-									}
-								}}
-								items={sizeOptions}
-								value={sizeValue}
-							/>
-						</View>
-					</View>
-					<ColorTagsList
-						data={currentColorTags}
-						tagAction={TagAction.remove}
-						onAddPress={() => {
-							colorPickerRef.current?.scrollTo(modalLowTranslateY);
-						}}
-						onRemovePress={handleOnRemovePress}
-					/>
-				</View>
-			</ScrollView>
+			<ItemFields
+				control={control}
+				setValue={setValue}
+				clothingItem={clothingItem}
+			/>
 			<View style={styles.deleteButtonContainer}>
 				<Pressable onPress={confirmDeletion}>
 					<View style={GlobalStyles.utils.deleteButton}>
@@ -263,12 +157,7 @@ const ItemEdit = ({
 					</View>
 				</Pressable>
 			</View>
-			<GeneralModal
-				ref={colorPickerRef}
-				height={modalLowTranslateY}
-				content={<ColorPicker onNewColorPress={handleOnNewColorPress} />}
-				dim={false}
-			/>
+
 			{isLoading ? <Loading /> : null}
 		</View>
 	);
@@ -277,7 +166,7 @@ const ItemEdit = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		gap: 15,
+		gap: GlobalStyles.layout.gap,
 		paddingTop: 20,
 	},
 	deleteButtonContainer: {

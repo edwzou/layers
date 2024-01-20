@@ -32,7 +32,7 @@ const SignInPage: React.FC = () => {
 				}}
 			>
 				<Text>
-					Don't have an account?{' '}
+					{"Don't have an account? "}
 					<Text
 						onPress={() => {
 							navigation.navigate(StackNavigation.SignUp, {});

@@ -1,30 +1,13 @@
-import React, {
-	createContext,
-	type Dispatch,
-	type SetStateAction,
-} from 'react';
+import React from 'react';
 import { StackNavigation } from '../../constants/Enums';
 import { Stack } from '../../utils/StackNavigation';
 import Profile from './Profile';
-import FeedbackPage from '../Feedback/FeedbackPage';
 import SettingsPage from './SettingsPage';
 import { NavigationContainer } from '@react-navigation/native';
 import ItemCamera from '../../components/Camera/ItemCamera';
 import CameraPfp from '../../components/Camera/CameraPfp';
 import OutfitPage from '../OutfitView/OutfitPage';
 import ItemPage from '../../pages/ItemView/ItemPage';
-
-// Define the context type
-interface ProfilePageContextType {
-	pfpUrlForSettings: string;
-	setReturnToPfp: Dispatch<SetStateAction<boolean>>;
-}
-
-// Create the context with the defined type
-export const ProfilePageContext = createContext<ProfilePageContextType>({
-	pfpUrlForSettings: '',
-	setReturnToPfp: () => {},
-});
 
 const ProfilePage: React.FC = () => {
 	return (
@@ -40,58 +23,35 @@ const ProfilePage: React.FC = () => {
 				<Stack.Group
 					screenOptions={{
 						presentation: 'modal',
+						headerShown: false,
 					}}
 				>
 					<Stack.Screen
-						name={StackNavigation.Feedback}
-						component={FeedbackPage}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
 						name={StackNavigation.Settings}
 						component={SettingsPage}
-						options={{
-							headerShown: false,
-						}}
 					/>
-					<Stack.Screen
-						name={StackNavigation.ItemPage}
-						component={ItemPage}
-						options={{
-							headerShown: false,
-						}}
-					/>
+					<Stack.Screen name={StackNavigation.ItemPage} component={ItemPage} />
 					<Stack.Screen
 						name={StackNavigation.OutfitPage}
 						component={OutfitPage}
-						options={{
-							headerShown: false,
-						}}
 					/>
-					<Stack.Screen
-						name={StackNavigation.ItemCamera}
-						component={ItemCamera}
-						options={{
+					<Stack.Group
+						screenOptions={{
 							presentation: 'fullScreenModal',
 							animation: 'slide_from_bottom',
 							gestureEnabled: true,
 							gestureDirection: 'vertical',
-							headerShown: false,
 						}}
-					/>
-					<Stack.Screen
-						name={StackNavigation.CameraPfp}
-						component={CameraPfp}
-						options={{
-							presentation: 'fullScreenModal',
-							animation: 'slide_from_bottom',
-							gestureEnabled: true,
-							gestureDirection: 'vertical',
-							headerShown: false,
-						}}
-					/>
+					>
+						<Stack.Screen
+							name={StackNavigation.ItemCamera}
+							component={ItemCamera}
+						/>
+						<Stack.Screen
+							name={StackNavigation.CameraPfp}
+							component={CameraPfp}
+						/>
+					</Stack.Group>
 				</Stack.Group>
 			</Stack.Navigator>
 		</NavigationContainer>
