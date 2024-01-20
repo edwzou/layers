@@ -42,21 +42,20 @@ const ItemCamera = (): ReactElement => {
 	);
 
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false,
+				cardStyle: { backgroundColor: 'black', opacity: 1 },
+			}}
+		>
 			<Stack.Group>
 				<Stack.Screen
 					name={StackNavigation.CameraComponents}
 					component={CameraComponents}
-					options={{
-						headerShown: false,
-					}}
 				/>
 				<Stack.Screen
 					name={StackNavigation.ItemCreate}
 					component={ItemCreateComponent}
-					options={{
-						headerShown: false,
-					}}
 				/>
 			</Stack.Group>
 		</Stack.Navigator>

@@ -103,6 +103,7 @@ const ItemCreate = ({
 
 const styles = StyleSheet.create({
 	container: {
+		backgroundColor: 'white',
 		flex: 1,
 		gap: 15,
 		paddingTop: 20,
