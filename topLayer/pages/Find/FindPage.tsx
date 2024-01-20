@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Find from './Find';
 import MarkedList from './MarkedList';
@@ -122,5 +121,3 @@ const FindPage: React.FC = () => {
 };
 
 export default FindPage;
-
-const styles = StyleSheet.create({});
