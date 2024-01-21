@@ -1,24 +1,3 @@
-CREATE TYPE color_enum AS ENUM (
-    '#4891FF', -- Blue
-    '#46B9C9', -- Teal
-    '#A3DEC9', -- Mint
-    '#6DC86E', -- Green
-    '#76956B', -- Olive
-    '#EEE16B', -- Yellow
-    '#E8D3B4', -- Beige
-    '#977854', -- Brown
-    '#EBA655', -- Orange
-    '#E55A5A', -- Red
-    '#AD4E4E', -- Maroon
-    '#F67ECE', -- Pink
-    '#B77AC7', -- Purple
-    '#3869B2', -- Navy
-    '#121212', -- Black
-    '#CDCDCD', -- Grey
-    '#FFFFF7', -- White
-    '#FFFBEB' -- Cream
-);
-
 CREATE TYPE item_categories AS ENUM (
     'outerwear',
     'tops',
@@ -61,7 +40,7 @@ CREATE TABLE backend_schema.clothing_item (
     uid UUID NOT NULL,
     brands VARCHAR(50)[],
     size VARCHAR(50),
-    color color_enum[] NOT NULL,
+    color VARCHAR(7)[],
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT item
       FOREIGN KEY (uid) 

@@ -1,6 +1,6 @@
 import React, { type ReactElement } from 'react';
 import Tag from './Tag';
-import { ColorTags, TagCategory } from '../../constants/Enums';
+import { TagCategory } from '../../constants/Enums';
 
 interface ColorTagPropsType {
 	action: string;
@@ -15,11 +15,7 @@ const ColorTag = ({
 }: ColorTagPropsType): ReactElement => {
 	return (
 		<Tag
-			label={
-				color !== null && color !== undefined && color !== ''
-					? ColorTags[color]
-					: undefined
-			}
+			label="   "
 			bgColor={color ?? undefined}
 			type={{ category: TagCategory.color, action }}
 			onPress={onPress}

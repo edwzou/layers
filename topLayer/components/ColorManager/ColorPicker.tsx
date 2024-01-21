@@ -1,17 +1,29 @@
-import React, { useState, useEffect, type ReactElement } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import ColorTag from '../Tag/ColorTag';
-import { TagAction } from '../../constants/Enums';
-import GlobalStyles from '../../constants/GlobalStyles';
-import { screenWidth } from '../../utils/modalMaxShow';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+	PanGestureHandler,
+	type PanGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
+import Animated, {
+	interpolateColor,
+	useAnimatedGestureHandler,
+	useAnimatedStyle,
+	useDerivedValue,
+	useSharedValue,
+	withSpring,
+	runOnJS,
+} from 'react-native-reanimated';
+import { LinearGradient, Stop } from 'react-native-svg';
 
 interface ColorPickerPropsType {
 	onNewColorPress: (colorToAdd: string) => void;
+	maxWidth: number;
 }
 
-const ColorPicker = ({
+const ColorPicker: React.FC<ColorPickerPropsType> = ({
 	onNewColorPress,
-}: ColorPickerPropsType): ReactElement => {
+	maxWidth,
+}) => {
 	const colors = [
 		'#4891FF',
 		'#46B9C9',
@@ -33,55 +45,194 @@ const ColorPicker = ({
 		'#FFFFF7',
 	];
 
-	const tagWidth = 60; // Adjust this value according to your desired tag size
+	const translateX = useSharedValue(0);
+	const translateY = useSharedValue(0);
+	const scale = useSharedValue(1);
 
-	const [tagsPerRow, setTagsPerRow] = useState(4); // Initial number of tags per row
-	const screenWidth = Dimensions.get('window').width;
+	const [currentColor, setCurrentColor] = useState<string>(colors[0]);
 
-	useEffect(() => {
-		// Calculate the optimal number of tags per row based on aspect ratio
-		const optimalTagsPerRow = Math.floor(screenWidth / tagWidth);
-		setTagsPerRow(optimalTagsPerRow);
-	}, [screenWidth]);
+	const adjustedTranslateX = useDerivedValue(() => {
+		return Math.min(Math.max(translateX.value, 0), maxWidth - 45);
+	});
 
-	const renderColorTags = (): ReactElement[] => {
-		const rows = Math.ceil(colors.length / tagsPerRow);
+	const panGestureEvent = useAnimatedGestureHandler<
+		PanGestureHandlerGestureEvent,
+		{ x: number }
+	>({
+		onStart: (_, context) => {
+			context.x = adjustedTranslateX.value;
+			translateY.value = withSpring(-45);
+			scale.value = withSpring(1.2);
+		},
+		onActive: (event, context) => {
+			translateX.value = event.translationX + context.x;
+		},
+		onEnd: () => {
+			translateY.value = withSpring(0);
+			scale.value = withSpring(1);
+		},
+	});
 
-		const colorTagRows = [];
-		for (let i = 0; i < rows; i++) {
-			const rowColors = colors.slice(i * tagsPerRow, (i + 1) * tagsPerRow);
-			colorTagRows.push(
-				<View key={i} style={styles.row}>
-					{rowColors.map((color, index) => (
-						<ColorTag
-							key={index}
-							action={TagAction.push}
-							color={color}
-							onPress={() => {
-								onNewColorPress(color);
-							}}
-						/>
-					))}
-				</View>
-			);
-		}
+	const rStyle = useAnimatedStyle(() => {
+		return {
+			transform: [
+				{ translateX: adjustedTranslateX.value },
+				{ translateY: translateY.value },
+				{ scale: scale.value },
+			],
+		};
+	});
 
-		return colorTagRows;
-	};
+	const rInternalPickerStyle = useAnimatedStyle(() => {
+		const inputRange = colors.map(
+			(_, index) => (index / colors.length) * maxWidth
+		);
 
-	return <View style={styles.container}>{renderColorTags()}</View>;
+		const numericColor = interpolateColor(translateX.value, inputRange, colors);
+
+		const colorAsNumber =
+			typeof numericColor === 'string'
+				? parseInt(numericColor, 16)
+				: numericColor;
+
+		const backgroundColor = `#${(colorAsNumber >>> 0).toString(16).padStart(6, '0').slice(2).toUpperCase()}`;
+
+		runOnJS(setCurrentColor)(backgroundColor);
+
+		console.log('color', backgroundColor);
+
+		return {
+			backgroundColor,
+		};
+	});
+
+	return (
+		<View style={styles.container}>
+			<LinearGradient
+				colors={colors}
+				start={{ x: 0, y: 0 }}
+				end={{ x: 1, y: 0 }}
+				style={styles.linearGradient}
+			/>
+			<PanGestureHandler onGestureEvent={panGestureEvent}>
+				<Animated.View style={[styles.picker, rStyle]}>
+					<Animated.View
+						style={[styles.internalPicker, rInternalPickerStyle]}
+					/>
+				</Animated.View>
+			</PanGestureHandler>
+			<TouchableOpacity
+				onPress={() => {
+					console.log('Current:', currentColor);
+					onNewColorPress(currentColor);
+				}}
+				style={styles.button}
+			>
+				<Text style={styles.buttonText}>Log Background Color</Text>
+			</TouchableOpacity>
+		</View>
+
+		// <View>
+		// 	<PanGestureHandler onGestureEvent={panGestureEvent}>
+		// 		<Animated.View style={styles.container}>
+		// 			<LinearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+		// 				<Stop offset="0%" stopColor="#4c669f" stopOpacity="1" />
+		// 				<Stop offset="100%" stopColor="#3b5998" stopOpacity="1" />
+		// 			</LinearGradient>
+		// 			<Animated.View style={[styles.picker, rStyle]}>
+		// 				<Animated.View
+		// 					style={[styles.internalPicker, rInternalPickerStyle]}
+		// 				/>
+		// 			</Animated.View>
+		// 		</Animated.View>
+		// 	</PanGestureHandler>
+		// 	<TouchableOpacity
+		// 		onPress={() => {
+		// 			console.log('Current:', currentColor);
+		// 			onNewColorPress(currentColor);
+		// 		}}
+		// 		style={styles.button}
+		// 	>
+		// 		<Text style={styles.buttonText}>Log Background Color</Text>
+		// 	</TouchableOpacity>
+		// </View>
+	);
 };
 
+const PICKERSIZE = 45;
+const INTERNALPICKERSIZE = PICKERSIZE / 2;
+
 const styles = StyleSheet.create({
+	// container: {
+	// 	alignItems: 'center',
+	// 	justifyContent: 'center',
+	// },
+	// internalPicker: {
+	// 	height: INTERNALPICKERSIZE,
+	// 	width: INTERNALPICKERSIZE,
+	// 	borderRadius: INTERNALPICKERSIZE / 2,
+	// 	borderWidth: 1,
+	// 	borderColor: 'black', // Add border color for visibility
+	// 	alignSelf: 'center', // Center horizontally
+	// 	justifyContent: 'center', // Center vertically
+	// },
+	// picker: {
+	// 	position: 'absolute',
+	// 	backgroundColor: 'white',
+	// 	height: PICKERSIZE,
+	// 	width: PICKERSIZE,
+	// 	borderRadius: PICKERSIZE / 2,
+	// },
+	// button: {
+	// 	marginTop: 20,
+	// 	backgroundColor: '#007BFF',
+	// 	paddingVertical: 10,
+	// 	paddingHorizontal: 20,
+	// 	borderRadius: 5,
+	// },
+	// buttonText: {
+	// 	color: 'white',
+	// 	fontWeight: 'bold',
+	// },
+	// linearGradient: {
+	// 	flex: 1,
+	// },
 	container: {
-		...GlobalStyles.utils.mediumRadius,
-		padding: 10,
-	},
-	row: {
-		flexDirection: 'row',
+		alignItems: 'center',
 		justifyContent: 'center',
-		gap: screenWidth / 20,
-		marginVertical: screenWidth / 20 / 2,
+		flex: 1,
+	},
+	internalPicker: {
+		height: INTERNALPICKERSIZE,
+		width: INTERNALPICKERSIZE,
+		borderRadius: INTERNALPICKERSIZE / 2,
+		borderWidth: 1,
+		borderColor: 'black',
+		alignSelf: 'center',
+		justifyContent: 'center',
+	},
+	picker: {
+		position: 'absolute',
+		backgroundColor: 'white',
+		height: PICKERSIZE,
+		width: PICKERSIZE,
+		borderRadius: PICKERSIZE / 2,
+	},
+	button: {
+		marginTop: 20,
+		backgroundColor: '#007BFF',
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		borderRadius: 5,
+	},
+	buttonText: {
+		color: 'white',
+		fontWeight: 'bold',
+	},
+	linearGradient: {
+		position: 'absolute',
+		width: '90%',
+		height: 200,
 	},
 });
 

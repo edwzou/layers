@@ -1,6 +1,6 @@
 import React, { useState, type ReactElement, useRef } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import GlobalStyles from '../../constants/GlobalStyles';
 import {
 	Controller,
@@ -53,6 +53,7 @@ const ItemFields = ({
 	const [itemTypeValue, setItemTypeValue] = useState(
 		clothingItem.category ?? ''
 	);
+	const windowWidth = Dimensions.get('window').width * 0.9;
 
 	return (
 		<>
@@ -151,6 +152,7 @@ const ItemFields = ({
 								setValue
 							);
 						}}
+						maxWidth={windowWidth}
 					/>
 				}
 				dim={false}

@@ -58,10 +58,10 @@ router.post('/', (req: Request, res: Response): void => {
 				query += "'', ";
 			}
 			if (color !== undefined && color !== null) {
-				const colorsArray = color.map((col) => `'${col}'::color_enum`);
-				query += `ARRAY[${colorsArray.join(', ')}]::color_enum[], `;
+				const colorsArray = color.map((col) => `'${col}'`);
+				query += `ARRAY[${colorsArray.join(', ')}]::VARCHAR[], `;
 			} else {
-				query += 'ARRAY[]::color_enum[], ';
+				query += 'ARRAY[]::VARCHAR[], ';
 			}
 			query += `'${uid}')`;
 
@@ -132,8 +132,8 @@ router.put('/:ciid', (req: Request, res: Response): void => {
 				query += ` size = '${size}',`;
 			}
 			if (color !== undefined && color !== null) {
-				const colorsArray = color.map((col) => `'${col}'::color_enum`);
-				query += ` color = ARRAY[${colorsArray.join(', ')}]::color_enum[],`;
+				const colorsArray = color.map((col) => `'${col}'`);
+				query += ` color = ARRAY[${colorsArray.join(', ')}]::VARCHAR[],`;
 			}
 
 			// Check if at least one field is provided
