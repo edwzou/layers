@@ -23,6 +23,7 @@ import {
 	showSuccessToast,
 } from '../../components/Toasts/Toasts';
 import ItemFields from '../../components/Item/ItemFields';
+import GlobalStyles from 'constants/GlobalStyles';
 
 interface ItemCreatePropsType {
 	clothingItem: UserClothing;
@@ -103,7 +104,7 @@ const ItemCreate = ({
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: 'white',
+		backgroundColor: GlobalStyles.colorPalette.background,
 		flex: 1,
 		gap: 15,
 		paddingTop: 20,

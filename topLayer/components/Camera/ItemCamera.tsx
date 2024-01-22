@@ -45,7 +45,7 @@ const ItemCamera = (): ReactElement => {
 		<Stack.Navigator
 			screenOptions={{
 				headerShown: false,
-				cardStyle: { backgroundColor: 'black', opacity: 1 },
+				contentStyle: { backgroundColor: 'black', opacity: 1 },
 			}}
 		>
 			<Stack.Group>
