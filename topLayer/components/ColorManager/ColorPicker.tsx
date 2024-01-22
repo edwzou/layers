@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+	Dimensions,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import {
 	PanGestureHandler,
 	type PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
+// eslint-disable-next-line import/default
 import Animated, {
 	interpolateColor,
 	useAnimatedGestureHandler,
@@ -13,17 +20,13 @@ import Animated, {
 	withSpring,
 	runOnJS,
 } from 'react-native-reanimated';
-import { LinearGradient, Stop } from 'react-native-svg';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface ColorPickerPropsType {
 	onNewColorPress: (colorToAdd: string) => void;
-	maxWidth: number;
 }
 
-const ColorPicker: React.FC<ColorPickerPropsType> = ({
-	onNewColorPress,
-	maxWidth,
-}) => {
+const ColorPicker: React.FC<ColorPickerPropsType> = ({ onNewColorPress }) => {
 	const colors = [
 		'#4891FF',
 		'#46B9C9',
@@ -52,7 +55,7 @@ const ColorPicker: React.FC<ColorPickerPropsType> = ({
 	const [currentColor, setCurrentColor] = useState<string>(colors[0]);
 
 	const adjustedTranslateX = useDerivedValue(() => {
-		return Math.min(Math.max(translateX.value, 0), maxWidth - 45);
+		return Math.min(Math.max(translateX.value, 0), windowWidth - 45);
 	});
 
 	const panGestureEvent = useAnimatedGestureHandler<
@@ -85,7 +88,7 @@ const ColorPicker: React.FC<ColorPickerPropsType> = ({
 
 	const rInternalPickerStyle = useAnimatedStyle(() => {
 		const inputRange = colors.map(
-			(_, index) => (index / colors.length) * maxWidth
+			(_, index) => (index / colors.length) * windowWidth
 		);
 
 		const numericColor = interpolateColor(translateX.value, inputRange, colors);
@@ -108,17 +111,19 @@ const ColorPicker: React.FC<ColorPickerPropsType> = ({
 
 	return (
 		<View style={styles.container}>
-			<LinearGradient
-				colors={colors}
-				start={{ x: 0, y: 0 }}
-				end={{ x: 1, y: 0 }}
-				style={styles.linearGradient}
-			/>
 			<PanGestureHandler onGestureEvent={panGestureEvent}>
-				<Animated.View style={[styles.picker, rStyle]}>
-					<Animated.View
-						style={[styles.internalPicker, rInternalPickerStyle]}
-					/>
+				<Animated.View style={styles.innerContainer}>
+					<LinearGradient
+						colors={colors}
+						start={{ x: 0, y: 0 }}
+						end={{ x: 1, y: 0 }}
+						style={styles.linearGradient}
+					></LinearGradient>
+					<Animated.View style={[styles.picker, rStyle]}>
+						<Animated.View
+							style={[styles.internalPicker, rInternalPickerStyle]}
+						/>
+					</Animated.View>
 				</Animated.View>
 			</PanGestureHandler>
 			<TouchableOpacity
@@ -128,88 +133,29 @@ const ColorPicker: React.FC<ColorPickerPropsType> = ({
 				}}
 				style={styles.button}
 			>
-				<Text style={styles.buttonText}>Log Background Color</Text>
+				<Text style={styles.buttonText}>Choose color</Text>
 			</TouchableOpacity>
 		</View>
-
-		// <View>
-		// 	<PanGestureHandler onGestureEvent={panGestureEvent}>
-		// 		<Animated.View style={styles.container}>
-		// 			<LinearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-		// 				<Stop offset="0%" stopColor="#4c669f" stopOpacity="1" />
-		// 				<Stop offset="100%" stopColor="#3b5998" stopOpacity="1" />
-		// 			</LinearGradient>
-		// 			<Animated.View style={[styles.picker, rStyle]}>
-		// 				<Animated.View
-		// 					style={[styles.internalPicker, rInternalPickerStyle]}
-		// 				/>
-		// 			</Animated.View>
-		// 		</Animated.View>
-		// 	</PanGestureHandler>
-		// 	<TouchableOpacity
-		// 		onPress={() => {
-		// 			console.log('Current:', currentColor);
-		// 			onNewColorPress(currentColor);
-		// 		}}
-		// 		style={styles.button}
-		// 	>
-		// 		<Text style={styles.buttonText}>Log Background Color</Text>
-		// 	</TouchableOpacity>
-		// </View>
 	);
 };
 
+const windowWidth = Dimensions.get('window').width * 0.9;
 const PICKERSIZE = 45;
 const INTERNALPICKERSIZE = PICKERSIZE / 2;
 
 const styles = StyleSheet.create({
-	// container: {
-	// 	alignItems: 'center',
-	// 	justifyContent: 'center',
-	// },
-	// internalPicker: {
-	// 	height: INTERNALPICKERSIZE,
-	// 	width: INTERNALPICKERSIZE,
-	// 	borderRadius: INTERNALPICKERSIZE / 2,
-	// 	borderWidth: 1,
-	// 	borderColor: 'black', // Add border color for visibility
-	// 	alignSelf: 'center', // Center horizontally
-	// 	justifyContent: 'center', // Center vertically
-	// },
-	// picker: {
-	// 	position: 'absolute',
-	// 	backgroundColor: 'white',
-	// 	height: PICKERSIZE,
-	// 	width: PICKERSIZE,
-	// 	borderRadius: PICKERSIZE / 2,
-	// },
-	// button: {
-	// 	marginTop: 20,
-	// 	backgroundColor: '#007BFF',
-	// 	paddingVertical: 10,
-	// 	paddingHorizontal: 20,
-	// 	borderRadius: 5,
-	// },
-	// buttonText: {
-	// 	color: 'white',
-	// 	fontWeight: 'bold',
-	// },
-	// linearGradient: {
-	// 	flex: 1,
-	// },
 	container: {
+		paddingTop: '11%',
 		alignItems: 'center',
 		justifyContent: 'center',
-		flex: 1,
 	},
-	internalPicker: {
-		height: INTERNALPICKERSIZE,
-		width: INTERNALPICKERSIZE,
-		borderRadius: INTERNALPICKERSIZE / 2,
-		borderWidth: 1,
-		borderColor: 'black',
-		alignSelf: 'center',
+	innerContainer: {
 		justifyContent: 'center',
+	},
+	linearGradient: {
+		width: windowWidth,
+		height: 45,
+		borderRadius: 25,
 	},
 	picker: {
 		position: 'absolute',
@@ -217,6 +163,15 @@ const styles = StyleSheet.create({
 		height: PICKERSIZE,
 		width: PICKERSIZE,
 		borderRadius: PICKERSIZE / 2,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	internalPicker: {
+		height: INTERNALPICKERSIZE,
+		width: INTERNALPICKERSIZE,
+		borderRadius: INTERNALPICKERSIZE / 2,
+		borderWidth: 1,
+		borderColor: 'black',
 	},
 	button: {
 		marginTop: 20,
@@ -228,11 +183,6 @@ const styles = StyleSheet.create({
 	buttonText: {
 		color: 'white',
 		fontWeight: 'bold',
-	},
-	linearGradient: {
-		position: 'absolute',
-		width: '90%',
-		height: 200,
 	},
 });
 
