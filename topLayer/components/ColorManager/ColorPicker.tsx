@@ -28,24 +28,19 @@ interface ColorPickerPropsType {
 
 const ColorPicker: React.FC<ColorPickerPropsType> = ({ onNewColorPress }) => {
 	const colors = [
-		'#4891FF',
-		'#46B9C9',
-		'#A3DEC9',
+		'#AD4E4E',
+		'#E55A5A',
+		'#EBA655',
+		'#EEE16B',
 		'#6DC86E',
 		'#76956B',
-		'#EEE16B',
-		'#E8D3B4',
-		'#977854',
-		'#EBA655',
-		'#E55A5A',
-		'#AD4E4E',
+		'#4891FF',
 		'#F67ECE',
 		'#B77AC7',
-		'#3869B2',
-		'#121212',
-		'#CDCDCD',
-		'#FFFBEB',
-		'#FFFFF7',
+		'#46B9C9',
+		'#A3DEC9',
+		'#977854',
+		'#E8D3B4',
 	];
 
 	const translateX = useSharedValue(0);
